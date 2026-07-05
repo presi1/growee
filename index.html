@@ -1932,6 +1932,19 @@ document.addEventListener('scroll', function(e){
   background:var(--cream);color:var(--ink);
   border-bottom-right-radius:3px;font-weight:450;
 }
+.cbubble p{margin:0 0 .7rem}
+.cbubble p:last-child{margin-bottom:0}
+.cbubble strong{font-weight:700;color:var(--cream)}
+.cbubble.user strong{color:var(--ink)}
+.cbubble-list{margin:0 0 .7rem;padding-left:1.15rem;display:flex;flex-direction:column;gap:.4rem}
+.cbubble-list:last-child{margin-bottom:0}
+.cbubble-list li{padding-left:.2rem}
+.cbubble.ai ul.cbubble-list{list-style:none;padding-left:0}
+.cbubble.ai ul.cbubble-list li{position:relative;padding-left:1.05rem}
+.cbubble.ai ul.cbubble-list li::before{content:'';position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.cbubble.ai.b-terra ul.cbubble-list li::before{background:var(--terra)}
+ol.cbubble-list{list-style:decimal;padding-left:1.3rem}
+ol.cbubble-list li{padding-left:.3rem}
 .cmw-time{font-size:.64rem;color:var(--inv-2);padding:0 .2rem}
 
 /* Typing indicator */
@@ -2421,6 +2434,12 @@ IDENTIDAD Y VOZ
 - Eres directo cuando hace falta, pero siempre desde el respeto y la empatía.
 - Tus respuestas tienen entre 3 y 6 oraciones. Cuando ofreces una herramienta estructurada, puedes extenderte más.
 
+FORMATO (muy importante, esto es un chat, no un ensayo)
+- Párrafos cortos: 1-3 frases máximo por párrafo. Nunca un bloque denso de texto.
+- Cuando dés varios pasos, opciones o preguntas, usa una lista con guiones ("- ") o numerada ("1. "), una por línea — nunca los metas todos seguidos en una misma frase larga.
+- Usa **negrita** (así, con doble asterisco) solo para el nombre de la técnica o 2-3 palabras clave por respuesta — no abuses, pierde valor si lo usas en todo.
+- Deja una línea en blanco entre párrafos o bloques distintos.
+
 LO QUE TE HACE DIFERENTE DE UN CHAT DE IA GENÉRICO
 Un chat genérico responde con generalidades ("intenta relajarte", "date tiempo", "habla con alguien de confianza", "cuida tu descanso"). Tú NUNCA respondes así. Tu diferencial es aplicar siempre una metodología concreta y nombrarla, para que la persona perciba que hay un método real detrás, no una respuesta de relleno.
 - Antes de proponer nada, diagnostica en silencio qué está pasando (¿es rumiación? ¿ansiedad anticipatoria? ¿burnout? ¿conflicto relacional?) y elige la metodología del catálogo de abajo que mejor encaja — no la más obvia, la más precisa para ESE caso.
@@ -2491,6 +2510,12 @@ IDENTIDAD Y VOZ
 - Haces preguntas poderosas antes de dar respuestas. Tu primera función es ayudar a clarificar, no dar soluciones prematuramente.
 - Cuando das herramientas, son concretas, aplicables esta semana, con pasos específicos.
 - Tus respuestas normalmente tienen entre 4 y 8 oraciones. Cuando ofreces una plantilla o framework, puedes extenderte con formato estructurado.
+
+FORMATO (muy importante, esto es un chat, no un informe)
+- Párrafos cortos: 1-3 frases máximo por párrafo. Nunca un bloque denso de texto.
+- Cuando dés varios pasos, opciones o preguntas, usa una lista con guiones ("- ") o numerada ("1. "), una por línea — nunca los metas todos seguidos en una misma frase larga.
+- Usa **negrita** (así, con doble asterisco) solo para el nombre del framework o 2-3 términos clave por respuesta — no abuses.
+- Deja una línea en blanco entre párrafos o bloques distintos.
 
 LO QUE TE HACE DIFERENTE DE UN CHAT DE IA GENÉRICO
 Un chat genérico da consejos de liderazgo de manual ("comunica con claridad", "escucha activamente", "da feedback constructivo"). Tú NUNCA respondes así. Tu diferencial es aplicar siempre un framework concreto, nombrarlo, y construirlo con los datos reales de la persona — no explicarlo en abstracto.
@@ -2799,6 +2824,56 @@ function useSugg(btn) {
   chatSend();
 }
 
+function formatAiText(text) {
+  // Escapar HTML primero, para que nada de lo que escriba el modelo pueda inyectar markup
+  let safe = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // Negrita: **texto**
+  safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  const rawLines = safe.split('\n');
+  let html = '';
+  let mode = null;       // null | 'p' | 'ul' | 'ol'
+  let buffer = [];
+
+  function flush() {
+    if (buffer.length === 0) { mode = null; return; }
+    if (mode === 'ul') html += '<ul class="cbubble-list">' + buffer.map(l => '<li>' + l + '</li>').join('') + '</ul>';
+    else if (mode === 'ol') html += '<ol class="cbubble-list">' + buffer.map(l => '<li>' + l + '</li>').join('') + '</ol>';
+    else if (mode === 'p') html += '<p>' + buffer.join('<br>') + '</p>';
+    buffer = [];
+    mode = null;
+  }
+
+  for (const rawLine of rawLines) {
+    const line = rawLine.trim();
+    if (line === '') { flush(); continue; }
+
+    const bulletMatch = line.match(/^[-•]\s+(.*)$/);
+    const numberMatch = line.match(/^\d+[.)]\s+(.*)$/);
+
+    if (bulletMatch) {
+      if (mode !== 'ul') flush();
+      mode = 'ul';
+      buffer.push(bulletMatch[1]);
+    } else if (numberMatch) {
+      if (mode !== 'ol') flush();
+      mode = 'ol';
+      buffer.push(numberMatch[1]);
+    } else {
+      if (mode !== 'p') flush();
+      mode = 'p';
+      buffer.push(line);
+    }
+  }
+  flush();
+
+  return html;
+}
+
 function addBubble(role, text) {
   const box  = document.getElementById('chat-msgs');
   if(!box) return;
@@ -2815,7 +2890,11 @@ function addBubble(role, text) {
 
   const b = document.createElement('div');
   b.className = 'cbubble ' + role + (role==='ai' ? ' b-'+(mode==='coaching'?'gold':'terra') : '');
-  b.textContent = text;
+  if (role === 'ai') {
+    b.innerHTML = formatAiText(text);
+  } else {
+    b.textContent = text;
+  }
   wrap.appendChild(b);
 
   const t = document.createElement('div');
