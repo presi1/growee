@@ -346,7 +346,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;justi
   background:var(--mist);border:1px solid var(--border);border-radius:var(--r-lg);
   padding:1.4rem;margin-top:2.5rem;
 }
-.demo-testi-text{font-family:'Fraunces',serif;font-style:italic;font-size:.95rem;color:var(--ink);line-height:1.6;margin-bottom:.8rem}
+.demo-testi-text{font-family:'Fraunces',serif;font-style:italic;font-size:.95rem;color:var(--cream);line-height:1.6;margin-bottom:.8rem}
 .demo-testi-who{font-size:.77rem;color:var(--inv-2)}
 .demo-form-card{
   background:var(--mist-2);border:1px solid var(--border);
@@ -757,7 +757,7 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
   <div class="nav-right">
     <button class="btn-ghost" onclick="go('home')">Inicio</button>
     <button class="btn-ghost" onclick="go('login')">Acceder</button>
-    <button class="btn-cta-nav" onclick="go('demo')">Solicitar demo →</button>
+    <button class="btn-cta-nav" onclick="go('demo')">Solicitar demo</button>
   </div>
 </nav>
 
@@ -778,7 +778,7 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
     <button class="mobile-nav-item" onclick="go('precios');closeMobileMenu()">📋 Módulos</button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-item" onclick="go('login');closeMobileMenu()">Acceder</button>
-    <button class="mobile-nav-item primary" onclick="go('demo');closeMobileMenu()">Solicitar demo →</button>
+    <button class="mobile-nav-item primary" onclick="go('demo');closeMobileMenu()">Solicitar demo</button>
   </div>
 </div>
 
@@ -895,6 +895,8 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
 
 /* ── BENEFITS ── */
 .h-benefits{max-width:1160px;margin:0 auto;padding:5rem 3rem}
+.h-photo-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:1160px;margin:0 auto;padding:0 3rem}
+.h-photo-strip img{width:100%;height:220px;object-fit:cover;border-radius:16px;border:1px solid var(--border)}
 .h-section-head{text-align:center;margin-bottom:3.5rem}
 .h-section-eye{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.6rem}
 .h-section-h2{font-family:'Fraunces',serif;font-size:2.4rem;font-weight:300;line-height:1.18;letter-spacing:-.025em}
@@ -968,11 +970,11 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
 
 <!-- ═══════ HERO ═══════ -->
 <!-- ═══════ HERO — full width, centrado ═══════ -->
-<div style="min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 3rem 4rem;max-width:860px;margin:0 auto;background:#0D1B2A">
+<div style="min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 3rem 2rem;max-width:860px;margin:0 auto;background:#0D1B2A">
   <h1 class="h-h1" style="font-size:4.6rem;max-width:800px">El equipo que cuidas<br><em>rinde más.</em></h1>
-  <p class="h-sub" style="max-width:560px;margin:1.5rem auto 2.2rem;font-size:1.1rem">Coaching profesional y apoyo emocional con IA especializada. Una plataforma que RRHH activa en 48h y que cada empleado usa cuando lo necesita.</p>
-  <div class="h-actions" style="justify-content:center;margin-bottom:2.8rem">
-    <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita →</button>
+  <p class="h-sub" style="max-width:560px;margin:1rem auto 1.8rem;font-size:1.1rem">Coaching profesional y apoyo emocional con IA especializada. Una plataforma que RRHH activa en 48h y que cada empleado usa cuando lo necesita.</p>
+  <div class="h-actions" style="justify-content:center;margin-bottom:2rem">
+    <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita</button>
   </div>
   <div class="h-trustbar" style="justify-content:center;border-top:none;padding-top:0">
     <div class="h-trust"><div class="h-trust-dot"></div>Listo en 48h, sin IT</div>
@@ -980,15 +982,15 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
     <div class="h-trust"><div class="h-trust-dot"></div>Conversaciones 100% confidenciales</div>
   </div>
 </div>
-<!-- Scroll-to-top button -->
-<button id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:2rem;right:2rem;z-index:400;width:44px;height:44px;border-radius:50%;background:var(--moss-light);border:none;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(58,158,110,.3);transition:all .2s">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D1B2A" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-</button>
 <script>
-window.addEventListener('scroll', function(){
+let lastScrollEl = window;
+document.addEventListener('scroll', function(e){
+  const target = e.target === document ? window : e.target;
+  const y = target === window ? window.scrollY : target.scrollTop;
+  if (y > 400) { lastScrollEl = target; }
   const btn = document.getElementById('scroll-top-btn');
-  if(btn) btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
-});
+  if(btn) btn.style.display = y > 400 ? 'flex' : 'none';
+}, true);
 </script>
 <style>
 @keyframes scrollHint{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:.55;transform:translateY(5px)}}
@@ -1007,8 +1009,27 @@ window.addEventListener('scroll', function(){
 <!-- ═══════ PLATAFORMA — dos módulos + demos + steps ═══════ -->
 <div style="border-top:1px solid var(--border)">
 
+  <div class="h-photo-strip" style="padding-top:3rem">
+
+    <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+      <img src="images/foto-laptop.jpg" alt="Tu espacio de trabajo, en cualquier dispositivo" style="width:100%;height:220px;object-fit:cover;display:block">
+      <div style="position:absolute;inset:auto 0 0 0;padding:.6rem .9rem;background:linear-gradient(0deg,rgba(13,27,42,.85),transparent);font-size:.72rem;color:rgba(248,246,241,.85)">Accede desde cualquier dispositivo, cuando lo necesites</div>
+    </div>
+
+    <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+      <img src="images/foto-manos.jpg" alt="Apoyo emocional cuando más lo necesitas" style="width:100%;height:220px;object-fit:cover;display:block">
+      <div style="position:absolute;inset:auto 0 0 0;padding:.6rem .9rem;background:linear-gradient(0deg,rgba(13,27,42,.85),transparent);font-size:.72rem;color:rgba(248,246,241,.85)">Apoyo real, en el momento en que más pesa</div>
+    </div>
+
+    <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
+      <img src="images/foto-butacas.jpg" alt="Conversaciones de coaching que importan" style="width:100%;height:220px;object-fit:cover;display:block">
+      <div style="position:absolute;inset:auto 0 0 0;padding:.6rem .9rem;background:linear-gradient(0deg,rgba(13,27,42,.85),transparent);font-size:.72rem;color:rgba(248,246,241,.85)">Conversaciones de coaching que preparan de verdad</div>
+    </div>
+
+  </div>
+
   <!-- Pilares -->
-  <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem 4rem">
+  <div style="max-width:1160px;margin:0 auto;padding:4rem 3rem 4rem">
     <div style="text-align:center;margin-bottom:3rem">
       <div class="h-section-eye">La plataforma</div>
       <h2 class="h-section-h2">Elige un módulo o<br><em>actívalos ambos</em></h2>
@@ -1042,9 +1063,10 @@ window.addEventListener('scroll', function(){
               <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Llevo meses sin dormir bien. Siento que el trabajo me ha comido. Ya no sé cuándo fue la última vez que me sentí yo mismo.</div>
               <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Lo que describes tiene mucho peso. Perder el hilo de quién eres no es "estar cansado" — es una señal importante. ¿Hay algo que antes te cargaba las pilas y que ahora has dejado de hacer?</div>
               <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Corría. Hace un año que no salgo a correr.</div>
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Eso es exactamente lo primero que vamos a recuperar. No porque sea "sano" — sino porque era tuyo. ¿Qué haría falta para salir mañana, aunque sean 10 minutos?</div>
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Eso es exactamente lo que en psicología se llama <strong>activación conductual</strong>: recuperar antes lo que te sostenía que esperar a "tener ganas". ¿Qué haría falta para salir mañana, aunque sean 10 minutos?</div>
             </div>
           </div>
+          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--terra);color:var(--ink)" onclick="go('demo')">Solicitar demo de Bienestar</button>
         </div>
       </div>
 
@@ -1075,9 +1097,10 @@ window.addEventListener('scroll', function(){
               <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Tengo que decirle a alguien de mi equipo que no va a ser promocionado. Ha trabajado duro pero no está listo. No sé cómo decírselo sin destruir su motivación.</div>
               <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Esta conversación, bien hecha, puede ser el momento más importante en su carrera. La clave no es el "no" — es el "todavía no, y aquí está exactamente el camino". ¿Qué es lo que le falta en concreto?</div>
               <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Toma buenas decisiones técnicas pero le cuesta influir sin autoridad formal.</div>
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Perfecto. Eso es una habilidad concreta y enseñable, no un rasgo de personalidad. Prepara la conversación así: primero reconoce el trabajo, luego nombra exactamente esa brecha, y cierra con un plan de desarrollo de 6 meses que tú vas a apoyar. ¿Quieres que lo construyamos juntos?</div>
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Perfecto. Eso es una habilidad concreta y enseñable, no un rasgo de personalidad. Vamos a estructurar el feedback con el modelo <strong>SBI (Situación-Comportamiento-Impacto)</strong> del Center for Creative Leadership: primero el hecho, luego el impacto, y cerramos con un plan de desarrollo de 6 meses que tú vas a apoyar. ¿Lo construimos juntos?</div>
             </div>
           </div>
+          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--gold);color:var(--ink)" onclick="go('demo')">Solicitar demo de Coaching</button>
         </div>
       </div>
 
@@ -1254,7 +1277,7 @@ window.addEventListener('scroll', function(){
   <h2>¿Listo para cuidar<br><em>a tu equipo?</em></h2>
   <p>Demo de 30 minutos. Sin compromisos. Piloto gratis de 30 días si decides seguir.</p>
   <div class="h-cta-btns">
-    <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita →</button>
+    <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita</button>
     <button class="btn-secondary" onclick="go('precios')">Ver precios</button>
   </div>
 </div>
@@ -1265,7 +1288,6 @@ window.addEventListener('scroll', function(){
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
-    <a onclick="go('precios')">Precios</a>
     <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('demo')">Demo</a>
   </div>
@@ -1281,7 +1303,6 @@ window.addEventListener('scroll', function(){
 <!-- BIENESTAR -->
 <div id="pg-prod-bienestar" class="pg">
   <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
-    <button onclick="go('home')" style="background:none;border:1px solid var(--border);color:var(--cream);font-size:.88rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.55rem;margin-bottom:2.5rem;padding:.5rem 1.1rem;border-radius:50px;transition:all .2s" onmouseover="this.style.background='var(--mist-2)'" onmouseout="this.style.background='none'">← Volver</button>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:4rem">
       <div>
         <div class="tag-pill tag-terra" style="margin-bottom:1.2rem">● Módulo Bienestar Emocional</div>
@@ -1294,7 +1315,7 @@ window.addEventListener('scroll', function(){
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Conciliación vida personal y profesional</div>
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Autoestima y confianza profesional</div>
         </div>
-        <button class="btn-primary" onclick="go('demo')">Solicitar demo →</button>
+        <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
       </div>
       <div style="background:var(--mist);border:1px solid rgba(217,130,90,.25);border-radius:20px;overflow:hidden">
         <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem">
@@ -1305,23 +1326,33 @@ window.addEventListener('scroll', function(){
           <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(217,130,90,.5);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:85%">Hola 👋 Este es tu espacio seguro. RRHH nunca puede ver lo que hablamos aquí. ¿Qué está pasando?</div>
           <div style="background:rgba(248,246,241,.14);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;align-self:flex-end;color:var(--ink);background:var(--cream);max-width:80%">Llevo semanas sin dormir bien y me cuesta concentrarme en el trabajo.</div>
           <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(217,130,90,.5);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:90%">Eso es una señal que merece atención — no es "cansancio normal". Cuéntame más: ¿esto ocurre también los fines de semana o te desconectas algo cuando no trabajas?</div>
+          <div style="background:rgba(248,246,241,.14);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;align-self:flex-end;color:var(--ink);background:var(--cream);max-width:80%">No, es todos los días. Me meto en la cama y no paro de darle vueltas a todo lo pendiente.</div>
+          <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(217,130,90,.5);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:90%">Hay una técnica de <strong>TCC para el insomnio</strong> (control de estímulos, de Richard Bootzin) que ataca justo esto. Si no concilias el sueño en 20 minutos, te levantas — así tu cerebro deja de asociar la cama con dar vueltas a las cosas.</div>
         </div>
       </div>
     </div>
     <div style="text-align:center;padding:3rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres ver esto en acción para tu empresa?</div>
       <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Demo personalizada de 30 minutos · Sin compromiso</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
     </div>
   </div>
   <div class="divider"></div>
-  <footer><div class="footer-logo">Grow<span>ee</span></div><div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div><div class="footer-legal">© 2025 Growee · RGPD 🇪🇺</div></footer>
+  <footer>
+  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
 </div>
 
 <!-- COACHING -->
 <div id="pg-prod-coaching" class="pg">
   <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
-    <button onclick="go('home')" style="background:none;border:1px solid var(--border);color:var(--cream);font-size:.88rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.55rem;margin-bottom:2.5rem;padding:.5rem 1.1rem;border-radius:50px;transition:all .2s" onmouseover="this.style.background='var(--mist-2)'" onmouseout="this.style.background='none'">← Volver</button>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:4rem">
       <div>
         <div class="tag-pill tag-gold" style="margin-bottom:1.2rem">◆ Módulo Coaching Profesional</div>
@@ -1334,7 +1365,7 @@ window.addEventListener('scroll', function(){
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Transiciones de carrera y promociones</div>
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Objetivos OKR y desarrollo personal</div>
         </div>
-        <button class="btn-primary" onclick="go('demo')">Solicitar demo →</button>
+        <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
       </div>
       <div style="background:var(--mist);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden">
         <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem">
@@ -1344,24 +1375,32 @@ window.addEventListener('scroll', function(){
         <div style="padding:1.2rem;display:flex;flex-direction:column;gap:.75rem">
           <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(201,168,76,.4);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:85%">Hola 👋 Listo para trabajar contigo. ¿Qué tienes entre manos — un reto de liderazgo, una decisión importante?</div>
           <div style="background:var(--cream);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;align-self:flex-end;color:var(--ink);max-width:80%">Tengo que dar feedback difícil a alguien de mi equipo y no sé cómo hacerlo sin dañar la relación.</div>
-          <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(201,168,76,.4);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:90%">Bien que lo prepares — eso ya marca la diferencia. La clave es separar el comportamiento observado del juicio personal. ¿Qué conductas concretas quieres abordar?</div>
+          <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(201,168,76,.4);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:90%">Bien que lo prepares — eso ya marca la diferencia. Vamos a usar el modelo <strong>SBI (Situación-Comportamiento-Impacto)</strong> del Center for Creative Leadership: separa el hecho observable del juicio personal, así la conversación no se pone defensiva. ¿Qué conductas concretas quieres abordar?</div>
         </div>
       </div>
     </div>
     <div style="text-align:center;padding:3rem;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres ver el coaching en acción con tu equipo?</div>
       <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Demo personalizada de 30 minutos · Sin compromiso</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
     </div>
   </div>
   <div class="divider"></div>
-  <footer><div class="footer-logo">Grow<span>ee</span></div><div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div><div class="footer-legal">© 2025 Growee · RGPD 🇪🇺</div></footer>
+  <footer>
+  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
 </div>
 
 <!-- PANEL RRHH -->
 <div id="pg-prod-rrhh" class="pg">
   <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
-    <button onclick="go('home')" style="background:none;border:1px solid var(--border);color:var(--cream);font-size:.88rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.55rem;margin-bottom:2.5rem;padding:.5rem 1.1rem;border-radius:50px;transition:all .2s" onmouseover="this.style.background='var(--mist-2)'" onmouseout="this.style.background='none'">← Volver</button>
     <div style="text-align:center;max-width:620px;margin:0 auto 3.5rem">
       <div class="tag-pill tag-moss" style="margin-bottom:1.2rem;display:inline-flex">📊 Panel de RRHH</div>
       <h2 style="margin-bottom:1rem">Por fin datos de bienestar<br><em>que puedes presentar</em></h2>
@@ -1375,11 +1414,20 @@ window.addEventListener('scroll', function(){
     <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">Ver el panel en acción</div>
       <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Te lo mostramos con datos reales en la demo de 30 minutos</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
     </div>
   </div>
   <div class="divider"></div>
-  <footer><div class="footer-logo">Grow<span>ee</span></div><div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div><div class="footer-legal">© 2025 Growee · RGPD 🇪🇺</div></footer>
+  <footer>
+  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
 </div>
 
 <!-- INTEGRACIONES -->
@@ -1390,7 +1438,7 @@ window.addEventListener('scroll', function(){
 <style>
 .casos-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:18px;overflow:hidden;max-width:1160px;margin:0 auto;box-shadow:0 2px 20px rgba(13,27,42,.07)}
 .casos-kpi-cell{background:var(--ink-2);padding:2.2rem 1.5rem;text-align:center}
-.casos-kpi-val{font-family:"Fraunces",serif;font-size:3.2rem;font-weight:300;line-height:1;color:var(--ink);margin-bottom:.4rem}
+.casos-kpi-val{font-family:"Fraunces",serif;font-size:3.2rem;font-weight:300;line-height:1;color:var(--cream);margin-bottom:.4rem}
 .casos-kpi-val .gu{color:var(--moss-light)}
 .casos-kpi-lbl{font-size:.78rem;color:var(--inv-2);line-height:1.5}
 .casos-testi-grid{display:grid;grid-template-columns:1fr 1fr;max-width:1160px;margin:0 auto;gap:1.2rem}
@@ -1405,7 +1453,7 @@ window.addEventListener('scroll', function(){
 .casos-testi-co{font-size:.73rem;color:var(--moss-light);margin-top:.2rem}
 .casos-testi-metrics{display:flex;gap:2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
 .casos-metric{text-align:center}
-.casos-metric-val{font-family:"Fraunces",serif;font-size:1.55rem;font-weight:300;color:var(--ink);line-height:1}
+.casos-metric-val{font-family:"Fraunces",serif;font-size:1.55rem;font-weight:300;color:var(--cream);line-height:1}
 .casos-metric-lbl{font-size:.7rem;color:var(--inv-2);margin-top:.2rem}
 </style>
   <div style="max-width:700px;margin:0 auto;padding:5rem 3rem 3rem;text-align:center">
@@ -1478,14 +1526,19 @@ window.addEventListener('scroll', function(){
   <div style="text-align:center;padding:3rem;background:linear-gradient(180deg,rgba(45,106,79,.07),rgba(13,27,42,0));border-top:1px solid rgba(82,183,136,.12);max-width:600px;margin:0 auto">
     <h3 style="font-family:Fraunces,serif;font-size:1.8rem;font-weight:300;margin-bottom:.7rem">¿Quieres resultados así<br>en tu empresa?</h3>
     <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.8rem">En la demo te mostramos el caso más parecido al tuyo y cómo replicarlo.</p>
-    <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+    <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
   </div>
   <div class="divider"></div>
   <footer>
-    <div class="footer-logo">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('precios')">Módulos</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div>
-    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
-  </footer>
+  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
 </div>
 
 <div id="pg-precios" class="pg">
@@ -1534,7 +1587,7 @@ window.addEventListener('scroll', function(){
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Perfil personalizado por empleado</div>
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Disponible 24/7 desde web y móvil</div>
           </div>
-          <button class="pr2-cta terra-cta" onclick="go(&#39;demo&#39;)">Solicitar demo →</button>
+          <button class="pr2-cta terra-cta" onclick="go(&#39;demo&#39;)">Solicitar demo</button>
         </div>
       </div>
 
@@ -1553,14 +1606,14 @@ window.addEventListener('scroll', function(){
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Perfil personalizado por empleado</div>
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Disponible 24/7 desde web y móvil</div>
           </div>
-          <button class="pr2-cta gold-cta" onclick="go(&#39;demo&#39;)">Solicitar demo →</button>
+          <button class="pr2-cta gold-cta" onclick="go(&#39;demo&#39;)">Solicitar demo</button>
         </div>
       </div>
 
     </div>
     <div style="margin-top:1.2rem;background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.2);border-radius:14px;padding:1.3rem 1.8rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap">
       <div><div style="font-size:.9rem;font-weight:600;margin-bottom:.2rem">¿Los dos módulos juntos?</div><div style="font-size:.82rem;color:var(--inv)">Puedes activar Bienestar y Coaching para toda la empresa. Lo diseñamos a medida en la demo.</div></div>
-      <button onclick="go(&#39;demo&#39;)" style="background:var(--moss-light);color:var(--ink);border:none;padding:.7rem 1.6rem;border-radius:50px;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:Inter,sans-serif">Solicitar demo →</button>
+      <button onclick="go(&#39;demo&#39;)" style="background:var(--moss-light);color:var(--ink);border:none;padding:.7rem 1.6rem;border-radius:50px;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:Inter,sans-serif">Solicitar demo</button>
     </div>
   </div>
 
@@ -1575,10 +1628,15 @@ window.addEventListener('scroll', function(){
 
   <div class="divider"></div>
   <footer>
-    <div class="footer-logo">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go(&#39;precios&#39;)">Módulos</a><a onclick="go(&#39;casos&#39;)">Casos</a><a onclick="go(&#39;demo&#39;)">Demo</a></div>
-    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
-  </footer>
+  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
 </div>
 
 <div id="pg-demo" class="pg">
@@ -1633,8 +1691,18 @@ window.addEventListener('scroll', function(){
               </select>
             </div>
           </div>
+          <div class="form-group">
+            <label class="form-label">¿Qué módulo te interesa más?</label>
+            <select class="form-input">
+              <option value="">Selecciona...</option>
+              <option>🧡 Apoyo Emocional</option>
+              <option>◆ Coaching Profesional</option>
+              <option>Ambos módulos</option>
+              <option>Aún no lo sé, quiero ver las dos</option>
+            </select>
+          </div>
           <div class="form-group"><label class="form-label">¿Cuál es tu mayor reto ahora mismo? (opcional)</label><input class="form-input" type="text" placeholder="Ej: burnout, rotación alta, mejorar el liderazgo..."></div>
-          <button class="form-submit" onclick="submitDemo()">Solicitar demo gratuita →</button>
+          <button class="form-submit" onclick="submitDemo()">Solicitar demo gratuita</button>
           <div class="form-note">🔒 Sin spam. Solo te contactamos para confirmar la demo.<br>Tus datos se tratan según nuestro aviso de privacidad.</div>
         </div>
       </div>
@@ -1643,10 +1711,15 @@ window.addEventListener('scroll', function(){
 
   <div class="divider"></div>
   <footer>
-    <div class="footer-logo">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a></div>
-    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
-  </footer>
+  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
 </div>
 
 <!-- ════════════════════════════════════════
@@ -1660,6 +1733,7 @@ window.addEventListener('scroll', function(){
   padding:4rem;position:relative;overflow:hidden;
 }
 .auth-left-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 60%,rgba(58,158,110,.12) 0%,transparent 60%);pointer-events:none}
+.auth-photo{width:100%;max-width:420px;height:220px;border-radius:16px;object-fit:cover;margin-top:2rem;border:1px solid var(--border)}
 .auth-left-logo{font-family:"Fraunces",serif;font-size:2rem;font-weight:300;margin-bottom:3rem}
 .auth-left-logo span{color:var(--moss-light)}
 .auth-left h2{font-family:"Fraunces",serif;font-size:2.4rem;font-weight:300;line-height:1.2;margin-bottom:1rem;letter-spacing:-.02em}
@@ -1699,6 +1773,7 @@ window.addEventListener('scroll', function(){
         <div class="auth-proof-item"><div class="auth-proof-dot"></div>Disponible en cualquier momento, desde cualquier dispositivo</div>
         <div class="auth-proof-item"><div class="auth-proof-dot"></div>RGPD compliant · Datos en Europa</div>
       </div>
+      <img src="images/foto-butacas.jpg" alt="Tu espacio de crecimiento te espera" class="auth-photo">
     </div>
     <div class="auth-panel">
       <button class="auth-close" onclick="go('home')">✕</button>
@@ -1708,15 +1783,6 @@ window.addEventListener('scroll', function(){
       <div class="form-group"><label class="form-label">Contraseña</label><input class="form-input" id="login-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <button class="form-submit" style="margin-top:.5rem" onclick="doLogin()">Entrar a Growee →</button>
       <div class="login-hint">¿No tienes acceso todavía?<br><a onclick="go('demo')">Solicita una demo</a> para que tu empresa active Growee</div>
-      <div style="margin-top:1.5rem;background:rgba(82,183,136,.07);border:1px solid rgba(82,183,136,.18);border-radius:12px;padding:1rem 1.1rem">
-        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.6rem">Acceso demo</div>
-        <div style="font-size:.78rem;color:var(--inv-2);line-height:1.65">
-          <div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span>demo@growee.es</span><span style="color:var(--inv)">Ambos módulos</span></div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span>bien@growee.es</span><span style="color:var(--inv)">Solo Bienestar</span></div>
-          <div style="display:flex;justify-content:space-between"><span>coach@growee.es</span><span style="color:var(--inv)">Solo Coaching</span></div>
-          <div style="margin-top:.6rem;font-style:italic;color:rgba(248,246,241,.3)">Contraseña: demo123</div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -1887,12 +1953,12 @@ window.addEventListener('scroll', function(){
   padding:.6rem 1.8rem 0;flex-shrink:0;
 }
 .chat-sugg{
-  border:1px solid var(--border);border-radius:50px;
+  border:1px solid rgba(248,246,241,.35);border-radius:50px;
   padding:.4rem .9rem;font-size:.77rem;color:var(--inv);
   cursor:pointer;background:none;font-family:"Inter",sans-serif;
   transition:all .18s;white-space:nowrap;
 }
-.chat-sugg:hover{border-color:var(--moss-light);color:var(--ink);background:rgba(58,158,110,.08)}
+.chat-sugg:hover{border-color:var(--moss-light);color:var(--cream);background:rgba(58,158,110,.08)}
 
 /* Input bar */
 .chat-bar{
@@ -2014,6 +2080,25 @@ window.addEventListener('scroll', function(){
 </div><!-- /app-root -->
 </div><!-- /pg-app -->
 
+<!-- Botones globales: flotan sobre cualquier página -->
+<button id="float-demo-btn" onclick="go('demo')" style="display:flex;position:fixed;bottom:5.8rem;right:1.5rem;z-index:290;align-items:center;gap:.5rem;background:var(--moss-light);color:var(--ink);border:none;padding:.75rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(58,158,110,.35);transition:all .2s">
+  Solicitar demo
+</button>
+<button id="back-btn" onclick="goBack()" style="display:flex;position:fixed;top:80px;left:1.5rem;z-index:290;align-items:center;gap:.4rem;background:rgba(13,27,42,.85);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--inv);padding:.5rem 1rem;border-radius:50px;font-size:.8rem;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Volver
+</button>
+<button id="scroll-top-btn" onclick="(lastScrollEl===window?window:lastScrollEl).scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:2rem;right:2rem;z-index:400;width:44px;height:44px;border-radius:50%;background:var(--moss-light);border:none;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(58,158,110,.3);transition:all .2s">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D1B2A" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<style>
+  #float-demo-btn:hover{background:#5fcf96;transform:translateY(-2px)}
+  #back-btn:hover{color:var(--cream);border-color:rgba(248,246,241,.3)}
+  @media(max-width:800px){
+    #float-demo-btn{padding:.7rem 1.1rem;font-size:.8rem;bottom:4.6rem;right:1rem}
+    #back-btn{display:none!important}
+  }
+</style>
+
 <script>
 // ══════════════════════════════════════
 // GROWEE — App JS
@@ -2039,6 +2124,7 @@ function closeMobileMenu() {
 const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','casos','precios','demo','login','app'];
 const APP_PAGES = ['login','onboarding','app'];
 let currentPage = 'home';
+let previousPage = 'home';
 
 function go(id) {
   closeMobileMenu();
@@ -2049,12 +2135,51 @@ function go(id) {
   const nav = document.getElementById('main-nav');
   if (nav) nav.style.display = APP_PAGES.includes(id) ? 'none' : 'flex';
   window.scrollTo(0, 0);
+  if (id !== currentPage) previousPage = currentPage;
   currentPage = id;
   closeDD();
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) backBtn.style.display = 'flex';
+  const floatDemo = document.getElementById('float-demo-btn');
+  if (floatDemo) floatDemo.style.display = (id === 'demo' || APP_PAGES.includes(id)) ? 'none' : 'flex';
   if (id === 'app') {
     setTimeout(initApp, 50);
   }
 }
+function goBack() {
+  go(previousPage);
+}
+
+// ── Swipe-back gesture (móvil) ──
+(function(){
+  let touchStartX = 0, touchStartY = 0, touchActive = false;
+  const EDGE_ZONE = 30;      // px desde el borde izquierdo donde debe empezar el gesto
+  const MIN_SWIPE = 70;      // px mínimos de desplazamiento horizontal
+  const MAX_VERTICAL = 60;   // px máximos de desplazamiento vertical permitido (evita confundir con scroll)
+
+  document.addEventListener('touchstart', function(e){
+    if (window.innerWidth > 800) return; // solo móvil
+    const t = e.touches[0];
+    if (t.clientX <= EDGE_ZONE) {
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      touchActive = true;
+    } else {
+      touchActive = false;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e){
+    if (!touchActive) return;
+    touchActive = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = Math.abs(t.clientY - touchStartY);
+    if (dx > MIN_SWIPE && dy < MAX_VERTICAL) {
+      goBack();
+    }
+  }, { passive: true });
+})();
 
 // ── Dropdown ──
 let ddOpen = false;
