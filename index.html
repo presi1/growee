@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growee — Bienestar y Coaching para Equipos</title>
+<meta name="description" content="La plataforma de bienestar emocional y coaching profesional para empresas. Cuida a tu equipo con IA especializada, disponible 24/7.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#0D1B2A}
+:root{
+  --ink:#0D1B2A;
+  --ink-2:#152236;
+  --ink-3:#1E2F42;
+  --moss:#2D6A4F;
+  --moss-light:#52B788;
+  --terra:#D9825A;
+  --terra-dark:#B0562F;
+  --gold:#C9A84C;
+  --cream:#F8F6F1;
+  --mist:rgba(248,240,225,0.07);
+  --mist-2:rgba(248,240,225,0.12);
+  --border:rgba(248,240,225,0.11);
+  --inv:rgba(248,246,241,0.55);
+  --inv-2:rgba(248,246,241,0.32);
+  --r:12px;--r-lg:20px;
+}
+body{font-family:'Inter',sans-serif;background:#0D1B2A!important;color:#F8F6F1!important;overflow-x:hidden;line-height:1.6;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{font-family:'Inter',sans-serif}
+
+/* ── PAGES ── */
+.pg{display:none;animation:fadeIn .25s ease;background:#0D1B2A;color:#F8F6F1}
+.pg.on{display:block;background:#0D1B2A;min-height:100vh}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:300;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 3rem;height:64px;
+  background:rgba(13,27,42,0.9);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.logo{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:400;cursor:pointer;letter-spacing:-.02em}
+.logo span{color:var(--moss-light)}
+.nav-links{display:flex;gap:.25rem;align-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.nav-link{
+  padding:.5rem .9rem;border-radius:8px;font-size:.875rem;
+  color:var(--inv);cursor:pointer;transition:all .18s;background:none;border:none;
+  display:flex;align-items:center;gap:.3rem;
+}
+.nav-link:hover{color:var(--cream);background:var(--mist)}
+.nav-link.active{color:var(--cream)}
+.nav-link svg{width:13px;height:13px;transition:transform .2s}
+.nav-link:hover svg{transform:rotate(180deg)}
+.nav-right{display:flex;gap:.6rem;align-items:center}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--inv);padding:.45rem 1.1rem;border-radius:50px;font-size:.84rem;cursor:pointer;transition:all .2s}
+.btn-ghost:hover{border-color:rgba(248,246,241,.35);color:var(--cream)}
+.btn-cta-nav{background:var(--moss-light);color:var(--ink);border:none;padding:.5rem 1.25rem;border-radius:50px;font-size:.84rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-cta-nav:hover{background:#5fcf96;transform:translateY(-1px)}
+
+/* Mega dropdown */
+.dropdown{
+  position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);
+  background:var(--ink-2);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:1.5rem;
+  display:none;width:520px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.dropdown.open{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.dd-item{
+  display:flex;align-items:flex-start;gap:.85rem;
+  padding:.9rem;border-radius:var(--r);cursor:pointer;
+  transition:background .18s;border:1px solid transparent;
+}
+.dd-item:hover{background:var(--mist);border-color:var(--border)}
+.dd-icon{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.dd-icon.terra{background:rgba(217,130,90,.16)}
+.dd-icon.gold{background:rgba(201,168,76,.12)}
+.dd-text h5{font-size:.85rem;font-weight:500;margin-bottom:.15rem}
+.dd-text p{font-size:.75rem;color:var(--inv-2);line-height:1.45}
+.nav-wrapper{position:relative;display:flex;align-items:center}
+
+/* ── SHARED ── */
+.section{max-width:1160px;margin:0 auto;padding:5rem 3rem}
+.eyebrow{font-size:.73rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.7rem}
+h1{font-family:'Fraunces',serif;font-size:3.8rem;font-weight:300;line-height:1.06;letter-spacing:-.03em;color:#F8F6F1}
+h1 em{font-style:italic;color:var(--moss-light)}
+h2{font-family:'Fraunces',serif;font-size:2.5rem;font-weight:300;line-height:1.15;letter-spacing:-.025em;color:#F8F6F1}
+h2 em{font-style:italic;color:var(--moss-light)}
+h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.25;letter-spacing:-.02em}
+.lead{font-size:1.05rem;color:var(--inv);line-height:1.78}
+.btn-primary{background:var(--moss-light);color:var(--ink);border:none;padding:.9rem 2.2rem;border-radius:50px;font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-block}
+.btn-primary:hover{background:#5fcf96;transform:translateY(-2px)}
+.btn-secondary{background:none;border:1px solid var(--border);color:var(--cream);padding:.9rem 1.8rem;border-radius:50px;font-size:.9rem;cursor:pointer;transition:all .2s;display:inline-block}
+.btn-secondary:hover{border-color:rgba(248,246,241,.35);background:var(--mist)}
+.divider{height:1px;background:var(--border);max-width:1160px;margin:0 auto}
+.tag-pill{display:inline-flex;align-items:center;gap:.4rem;padding:.32rem .85rem;border-radius:50px;font-size:.73rem;font-weight:600;letter-spacing:.04em}
+.tag-moss{background:rgba(82,183,136,.12);border:1px solid rgba(82,183,136,.2);color:var(--moss-light)}
+.tag-terra{background:rgba(217,130,90,.12);border:1px solid rgba(217,130,90,.25);color:var(--terra)}
+.tag-gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.18);color:var(--gold)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;max-width:1160px;margin:0 auto}
+.footer-logo{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--inv-2)}
+.footer-logo span{color:var(--moss-light)}
+.footer-links{display:flex;gap:1.8rem}
+.footer-links a{font-size:.78rem;color:var(--inv-2);transition:color .2s}
+.footer-links a:hover{color:var(--cream)}
+.footer-legal{font-size:.74rem;color:var(--inv-2)}
+
+/* ══════════════════════════════════════
+   HOME — máximo 2 pantallas de scroll
+══════════════════════════════════════ */
+.home-hero{
+  min-height:calc(100vh - 64px);
+  display:flex;align-items:center;
+  max-width:1160px;margin:0 auto;padding:0 3rem;
+  gap:5rem;
+}
+.home-hero-left{flex:1.1}
+.hero-kicker{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.2);
+  color:var(--moss-light);border-radius:50px;padding:.35rem 1rem;
+  font-size:.75rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.6rem;
+}
+.hero-kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moss-light)}
+.hero-h1-sub{font-size:1.05rem;color:var(--inv);line-height:1.75;margin:1.5rem 0 2.2rem;max-width:460px}
+.hero-actions{display:flex;gap:.9rem;align-items:center;flex-wrap:wrap;margin-bottom:2.8rem}
+.hero-link{font-size:.875rem;color:var(--inv);cursor:pointer;transition:color .2s;background:none;border:none;padding:.9rem 0}
+.hero-link:hover{color:var(--cream)}
+.hero-proof{display:flex;gap:2rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid var(--border)}
+.proof-item{display:flex;align-items:center;gap:.45rem;font-size:.78rem;color:var(--inv-2)}
+.proof-dot{width:5px;height:5px;border-radius:50%;background:var(--moss-light);flex-shrink:0}
+
+/* Hero right — chat preview */
+.home-hero-right{flex:.9;display:flex;flex-direction:column;gap:.9rem}
+.preview-card{
+  background:var(--mist-2);border:1px solid var(--border);
+  border-radius:var(--r-lg);overflow:hidden;
+}
+.pc-header{padding:.9rem 1.1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem}
+.pc-orb{width:28px;height:28px;border-radius:50%;flex-shrink:0;animation:breathe 3s ease-in-out infinite}
+.orb-bienestar{background:linear-gradient(135deg,var(--moss),var(--moss-light))}
+.orb-coaching{background:linear-gradient(135deg,#9A7A28,var(--gold))}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.pc-label{font-size:.8rem;font-weight:500}
+.pc-sublabel{font-size:.7rem;color:var(--inv-2);margin-top:1px}
+.pc-dot{width:7px;height:7px;border-radius:50%;background:var(--moss-light);margin-left:auto;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pc-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.7rem}
+.pc-msg{font-size:.82rem;line-height:1.62;padding:.7rem .9rem;border-radius:12px;max-width:88%}
+.pc-ai{background:rgba(248,246,241,.07);border:1px solid rgba(248,246,241,.1);align-self:flex-start;color:var(--cream)}
+.pc-user{background:var(--cream);color:var(--ink);align-self:flex-end;font-weight:500;border-bottom-right-radius:3px}
+.pc-ai-moss{border-left:2px solid rgba(82,183,136,.4)}
+.pc-ai-gold{border-left:2px solid rgba(201,168,76,.35)}
+
+/* Logos strip */
+.logos-strip{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:1.6rem 3rem;
+  display:flex;align-items:center;justify-content:center;gap:3.5rem;flex-wrap:wrap;
+  background:rgba(248,246,241,.02);
+}
+.logos-label{font-size:.72rem;color:var(--inv-2);letter-spacing:.07em;text-transform:uppercase;flex-shrink:0}
+.logo-co{font-family:'Fraunces',serif;font-size:.95rem;color:var(--inv-2);opacity:.45}
+
+/* Stats row — home bottom social proof */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);max-width:1160px;margin:0 auto;padding:0 3rem 5rem}
+.stat-cell{padding:2.5rem 1.5rem;border-right:1px solid var(--border);text-align:center}
+.stat-cell:first-child{border-left:1px solid var(--border)}
+.stat-val{font-family:'Fraunces',serif;font-size:3rem;font-weight:300;line-height:1;color:var(--cream)}
+.stat-val .accent{color:var(--moss-light)}
+.stat-desc{font-size:.8rem;color:var(--inv-2);margin-top:.5rem;line-height:1.5}
+
+/* ══════════════════════════════════════
+   PRODUCTO PAGE
+══════════════════════════════════════ */
+.producto-hero{
+  padding:5rem 3rem 3rem;max-width:1160px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
+}
+.pillars-section{background:rgba(248,246,241,.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.pillars-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2.5rem}
+.pillar{
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:2rem;position:relative;overflow:hidden;
+}
+.pillar::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.pillar.p-moss::after{background:linear-gradient(90deg,var(--moss-light),transparent)}
+.pillar.p-gold::after{background:linear-gradient(90deg,var(--gold),transparent)}
+.pillar h4{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:400;margin:1rem 0 .5rem}
+.pillar p{font-size:.84rem;color:var(--inv);line-height:1.7;margin-bottom:1.3rem}
+.feature-list{display:flex;flex-direction:column;gap:.5rem}
+.feat-row{display:flex;gap:.65rem;font-size:.81rem;color:rgba(248,246,241,.65);align-items:flex-start}
+.feat-row::before{content:'→';flex-shrink:0;font-size:.75rem;margin-top:.12rem}
+.feat-row.moss::before{color:var(--moss-light)}
+.feat-row.gold::before{color:var(--gold)}
+
+/* How steps */
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2.5rem;position:relative}
+.steps-row::before{
+  content:'';position:absolute;top:2.1rem;left:calc(12.5%);
+  right:calc(12.5%);height:1px;background:var(--border);z-index:0;
+}
+.step-card{position:relative;z-index:1;text-align:center;padding:1.5rem 1rem}
+.step-num{
+  width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--border);background:var(--ink-2);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;
+  font-family:'Fraunces',serif;font-size:1rem;color:var(--moss-light);
+}
+.step-card h5{font-size:.9rem;font-weight:500;margin-bottom:.4rem}
+.step-card p{font-size:.8rem;color:var(--inv);line-height:1.6}
+
+/* ══════════════════════════════════════
+   PRECIOS PAGE
+══════════════════════════════════════ */
+.pricing-hero{padding:5rem 3rem 3rem;max-width:680px;margin:0 auto;text-align:center}
+.pricing-toggle{
+  display:inline-flex;align-items:center;gap:.8rem;
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:50px;padding:.35rem .5rem .35rem 1rem;
+  font-size:.82rem;margin:1.8rem auto .5rem;cursor:pointer;
+}
+.toggle-pill{
+  background:var(--moss-light);color:var(--ink);
+  padding:.3rem .85rem;border-radius:50px;font-size:.78rem;font-weight:600;
+}
+.save-badge{font-size:.73rem;color:var(--moss-light)}
+
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:1000px;margin:0 auto;padding:0 3rem 5rem}
+.plan{
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:2rem 1.8rem;
+  position:relative;transition:transform .2s;
+}
+.plan:hover{transform:translateY(-3px)}
+.plan.featured{background:#FFFFFF;color:var(--ink);border-color:transparent;box-shadow:0 4px 24px rgba(13,27,42,.1)}
+.plan-badge-top{
+  position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  background:var(--moss-light);color:var(--ink);
+  padding:.28rem .9rem;border-radius:0 0 9px 9px;
+  font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;
+}
+.plan-tier{font-size:.74rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--inv-2);margin-bottom:.6rem}
+.plan.featured .plan-tier{color:rgba(13,27,42,.45)}
+.plan-price{font-family:'Fraunces',serif;font-size:3rem;font-weight:300;line-height:1;margin-bottom:.2rem}
+.plan.featured .plan-price{color:var(--ink)}
+.plan-price sup{font-size:1.3rem;vertical-align:super;font-family:'Inter',sans-serif}
+.plan-price .per{font-size:.82rem;color:var(--inv);font-family:'Inter',sans-serif;font-weight:400}
+.plan.featured .plan-price .per{color:rgba(13,27,42,.4)}
+.plan-desc{font-size:.8rem;color:var(--inv);margin:.6rem 0 1.4rem;line-height:1.55}
+.plan.featured .plan-desc{color:rgba(13,27,42,.55)}
+.plan-hr{height:1px;background:var(--border);margin:1.2rem 0}
+.plan.featured .plan-hr{background:rgba(13,27,42,.1)}
+.plan-feats{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.8rem}
+.plan-feat{display:flex;gap:.65rem;font-size:.81rem;color:rgba(248,246,241,.68);align-items:flex-start;line-height:1.4}
+.plan.featured .plan-feat{color:rgba(13,27,42,.68)}
+.check{color:var(--moss-light);font-size:.8rem;flex-shrink:0;margin-top:.1rem}
+.plan.featured .check{color:var(--moss)}
+.cross{color:var(--inv-2);flex-shrink:0;margin-top:.1rem}
+.plan-btn{
+  width:100%;padding:.82rem;border-radius:50px;font-size:.87rem;font-weight:600;
+  cursor:pointer;transition:all .2s;border:1px solid var(--border);background:none;color:var(--cream);
+}
+.plan-btn:hover{background:var(--mist-2);border-color:rgba(248,246,241,.3)}
+.plan.featured .plan-btn{background:var(--ink);color:var(--cream);border-color:transparent}
+.plan.featured .plan-btn:hover{background:var(--ink-2)}
+.faq-section{max-width:680px;margin:0 auto;padding:0 3rem 5rem}
+.faq-title{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2);margin-bottom:1.5rem}
+.faq-item{border-bottom:1px solid var(--border);padding:1.2rem 0;cursor:pointer}
+.faq-q{font-size:.9rem;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.faq-q svg{width:16px;height:16px;flex-shrink:0;transition:transform .25s;color:var(--inv-2)}
+.faq-item.open .faq-q svg{transform:rotate(45deg)}
+.faq-a{font-size:.84rem;color:var(--inv);line-height:1.7;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s}
+.faq-item.open .faq-a{max-height:200px;padding-top:.8rem}
+.pricing-note{text-align:center;font-size:.78rem;color:var(--inv-2);padding:0 3rem 3rem;max-width:1000px;margin:0 auto}
+.pricing-note a{color:var(--moss-light)}
+
+/* ══════════════════════════════════════
+   CASOS PAGE
+══════════════════════════════════════ */
+.casos-hero{padding:5rem 3rem 3rem;max-width:680px;margin:0 auto;text-align:center}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);max-width:1160px;margin:0 auto;padding:0 3rem 4rem;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.impact-cell{background:var(--ink);padding:2rem 1.2rem;text-align:center}
+.impact-val{font-family:'Fraunces',serif;font-size:2.8rem;font-weight:300;line-height:1;color:var(--ink);margin-bottom:.4rem}
+.impact-val .u{color:var(--moss-light);font-size:2rem}
+.impact-label{font-size:.78rem;color:var(--inv-2);line-height:1.5}
+.testi-grid{display:grid;grid-template-columns:1fr 1fr;max-width:1160px;margin:0 auto;padding:0 3rem;gap:1.2rem}
+.testi{
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:2rem;
+}
+.testi-body{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:300;font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:1.5rem}
+.testi-author{display:flex;align-items:center;gap:.85rem}
+.testi-av{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--moss),var(--moss-light));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.82rem;font-weight:600;color:var(--ink);flex-shrink:0;
+}
+.testi-name{font-size:.87rem;font-weight:500}
+.testi-role{font-size:.75rem;color:var(--inv-2);margin-top:.15rem}
+.testi-company{display:flex;gap:.4rem;margin-top:.3rem;align-items:center;font-size:.72rem;color:var(--moss-light)}
+.case-metrics{display:flex;gap:1.5rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.cm{text-align:center}
+.cm-val{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;color:var(--cream)}
+.cm-label{font-size:.7rem;color:var(--inv-2);margin-top:.1rem}
+.testi-big{
+  grid-column:1/-1;
+  background:linear-gradient(135deg,rgba(45,106,79,.15),rgba(82,183,136,.08));
+  border-color:rgba(82,183,136,.2);
+}
+.testi-big .testi-body{font-size:1.3rem}
+
+/* ══════════════════════════════════════
+   DEMO PAGE — La conversión final
+══════════════════════════════════════ */
+.demo-layout{
+  display:grid;grid-template-columns:1fr 1fr;
+  max-width:1160px;margin:0 auto;padding:5rem 3rem;
+  gap:6rem;align-items:start;
+}
+.demo-left h2{margin-bottom:1rem}
+.demo-left .lead{margin-bottom:2rem}
+.demo-checklist{display:flex;flex-direction:column;gap:.8rem;margin-bottom:2.5rem}
+.demo-check{display:flex;align-items:flex-start;gap:.75rem;font-size:.87rem;line-height:1.55}
+.demo-check-icon{
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(82,183,136,.15);border:1px solid rgba(82,183,136,.25);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--moss-light);font-size:.75rem;flex-shrink:0;margin-top:.05rem;
+}
+.demo-testi-mini{
+  background:var(--mist);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.4rem;margin-top:2.5rem;
+}
+.demo-testi-text{font-family:'Fraunces',serif;font-style:italic;font-size:.95rem;color:var(--ink);line-height:1.6;margin-bottom:.8rem}
+.demo-testi-who{font-size:.77rem;color:var(--inv-2)}
+.demo-form-card{
+  background:var(--mist-2);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:2.2rem;position:sticky;top:80px;
+}
+.demo-form-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.3rem}
+.demo-form-sub{font-size:.82rem;color:var(--inv);margin-bottom:1.8rem}
+.form-group{margin-bottom:1rem}
+.form-label{display:block;font-size:.76rem;font-weight:500;color:var(--inv);margin-bottom:.35rem;letter-spacing:.02em}
+.form-input{
+  width:100%;background:rgba(248,246,241,.06);border:1px solid var(--border);
+  border-radius:10px;padding:.75rem 1rem;color:var(--cream);
+  font-size:.875rem;outline:none;font-family:'Inter',sans-serif;
+  transition:border-color .2s;
+}
+.form-input:focus{border-color:rgba(82,183,136,.5)}
+.form-input::placeholder{color:var(--inv-2)}
+select.form-input{cursor:pointer}
+select.form-input option{background:var(--ink-2);color:var(--cream)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.form-submit{
+  width:100%;background:var(--moss-light);color:var(--ink);border:none;
+  border-radius:50px;padding:.95rem;font-size:.92rem;font-weight:600;
+  cursor:pointer;transition:all .2s;margin-top:.5rem;
+}
+.form-submit:hover{background:#5fcf96}
+.form-note{text-align:center;font-size:.73rem;color:var(--inv-2);margin-top:.9rem;line-height:1.5}
+.form-success{
+  display:none;text-align:center;padding:1.5rem 0;
+}
+.form-success.show{display:block}
+.success-emoji{font-size:2.5rem;margin-bottom:1rem}
+.success-title{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:.5rem}
+.success-sub{font-size:.85rem;color:var(--inv);line-height:1.65}
+
+/* ══════════════════════════════════════
+   APP PAGES (Login, Onboarding, App)
+══════════════════════════════════════ */
+/* Auth */
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--ink)}
+.auth-card{
+  background:var(--ink-2);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:2.5rem;width:100%;max-width:420px;
+}
+.auth-logo{font-family:'Fraunces',serif;font-size:1.5rem;margin-bottom:.3rem}
+.auth-logo span{color:var(--moss-light)}
+.auth-sub{font-size:.84rem;color:var(--inv);margin-bottom:1.8rem}
+.auth-tabs{display:flex;background:var(--mist);border:1px solid var(--border);border-radius:50px;padding:.2rem;margin-bottom:1.8rem}
+.auth-tab{flex:1;padding:.48rem;border-radius:50px;border:none;background:none;color:var(--inv);font-size:.83rem;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.auth-tab.on{background:var(--cream);color:var(--ink);font-weight:500}
+.plan-select-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.2rem 0 1rem}
+.psm{border:1px solid var(--border);border-radius:10px;padding:.65rem .5rem;text-align:center;cursor:pointer;transition:all .2s}
+.psm:hover{border-color:rgba(82,183,136,.4)}
+.psm.on{border-color:var(--moss-light);background:rgba(82,183,136,.08)}
+.psm-name{font-size:.78rem;font-weight:500;margin-bottom:.1rem}
+.psm-price{font-size:.69rem;color:var(--inv-2)}
+.psm.on .psm-price{color:var(--moss-light)}
+.form-link{font-size:.78rem;text-align:center;color:var(--inv-2);margin-top:1rem}
+.form-link a{color:var(--moss-light);cursor:pointer}
+
+/* Onboarding */
+.onb-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--ink)}
+.onb-card{width:100%;max-width:540px}
+.onb-logo{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:2rem}
+.onb-logo span{color:var(--moss-light)}
+.progress-bar{display:flex;gap:.4rem;margin-bottom:2.5rem}
+.prog-dot{height:3px;flex:1;border-radius:2px;background:var(--border);transition:background .4s}
+.prog-dot.on{background:var(--moss-light)}
+.onb-q{font-family:'Fraunces',serif;font-size:1.75rem;font-weight:300;line-height:1.28;margin-bottom:.5rem}
+.onb-hint{font-size:.84rem;color:var(--inv);margin-bottom:1.8rem}
+.onb-opts{display:flex;flex-direction:column;gap:.65rem}
+.onb-opt{
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:var(--r);padding:.95rem 1.2rem;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.9rem;
+}
+.onb-opt:hover{border-color:rgba(82,183,136,.4)}
+.onb-opt.on{border-color:var(--moss-light);background:rgba(82,183,136,.09)}
+.onb-opt-ico{font-size:1.2rem;flex-shrink:0}
+.onb-opt-t{font-size:.88rem;font-weight:500}
+.onb-opt-s{font-size:.76rem;color:var(--inv-2);margin-top:.1rem}
+.onb-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.chip{border:1px solid var(--border);border-radius:50px;padding:.4rem .9rem;font-size:.79rem;cursor:pointer;transition:all .2s}
+.chip.on{border-color:var(--moss-light);background:rgba(82,183,136,.1);color:var(--moss-light)}
+.onb-textarea{
+  width:100%;background:var(--mist);border:1px solid var(--border);
+  border-radius:var(--r);padding:.9rem 1.1rem;color:var(--cream);
+  font-size:.9rem;outline:none;font-family:'Inter',sans-serif;
+  resize:none;transition:border-color .2s;
+}
+.onb-textarea:focus{border-color:rgba(82,183,136,.5)}
+.onb-textarea::placeholder{color:var(--inv-2)}
+.onb-actions{display:flex;justify-content:flex-end;gap:.7rem;margin-top:1.8rem}
+.btn-back{background:none;border:1px solid var(--border);color:var(--inv);padding:.72rem 1.4rem;border-radius:50px;font-size:.85rem;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-back:hover{color:var(--cream);border-color:rgba(248,246,241,.3)}
+.btn-next{background:var(--moss-light);color:var(--ink);border:none;padding:.75rem 1.8rem;border-radius:50px;font-size:.86rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-next:hover{background:#5fcf96}
+
+/* App shell */
+.app-shell{min-height:100vh;display:flex}
+.sidebar{
+  width:252px;min-height:100vh;background:var(--ink-2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0;
+}
+.sb-logo{
+  padding:1.3rem 1.4rem;border-bottom:1px solid var(--border);
+  font-family:'Fraunces',serif;font-size:1.3rem;cursor:pointer;
+}
+.sb-logo span{color:var(--moss-light)}
+.sb-nav{padding:.6rem .6rem;flex:1}
+.sb-sec{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2);padding:.5rem .75rem;margin-top:.9rem;margin-bottom:.2rem}
+.sb-item{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.62rem .8rem;border-radius:10px;cursor:pointer;
+  transition:all .18s;color:var(--inv);font-size:.87rem;margin-bottom:.1rem;
+}
+.sb-item:hover{background:var(--mist-2);color:var(--cream)}
+.sb-item.on{background:rgba(82,183,136,.14);color:var(--moss-light)}
+.sb-item svg{width:16px;height:16px;flex-shrink:0;opacity:.75}
+.sb-item.on svg{opacity:1}
+.sb-bottom{padding:.8rem .6rem;border-top:1px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:.7rem;padding:.55rem .7rem;border-radius:10px;cursor:pointer;transition:background .2s}
+.sb-user:hover{background:var(--mist-2)}
+.sb-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-light));display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:700;color:var(--ink);flex-shrink:0}
+.sb-uname{font-size:.82rem;font-weight:500}
+.sb-uplan{font-size:.7rem;color:var(--moss-light)}
+
+.app-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.app-views{flex:1;overflow-y:auto}
+.av{display:none;padding:2rem 2.5rem}
+.av.on{display:block}
+
+/* Dashboard */
+.dash-greeting{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300;letter-spacing:-.02em;margin-bottom:.25rem}
+.dash-greeting em{font-style:italic;color:var(--moss-light)}
+.dash-sub{font-size:.84rem;color:var(--inv);margin-bottom:2rem}
+.dash-top{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem;margin-bottom:1.1rem}
+.dash-card{background:var(--mist);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem}
+.dw-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.3rem}
+.dw-title em{font-style:italic;color:var(--moss-light)}
+.dw-sub{font-size:.82rem;color:var(--inv);margin-bottom:1.3rem;line-height:1.65}
+.quick-btns{display:flex;gap:.6rem;flex-wrap:wrap}
+.qb{display:flex;align-items:center;gap:.45rem;padding:.5rem 1.05rem;border-radius:50px;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;border:none;font-family:'Inter',sans-serif}
+.qb-moss{background:rgba(82,183,136,.12);color:var(--moss-light);border:1px solid rgba(82,183,136,.2)}
+.qb-gold{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.18)}
+.qb-def{background:var(--mist-2);color:var(--inv);border:1px solid var(--border)}
+.qb:hover{opacity:.8;transform:translateY(-1px)}
+.mood-card{display:flex;flex-direction:column;justify-content:space-between}
+.mood-label{font-size:.7rem;color:var(--inv-2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem}
+.mood-big{font-size:2rem;margin-bottom:.5rem}
+.mood-text{font-size:.8rem;color:var(--inv);margin-bottom:.9rem}
+.mood-row{display:flex;gap:.3rem}
+.mood-btn{flex:1;padding:.42rem;border-radius:8px;border:1px solid var(--border);background:none;font-size:.95rem;cursor:pointer;transition:all .2s}
+.mood-btn:hover{background:var(--mist-2);transform:scale(1.08)}
+.mood-btn.on{border-color:var(--moss-light);background:rgba(82,183,136,.1)}
+
+.dash-mid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-bottom:1.1rem}
+.stat-mini{background:var(--mist);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.2rem 1.4rem}
+.sm-val{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300;line-height:1;margin-bottom:.25rem}
+.sm-val.moss{color:var(--moss-light)}
+.sm-val.gold{color:var(--gold)}
+.sm-label{font-size:.77rem;color:var(--inv)}
+.sm-sub{font-size:.69rem;color:var(--inv-2);margin-top:.1rem}
+
+.recent-list{background:var(--mist);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.4rem}
+.recent-hd{font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--inv-2);margin-bottom:1.1rem}
+.session-row{display:flex;align-items:center;gap:.9rem;padding:.8rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity .2s}
+.session-row:hover{opacity:.75}
+.session-row:last-child{border-bottom:none;padding-bottom:0}
+.session-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.ico-moss{background:rgba(82,183,136,.1)}
+.ico-gold{background:rgba(201,168,76,.1)}
+.session-meta{flex:1}
+.session-title{font-size:.84rem;font-weight:500;margin-bottom:.1rem}
+.session-date{font-size:.71rem;color:var(--inv-2)}
+.session-badge{font-size:.68rem;font-weight:700;padding:.22rem .55rem;border-radius:50px}
+.badge-moss{background:rgba(82,183,136,.1);color:var(--moss-light)}
+.badge-gold{background:rgba(201,168,76,.1);color:var(--gold)}
+
+/* Chat view */
+#av-chat{display:none;flex-direction:column;height:100vh;padding:0}
+#av-chat.on{display:flex}
+.chat-topbar{display:flex;align-items:center;gap:.75rem;padding:.9rem 1.8rem;border-bottom:1px solid var(--border);background:var(--ink);position:sticky;top:0;z-index:10;flex-shrink:0}
+.mode-tabs{display:flex;background:var(--mist);border:1px solid var(--border);border-radius:50px;padding:.18rem}
+.mode-tab{padding:.42rem 1rem;border-radius:50px;border:none;background:none;color:var(--inv);font-size:.8rem;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;white-space:nowrap}
+.mode-tab.on.moss{background:rgba(82,183,136,.18);color:var(--moss-light);font-weight:500}
+.mode-tab.on.gold{background:rgba(201,168,76,.15);color:var(--gold);font-weight:500}
+.chat-session-lbl{margin-left:auto;font-size:.75rem;color:var(--inv-2)}
+.chat-hist-btn{background:none;border:1px solid var(--border);color:var(--inv);padding:.38rem .85rem;border-radius:50px;font-size:.76rem;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.chat-hist-btn:hover{color:var(--cream);border-color:rgba(248,246,241,.3)}
+.chat-msgs{flex:1;overflow-y:auto;padding:1.6rem 2rem;display:flex;flex-direction:column;gap:.9rem}
+.chat-msgs::-webkit-scrollbar{width:4px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.mw{display:flex;flex-direction:column;gap:.2rem;animation:fadeIn .2s ease}
+.mw.ai{align-items:flex-start}
+.mw.user{align-items:flex-end}
+.msg-sender{font-size:.69rem;color:var(--inv-2);padding:0 .2rem;margin-bottom:.08rem}
+.bubble{max-width:72%;padding:.85rem 1.05rem;border-radius:15px;font-size:.875rem;line-height:1.65}
+.bubble.ai{background:var(--mist-2);border:1px solid var(--border);color:var(--cream);border-bottom-left-radius:3px}
+.bubble.ai.moss{border-left:2px solid rgba(82,183,136,.35)}
+.bubble.ai.gold{border-left:2px solid rgba(201,168,76,.3)}
+.bubble.user{background:var(--cream);color:var(--ink);border-bottom-right-radius:3px;font-weight:450}
+.msg-time{font-size:.65rem;color:var(--inv-2);padding:0 .2rem}
+.typing-row{display:flex;gap:4px;align-items:center;padding:.85rem 1rem;border-radius:15px;border-bottom-left-radius:3px;background:var(--mist-2);border:1px solid var(--border);align-self:flex-start}
+.typing-row span{width:6px;height:6px;border-radius:50%;background:var(--moss-light);opacity:.4;animation:tdot 1.4s ease-in-out infinite}
+.typing-row span:nth-child(2){animation-delay:.2s}
+.typing-row span:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,80%,100%{opacity:.3;transform:scale(.9)}40%{opacity:1;transform:scale(1.1)}}
+.sugg-chips{display:flex;gap:.5rem;flex-wrap:wrap;padding:.5rem 2rem 0}
+.sugg{border:1px solid var(--border);border-radius:50px;padding:.38rem .85rem;font-size:.76rem;color:var(--inv);cursor:pointer;background:none;font-family:'Inter',sans-serif;transition:all .18s;white-space:nowrap}
+.sugg:hover{border-color:rgba(82,183,136,.4);color:var(--cream)}
+.chat-bar{padding:.9rem 1.8rem 1.1rem;border-top:1px solid var(--border);background:var(--ink);flex-shrink:0}
+.chat-row{display:flex;gap:.65rem;align-items:flex-end}
+.chat-ta{flex:1;background:var(--mist);border:1px solid var(--border);border-radius:13px;padding:.75rem 1.05rem;color:var(--cream);font-size:.875rem;outline:none;font-family:'Inter',sans-serif;resize:none;min-height:46px;max-height:130px;transition:border-color .2s;line-height:1.5}
+.chat-ta:focus{border-color:rgba(82,183,136,.4)}
+.chat-ta::placeholder{color:var(--inv-2)}
+.send-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--moss-light);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
+.send-btn:hover{background:#5fcf96;transform:scale(1.06)}
+.send-btn svg{width:15px;height:15px}
+.chat-foot-meta{display:flex;justify-content:space-between;margin-top:.5rem;padding:0 .1rem}
+.cf-disc{font-size:.69rem;color:var(--inv-2)}
+.cf-count{font-size:.69rem;color:var(--inv-2)}
+
+/* History view */
+.hist-filters{display:flex;gap:.5rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.hf-btn{padding:.38rem .95rem;border-radius:50px;border:1px solid var(--border);background:none;color:var(--inv);font-size:.78rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.hf-btn:hover{color:var(--cream)}
+.hf-btn.on{background:var(--moss-light);color:var(--ink);border-color:var(--moss-light);font-weight:500}
+.hist-list{display:flex;flex-direction:column;gap:.75rem}
+.hist-card{background:var(--mist);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.3rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:1.1rem}
+.hist-card:hover{border-color:rgba(82,183,136,.3);background:rgba(82,183,136,.04)}
+.hist-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.hist-body{flex:1;min-width:0}
+.hist-title{font-size:.87rem;font-weight:500;margin-bottom:.18rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-preview{font-size:.78rem;color:var(--inv);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-right{display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;flex-shrink:0}
+.hist-date{font-size:.71rem;color:var(--inv-2)}
+.hist-msgs{font-size:.69rem;color:var(--inv-2)}
+
+/* Profile */
+.prof-grid{display:grid;grid-template-columns:240px 1fr;gap:1.3rem}
+.prof-card{background:var(--mist);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.7rem;text-align:center}
+.prof-av{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-light));display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:var(--ink);margin:0 auto 1rem}
+.prof-name{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:.15rem;color:var(--ink)}
+.prof-role{font-size:.78rem;color:var(--inv);margin-bottom:.9rem}
+.prof-plan{display:inline-flex;align-items:center;gap:.35rem;background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.18);color:var(--moss-light);border-radius:50px;padding:.28rem .8rem;font-size:.73rem;font-weight:600;margin-bottom:1.3rem}
+.prof-stats{display:flex;justify-content:space-around;padding-top:1.2rem;border-top:1px solid var(--border)}
+.ps{text-align:center}
+.ps-val{font-family:'Fraunces',serif;font-size:1.45rem;font-weight:300}
+.ps-lbl{font-size:.67rem;color:var(--inv-2);margin-top:.1rem}
+.prof-sections{display:flex;flex-direction:column;gap:1.1rem}
+.prof-section{background:var(--mist);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.4rem}
+.ps-title{font-size:.73rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--inv-2);margin-bottom:1.1rem}
+.focus-tags{display:flex;flex-wrap:wrap;gap:.45rem}
+.ftag{background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.18);color:var(--moss-light);border-radius:50px;padding:.28rem .75rem;font-size:.78rem}
+.goals{display:flex;flex-direction:column;gap:.65rem}
+.goal-row{display:flex;align-items:center;gap:.75rem}
+.goal-lbl{font-size:.79rem;color:var(--inv);width:145px;flex-shrink:0}
+.goal-bar-bg{flex:1;height:4px;background:var(--border);border-radius:3px;overflow:hidden}
+.goal-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--moss),var(--moss-light));transition:width 1.2s ease}
+.goal-pct{font-size:.75rem;color:var(--moss-light);width:30px;text-align:right;flex-shrink:0}
+.note-text{font-family:'Fraunces',serif;font-style:italic;font-size:.9rem;color:var(--inv);line-height:1.75}
+
+/* ══════════════════════════════════════
+   RESPONSIVE + MOBILE HAMBURGER
+══════════════════════════════════════ */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;border:none;background:none;order:-1}
+.hamburger span{display:block;width:22px;height:2px;background:var(--cream);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* mobile menu */
+.mobile-menu{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:var(--ink-2);
+  flex-direction:column;
+  padding:1.5rem;
+  overflow-y:auto;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+.mobile-menu-logo{font-family:"Fraunces",serif;font-size:1.4rem}
+.mobile-menu-logo span{color:var(--moss-light)}
+.mobile-close{background:none;border:1px solid var(--border);color:var(--cream);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.mobile-nav{display:flex;flex-direction:column;gap:.35rem;flex:1}
+.mobile-nav-item{display:flex;align-items:center;gap:.75rem;padding:1rem 1.1rem;border-radius:12px;border:1px solid transparent;cursor:pointer;font-size:1rem;color:var(--cream);background:none;font-family:"Inter",sans-serif;transition:all .2s;text-align:left;width:100%}
+.mobile-nav-item:hover,.mobile-nav-item:active{background:var(--mist);border-color:var(--border)}
+.mobile-nav-item.primary{background:var(--moss-light);color:var(--ink);font-weight:700;border-color:transparent;margin-top:1rem}
+.mobile-nav-item.primary:hover{background:#5fcf96}
+.mobile-nav-section{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2);padding:.5rem 1.1rem;margin-top:1rem}
+.mobile-nav-divider{height:1px;background:var(--border);margin:.5rem 0}
+
+@media(max-width:768px){
+  nav{padding:.9rem 1.2rem}
+  .hamburger{display:flex}
+  .nav-links,.nav-right{display:none}
+  .logo{font-size:1.3rem}
+
+  /* General layout */
+  .section{padding:3rem 1.2rem}
+  h1{font-size:2.8rem!important}
+  h2{font-size:1.9rem!important}
+  .h-h1{font-size:2.8rem!important}
+
+  /* Home hero */
+  .h-hero{padding:3rem 1.2rem 2.5rem!important}
+  .h-h1{font-size:2.5rem!important;letter-spacing:-.025em!important}
+  .h-sub{font-size:.95rem!important}
+  .h-trustbar{flex-direction:column;gap:.6rem;align-items:center}
+
+  /* Platform pillars */
+  [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+
+  /* Logos ticker */
+  .h-logos{padding:1.2rem!important;gap:1.5rem!important}
+
+  /* Client cards */
+  [style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:1fr 1fr!important}
+
+  /* Benefits */
+  .h-ben-panel.on{grid-template-columns:1fr!important}
+
+  /* Metrics */
+  .h-metrics-inner{grid-template-columns:1fr!important;gap:2rem!important;padding:3rem 1.2rem!important}
+  .h-metrics-grid{grid-template-columns:1fr 1fr!important}
+
+  /* Steps */
+  [style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:1fr 1fr!important}
+
+  /* KPI grid */
+  .casos-kpi{grid-template-columns:1fr 1fr!important}
+  .casos-testi-grid{grid-template-columns:1fr!important}
+  .casos-testi.featured{grid-column:1!important}
+
+  /* Pricing modules */
+  .pr2-modules{grid-template-columns:1fr!important}
+  .pr2-feats{columns:1!important}
+
+  /* Demo layout */
+  .demo-layout{grid-template-columns:1fr!important;padding:2rem 1.2rem!important}
+
+  /* Auth */
+  .auth-card{padding:1.8rem 1.4rem}
+
+  /* Onboarding */
+  .onb-card{padding:0 1rem}
+
+  /* Footers */
+  footer{flex-direction:column!important;gap:1.2rem!important;text-align:center!important;padding:2rem 1.2rem!important}
+  .footer-links{flex-wrap:wrap!important;justify-content:center!important}
+
+  /* Scroll top btn */
+  #scroll-top-btn{bottom:1.2rem;right:1.2rem;width:40px;height:40px}
+
+  /* Subpage padding */
+  [style*="padding:5rem 3rem"]{padding:3rem 1.2rem!important}
+  [style*="padding:0 3rem"]{padding:0 1.2rem!important}
+  [style*="padding:4rem 3rem"]{padding:2.5rem 1.2rem!important}
+
+  /* Hero section */
+  .h-demos-inner{padding:2.5rem 1.2rem!important}
+  .h-demos-grid{grid-template-columns:1fr!important}
+}
+
+@media(max-width:480px){
+  .h-h1{font-size:2.1rem!important}
+  .casos-kpi{grid-template-columns:1fr!important}
+  [style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:1fr 1fr!important}
+  .h-metrics-grid{grid-template-columns:1fr!important}
+  .pr-feats-grid{grid-template-columns:1fr!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ NAV ════ -->
+<nav id="main-nav">
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="logo" onclick="go('home')">Grow<span>ee</span></div>
+  <div class="nav-links">
+    <div class="nav-wrapper" id="dd-wrapper">
+      <button class="nav-link" id="dd-trigger" onclick="toggleDD()">
+        Producto
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 6 8 10 12 6"/></svg>
+      </button>
+      <div class="dropdown" id="dd-menu">
+        <div style="grid-column:1/-1;padding:.1rem 0 .8rem;border-bottom:1px solid var(--border);margin-bottom:.4rem">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2)">Módulos</div>
+        </div>
+        <div class="dd-item" onclick="go('prod-bienestar');closeDD()">
+          <div class="dd-icon terra">🧡</div>
+          <div class="dd-text"><h5>Apoyo Emocional</h5><p>Bienestar, estrés, burnout y gestión emocional</p></div>
+        </div>
+        <div class="dd-item" onclick="go('prod-coaching');closeDD()">
+          <div class="dd-icon gold">◆</div>
+          <div class="dd-text"><h5>Coaching Profesional</h5><p>Liderazgo, comunicación y desarrollo de managers</p></div>
+        </div>
+
+      </div>
+    </div>
+    <button class="nav-link" onclick="go('casos')">Casos de éxito</button>
+    <button class="nav-link" onclick="go('precios')">Módulos</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn-ghost" onclick="go('home')">Inicio</button>
+    <button class="btn-ghost" onclick="go('login')">Acceder</button>
+    <button class="btn-cta-nav" onclick="go('demo')">Solicitar demo →</button>
+  </div>
+</nav>
+
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-header">
+    <div class="mobile-menu-logo">Grow<span>ee</span></div>
+    <button class="mobile-close" onclick="closeMobileMenu()">✕</button>
+  </div>
+  <div class="mobile-nav">
+    <button class="mobile-nav-item" onclick="go('home');closeMobileMenu()">🏠 Inicio</button>
+    <div class="mobile-nav-divider"></div>
+    <div class="mobile-nav-section">Producto</div>
+    <button class="mobile-nav-item" onclick="go('prod-bienestar');closeMobileMenu()">🧡 Apoyo Emocional</button>
+    <button class="mobile-nav-item" onclick="go('prod-coaching');closeMobileMenu()">◆ Coaching Profesional</button>
+    <div class="mobile-nav-divider"></div>
+    <button class="mobile-nav-item" onclick="go('casos');closeMobileMenu()">📊 Casos de éxito</button>
+    <button class="mobile-nav-item" onclick="go('precios');closeMobileMenu()">📋 Módulos</button>
+    <div class="mobile-nav-divider"></div>
+    <button class="mobile-nav-item" onclick="go('login');closeMobileMenu()">Acceder</button>
+    <button class="mobile-nav-item primary" onclick="go('demo');closeMobileMenu()">Solicitar demo →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     HOME — max 2 pantallas
+════════════════════════════════════════ -->
+<div id="pg-home" class="pg on">
+<style>
+/* ── HOME EXTRA STYLES ── */
+.h-hero{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:calc(100vh - 64px);align-items:center;
+  max-width:1280px;margin:0 auto;padding:0 3rem;gap:4rem;
+}
+.h-hero-left{max-width:560px}
+.h-kicker{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.22);
+  color:var(--moss-light);border-radius:50px;
+  padding:.32rem 1rem;font-size:.72rem;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;margin-bottom:1.8rem;
+}
+.h-kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--moss-light);animation:pulse 2s ease-in-out infinite}
+.h-h1{font-family:'Fraunces',serif;font-size:4rem;font-weight:300;line-height:1.05;letter-spacing:-.035em;margin-bottom:1.5rem;color:#F8F6F1}
+.h-h1 em{font-style:italic;color:var(--moss-light)}
+.h-sub{font-size:1.05rem;color:var(--inv);line-height:1.78;margin-bottom:2.2rem;max-width:440px}
+.h-actions{display:flex;gap:.85rem;align-items:center;margin-bottom:2.5rem;flex-wrap:wrap}
+.h-cta{background:var(--moss-light);color:var(--ink);border:none;padding:1rem 2.2rem;border-radius:50px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;letter-spacing:-.01em}
+.h-cta:hover{background:#5fcf96;transform:translateY(-2px);box-shadow:0 8px 24px rgba(82,183,136,.3)}
+.h-link{background:none;border:none;color:var(--inv);font-size:.9rem;cursor:pointer;font-family:'Inter',sans-serif;transition:color .2s;padding:.5rem 0;display:flex;align-items:center;gap:.35rem}
+.h-link:hover{color:var(--cream)}
+.h-trustbar{display:flex;gap:1.6rem;flex-wrap:wrap;padding-top:2rem;border-top:1px solid var(--border)}
+.h-trust{display:flex;align-items:center;gap:.42rem;font-size:.77rem;color:var(--inv-2)}
+.h-trust-dot{width:5px;height:5px;border-radius:50%;background:var(--moss-light);flex-shrink:0}
+
+/* Hero right — dual demo videos */
+.h-demo-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
+.demo-card{
+  background:rgba(248,246,241,.05);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;transition:transform .3s,border-color .3s;
+  cursor:pointer;
+}
+.demo-card:hover{transform:translateY(-3px);border-color:rgba(82,183,136,.3)}
+.demo-card.gold-card:hover{border-color:rgba(201,168,76,.3)}
+.dc-header{
+  padding:.85rem 1rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:.6rem;
+}
+.dc-orb{width:26px;height:26px;border-radius:50%;flex-shrink:0;animation:breathe 3s ease-in-out infinite}
+.dc-orb-moss{background:linear-gradient(135deg,var(--moss),var(--moss-light))}
+.dc-orb-gold{background:linear-gradient(135deg,#9A7A28,var(--gold))}
+.dc-name{font-size:.77rem;font-weight:600}
+.dc-sub{font-size:.67rem;color:var(--inv-2);margin-top:1px}
+.dc-live{width:6px;height:6px;border-radius:50%;background:var(--moss-light);margin-left:auto;animation:pulse 2s ease-in-out infinite}
+.dc-live.gold{background:var(--gold)}
+
+/* Fake video/animation area */
+.dc-video{
+  position:relative;background:rgba(0,0,0,.25);
+  aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.dc-video-bg{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;gap:.5rem;
+  padding:.8rem;justify-content:flex-end;
+}
+.dv-msg{
+  padding:.5rem .7rem;border-radius:9px;font-size:.7rem;line-height:1.5;
+  animation:slideUp .4s ease forwards;opacity:0;
+}
+.dv-ai{background:rgba(248,246,241,.1);border:1px solid rgba(248,246,241,.1);color:rgba(248,246,241,.85);align-self:flex-start;max-width:82%}
+.dv-ai.moss-b{border-left:2px solid rgba(82,183,136,.5)}
+.dv-ai.gold-b{border-left:2px solid rgba(201,168,76,.45)}
+.dv-user{background:rgba(248,246,241,.18);color:rgba(248,246,241,.95);align-self:flex-end;max-width:75%}
+.dc-play{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(13,27,42,.55);backdrop-filter:blur(2px);transition:opacity .25s;
+  flex-direction:column;gap:.6rem;
+}
+.dc-play-btn{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(248,246,241,.18);border:2px solid rgba(248,246,241,.4);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.demo-card:hover .dc-play-btn{background:rgba(82,183,136,.25);border-color:var(--moss-light)}
+.demo-card.gold-card:hover .dc-play-btn{background:rgba(201,168,76,.2);border-color:var(--gold)}
+.dc-play-label{font-size:.72rem;color:rgba(248,246,241,.6);letter-spacing:.03em}
+.dc-play svg{width:16px;height:16px;color:var(--cream)}
+.dc-play.hidden{opacity:0;pointer-events:none}
+.dc-body{padding:.85rem 1rem;display:flex;flex-direction:column;gap:.6rem}
+.dv-chat{font-size:.72rem;line-height:1.55}
+.dv-u{color:rgba(248,246,241,.6)}
+.dv-a{color:var(--cream)}
+.dc-tag{display:inline-flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:600;padding:.22rem .7rem;border-radius:50px;margin-bottom:.15rem}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── LOGOS ── */
+.h-logos{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:1.5rem 3rem;
+  display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap;
+  background:rgba(248,246,241,.02);
+}
+.h-logos-lbl{font-size:.7rem;color:var(--inv-2);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+.h-logo-name{
+  font-family:'Fraunces',serif;font-size:1rem;color:rgba(248,246,241,.28);
+  transition:color .2s;cursor:default;
+}
+
+/* ── BENEFITS ── */
+.h-benefits{max-width:1160px;margin:0 auto;padding:5rem 3rem}
+.h-section-head{text-align:center;margin-bottom:3.5rem}
+.h-section-eye{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.6rem}
+.h-section-h2{font-family:'Fraunces',serif;font-size:2.4rem;font-weight:300;line-height:1.18;letter-spacing:-.025em}
+.h-section-h2 em{font-style:italic;color:var(--moss-light)}
+.h-ben-tabs{display:flex;justify-content:center;gap:.4rem;margin-bottom:2.5rem}
+.h-ben-tab{
+  padding:.55rem 1.4rem;border-radius:50px;border:1px solid var(--border);
+  background:none;color:var(--inv);font-size:.85rem;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .2s;
+}
+.h-ben-tab:hover{color:var(--cream)}
+.h-ben-tab.on{font-weight:600}
+.h-ben-tab.on.moss{background:rgba(82,183,136,.15);border-color:rgba(82,183,136,.3);color:var(--moss-light)}
+.h-ben-tab.on.gold{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.25);color:var(--gold)}
+.h-ben-panel{display:none;animation:fadeIn .3s ease}
+.h-ben-panel.on{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.ben-card{
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:16px;padding:1.6rem 1.4rem;
+}
+.ben-icon{font-size:1.6rem;margin-bottom:.9rem}
+.ben-title{font-size:.93rem;font-weight:600;margin-bottom:.4rem}
+.ben-desc{font-size:.81rem;color:var(--inv);line-height:1.65}
+.ben-card.moss-border{border-top:2px solid rgba(82,183,136,.4)}
+.ben-card.gold-border{border-top:2px solid rgba(201,168,76,.35)}
+
+/* ── METRICS ── */
+.h-metrics{background:rgba(248,246,241,.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.h-metrics-inner{max-width:1160px;margin:0 auto;padding:4rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.h-metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.h-metric{background:var(--ink-2);padding:2rem 1.5rem;text-align:center}
+.h-metric-val{font-family:'Fraunces',serif;font-size:2.8rem;font-weight:300;line-height:1;margin-bottom:.35rem}
+.h-metric-val .u{color:var(--moss-light)}
+.h-metric-val .ud{color:var(--gold)}
+.h-metric-label{font-size:.78rem;color:var(--inv-2);line-height:1.5}
+.h-metrics-quote{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:2rem}
+.h-mq-text{font-family:'Fraunces',serif;font-style:italic;font-size:1.25rem;line-height:1.5;color:var(--cream);margin-bottom:1.2rem}
+.h-mq-who{font-size:.8rem;color:var(--inv-2)}
+.h-mq-who strong{color:var(--cream);display:block;font-style:normal;font-size:.87rem;margin-bottom:.1rem}
+
+/* ── CLIENTS ── */
+.h-clients{max-width:1160px;margin:0 auto;padding:4rem 3rem}
+.h-clients-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.5rem}
+.client-card{
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:14px;padding:1.4rem;
+  display:flex;flex-direction:column;gap:.8rem;
+}
+.client-logo-area{
+  font-family:'Fraunces',serif;font-size:1.1rem;color:var(--inv-2);
+  padding-bottom:.8rem;border-bottom:1px solid var(--border);
+}
+.client-stat{display:flex;align-items:baseline;gap:.3rem}
+.client-stat-val{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;color:var(--cream)}
+.client-stat-val.moss{color:var(--moss-light)}
+.client-stat-label{font-size:.74rem;color:var(--inv-2)}
+.client-desc{font-size:.78rem;color:var(--inv);line-height:1.55}
+.client-plan{display:inline-flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:50px;margin-top:.2rem}
+
+/* ── HOME CTA FINAL ── */
+.h-cta-final{
+  background:linear-gradient(180deg,rgba(45,106,79,.08) 0%,rgba(13,27,42,0) 100%);
+  border-top:1px solid rgba(82,183,136,.15);
+  padding:5rem 3rem;text-align:center;
+}
+.h-cta-final h2{font-family:'Fraunces',serif;font-size:3rem;font-weight:300;letter-spacing:-.025em;margin-bottom:.8rem}
+.h-cta-final h2 em{font-style:italic;color:var(--moss-light)}
+.h-cta-final p{color:var(--inv);font-size:.95rem;margin-bottom:2.2rem}
+.h-cta-btns{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap}
+</style>
+
+<!-- ═══════ HERO ═══════ -->
+<!-- ═══════ HERO — full width, centrado ═══════ -->
+<div style="min-height:calc(100vh - 64px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:5rem 3rem 4rem;max-width:860px;margin:0 auto;background:#0D1B2A">
+  <h1 class="h-h1" style="font-size:4.6rem;max-width:800px">El equipo que cuidas<br><em>rinde más.</em></h1>
+  <p class="h-sub" style="max-width:560px;margin:1.5rem auto 2.2rem;font-size:1.1rem">Coaching profesional y apoyo emocional con IA especializada. Una plataforma que RRHH activa en 48h y que cada empleado usa cuando lo necesita.</p>
+  <div class="h-actions" style="justify-content:center;margin-bottom:2.8rem">
+    <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita →</button>
+  </div>
+  <div class="h-trustbar" style="justify-content:center;border-top:none;padding-top:0">
+    <div class="h-trust"><div class="h-trust-dot"></div>Listo en 48h, sin IT</div>
+    <div class="h-trust"><div class="h-trust-dot"></div>RGPD · Datos en EU</div>
+    <div class="h-trust"><div class="h-trust-dot"></div>Conversaciones 100% confidenciales</div>
+  </div>
+</div>
+<!-- Scroll-to-top button -->
+<button id="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:2rem;right:2rem;z-index:400;width:44px;height:44px;border-radius:50%;background:var(--moss-light);border:none;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(58,158,110,.3);transition:all .2s">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D1B2A" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+<script>
+window.addEventListener('scroll', function(){
+  const btn = document.getElementById('scroll-top-btn');
+  if(btn) btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+});
+</script>
+<style>
+@keyframes scrollHint{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:.55;transform:translateY(5px)}}
+.h-demos-section{border-top:1px solid var(--border);background:rgba(248,246,241,.015)}
+.h-demos-inner{max-width:1160px;margin:0 auto;padding:4rem 3rem}
+.h-demos-label{text-align:center;margin-bottom:2.5rem}
+.h-demos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+/* Platform info inside demo cards */
+.dc-platform-info{padding:1.2rem 1.1rem 0;border-top:1px solid var(--border);margin-top:.4rem}
+.dc-platform-feats{display:flex;flex-direction:column;gap:.4rem;margin-top:.7rem}
+.dc-pfeat{display:flex;align-items:flex-start;gap:.55rem;font-size:.76rem;color:rgba(248,246,241,.62);line-height:1.45}
+.dc-pfeat-arrow{flex-shrink:0;margin-top:.05rem;font-size:.7rem}
+</style>
+
+<!-- ═══════ DEMO CARDS + INFO PLATAFORMA — debajo del hero ═══════ -->
+<!-- ═══════ PLATAFORMA — dos módulos + demos + steps ═══════ -->
+<div style="border-top:1px solid var(--border)">
+
+  <!-- Pilares -->
+  <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem 4rem">
+    <div style="text-align:center;margin-bottom:3rem">
+      <div class="h-section-eye">La plataforma</div>
+      <h2 class="h-section-h2">Elige un módulo o<br><em>actívalos ambos</em></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+
+      <!-- BIENESTAR PILAR -->
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative">
+        <div style="height:3px;background:linear-gradient(90deg,var(--terra),transparent)"></div>
+        <div style="padding:2rem">
+          <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Módulo Bienestar</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:.6rem;color:var(--cream)">Apoyo Emocional</h3>
+          <p style="font-size:.875rem;color:var(--inv);line-height:1.72;margin-bottom:1.5rem">IA entrenada en psicología cognitivo-conductual, mindfulness y ACT para acompañar a cada persona en sus dificultades emocionales, en cualquier momento.</p>
+          <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem">
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Gestión del estrés y la ansiedad laboral</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Prevención y detección temprana de burnout</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Conflictos interpersonales y relaciones</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Conciliación vida personal y profesional</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Autoestima y confianza profesional</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Adaptación al cambio y resiliencia</div>
+          </div>
+          <!-- Chat estático de impacto -->
+          <div style="background:rgba(13,27,42,.6);border:1px solid rgba(217,130,90,.25);border-radius:16px;overflow:hidden">
+            <div style="padding:.75rem 1rem;border-bottom:1px solid rgba(217,130,90,.18);display:flex;align-items:center;gap:.6rem;background:rgba(217,130,90,.08)">
+              <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--terra-dark),var(--terra));flex-shrink:0"></div>
+              <span style="font-size:.78rem;font-weight:600;color:var(--cream)">Growee · Apoyo Emocional</span>
+              <span style="margin-left:auto;display:flex;align-items:center;gap:.35rem;font-size:.68rem;color:var(--terra)"><span style="width:6px;height:6px;border-radius:50%;background:var(--terra);display:inline-block"></span>En línea</span>
+            </div>
+            <div style="padding:1rem;display:flex;flex-direction:column;gap:.7rem">
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:88%;border-left:2px solid rgba(217,130,90,.55)">Hola. Este es tu espacio, completamente confidencial. ¿Qué está pasando?</div>
+              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Llevo meses sin dormir bien. Siento que el trabajo me ha comido. Ya no sé cuándo fue la última vez que me sentí yo mismo.</div>
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Lo que describes tiene mucho peso. Perder el hilo de quién eres no es "estar cansado" — es una señal importante. ¿Hay algo que antes te cargaba las pilas y que ahora has dejado de hacer?</div>
+              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Corría. Hace un año que no salgo a correr.</div>
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Eso es exactamente lo primero que vamos a recuperar. No porque sea "sano" — sino porque era tuyo. ¿Qué haría falta para salir mañana, aunque sean 10 minutos?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COACHING PILAR -->
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative">
+        <div style="height:3px;background:linear-gradient(90deg,var(--gold),transparent)"></div>
+        <div style="padding:2rem">
+          <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Módulo Coaching</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:.6rem;color:var(--cream)">Coaching Profesional</h3>
+          <p style="font-size:.875rem;color:var(--inv);line-height:1.72;margin-bottom:1.5rem">IA entrenada en metodologías de coaching ejecutivo (ICF, GROW, Co-Active) para acompañar a managers y colaboradores en su desarrollo, sin agendar ni esperar.</p>
+          <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem">
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Liderazgo y gestión de equipos</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Comunicación y conversaciones difíciles</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Delegación, feedback y motivación de equipo</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Gestión del tiempo y productividad</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Transiciones de carrera y promociones</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Objetivos OKR y desarrollo personal</div>
+          </div>
+          <!-- Chat estático de impacto -->
+          <div style="background:rgba(13,27,42,.6);border:1px solid rgba(201,168,76,.2);border-radius:16px;overflow:hidden">
+            <div style="padding:.75rem 1rem;border-bottom:1px solid rgba(201,168,76,.15);display:flex;align-items:center;gap:.6rem;background:rgba(184,146,42,.07)">
+              <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#9A7A28,var(--gold));flex-shrink:0"></div>
+              <span style="font-size:.78rem;font-weight:600;color:var(--cream)">Growee · Coaching Profesional</span>
+              <span style="margin-left:auto;display:flex;align-items:center;gap:.35rem;font-size:.68rem;color:var(--gold)"><span style="width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block"></span>En línea</span>
+            </div>
+            <div style="padding:1rem;display:flex;flex-direction:column;gap:.7rem">
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:88%;border-left:2px solid rgba(201,168,76,.45)">Hola. ¿En qué estás trabajando hoy?</div>
+              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Tengo que decirle a alguien de mi equipo que no va a ser promocionado. Ha trabajado duro pero no está listo. No sé cómo decírselo sin destruir su motivación.</div>
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Esta conversación, bien hecha, puede ser el momento más importante en su carrera. La clave no es el "no" — es el "todavía no, y aquí está exactamente el camino". ¿Qué es lo que le falta en concreto?</div>
+              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Toma buenas decisiones técnicas pero le cuesta influir sin autoridad formal.</div>
+              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Perfecto. Eso es una habilidad concreta y enseñable, no un rasgo de personalidad. Prepara la conversación así: primero reconoce el trabajo, luego nombra exactamente esa brecha, y cierra con un plan de desarrollo de 6 meses que tú vas a apoyar. ¿Quieres que lo construyamos juntos?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <!-- Tabla comparativa común -->
+    <div style="margin-top:1.5rem;background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem">
+      <div style="font-size:.73rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--inv-2);margin-bottom:1.1rem">Incluido en ambos módulos</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem">
+        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Historial permanente de sesiones</div>
+        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Personalización por perfil y reto</div>
+        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Conversaciones 100% confidenciales</div>
+        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Disponible 24/7 · Web y móvil</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cómo funciona — 4 pasos -->
+  <div style="background:rgba(248,246,241,.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="max-width:1160px;margin:0 auto;padding:4rem 3rem">
+      <div style="text-align:center;margin-bottom:2.8rem">
+        <div class="h-section-eye">El proceso</div>
+        <h2 class="h-section-h2">De contratación a impacto<br>en <em>menos de 48h</em></h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;position:relative">
+        <div style="position:absolute;top:1.35rem;left:calc(12.5% + 1rem);right:calc(12.5% + 1rem);height:1px;background:var(--border)"></div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--ink-2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;font-family:'Fraunces',serif;font-size:1rem;color:var(--moss-light)">01</div>
+          <div style="font-size:.9rem;font-weight:500;margin-bottom:.4rem">La empresa activa Growee</div>
+          <div style="font-size:.8rem;color:var(--inv);line-height:1.6">Configuración en 48h con un CSV de empleados. Sin IT, sin semanas de setup, sin instalaciones.</div>
+        </div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--ink-2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;font-family:'Fraunces',serif;font-size:1rem;color:var(--moss-light)">02</div>
+          <div style="font-size:.9rem;font-weight:500;margin-bottom:.4rem">Onboarding personalizado</div>
+          <div style="font-size:.8rem;color:var(--inv);line-height:1.6">Cada empleado completa un perfil de 3 minutos. La IA calibra el tono, el enfoque y los objetivos.</div>
+        </div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--ink-2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;font-family:'Fraunces',serif;font-size:1rem;color:var(--moss-light)">03</div>
+          <div style="font-size:.9rem;font-weight:500;margin-bottom:.4rem">Sesiones cuando lo necesitan</div>
+          <div style="font-size:.8rem;color:var(--inv);line-height:1.6">Desde web o móvil. El historial persiste entre sesiones para un acompañamiento real y continuo.</div>
+        </div>
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--ink-2);display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;font-family:'Fraunces',serif;font-size:1rem;color:var(--moss-light)">04</div>
+          <div style="font-size:.9rem;font-weight:500;margin-bottom:.4rem">El equipo crece y mejora</div>
+          <div style="font-size:.8rem;color:var(--inv);line-height:1.6">Cada sesión es confidencial. El empleado ve su propio progreso. La empresa ve un equipo más sano y comprometido.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ LOGOS ═══════ -->
+<!-- ═══════ CONFÍAN EN GROWEE + CLIENTES (módulo unificado) ═══════ -->
+<div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(248,246,241,.02)">
+  <div style="max-width:1160px;margin:0 auto;padding:3.5rem 3rem">
+    <div style="text-align:center;margin-bottom:2.5rem">
+      <div class="h-section-eye">Empresas que confían en Growee</div>
+    </div>
+    <!-- Logo ticker -->
+    <div style="overflow:hidden;margin-bottom:3rem;position:relative">
+      <div style="position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(90deg,rgba(13,27,42,.98),transparent);z-index:2;pointer-events:none"></div>
+      <div style="position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(270deg,rgba(13,27,42,.98),transparent);z-index:2;pointer-events:none"></div>
+      <div id="logo-ticker" style="display:flex;gap:4rem;align-items:center;animation:tickerScroll 22s linear infinite;width:max-content">
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Banco Santander</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Telefónica</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Iberdrola</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Repsol</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Mango</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Mapfre</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Acciona</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">CaixaBank</span>
+        <!-- duplicate for seamless loop -->
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Banco Santander</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Telefónica</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Iberdrola</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Repsol</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Mango</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Mapfre</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">Acciona</span>
+        <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:rgba(248,246,241,.35);white-space:nowrap">CaixaBank</span>
+      </div>
+    </div>
+    <style>
+    @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    #logo-ticker:hover{animation-play-state:paused}
+    </style>
+    <!-- Client cards -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem">
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem">
+        <div style="font-family:'Fraunces',serif;font-size:.95rem;color:var(--inv-2);padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">Fintech · 340 empleados</div>
+        <div style="display:flex;align-items:baseline;gap:.3rem;margin-bottom:.3rem"><span style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;color:var(--moss-light)">73%</span><span style="font-size:.74rem;color:var(--inv-2)">adopción voluntaria</span></div>
+        <div style="font-size:.77rem;color:var(--inv);line-height:1.55">"Lo usa casi todo el equipo. Eso no lo habíamos visto con ninguna otra herramienta."</div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem">
+        <div style="font-family:'Fraunces',serif;font-size:.95rem;color:var(--inv-2);padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">Industrial · 1.200 empleados</div>
+        <div style="display:flex;align-items:baseline;gap:.3rem;margin-bottom:.3rem"><span style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;color:var(--moss-light)">4.2x</span><span style="font-size:.74rem;color:var(--inv-2)">ROI en el primer año</span></div>
+        <div style="font-size:.77rem;color:var(--inv);line-height:1.55">"El coaching transformó cómo nuestros managers dan feedback. El ROI fue evidente en Q1."</div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem">
+        <div style="font-family:'Fraunces',serif;font-size:.95rem;color:var(--inv-2);padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">Consultoría · 580 empleados</div>
+        <div style="display:flex;align-items:baseline;gap:.3rem;margin-bottom:.3rem"><span style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;color:var(--moss-light)">↓34%</span><span style="font-size:.74rem;color:var(--inv-2)">bajas por estrés</span></div>
+        <div style="font-size:.77rem;color:var(--inv);line-height:1.55">"La confidencialidad real fue lo que convenció a nuestros empleados para usarlo."</div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem">
+        <div style="font-family:'Fraunces',serif;font-size:.95rem;color:var(--inv-2);padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">Retail Tech · 800 empleados</div>
+        <div style="display:flex;align-items:baseline;gap:.3rem;margin-bottom:.3rem"><span style="font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;color:var(--moss-light)">↓23%</span><span style="font-size:.74rem;color:var(--inv-2)">rotación voluntaria</span></div>
+        <div style="font-size:.77rem;color:var(--inv);line-height:1.55">"Los candidatos lo mencionan en entrevistas. Se ha convertido en un diferencial de atracción."</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <button class="h-link" style="margin:0 auto;font-size:.84rem" onclick="go('casos')">Ver todos los casos de éxito <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ BENEFICIOS ═══════ -->
+<div class="h-benefits">
+  <div class="h-section-head">
+    <div class="h-section-eye">Beneficios</div>
+    <h2 class="h-section-h2">Una plataforma,<br><em>dos perspectivas</em></h2>
+  </div>
+  <div class="h-ben-tabs">
+    <button class="h-ben-tab on moss" onclick="benTab('empleado',this,'moss')">Para el empleado</button>
+    <button class="h-ben-tab" onclick="benTab('empresa',this,'gold')">Para la empresa</button>
+  </div>
+  <div class="h-ben-panel on" id="bp-empleado">
+    <div class="ben-card moss-border"><div class="ben-icon">🕐</div><div class="ben-title">Disponible 24/7</div><div class="ben-desc">Apoyo emocional y coaching cuando lo necesitas — sin esperar cita, sin horarios, sin desplazamientos.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon">🔒</div><div class="ben-title">Completamente confidencial</div><div class="ben-desc">Nadie en la empresa puede ver el contenido de tus conversaciones. Tu espacio es solo tuyo.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon">🧠</div><div class="ben-title">IA que te recuerda</div><div class="ben-desc">El historial persiste entre sesiones. Growee recuerda tu contexto, tus retos y tu progreso para acompañarte de verdad.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon">💚</div><div class="ben-title">Apoyo emocional real</div><div class="ben-desc">Técnicas basadas en TCC, mindfulness y ACT. Orientación personalizada para tu situación específica.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon">◆</div><div class="ben-title">Coaching profesional</div><div class="ben-desc">Metodologías ICF y GROW para preparar conversaciones difíciles, mejorar tu liderazgo o tomar decisiones con más claridad.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon">📈</div><div class="ben-title">Seguimiento de tu progreso</div><div class="ben-desc">Tu perfil evoluciona con cada sesión. Ve cómo mejora tu bienestar y qué áreas seguir trabajando.</div></div>
+  </div>
+  <div class="h-ben-panel" id="bp-empresa">
+    <div class="ben-card gold-border"><div class="ben-icon">⚡</div><div class="ben-title">Listo en 48 horas</div><div class="ben-desc">Importas el equipo con un CSV y en 48h toda la plantilla tiene acceso. Sin IT, sin instalaciones.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon">💰</div><div class="ben-title">ROI desde el primer trimestre</div><div class="ben-desc">Una baja por estrés supera los 9.000€. Growee cuesta menos que una sesión de psicólogo al mes por persona.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon">🏆</div><div class="ben-title">Employer branding diferencial</div><div class="ben-desc">El 78% de candidatos valora el bienestar como factor decisivo. Los empleados lo mencionan en entrevistas.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon">🔒</div><div class="ben-title">Confidencialidad total</div><div class="ben-desc">La empresa activa la plataforma y facilita el acceso. Lo que pasa dentro pertenece solo al empleado.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon">📉</div><div class="ben-title">Reducción de rotación</div><div class="ben-desc">Las empresas con Growee registran de media un 23% menos de rotación voluntaria en los primeros 12 meses.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon">🤝</div><div class="ben-title">Equipos más comprometidos</div><div class="ben-desc">Cuando las personas se sienten apoyadas, rinden más y se van menos. Growee convierte el bienestar en ventaja competitiva.</div></div>
+  </div>
+</div>
+
+<!-- ═══════ MÉTRICAS ═══════ -->
+<div class="h-metrics">
+  <div class="h-metrics-inner">
+    <div>
+      <div class="h-section-eye">Impacto medible</div>
+      <h2 class="h-section-h2" style="margin-bottom:1rem">Números que tu<br><em>CEO va a querer ver</em></h2>
+      <p style="color:var(--inv);font-size:.9rem;line-height:1.75;margin-bottom:2rem">Datos reales de empresas que llevan más de 12 meses usando Growee. Compartimos el método de medición en la demo.</p>
+      <button class="h-cta" style="font-size:.88rem;padding:.82rem 1.8rem" onclick="go('casos')">Ver casos de éxito →</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1.2rem">
+      <div class="h-metrics-grid">
+        <div class="h-metric"><div class="h-metric-val"><span class="u">↓</span>34<small style="font-size:1.6rem">%</small></div><div class="h-metric-label">bajas por estrés en 6 meses</div></div>
+        <div class="h-metric"><div class="h-metric-val">91<span class="u">%</span></div><div class="h-metric-label">empleados se siente más apoyado</div></div>
+        <div class="h-metric"><div class="h-metric-val">3.8<span class="ud">x</span></div><div class="h-metric-label">ROI medio a 12 meses</div></div>
+        <div class="h-metric"><div class="h-metric-val">73<span class="u">%</span></div><div class="h-metric-label">adopción voluntaria media</div></div>
+      </div>
+      <div class="h-metrics-quote">
+        <div class="h-mq-text">"Growee lo usa el 73% de nuestro equipo de forma voluntaria. Eso no lo habíamos visto nunca con ninguna otra herramienta de bienestar."</div>
+        <div class="h-mq-who">
+          <strong>María López — Head of People</strong>
+          Fintech scale-up · 340 empleados · Plan Profesional
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ CTA FINAL ═══════ -->
+<div class="h-cta-final">
+  <h2>¿Listo para cuidar<br><em>a tu equipo?</em></h2>
+  <p>Demo de 30 minutos. Sin compromisos. Piloto gratis de 30 días si decides seguir.</p>
+  <div class="h-cta-btns">
+    <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita →</button>
+    <button class="btn-secondary" onclick="go('precios')">Ver precios</button>
+  </div>
+</div>
+
+<div class="divider"></div>
+<footer>
+  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('precios')">Precios</a>
+    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     SUBPÁGINAS DE PRODUCTO
+════════════════════════════════════════ -->
+
+<!-- BIENESTAR -->
+<div id="pg-prod-bienestar" class="pg">
+  <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
+    <button onclick="go('home')" style="background:none;border:1px solid var(--border);color:var(--cream);font-size:.88rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.55rem;margin-bottom:2.5rem;padding:.5rem 1.1rem;border-radius:50px;transition:all .2s" onmouseover="this.style.background='var(--mist-2)'" onmouseout="this.style.background='none'">← Volver</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:4rem">
+      <div>
+        <div class="tag-pill tag-terra" style="margin-bottom:1.2rem">● Módulo Bienestar Emocional</div>
+        <h2 style="margin-bottom:1rem">Apoyo emocional<br><em style="color:var(--terra)">cuando más se necesita</em></h2>
+        <p class="lead" style="margin-bottom:2rem">IA entrenada en TCC, mindfulness y ACT para acompañar a cada persona — sin listas de espera, sin estigma, disponible 24/7.</p>
+        <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem">
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Gestión del estrés y ansiedad laboral</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Prevención y detección temprana de burnout</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Conflictos interpersonales y relaciones laborales</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Conciliación vida personal y profesional</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Autoestima y confianza profesional</div>
+        </div>
+        <button class="btn-primary" onclick="go('demo')">Solicitar demo →</button>
+      </div>
+      <div style="background:var(--mist);border:1px solid rgba(217,130,90,.25);border-radius:20px;overflow:hidden">
+        <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem">
+          <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--terra-dark),var(--terra));animation:breathe 3s ease-in-out infinite;flex-shrink:0"></div>
+          <div><div style="font-size:.8rem;font-weight:600">Apoyo Emocional · Growee</div><div style="font-size:.68rem;color:var(--inv-2)">IA especializada en bienestar</div></div>
+        </div>
+        <div style="padding:1.2rem;display:flex;flex-direction:column;gap:.75rem">
+          <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(217,130,90,.5);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:85%">Hola 👋 Este es tu espacio seguro. RRHH nunca puede ver lo que hablamos aquí. ¿Qué está pasando?</div>
+          <div style="background:rgba(248,246,241,.14);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;align-self:flex-end;color:var(--ink);background:var(--cream);max-width:80%">Llevo semanas sin dormir bien y me cuesta concentrarme en el trabajo.</div>
+          <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(217,130,90,.5);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:90%">Eso es una señal que merece atención — no es "cansancio normal". Cuéntame más: ¿esto ocurre también los fines de semana o te desconectas algo cuando no trabajas?</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:3rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres ver esto en acción para tu empresa?</div>
+      <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Demo personalizada de 30 minutos · Sin compromiso</p>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer><div class="footer-logo">Grow<span>ee</span></div><div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div><div class="footer-legal">© 2025 Growee · RGPD 🇪🇺</div></footer>
+</div>
+
+<!-- COACHING -->
+<div id="pg-prod-coaching" class="pg">
+  <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
+    <button onclick="go('home')" style="background:none;border:1px solid var(--border);color:var(--cream);font-size:.88rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.55rem;margin-bottom:2.5rem;padding:.5rem 1.1rem;border-radius:50px;transition:all .2s" onmouseover="this.style.background='var(--mist-2)'" onmouseout="this.style.background='none'">← Volver</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:4rem">
+      <div>
+        <div class="tag-pill tag-gold" style="margin-bottom:1.2rem">◆ Módulo Coaching Profesional</div>
+        <h2 style="margin-bottom:1rem">Coaching ejecutivo<br><em>sin agenda ni espera</em></h2>
+        <p class="lead" style="margin-bottom:2rem">IA entrenada en metodologías ICF, GROW y Co-Active para acompañar a managers y colaboradores en su desarrollo profesional — cuando lo necesitan.</p>
+        <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem">
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Liderazgo y gestión de equipos</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Comunicación y conversaciones difíciles</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Delegación, feedback y motivación</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Transiciones de carrera y promociones</div>
+          <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Objetivos OKR y desarrollo personal</div>
+        </div>
+        <button class="btn-primary" onclick="go('demo')">Solicitar demo →</button>
+      </div>
+      <div style="background:var(--mist);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden">
+        <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem">
+          <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#9A7A28,var(--gold));animation:breathe 3s ease-in-out infinite;flex-shrink:0"></div>
+          <div><div style="font-size:.8rem;font-weight:600">Coaching Profesional · Growee</div><div style="font-size:.68rem;color:var(--inv-2)">Metodología ICF certificada</div></div>
+        </div>
+        <div style="padding:1.2rem;display:flex;flex-direction:column;gap:.75rem">
+          <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(201,168,76,.4);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:85%">Hola 👋 Listo para trabajar contigo. ¿Qué tienes entre manos — un reto de liderazgo, una decisión importante?</div>
+          <div style="background:var(--cream);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;align-self:flex-end;color:var(--ink);max-width:80%">Tengo que dar feedback difícil a alguien de mi equipo y no sé cómo hacerlo sin dañar la relación.</div>
+          <div style="background:rgba(248,246,241,.08);border:1px solid var(--border);border-left:2px solid rgba(201,168,76,.4);border-radius:12px;padding:.75rem .9rem;font-size:.82rem;line-height:1.6;align-self:flex-start;max-width:90%">Bien que lo prepares — eso ya marca la diferencia. La clave es separar el comportamiento observado del juicio personal. ¿Qué conductas concretas quieres abordar?</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:3rem;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres ver el coaching en acción con tu equipo?</div>
+      <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Demo personalizada de 30 minutos · Sin compromiso</p>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer><div class="footer-logo">Grow<span>ee</span></div><div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div><div class="footer-legal">© 2025 Growee · RGPD 🇪🇺</div></footer>
+</div>
+
+<!-- PANEL RRHH -->
+<div id="pg-prod-rrhh" class="pg">
+  <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
+    <button onclick="go('home')" style="background:none;border:1px solid var(--border);color:var(--cream);font-size:.88rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:.55rem;margin-bottom:2.5rem;padding:.5rem 1.1rem;border-radius:50px;transition:all .2s" onmouseover="this.style.background='var(--mist-2)'" onmouseout="this.style.background='none'">← Volver</button>
+    <div style="text-align:center;max-width:620px;margin:0 auto 3.5rem">
+      <div class="tag-pill tag-moss" style="margin-bottom:1.2rem;display:inline-flex">📊 Panel de RRHH</div>
+      <h2 style="margin-bottom:1rem">Por fin datos de bienestar<br><em>que puedes presentar</em></h2>
+      <p class="lead">Dashboard anonimizado con índices de bienestar del equipo, temas más trabajados e informes mensuales automáticos. Sin acceder a ninguna conversación individual.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem">
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem"><div style="font-size:1.3rem;margin-bottom:.8rem">📈</div><div style="font-size:.93rem;font-weight:600;margin-bottom:.4rem">Índice de bienestar</div><div style="font-size:.81rem;color:var(--inv);line-height:1.65">Score agregado del equipo, evolución mensual y comparativa con sector.</div></div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem"><div style="font-size:1.3rem;margin-bottom:.8rem">🔍</div><div style="font-size:.93rem;font-weight:600;margin-bottom:.4rem">Temas más trabajados</div><div style="font-size:.81rem;color:var(--inv);line-height:1.65">Categorías anónimas: estrés, liderazgo, conciliación. Sin datos individuales.</div></div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem"><div style="font-size:1.3rem;margin-bottom:.8rem">📄</div><div style="font-size:.93rem;font-weight:600;margin-bottom:.4rem">Informes automáticos</div><div style="font-size:.81rem;color:var(--inv);line-height:1.65">PDF mensual listo para presentar a dirección con métricas de impacto.</div></div>
+    </div>
+    <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">Ver el panel en acción</div>
+      <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Te lo mostramos con datos reales en la demo de 30 minutos</p>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer><div class="footer-logo">Grow<span>ee</span></div><div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div><div class="footer-legal">© 2025 Growee · RGPD 🇪🇺</div></footer>
+</div>
+
+<!-- INTEGRACIONES -->
+<!-- ════════════════════════════════════════
+     PRECIOS PAGE — rediseñado para convertir
+════════════════════════════════════════ -->
+<div id="pg-casos" class="pg">
+<style>
+.casos-kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:18px;overflow:hidden;max-width:1160px;margin:0 auto;box-shadow:0 2px 20px rgba(13,27,42,.07)}
+.casos-kpi-cell{background:var(--ink-2);padding:2.2rem 1.5rem;text-align:center}
+.casos-kpi-val{font-family:"Fraunces",serif;font-size:3.2rem;font-weight:300;line-height:1;color:var(--ink);margin-bottom:.4rem}
+.casos-kpi-val .gu{color:var(--moss-light)}
+.casos-kpi-lbl{font-size:.78rem;color:var(--inv-2);line-height:1.5}
+.casos-testi-grid{display:grid;grid-template-columns:1fr 1fr;max-width:1160px;margin:0 auto;gap:1.2rem}
+.casos-testi{background:var(--mist);border:1px solid var(--border);border-radius:18px;padding:2.2rem;display:flex;flex-direction:column;gap:1.4rem}
+.casos-testi.featured{background:linear-gradient(135deg,rgba(45,106,79,.12),rgba(82,183,136,.05));border-color:rgba(82,183,136,.25);grid-column:1/-1}
+.casos-testi-quote{font-family:"Fraunces",serif;font-size:1.15rem;font-weight:300;font-style:italic;line-height:1.58}
+.casos-testi.featured .casos-testi-quote{font-size:1.35rem}
+.casos-testi-author{display:flex;align-items:center;gap:.9rem}
+.casos-testi-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--moss),var(--moss-light));display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--ink);flex-shrink:0}
+.casos-testi-name{font-size:.9rem;font-weight:600}
+.casos-testi-role{font-size:.77rem;color:var(--inv-2);margin-top:.1rem}
+.casos-testi-co{font-size:.73rem;color:var(--moss-light);margin-top:.2rem}
+.casos-testi-metrics{display:flex;gap:2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
+.casos-metric{text-align:center}
+.casos-metric-val{font-family:"Fraunces",serif;font-size:1.55rem;font-weight:300;color:var(--ink);line-height:1}
+.casos-metric-lbl{font-size:.7rem;color:var(--inv-2);margin-top:.2rem}
+</style>
+  <div style="max-width:700px;margin:0 auto;padding:5rem 3rem 3rem;text-align:center">
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.7rem;display:flex;justify-content:center">Casos de éxito</div>
+    <h2 style="font-family:Fraunces,serif;font-size:2.8rem;font-weight:300;line-height:1.12;letter-spacing:-.025em;margin-bottom:1rem">Empresas reales.<br><em style="font-style:italic;color:var(--moss-light)">Impacto medible.</em></h2>
+    <p style="color:var(--inv);font-size:.95rem;line-height:1.72">No vendemos promesas. Compartimos los resultados exactos de empresas que llevan meses usando Growee con sus equipos.</p>
+  </div>
+  <div style="padding:0 3rem 3.5rem">
+    <div class="casos-kpi">
+      <div class="casos-kpi-cell"><div class="casos-kpi-val"><span class="gu">↓</span>34<small style="font-size:1.9rem">%</small></div><div class="casos-kpi-lbl">reducción de bajas por estrés en los primeros 6 meses</div></div>
+      <div class="casos-kpi-cell"><div class="casos-kpi-val">91<span class="gu">%</span></div><div class="casos-kpi-lbl">de empleados se siente más apoyado tras 3 meses</div></div>
+      <div class="casos-kpi-cell"><div class="casos-kpi-val">3.8<span class="gu">x</span></div><div class="casos-kpi-lbl">ROI medio en empresas con más de 12 meses activos</div></div>
+      <div class="casos-kpi-cell"><div class="casos-kpi-val">73<span class="gu">%</span></div><div class="casos-kpi-lbl">adopción voluntaria media — sin incentivos internos</div></div>
+    </div>
+  </div>
+  <div style="padding:0 3rem 4rem">
+    <div class="casos-testi-grid">
+      <div class="casos-testi featured">
+        <div class="casos-testi-quote">"Llevábamos años buscando algo que fuera más allá del EAP clásico. Growee lo usa el 73% de nuestro equipo de forma completamente voluntaria, sin que hayamos tenido que incentivar nada. Eso no lo habíamos visto nunca."</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem">
+          <div class="casos-testi-author">
+            <div class="casos-testi-av">ML</div>
+            <div><div class="casos-testi-name">María López</div><div class="casos-testi-role">Head of People</div><div class="casos-testi-co">● Fintech scale-up · 340 empleados · 8 meses</div></div>
+          </div>
+          <div class="casos-testi-metrics">
+            <div class="casos-metric"><div class="casos-metric-val">73%</div><div class="casos-metric-lbl">Adopción</div></div>
+            <div class="casos-metric"><div class="casos-metric-val">↓41%</div><div class="casos-metric-lbl">Rotación</div></div>
+            <div class="casos-metric"><div class="casos-metric-val">4.8/5</div><div class="casos-metric-lbl">NPS empleado</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="casos-testi">
+        <div class="casos-testi-quote">"El módulo de coaching transformó cómo nuestros managers abordan las conversaciones de desarrollo. Lo más sorprendente: el ROI fue evidente ya en el primer trimestre."</div>
+        <div class="casos-testi-author">
+          <div class="casos-testi-av">JR</div>
+          <div><div class="casos-testi-name">Jordi Roca</div><div class="casos-testi-role">Director de Personas</div><div class="casos-testi-co">◆ Industrial · 1.200 empleados · 14 meses</div></div>
+        </div>
+        <div class="casos-testi-metrics">
+          <div class="casos-metric"><div class="casos-metric-val">4.2x</div><div class="casos-metric-lbl">ROI año 1</div></div>
+          <div class="casos-metric"><div class="casos-metric-val">↑28%</div><div class="casos-metric-lbl">Engagement</div></div>
+          <div class="casos-metric"><div class="casos-metric-val">↓19%</div><div class="casos-metric-lbl">Conflictos</div></div>
+        </div>
+      </div>
+      <div class="casos-testi">
+        <div class="casos-testi-quote">"La confidencialidad real fue lo que convenció a nuestros empleados para usarlo. Saben que nadie en la empresa puede leer sus conversaciones — y eso marcó toda la diferencia."</div>
+        <div class="casos-testi-author">
+          <div class="casos-testi-av">AS</div>
+          <div><div class="casos-testi-name">Ana Serrano</div><div class="casos-testi-role">Chief People Officer</div><div class="casos-testi-co">● Consultoría · 580 empleados · 12 meses</div></div>
+        </div>
+        <div class="casos-testi-metrics">
+          <div class="casos-metric"><div class="casos-metric-val">↓34%</div><div class="casos-metric-lbl">Bajas estrés</div></div>
+          <div class="casos-metric"><div class="casos-metric-val">91%</div><div class="casos-metric-lbl">Satisfacción</div></div>
+          <div class="casos-metric"><div class="casos-metric-val">68%</div><div class="casos-metric-lbl">Adopción</div></div>
+        </div>
+      </div>
+      <div class="casos-testi">
+        <div class="casos-testi-quote">"Implementamos Growee como parte del employer branding. Hoy los candidatos lo mencionan espontáneamente en entrevistas como uno de los motivos para querer trabajar con nosotros."</div>
+        <div class="casos-testi-author">
+          <div class="casos-testi-av">PR</div>
+          <div><div class="casos-testi-name">Paula Ríos</div><div class="casos-testi-role">People Director</div><div class="casos-testi-co">● Retail Tech · 800 empleados · 10 meses</div></div>
+        </div>
+        <div class="casos-testi-metrics">
+          <div class="casos-metric"><div class="casos-metric-val">↑19%</div><div class="casos-metric-lbl">Atracción talento</div></div>
+          <div class="casos-metric"><div class="casos-metric-val">↓23%</div><div class="casos-metric-lbl">Rotación</div></div>
+          <div class="casos-metric"><div class="casos-metric-val">3.6x</div><div class="casos-metric-lbl">ROI</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;padding:3rem;background:linear-gradient(180deg,rgba(45,106,79,.07),rgba(13,27,42,0));border-top:1px solid rgba(82,183,136,.12);max-width:600px;margin:0 auto">
+    <h3 style="font-family:Fraunces,serif;font-size:1.8rem;font-weight:300;margin-bottom:.7rem">¿Quieres resultados así<br>en tu empresa?</h3>
+    <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.8rem">En la demo te mostramos el caso más parecido al tuyo y cómo replicarlo.</p>
+    <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita →</button>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('precios')">Módulos</a><a onclick="go('casos')">Casos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<div id="pg-precios" class="pg">
+<style>
+.pr2-wrap{max-width:1000px;margin:0 auto;padding:5rem 3rem 4rem}
+.pr2-modules{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:2.5rem}
+.pr2-card{border-radius:18px;overflow:hidden;position:relative}
+.pr2-card-inner{background:var(--mist);border:1px solid var(--border);border-radius:18px;padding:2.2rem;height:100%;display:flex;flex-direction:column}
+.pr2-card.terra-card .pr2-card-inner{border-top:3px solid var(--terra)}
+.pr2-card.gold-card .pr2-card-inner{border-top:3px solid var(--gold)}
+.pr2-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.73rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1rem}
+.pr2-title{font-family:"Fraunces",serif;font-size:1.6rem;font-weight:300;margin-bottom:.7rem}
+.pr2-desc{font-size:.85rem;color:var(--inv);line-height:1.7;margin-bottom:1.5rem}
+.pr2-feats{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem;flex:1}
+.pr2-feat{display:flex;align-items:flex-start;gap:.6rem;font-size:.82rem;color:rgba(248,246,241,.68);line-height:1.45}
+.pr2-check{flex-shrink:0;margin-top:.08rem}
+.pr2-cta{width:100%;padding:.85rem;border-radius:50px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:"Inter",sans-serif;transition:all .2s;border:none;letter-spacing:-.01em}
+.pr2-cta.terra-cta{background:var(--terra);color:var(--ink)}
+.pr2-cta.terra-cta:hover{background:#e59972;transform:translateY(-1px)}
+.pr2-cta.gold-cta{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+.pr2-cta.gold-cta:hover{background:rgba(201,168,76,.28)}
+.pr2-both{max-width:1000px;margin:1.2rem auto 0;padding:0 3rem;background:var(--mist);border:1px solid rgba(82,183,136,.2);border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.pr2-both-text h4{font-size:.95rem;font-weight:600;margin-bottom:.2rem}
+.pr2-both-text p{font-size:.82rem;color:var(--inv)}
+</style>
+  <div class="pr2-wrap">
+    <div style="text-align:center">
+      <div class="h-section-eye">Módulos</div>
+      <h2 style="font-family:Fraunces,serif;font-size:2.4rem;font-weight:300;line-height:1.18;letter-spacing:-.025em;margin-bottom:.8rem">Activa uno o<br><em style="font-style:italic;color:var(--moss-light)">los dos juntos</em></h2>
+
+    </div>
+    <div class="pr2-modules">
+
+      <div class="pr2-card terra-card">
+        <div class="pr2-card-inner">
+          <div class="pr2-tag tag-terra">● Apoyo Emocional</div>
+          <div class="pr2-title">Bienestar</div>
+          <div class="pr2-desc">Para empleados que necesitan apoyo con estrés, burnout, relaciones o conciliación. Disponible 24/7, completamente confidencial.</div>
+          <div class="pr2-feats">
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Gestión del estrés y ansiedad laboral</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Prevención y detección de burnout</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Conflictos interpersonales</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Conciliación vida personal y laboral</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Técnicas TCC, mindfulness y ACT</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Historial de sesiones persistente</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Perfil personalizado por empleado</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Disponible 24/7 desde web y móvil</div>
+          </div>
+          <button class="pr2-cta terra-cta" onclick="go(&#39;demo&#39;)">Solicitar demo →</button>
+        </div>
+      </div>
+
+      <div class="pr2-card gold-card">
+        <div class="pr2-card-inner">
+          <div class="pr2-tag tag-gold">◆ Coaching Profesional</div>
+          <div class="pr2-title">Coaching</div>
+          <div class="pr2-desc">Para managers y colaboradores que quieren mejorar su liderazgo, comunicación y toma de decisiones. Sin agendar, cuando lo necesiten.</div>
+          <div class="pr2-feats">
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Liderazgo y gestión de equipos</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Comunicación y feedback efectivo</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Conversaciones difíciles</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Delegación y motivación de equipo</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Metodología ICF / GROW / Co-Active</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Historial de sesiones persistente</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Perfil personalizado por empleado</div>
+            <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Disponible 24/7 desde web y móvil</div>
+          </div>
+          <button class="pr2-cta gold-cta" onclick="go(&#39;demo&#39;)">Solicitar demo →</button>
+        </div>
+      </div>
+
+    </div>
+    <div style="margin-top:1.2rem;background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.2);border-radius:14px;padding:1.3rem 1.8rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap">
+      <div><div style="font-size:.9rem;font-weight:600;margin-bottom:.2rem">¿Los dos módulos juntos?</div><div style="font-size:.82rem;color:var(--inv)">Puedes activar Bienestar y Coaching para toda la empresa. Lo diseñamos a medida en la demo.</div></div>
+      <button onclick="go(&#39;demo&#39;)" style="background:var(--moss-light);color:var(--ink);border:none;padding:.7rem 1.6rem;border-radius:50px;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:Inter,sans-serif">Solicitar demo →</button>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div style="max-width:700px;margin:0 auto;padding:0 3rem 4rem">
+    <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2);margin-bottom:1.2rem">Preguntas frecuentes</div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">¿Puede alguien en la empresa leer las conversaciones?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">No. Las conversaciones son 100% confidenciales. Pertenecen exclusivamente al empleado. Nadie en la empresa accede a su contenido — nunca.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">¿Cuánto tarda en estar listo para el equipo?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">Entre 24 y 48 horas. Solo necesitamos un CSV con nombre y email de los empleados. Sin IT, sin instalaciones.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">¿Growee reemplaza a un psicólogo o coach humano?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">No. Es un apoyo complementario disponible 24/7. En situaciones que requieren atención clínica especializada, Growee recomienda activamente buscar un profesional.</div></div>
+    <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">¿Hay piloto antes de comprometerse?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">Sí. Ofrecemos un piloto de 30 días sin coste para que puedas validar el impacto con tu equipo antes de cualquier compromiso.</div></div>
+  </div>
+
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go(&#39;precios&#39;)">Módulos</a><a onclick="go(&#39;casos&#39;)">Casos</a><a onclick="go(&#39;demo&#39;)">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<div id="pg-demo" class="pg">
+  <div class="demo-layout">
+    <div class="demo-left">
+      <div class="eyebrow">Demo gratuita</div>
+      <h2>30 minutos que cambian<br>cómo cuidas<br><em>a tu equipo</em></h2>
+      <p class="lead" style="margin-top:.8rem">Sin compromisos. Te mostramos la plataforma completa y respondemos todas tus preguntas.</p>
+      <div class="demo-checklist">
+        <div class="demo-check"><div class="demo-check-icon">✓</div>Tour completo de la plataforma — coaching, bienestar y panel de RRHH</div>
+        <div class="demo-check"><div class="demo-check-icon">✓</div>Caso real de empresa similar a la tuya con métricas de impacto</div>
+        <div class="demo-check"><div class="demo-check-icon">✓</div>Propuesta personalizada para tu equipo con precio exacto</div>
+        <div class="demo-check"><div class="demo-check-icon">✓</div>Piloto de 30 días sin coste si decides seguir adelante</div>
+      </div>
+      <div class="demo-testi-mini">
+        <div class="demo-testi-text">"La demo duró 25 minutos. Al día siguiente ya teníamos propuesta firmada. El onboarding fue en 48h."</div>
+        <div class="demo-testi-who">— Carlos M., Director de Personas · empresa de 420 empleados</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="demo-form-card">
+        <div class="form-success" id="form-success">
+          <div class="success-emoji">🎉</div>
+          <div class="success-title">¡Solicitud recibida!</div>
+          <div class="success-sub">Nuestro equipo se pondrá en contacto contigo en menos de 24 horas laborables para confirmar la demo.<br><br>Revisa tu bandeja de entrada — puede que ya tengas un email nuestro.</div>
+        </div>
+        <div id="form-fields">
+          <div class="demo-form-title">Solicita tu demo</div>
+          <div class="demo-form-sub">Te confirmamos en menos de 24h</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" type="text" placeholder="Carmen"></div>
+            <div class="form-group"><label class="form-label">Apellidos</label><input class="form-input" type="text" placeholder="García"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" type="email" placeholder="carmen@empresa.com"></div>
+          <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" type="text" placeholder="Nombre de la empresa"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tamaño del equipo</label>
+              <select class="form-input">
+                <option value="">Selecciona...</option>
+                <option>10–50</option><option>51–200</option>
+                <option>201–500</option><option>501–2.000</option><option>+2.000</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tu rol</label>
+              <select class="form-input">
+                <option value="">Selecciona...</option>
+                <option>Director/a de RRHH</option><option>Head of People</option>
+                <option>CPO</option><option>CEO/Fundador</option><option>Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label class="form-label">¿Cuál es tu mayor reto ahora mismo? (opcional)</label><input class="form-input" type="text" placeholder="Ej: burnout, rotación alta, mejorar el liderazgo..."></div>
+          <button class="form-submit" onclick="submitDemo()">Solicitar demo gratuita →</button>
+          <div class="form-note">🔒 Sin spam. Solo te contactamos para confirmar la demo.<br>Tus datos se tratan según nuestro aviso de privacidad.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Producto</a><a onclick="go('precios')">Precios</a><a onclick="go('casos')">Casos</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ════════════════════════════════════════
+     LOGIN PAGE
+════════════════════════════════════════ -->
+<div id="pg-login" class="pg">
+<style>
+.auth-full{min-height:100vh;display:flex;background:var(--ink)}
+.auth-left{
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  padding:4rem;position:relative;overflow:hidden;
+}
+.auth-left-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 60%,rgba(58,158,110,.12) 0%,transparent 60%);pointer-events:none}
+.auth-left-logo{font-family:"Fraunces",serif;font-size:2rem;font-weight:300;margin-bottom:3rem}
+.auth-left-logo span{color:var(--moss-light)}
+.auth-left h2{font-family:"Fraunces",serif;font-size:2.4rem;font-weight:300;line-height:1.2;margin-bottom:1rem;letter-spacing:-.02em}
+.auth-left h2 em{font-style:italic;color:var(--moss-light)}
+.auth-left p{font-size:.9rem;color:var(--inv);line-height:1.75;margin-bottom:2.5rem;max-width:380px}
+.auth-proof{display:flex;flex-direction:column;gap:.8rem}
+.auth-proof-item{display:flex;align-items:center;gap:.65rem;font-size:.83rem;color:rgba(248,246,241,.55)}
+.auth-proof-dot{width:6px;height:6px;border-radius:50%;background:var(--moss-light);flex-shrink:0}
+
+.auth-panel{width:440px;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;padding:3rem;border-left:1px solid var(--border);background:var(--ink);}
+.auth-close{align-self:flex-end;background:none;border:1px solid var(--border);color:var(--inv);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;margin-bottom:2.5rem;transition:all .2s;flex-shrink:0}
+.auth-close:hover{color:var(--cream);border-color:rgba(248,246,241,.4)}
+.auth-panel-title{font-family:"Fraunces",serif;font-size:1.9rem;font-weight:300;margin-bottom:.35rem;letter-spacing:-.02em}
+.auth-panel-sub{font-size:.84rem;color:var(--inv);margin-bottom:2rem}
+.login-hint{text-align:center;font-size:.76rem;color:var(--inv-2);margin-top:1rem;line-height:1.5}
+.login-hint a{color:var(--moss-light);cursor:pointer}
+
+@media(max-width:800px){
+  .auth-full{flex-direction:column}
+  .auth-left{padding:2rem 1.5rem;flex:0}
+  .auth-left h2{font-size:1.7rem}
+  .auth-left p{display:none}
+  .auth-left-logo{margin-bottom:1rem}
+  .auth-proof{display:none}
+  .auth-panel{width:100%;border-left:none;border-top:1px solid var(--border);padding:2rem 1.5rem}
+}
+</style>
+  <div class="auth-full">
+    <div class="auth-left">
+      <div class="auth-left-bg"></div>
+      <div class="auth-left-logo">Grow<span>ee</span></div>
+      <h2>Tu espacio de<br><em>crecimiento</em><br>te espera</h2>
+      <p>Apoyo emocional y coaching profesional con IA especializada, disponible 24/7 para ti y tu equipo.</p>
+      <div class="auth-proof">
+        <div class="auth-proof-item"><div class="auth-proof-dot"></div>Conversaciones 100% confidenciales</div>
+        <div class="auth-proof-item"><div class="auth-proof-dot"></div>Nadie en la empresa puede leer tus sesiones</div>
+        <div class="auth-proof-item"><div class="auth-proof-dot"></div>Disponible en cualquier momento, desde cualquier dispositivo</div>
+        <div class="auth-proof-item"><div class="auth-proof-dot"></div>RGPD compliant · Datos en Europa</div>
+      </div>
+    </div>
+    <div class="auth-panel">
+      <button class="auth-close" onclick="go('home')">✕</button>
+      <div class="auth-panel-title">Acceder</div>
+      <div class="auth-panel-sub">Introduce tus credenciales de empresa</div>
+      <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" id="login-email" type="email" placeholder="nombre@empresa.com" autocomplete="email"></div>
+      <div class="form-group"><label class="form-label">Contraseña</label><input class="form-input" id="login-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="form-submit" style="margin-top:.5rem" onclick="doLogin()">Entrar a Growee →</button>
+      <div class="login-hint">¿No tienes acceso todavía?<br><a onclick="go('demo')">Solicita una demo</a> para que tu empresa active Growee</div>
+      <div style="margin-top:1.5rem;background:rgba(82,183,136,.07);border:1px solid rgba(82,183,136,.18);border-radius:12px;padding:1rem 1.1rem">
+        <div style="font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.6rem">Acceso demo</div>
+        <div style="font-size:.78rem;color:var(--inv-2);line-height:1.65">
+          <div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span>demo@growee.es</span><span style="color:var(--inv)">Ambos módulos</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span>bien@growee.es</span><span style="color:var(--inv)">Solo Bienestar</span></div>
+          <div style="display:flex;justify-content:space-between"><span>coach@growee.es</span><span style="color:var(--inv)">Solo Coaching</span></div>
+          <div style="margin-top:.6rem;font-style:italic;color:rgba(248,246,241,.3)">Contraseña: demo123</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="pg-app" class="pg">
+<style>
+/* ════════════════════════════════
+   APP — Setup + Chat
+════════════════════════════════ */
+.app-root{
+  min-height:100vh;height:100vh;display:flex;flex-direction:column;
+  background:var(--ink);overflow:hidden;
+}
+
+/* ── Top bar ── */
+.app-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.8rem;height:56px;flex-shrink:0;
+  background:rgba(13,27,42,.95);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.app-nav-logo{font-family:"Fraunces",serif;font-size:1.3rem;cursor:pointer}
+.app-nav-logo span{color:var(--moss-light)}
+.app-nav-right{display:flex;align-items:center;gap:1rem}
+.app-mod-pill{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.75rem;font-weight:600;padding:.3rem .85rem;border-radius:50px;
+}
+.app-mod-pill.terra{background:rgba(217,130,90,.14);border:1px solid rgba(217,130,90,.28);color:var(--terra)}
+.app-mod-pill.gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold)}
+.app-mod-pill.both{background:linear-gradient(90deg,rgba(217,130,90,.14),rgba(201,168,76,.08));border:1px solid rgba(217,130,90,.25);color:var(--terra)}
+.app-user-chip{
+  display:flex;align-items:center;gap:.55rem;
+  font-size:.82rem;color:var(--inv);cursor:pointer;
+  padding:.3rem .7rem;border-radius:50px;transition:background .2s;
+}
+.app-user-chip:hover{background:var(--mist)}
+.app-av{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--moss),var(--moss-light));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:700;color:var(--ink);flex-shrink:0;
+}
+.app-exit{
+  background:none;border:1px solid var(--border);color:var(--inv-2);
+  padding:.3rem .8rem;border-radius:50px;font-size:.75rem;
+  cursor:pointer;font-family:"Inter",sans-serif;transition:all .2s;
+}
+.app-exit:hover{color:var(--cream);border-color:rgba(248,246,241,.3)}
+
+/* ── SETUP SCREEN ── */
+#app-setup{
+  flex:1;display:flex;align-items:flex-start;justify-content:center;
+  padding:2rem;overflow-y:auto;
+  padding-top:3rem;
+}
+.setup-card{
+  width:100%;max-width:480px;
+  background:var(--ink-2);border:1px solid var(--border);
+  border-radius:22px;padding:2.5rem;
+}
+.setup-welcome{font-family:"Fraunces",serif;font-size:1.9rem;font-weight:300;line-height:1.25;margin-bottom:.4rem}
+.setup-welcome em{font-style:italic;color:var(--moss-light)}
+.setup-sub{font-size:.85rem;color:var(--inv);margin-bottom:2rem;line-height:1.6}
+.setup-fields{display:flex;flex-direction:column;gap:.9rem;margin-bottom:1.5rem}
+.setup-field label{display:block;font-size:.75rem;font-weight:600;color:var(--inv);letter-spacing:.03em;margin-bottom:.35rem}
+.setup-input{
+  width:100%;background:var(--mist);border:1px solid var(--border);
+  border-radius:11px;padding:.78rem 1rem;color:var(--cream);
+  font-size:.9rem;outline:none;font-family:"Inter",sans-serif;
+  transition:border-color .2s;
+}
+.setup-input:focus{border-color:var(--moss-light)}
+.setup-input::placeholder{color:var(--inv-2)}
+/* Module display (read-only, from company) */
+.setup-mod-display{
+  background:var(--mist);border:1px solid var(--border);
+  border-radius:11px;padding:.9rem 1rem;
+  display:flex;align-items:center;gap:.75rem;
+}
+.setup-mod-icon{font-size:1.1rem;flex-shrink:0}
+.setup-mod-name{font-size:.88rem;font-weight:500}
+.setup-mod-note{font-size:.73rem;color:var(--inv-2);margin-top:.1rem}
+.setup-btn{
+  width:100%;background:var(--moss-light);color:var(--ink);
+  border:none;border-radius:50px;padding:.9rem;
+  font-size:.92rem;font-weight:700;cursor:pointer;
+  font-family:"Inter",sans-serif;transition:all .2s;
+  letter-spacing:-.01em;margin-top:.3rem;
+}
+.setup-btn:hover{background:#5fcf96;transform:translateY(-1px)}
+.setup-privacy{text-align:center;font-size:.72rem;color:var(--inv-2);margin-top:.9rem;line-height:1.5}
+.setup-privacy span{color:var(--moss-light)}
+
+/* ── CHAT SCREEN ── */
+#app-chat{
+  flex:1;display:none;flex-direction:column;overflow:hidden;
+}
+/* Mode switcher (only if ambos) */
+.chat-mode-bar{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.75rem 1.5rem;border-bottom:1px solid var(--border);
+  background:rgba(13,27,42,.5);flex-shrink:0;
+}
+.chat-mode-tabs{
+  display:flex;background:var(--mist);border:1px solid var(--border);
+  border-radius:50px;padding:.18rem;
+}
+.chat-mode-tab{
+  padding:.4rem 1.05rem;border-radius:50px;border:none;background:none;
+  color:var(--inv);font-size:.8rem;cursor:pointer;
+  font-family:"Inter",sans-serif;transition:all .2s;white-space:nowrap;
+}
+.chat-mode-tab.on.terra{background:rgba(217,130,90,.2);color:var(--terra);font-weight:600}
+.chat-mode-tab.on.gold{background:rgba(201,168,76,.15);color:var(--gold);font-weight:600}
+.chat-new-btn{
+  margin-left:auto;background:none;border:1px solid var(--border);
+  color:var(--inv);padding:.35rem .85rem;border-radius:50px;
+  font-size:.75rem;cursor:pointer;font-family:"Inter",sans-serif;transition:all .2s;
+}
+.chat-new-btn:hover{color:var(--cream);border-color:rgba(248,246,241,.3)}
+
+/* Messages */
+.chat-msgs{
+  flex:1;overflow-y:auto;padding:1.6rem 1.8rem;background:var(--ink);
+  display:flex;flex-direction:column;gap:.9rem;
+}
+.chat-msgs::-webkit-scrollbar{width:4px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.cmw{display:flex;flex-direction:column;gap:.18rem;animation:fadeIn .22s ease}
+.cmw.ai{align-items:flex-start}
+.cmw.user{align-items:flex-end}
+.cmw-sender{font-size:.67rem;color:var(--inv-2);padding:0 .2rem;margin-bottom:.05rem}
+.cbubble{
+  max-width:72%;padding:.88rem 1.08rem;border-radius:16px;
+  font-size:.9rem;line-height:1.66;
+}
+.cbubble.ai{
+  background:var(--mist-2);border:1px solid var(--border);
+  color:var(--cream);border-bottom-left-radius:3px;
+}
+.cbubble.ai.b-terra{border-left:2px solid rgba(217,130,90,.5)}
+.cbubble.ai.b-gold{border-left:2px solid rgba(201,168,76,.35)}
+.cbubble.user{
+  background:var(--cream);color:var(--ink);
+  border-bottom-right-radius:3px;font-weight:450;
+}
+.cmw-time{font-size:.64rem;color:var(--inv-2);padding:0 .2rem}
+
+/* Typing indicator */
+.chat-typing{
+  display:flex;gap:4px;align-items:center;
+  padding:.88rem 1.05rem;border-radius:16px;border-bottom-left-radius:3px;
+  background:var(--mist-2);border:1px solid var(--border);
+  align-self:flex-start;
+}
+.chat-typing span{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--moss-light);opacity:.4;
+  animation:tdot 1.4s ease-in-out infinite;
+}
+.chat-typing span:nth-child(2){animation-delay:.2s}
+.chat-typing span:nth-child(3){animation-delay:.4s}
+
+/* Suggestions */
+.chat-suggs{
+  display:flex;gap:.5rem;flex-wrap:wrap;
+  padding:.6rem 1.8rem 0;flex-shrink:0;
+}
+.chat-sugg{
+  border:1px solid var(--border);border-radius:50px;
+  padding:.4rem .9rem;font-size:.77rem;color:var(--inv);
+  cursor:pointer;background:none;font-family:"Inter",sans-serif;
+  transition:all .18s;white-space:nowrap;
+}
+.chat-sugg:hover{border-color:var(--moss-light);color:var(--ink);background:rgba(58,158,110,.08)}
+
+/* Input bar */
+.chat-bar{
+  padding:.9rem 1.5rem 1.1rem;border-top:1px solid var(--border);
+  background:var(--ink);flex-shrink:0;
+}
+.chat-row{display:flex;gap:.65rem;align-items:flex-end}
+.chat-ta{
+  flex:1;background:var(--mist);border:1px solid var(--border);
+  border-radius:14px;padding:.78rem 1.08rem;color:var(--cream);
+  font-size:.9rem;outline:none;font-family:"Inter",sans-serif;
+  resize:none;min-height:46px;max-height:140px;
+  transition:border-color .2s;line-height:1.5;
+}
+.chat-ta:focus{border-color:rgba(82,183,136,.45)}
+.chat-ta::placeholder{color:var(--inv-2)}
+.chat-send{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:var(--moss-light);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .2s;
+}
+.chat-send:hover{background:#5fcf96;transform:scale(1.06)}
+.chat-send svg{width:15px;height:15px}
+.chat-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:.45rem;
+}
+.chat-disc{font-size:.68rem;color:var(--inv-2)}
+.chat-cnt{font-size:.68rem;color:var(--inv-2)}
+
+/* Mobile */
+@media(max-width:600px){
+  .setup-card{padding:1.8rem 1.4rem;border-radius:16px}
+  .setup-welcome{font-size:1.55rem}
+  .app-nav{padding:0 1rem}
+  .chat-msgs{padding:1rem}
+  .chat-bar{padding:.7rem 1rem .9rem}
+  .chat-suggs{padding:.5rem 1rem 0}
+  .cbubble{max-width:88%}
+  .chat-mode-bar{padding:.65rem 1rem}
+}
+</style>
+
+<div class="app-root">
+
+  <!-- ── TOP NAV ── -->
+  <nav class="app-nav">
+    <div class="app-nav-logo" onclick="go('home')">Grow<span>ee</span></div>
+    <div class="app-nav-right">
+      <div class="app-mod-pill" id="app-mod-pill">🧡 Módulo Bienestar</div>
+      <div class="app-user-chip" id="app-user-chip">
+        <div class="app-av" id="app-av">CG</div>
+        <span id="app-uname">Carmen</span>
+      </div>
+      <button class="app-exit" onclick="doLogout()">Salir</button>
+    </div>
+  </nav>
+
+  <!-- ── SETUP SCREEN ── -->
+  <div id="app-setup">
+    <div class="setup-card">
+      <div class="setup-welcome">Hola, <em id="setup-name-display">bienvenido/a</em></div>
+      <div class="setup-sub">Antes de empezar, cuéntanos un poco sobre ti para que Growee pueda acompañarte mejor desde el primer momento.</div>
+      <div class="setup-fields">
+        <div class="setup-field">
+          <label>Tu nombre</label>
+          <input class="setup-input" id="setup-name" type="text" placeholder="¿Cómo te llamas?" oninput="updateSetupName(this.value)">
+        </div>
+        <div class="setup-field">
+          <label>Tu cargo o posición</label>
+          <input class="setup-input" id="setup-role" type="text" placeholder="Ej: Directora de Operaciones, Manager de Ventas...">
+        </div>
+        <div class="setup-field">
+          <label>Módulo activado por tu empresa</label>
+          <div class="setup-mod-display" id="setup-mod-display">
+            <div class="setup-mod-icon" id="setup-mod-icon">🧡</div>
+            <div>
+              <div class="setup-mod-name" id="setup-mod-name">Bienestar Emocional</div>
+              <div class="setup-mod-note">Activado por tu empresa · confidencial</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="setup-btn" onclick="startChat()">Empezar →</button>
+      <div class="setup-privacy">🔒 <span>Todo lo que escribas es confidencial.</span><br>Nadie en tu empresa puede acceder a tus conversaciones.</div>
+    </div>
+  </div>
+
+  <!-- ── CHAT SCREEN ── -->
+  <div id="app-chat">
+    <!-- Mode bar (only shown when ambos) -->
+    <div class="chat-mode-bar" id="chat-mode-bar" style="display:none">
+      <div class="chat-mode-tabs" id="chat-mode-tabs"></div>
+      <button class="chat-new-btn" onclick="newChatSession()">+ Nueva sesión</button>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-suggs" id="chat-suggs"></div>
+    <div class="chat-bar">
+      <div class="chat-row">
+        <textarea class="chat-ta" id="chat-ta" rows="1"
+          placeholder="Escríbeme lo que necesitas..."
+          onkeydown="chatEnter(event)"
+          oninput="chatResize(this)"></textarea>
+        <button class="chat-send" onclick="chatSend()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0D1B2A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+      <div class="chat-meta">
+        <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
+        <span class="chat-cnt" id="chat-cnt">0 mensajes</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-root -->
+</div><!-- /pg-app -->
+
+<script>
+// ══════════════════════════════════════
+// GROWEE — App JS
+// ══════════════════════════════════════
+
+// ── Mobile menu (landing) ──
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const btn = document.getElementById('hamburger-btn');
+  const open = menu.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const btn = document.getElementById('hamburger-btn');
+  if(menu) menu.classList.remove('open');
+  if(btn) btn.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Routing ──
+const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','casos','precios','demo','login','app'];
+const APP_PAGES = ['login','onboarding','app'];
+let currentPage = 'home';
+
+function go(id) {
+  closeMobileMenu();
+  PAGES.forEach(p => {
+    const el = document.getElementById('pg-' + p);
+    if (el) el.classList.toggle('on', p === id);
+  });
+  const nav = document.getElementById('main-nav');
+  if (nav) nav.style.display = APP_PAGES.includes(id) ? 'none' : 'flex';
+  window.scrollTo(0, 0);
+  currentPage = id;
+  closeDD();
+  if (id === 'app') {
+    setTimeout(initApp, 50);
+  }
+}
+
+// ── Dropdown ──
+let ddOpen = false;
+function toggleDD() { ddOpen = !ddOpen; document.getElementById('dd-menu').classList.toggle('open', ddOpen); }
+function closeDD() { ddOpen = false; const m = document.getElementById('dd-menu'); if(m) m.classList.remove('open'); }
+document.addEventListener('click', e => { if (!e.target.closest('#dd-wrapper')) closeDD(); });
+
+// ── Benefit tabs ──
+function benTab(id, btn, color) {
+  document.querySelectorAll('.h-ben-panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.h-ben-tab').forEach(b => { b.classList.remove('on','moss','gold'); });
+  document.getElementById('bp-'+id).classList.add('on');
+  btn.classList.add('on', color);
+}
+
+// ── Demo play ──
+let demoPlaying = {bien:false, coach:false};
+function playDemo(id) {
+  if (demoPlaying[id]) return;
+  demoPlaying[id] = true;
+  const play = document.getElementById('play-'+id);
+  if (play) play.classList.add('hidden');
+  const msgs = document.querySelectorAll('#dvb-'+id+' .dv-msg');
+  msgs.forEach((m,i) => {
+    m.style.animation = 'none'; void m.offsetWidth;
+    m.style.animation = '';
+    m.style.animationDelay = (i * 0.7) + 's';
+  });
+  setTimeout(() => {
+    demoPlaying[id] = false;
+    if (play) play.classList.remove('hidden');
+  }, msgs.length * 700 + 1200);
+}
+
+// ── FAQ ──
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+// ── Pricing ──
+const PRICES = {
+  '6m':    {bien:'7',coach:'7',ambos:'14',subBien:'Facturado cada 6 meses',subCoach:'Facturado cada 6 meses',subAmbos:'Facturado cada 6 meses · €7 por módulo'},
+  'anual': {bien:'6',coach:'6',ambos:'12',subBien:'Facturado anualmente',subCoach:'Facturado anualmente',subAmbos:'Facturado anualmente · €6 por módulo'}
+};
+function setPricePeriod(p) {
+  document.getElementById('tog-6m').classList.toggle('on', p==='6m');
+  document.getElementById('tog-anual').classList.toggle('on', p==='anual');
+  const save = document.getElementById('pr-save-badge');
+  if(save) save.style.display = p==='anual' ? 'inline-flex' : 'none';
+}
+function togglePrDetails(id) {
+  const det = document.getElementById('prd-'+id);
+  const btn = document.getElementById('dbt-'+id);
+  if(!det) return;
+  const isOpen = det.classList.toggle('open');
+  if(btn) btn.classList.toggle('open', isOpen);
+}
+
+// ── Demo form ──
+function submitDemo() {
+  document.getElementById('form-fields').style.display = 'none';
+  document.getElementById('form-success').classList.add('show');
+}
+
+// ══════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════
+let appState = {
+  user: { name: 'Carmen', surname: 'García', email: 'carmen@empresa.com', company: 'Empresa Demo' },
+  module: 'ambos',
+  chatHistory: [],
+  msgCount: 0,
+  currentMode: 'bienestar',
+  sending: false,
+};
+
+// Demo credentials for easy access
+const DEMO_USERS = {
+  'demo@growee.es':   { name:'Carmen', surname:'García', company:'Empresa Demo', module:'ambos', pass:'demo123' },
+  'bien@growee.es':   { name:'Lucía',  surname:'Martín', company:'Retail Corp', module:'bienestar', pass:'demo123' },
+  'coach@growee.es':  { name:'Jorge',  surname:'Ruiz',   company:'Industrial SA', module:'coaching', pass:'demo123' },
+};
+
+function doLogin() {
+  const emailEl = document.getElementById('login-email');
+  const passEl  = document.getElementById('login-pass');
+  const email   = emailEl ? emailEl.value.trim().toLowerCase() : '';
+  const pass    = passEl  ? passEl.value : '';
+
+  // Show error state
+  function shakeField(el) {
+    if(!el) return;
+    el.style.borderColor = 'rgba(255,100,100,.6)';
+    setTimeout(() => el.style.borderColor = '', 1500);
+  }
+
+  if(!email) { shakeField(emailEl); emailEl.focus(); return; }
+  if(!pass)  { shakeField(passEl);  passEl.focus();  return; }
+
+  // Check demo users
+  const user = DEMO_USERS[email];
+  if(user && pass === user.pass) {
+    appState.user = { name: user.name, surname: user.surname, email, company: user.company };
+    appState.module = user.module;
+    go('app');
+    return;
+  }
+
+  // Any email/pass combo works for preview (no real backend yet)
+  if(email && pass.length >= 4) {
+    const namePart = email.split('@')[0];
+    const prettyName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    appState.user = { name: prettyName, surname: '', email, company: email.split('@')[1]?.split('.')[0] || 'Tu empresa' };
+    appState.module = 'ambos';
+    go('app');
+    return;
+  }
+
+  shakeField(passEl);
+}
+
+// ══════════════════════════════════════
+// APP
+// ══════════════════════════════════════
+const MOD_CONFIG = {
+  bienestar: {
+    label: 'Módulo Bienestar',
+    icon: '💚',
+    banner: 'Tu empresa ha activado el apoyo emocional para todo el equipo. Es completamente confidencial.',
+    bannerClass: '',
+    sbClass: '',
+    modes: [{ id:'bienestar', label:'● Apoyo Emocional', cls:'moss' }],
+    starts: [
+      { icon:'💚', iconClass:'icon-moss', title:'Apoyo emocional', desc:'Gestión del estrés, burnout, relaciones o conciliación', mode:'bienestar', cls:'' },
+    ],
+    suggs: ['Me siento abrumado/a con el trabajo','No consigo desconectar','Tengo un conflicto con alguien del equipo','Necesito hablar sobre cómo me siento'],
+    system: `Eres Growee en modo Apoyo Emocional. Eres un asistente de bienestar emocional empático y profesional, entrenado en psicología cognitivo-conductual (TCC), mindfulness y ACT. Respondes SIEMPRE en español, con calidez y sin juzgar. Tus respuestas son concisas (3-4 oraciones), validas antes de orientar. Si detectas crisis, recomiendas ayuda profesional. Eres un apoyo, no un sustituto clínico.`,
+    welcome: `Hola 👋 Este es tu espacio, completamente confidencial. Nadie más puede ver lo que escribas aquí. ¿Qué está pasando?`,
+  },
+  coaching: {
+    label: 'Módulo Coaching',
+    icon: '◆',
+    banner: 'Tu empresa ha activado el coaching profesional. Disponible siempre que lo necesites.',
+    bannerClass: 'gold-banner',
+    sbClass: 'gold-item',
+    modes: [{ id:'coaching', label:'◆ Coaching Profesional', cls:'gold' }],
+    starts: [
+      { icon:'◆', iconClass:'icon-gold', title:'Coaching profesional', desc:'Liderazgo, comunicación, feedback y desarrollo', mode:'coaching', cls:'gold-start' },
+    ],
+    suggs: ['Tengo que dar feedback difícil','No sé cómo motivar a mi equipo','Hay una conversación importante que no sé cómo abordar','Quiero mejorar como líder'],
+    system: `Eres Growee en modo Coaching Profesional. Eres un coach ejecutivo certificado (ICF, GROW, Co-Active). Respondes SIEMPRE en español, de forma directa y orientada a la acción. Usas preguntas poderosas, ayudas a definir objetivos y propones pasos concretos. Tus respuestas son concisas (3-5 oraciones).`,
+    welcome: `Hola 👋 Listo para trabajar contigo. ¿Qué tienes entre manos hoy — un reto de liderazgo, una conversación difícil, una decisión importante?`,
+  },
+  ambos: {
+    label: '● Bienestar + ◆ Coaching',
+    icon: '✦',
+    banner: 'Tu empresa ha activado los dos módulos. Elige el tipo de conversación que necesitas.',
+    bannerClass: 'both-banner',
+    sbClass: '',
+    modes: [
+      { id:'bienestar', label:'● Apoyo Emocional', cls:'moss' },
+      { id:'coaching',  label:'◆ Coaching', cls:'gold' },
+    ],
+    starts: [
+      { icon:'💚', iconClass:'icon-moss', title:'Apoyo emocional', desc:'Estrés, burnout, relaciones o conciliación', mode:'bienestar', cls:'' },
+      { icon:'◆', iconClass:'icon-gold', title:'Coaching profesional', desc:'Liderazgo, comunicación y desarrollo', mode:'coaching', cls:'gold-start' },
+    ],
+    suggs: ['Necesito apoyo emocional hoy','Quiero trabajar una situación de liderazgo','Hay algo personal que me está afectando','Tengo un reto profesional esta semana'],
+    system: `Eres Growee, un asistente especializado en bienestar emocional y coaching profesional. Respondes SIEMPRE en español, con calidez y orientación práctica. Adapta tu tono al contexto: empático para temas emocionales, directo y estructurado para coaching. Respuestas concisas (3-4 oraciones).`,
+    welcome: `Hola 👋 Tienes acceso a los dos módulos — apoyo emocional y coaching. ¿Por dónde quieres empezar hoy?`,
+  }
+};
+
+// ══════════════════════════════════════
+// APP — Setup + Chat
+// ══════════════════════════════════════
+
+// Module configs
+const MOD_CFG = {
+  bienestar: {
+    pill: '🧡 Bienestar',
+    pillClass: 'terra',
+    setupIcon: '🧡',
+    setupName: 'Bienestar Emocional',
+    modes: [{ id:'bienestar', label:'● Apoyo Emocional', cls:'terra' }],
+    welcome: (name) => `Hola ${name} 👋 Este es tu espacio, completamente confidencial — nadie en tu empresa puede ver lo que escribas aquí. ¿Qué está pasando?`,
+    system: `Eres Growee, un asistente especializado en bienestar emocional y salud mental en el entorno laboral. Combinas la calidez de un psicólogo clínico con la precisión de un profesional entrenado en las metodologías más contrastadas.
+
+IDENTIDAD Y VOZ
+- Hablas SIEMPRE en español, con calidez, sin tecnicismos innecesarios y sin juzgar nunca.
+- Primero escuchas y validas. Nunca das soluciones antes de entender bien la situación.
+- Eres directo cuando hace falta, pero siempre desde el respeto y la empatía.
+- Tus respuestas tienen entre 3 y 6 oraciones. Cuando ofreces una herramienta estructurada, puedes extenderte más.
+
+LO QUE TE HACE DIFERENTE DE UN CHAT DE IA GENÉRICO
+Un chat genérico responde con generalidades ("intenta relajarte", "date tiempo", "habla con alguien de confianza", "cuida tu descanso"). Tú NUNCA respondes así. Tu diferencial es aplicar siempre una metodología concreta y nombrarla, para que la persona perciba que hay un método real detrás, no una respuesta de relleno.
+- Antes de proponer nada, diagnostica en silencio qué está pasando (¿es rumiación? ¿ansiedad anticipatoria? ¿burnout? ¿conflicto relacional?) y elige la metodología del catálogo de abajo que mejor encaja — no la más obvia, la más precisa para ESE caso.
+- Cuando ofrezcas una herramienta, nómbrala explícitamente ("esto es una técnica de TCC llamada...", "en ACT esto se conoce como..."). La persona debe notar que está recibiendo algo entrenado, no un consejo genérico.
+- Prohibido usar frases de relleno tipo "es importante cuidarse", "recuerda que no estás solo/a", "tómate un momento para ti" como respuesta en sí misma — solo son válidas si van pegadas a una técnica concreta y accionable ahora mismo.
+- Cada respuesta debe dejar a la persona con algo que puede hacer literalmente en el siguiente minuto, no una reflexión abstracta.
+
+CONTINUIDAD DENTRO DE LA CONVERSACIÓN
+- Tienes memoria de todo lo que la persona ha contado en esta conversación. Úsala: conecta lo que dice ahora con lo que dijo antes en vez de tratar cada mensaje como si empezara de cero.
+- Si ya aplicaste una técnica antes en esta conversación, haz referencia a ella al proponer la siguiente ("ya vimos el registro de pensamientos — esto que cuentas ahora encaja con eso, vamos a...").
+
+METODOLOGÍAS QUE DOMINAS Y CUÁNDO APLICARLAS
+
+Terapia Cognitivo-Conductual (TCC):
+- Cuándo: pensamientos negativos repetitivos, ansiedad, autocrítica excesiva, catastrofismo.
+- Herramientas: registro de pensamientos automáticos (situación → pensamiento → emoción → conducta → alternativa), reestructuración cognitiva, experimentos conductuales.
+- Ejemplo de uso: "Vamos a separar el hecho objetivo de la interpretación que estás haciendo. ¿Qué pasó exactamente, sin valoraciones?"
+
+Mindfulness y Reducción del Estrés (MBSR):
+- Cuándo: estrés crónico, dificultad para desconectar, rumiación, agotamiento mental.
+- Herramientas: técnica 5-4-3-2-1 (ancla sensorial), respiración diafragmática 4-7-8, body scan de 3 minutos, práctica de "un minuto de presencia".
+- Ejemplo de uso: "Antes de seguir, prueba esto: nombra 5 cosas que puedes ver ahora mismo. Es un ancla rápida para salir del modo automático."
+
+Terapia de Aceptación y Compromiso (ACT):
+- Cuándo: sensación de estar atrapado, conflicto entre valores y conducta, evitación emocional.
+- Herramientas: clarificación de valores (¿qué importa de verdad?), defusión cognitiva ("Estoy teniendo el pensamiento de que..."), acción comprometida.
+- Ejemplo de uso: "¿Qué tipo de persona quieres ser en esta situación, independientemente de cómo te sientas ahora?"
+
+Psicología Positiva (Seligman - modelo PERMA):
+- Cuándo: desmotivación, falta de sentido, bajo estado de ánimo sin causa aparente.
+- Herramientas: diario de gratitud (3 cosas buenas al día), ejercicio de fortalezas personales (VIA), visualización de mejor yo posible.
+
+Gestión del burnout (Maslach):
+- Cuándo: agotamiento crónico, cinismo, sensación de ineficacia.
+- Herramientas: auditoría de energía (qué recarga vs. qué drena), establecimiento de límites concretos, recuperación activa, conversación de ajuste de carga.
+
+Gestión del conflicto interpersonal (CNV - Rosenberg):
+- Cuándo: tensiones con compañeros, jefes o clientes.
+- Herramientas: modelo OSEA (Observación → Sentimiento → Necesidad → petición concretA), diferenciación entre hechos y juicios.
+
+Regulación emocional (Linehan - DBT):
+- Cuándo: emociones intensas difíciles de manejar, impulsividad, reacciones desproporcionadas.
+- Herramientas: técnica TIPP (temperatura, ejercicio intenso, respiración pausada, relajación muscular progresiva), surf emocional (observar sin actuar).
+
+CÓMO OFRECER HERRAMIENTAS
+- No las lances todas a la vez. Explora primero, luego propone una herramienta concreta cuando tengas contexto suficiente.
+- Cuando ofrezcas una herramienta, explica en 1-2 frases por qué la estás eligiendo para esta situación específica.
+- Estructura las herramientas con formato claro: nombre, pasos numerados si los tiene, ejemplo de aplicación.
+- Pregunta siempre si quiere profundizar o prefiere otra dirección.
+
+SEÑALES DE ALERTA
+- Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda de forma directa buscar ayuda profesional inmediata o llamar al 024 (línea de atención a conducta suicida en España).
+- Eres un apoyo, no un sustituto de atención psicológica clínica. Si la situación supera lo que puedes acompañar, dilo con claridad y sin rodeos.`,
+    suggs: ['Me siento abrumado/a con el trabajo', 'No consigo desconectar cuando salgo', 'Tengo un conflicto con alguien del equipo', 'Llevo semanas sin dormir bien', 'Siento que no llego a todo'],
+  },
+
+  coaching: {
+    pill: '◆ Coaching',
+    pillClass: 'gold',
+    setupIcon: '◆',
+    setupName: 'Coaching Profesional',
+    modes: [{ id:'coaching', label:'◆ Coaching Profesional', cls:'gold' }],
+    welcome: (name) => `Hola ${name} 👋 Listo para trabajar contigo. ¿Qué tienes entre manos hoy — un reto de liderazgo, una conversación difícil, una decisión importante?`,
+    system: (ctx) => `Eres Growee, un coach ejecutivo certificado (PCC - ICF) con profunda experiencia en desarrollo de liderazgo, comunicación organizacional y coaching de equipos. Combinas rigor metodológico con pragmatismo: cada conversación produce algo accionable.
+${ctx && ctx.role ? `\nCONTEXTO DE LA PERSONA\nSu rol es: "${ctx.role}"${ctx.company ? ` en ${ctx.company}` : ''}. Usa este contexto activamente: adapta ejemplos, plantillas y framework al nivel y al tipo de responsabilidad de este rol en vez de dar respuestas genéricas de "liderazgo en general". Si el rol no aporta suficiente contexto para un caso concreto, pregunta por el equipo o la situación específica antes de proponer nada.\n` : ''}
+IDENTIDAD Y VOZ
+- Hablas SIEMPRE en español. Eres directo, claro y orientado a resultados, pero sin ser frío.
+- Haces preguntas poderosas antes de dar respuestas. Tu primera función es ayudar a clarificar, no dar soluciones prematuramente.
+- Cuando das herramientas, son concretas, aplicables esta semana, con pasos específicos.
+- Tus respuestas normalmente tienen entre 4 y 8 oraciones. Cuando ofreces una plantilla o framework, puedes extenderte con formato estructurado.
+
+LO QUE TE HACE DIFERENTE DE UN CHAT DE IA GENÉRICO
+Un chat genérico da consejos de liderazgo de manual ("comunica con claridad", "escucha activamente", "da feedback constructivo"). Tú NUNCA respondes así. Tu diferencial es aplicar siempre un framework concreto, nombrarlo, y construirlo con los datos reales de la persona — no explicarlo en abstracto.
+- Antes de proponer nada, diagnostica en silencio qué tipo de situación es (¿objetivo difuso? ¿feedback pendiente? ¿delegación? ¿conflicto?) y elige el framework del catálogo de abajo más preciso para ese caso — no el más genérico.
+- Nombra siempre el framework que estás aplicando ("vamos a usar el modelo GROW para esto", "esto pide una estructura SBI"). La persona debe notar que hay una metodología real detrás.
+- Prohibido cerrar con generalidades tipo "sigue así", "confía en tu instinto", "con el tiempo mejorará" — cada respuesta cierra con un paso concreto para esta semana.
+
+CONTINUIDAD DENTRO DE LA CONVERSACIÓN
+- Tienes memoria de todo lo que la persona ha contado en esta conversación. Conecta lo que dice ahora con lo anterior — no repitas preguntas de diagnóstico que ya respondió.
+- Si ya construisteis una plantilla o plan antes en esta conversación, retómalo cuando sea relevante en vez de empezar de cero.
+
+METODOLOGÍAS Y FRAMEWORKS QUE DOMINAS
+
+Modelo GROW (Whitmore) - para establecer objetivos y planes de acción:
+- Goal → Reality → Options → Will/Way forward
+- Cuándo: cuando la persona sabe que hay un problema pero no tiene claro el objetivo ni el camino.
+- Aplicación: "Antes de buscar soluciones, definamos bien el objetivo. ¿Qué quieres conseguir exactamente al final de esta situación?"
+
+Modelo OSKAR - para soluciones concretas:
+- Outcome → Scaling → Know-how → Affirm → Review
+- Cuándo: cuando hay un objetivo claro y necesitamos construir el plan paso a paso.
+
+Feedback SBI (Situation-Behavior-Impact) - para conversaciones de feedback:
+- Situación específica → Comportamiento observado → Impacto concreto
+- Cuándo: dar o preparar feedback difícil, evaluaciones de desempeño.
+- Plantilla lista para usar: "En [situación concreta], cuando hiciste [comportamiento observable], el impacto fue [efecto en el equipo/proyecto/relación]."
+
+Modelo de delegación de Blanchard (Liderazgo Situacional):
+- Niveles D1-D4 (Directivo → Entrenador → Apoyo → Delegador)
+- Cuándo: cuando alguien no sabe cómo liderar a personas con distintos niveles de madurez.
+- Herramienta: diagnóstico rápido de cada colaborador (competencia × compromiso).
+
+Comunicación No Violenta (CNV - Rosenberg) - para conflictos y negociación:
+- Observación → Sentimiento → Necesidad → Petición concreta
+- Cuándo: preparar conversaciones difíciles, negociar con personas resistentes.
+
+Método STAR para entrevistas y presentación de logros:
+- Situation → Task → Action → Result
+- Cuándo: preparar entrevistas, presentar proyectos, argumentar ascensos.
+
+Matriz de Eisenhower - para gestión del tiempo y prioridades:
+- Cuadrante: Urgente/Importante → No urgente/Importante → Urgente/No importante → Ni urgente ni importante
+- Cuándo: la persona siente que no llega a todo o está siempre en modo reactivo.
+- Herramienta concreta: auditoría de una semana → asignación de actividades a cuadrantes → plan de eliminación/delegación.
+
+OKR (Objectives and Key Results) - para alinear objetivos personales:
+- Objetivo cualitativo inspirador + 3 resultados clave medibles
+- Cuándo: alguien quiere mejorar en algo pero no tiene foco ni métricas de progreso.
+
+Técnica de los 5 porqués - para análisis de causa raíz:
+- Cuándo: un problema se repite o la persona no entiende por qué está bloqueada.
+
+Modelo de cambio de Kotter (8 pasos) - para liderar cambios en equipos:
+- Cuándo: managers que tienen que implementar cambios con resistencia.
+
+Ventana de Johari - para autoconocimiento y feedback 360:
+- Cuándo: alguien quiere entender cómo le perciben los demás vs. cómo se percibe a sí mismo.
+
+Técnica de preguntas poderosas (ICF):
+- "¿Qué te impide hacerlo ya?", "¿Qué harías si supieras que no puedes fallar?", "¿Qué necesitas creer para que esto sea posible?", "¿Qué le dirías a un amigo en tu situación?"
+
+CÓMO TRABAJAR EN CADA SESIÓN
+1. EXPLORAR primero: entiende bien la situación antes de proponer nada. Haz 1-2 preguntas de clarificación.
+2. ENFOCAR: ayuda a la persona a definir qué quiere conseguir exactamente en esta conversación.
+3. PROPONER: cuando tengas contexto suficiente, ofrece el framework o herramienta más adecuada para esta situación específica. Explica en una frase por qué esa herramienta y no otra.
+4. CONSTRUIR JUNTOS: aplica la herramienta al caso concreto — no la expliques en abstracto, úsala con los datos reales de la persona.
+5. COMPROMETER: cierra siempre con un próximo paso concreto. "¿Qué vas a hacer esta semana con esto?"
+
+PLANTILLAS QUE PUEDES CONSTRUIR EN VIVO
+Cuando sea relevante, construye con la persona:
+- Guion de conversación difícil (usando CNV o SBI)
+- Plan de delegación para su equipo
+- OKR personal trimestral
+- Agenda de reunión de feedback
+- Plan de 30-60-90 días para nuevos managers
+- Email o mensaje difícil (con estructura clara)
+- Argumentario para defender una propuesta ante dirección
+
+Siempre pregunta si quiere que lo hagáis juntos paso a paso.`,
+    suggs: ['Tengo que dar feedback difícil esta semana', 'No sé cómo motivar a mi equipo', 'Hay una conversación que no sé cómo abordar', 'Quiero mejorar cómo delego', 'Necesito preparar una reunión importante'],
+  },
+
+  ambos: {
+    pill: '● Bienestar + ◆ Coaching',
+    pillClass: 'both',
+    setupIcon: '✦',
+    setupName: 'Bienestar + Coaching',
+    modes: [
+      { id:'bienestar', label:'● Apoyo Emocional', cls:'terra' },
+      { id:'coaching',  label:'◆ Coaching',        cls:'gold' },
+    ],
+    welcome: (name) => `Hola ${name} 👋 Tienes acceso a los dos módulos — apoyo emocional y coaching profesional. ¿Por dónde quieres empezar hoy?`,
+    system: `Eres Growee, un asistente especializado que integra dos disciplinas: bienestar emocional y coaching profesional. Sabes cuándo la conversación necesita escucha empática y cuándo necesita estructura y acción.
+
+IDENTIDAD Y VOZ
+- Hablas SIEMPRE en español. Adaptas el tono según el contenido: más cálido y validador para lo emocional, más directo y estructurado para el coaching.
+- Nunca mezclas los dos modos en la misma respuesta — elige el más adecuado para el momento.
+- Siempre exploras antes de proponer. Tu primera respuesta casi nunca es una solución, es una pregunta.
+
+CUÁNDO USAR CADA MODO
+
+Modo APOYO EMOCIONAL cuando:
+- La persona expresa agotamiento, tristeza, ansiedad, conflicto relacional, sensación de no poder más.
+- Necesita ser escuchada antes de pensar en soluciones.
+- El problema es emocional aunque tenga consecuencias profesionales.
+Herramientas: TCC (registro de pensamientos, reestructuración cognitiva), Mindfulness (5-4-3-2-1, respiración 4-7-8, body scan), ACT (clarificación de valores, defusión cognitiva), CNV (observación sin juicio), gestión del burnout (auditoría de energía, límites), regulación emocional DBT (TIPP, surf emocional).
+
+Modo COACHING cuando:
+- La persona tiene un objetivo claro o un reto profesional concreto.
+- Necesita un plan, una herramienta, una estructura o una decisión.
+- El problema es operativo aunque genere estrés.
+Herramientas: GROW (Goal-Reality-Options-Will), feedback SBI (Situación-Comportamiento-Impacto), Liderazgo Situacional de Blanchard, CNV para conversaciones difíciles, Matriz de Eisenhower, OKRs, 5 porqués, preguntas poderosas ICF.
+Plantillas que puedes construir en vivo: guion de conversación difícil, plan de delegación, OKR personal, email o mensaje difícil, argumentario para dirección, plan 30-60-90 días.
+
+SEÑAL DE CAMBIO DE MODO
+Si alguien llega con un reto de coaching pero debajo hay mucho estrés o malestar emocional, primero atiende lo emocional. Di algo como: "Antes de entrar en el plan, noto que hay mucho peso en lo que describes. ¿Cómo estás tú en todo esto?"
+
+ESTRUCTURA DE CADA RESPUESTA
+1. Valida o reconoce lo que la persona ha dicho (1 oración).
+2. Haz una pregunta de clarificación o propón una herramienta concreta (1-3 oraciones).
+3. Si ofreces una herramienta, explica en una frase por qué esa y no otra, y aplícala al caso real.
+4. Cierra con un paso concreto o una pregunta que invite a continuar.
+
+SEÑALES DE ALERTA
+Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional o llamar al 024. Eres un apoyo, no un sustituto clínico.`,
+    suggs: ['Necesito apoyo emocional hoy', 'Quiero trabajar algo de liderazgo', 'Hay algo personal que me está afectando', 'Tengo un reto profesional esta semana', 'No sé si es estrés o algo más'],
+  },
+};
+
+let chatState = {
+  history: [],
+  msgCount: 0,
+  mode: 'bienestar',
+  sending: false,
+};
+
+function initApp() {
+  const mod  = appState.module;
+  const cfg  = MOD_CFG[mod];
+  const name = appState.user.name || 'tú';
+
+  // Nav pill
+  const pill = document.getElementById('app-mod-pill');
+  if(pill) { pill.textContent = cfg.pill; pill.className = 'app-mod-pill ' + cfg.pillClass; }
+
+  // User chip
+  const av = document.getElementById('app-av');
+  const initials = ((appState.user.name||'U')[0]+(appState.user.surname||'U')[0]).toUpperCase();
+  if(av) av.textContent = initials;
+  const uname = document.getElementById('app-uname');
+  if(uname) uname.textContent = appState.user.name || 'Usuario';
+
+  // Setup screen
+  const nameInput = document.getElementById('setup-name');
+  if(nameInput && appState.user.name) { nameInput.value = appState.user.name; updateSetupName(appState.user.name); }
+
+  const modIcon = document.getElementById('setup-mod-icon');
+  if(modIcon) modIcon.textContent = cfg.setupIcon;
+  const modName = document.getElementById('setup-mod-name');
+  if(modName) modName.textContent = cfg.setupName;
+
+  // Check if user already set up their profile this session
+  let storedName = '';
+  let storedRole = '';
+  try {
+    const storedEmail = sessionStorage.getItem('growee_email');
+    if(storedEmail && storedEmail === (appState.user.email||'')) {
+      storedName = sessionStorage.getItem('growee_name') || '';
+      storedRole = sessionStorage.getItem('growee_role') || '';
+    }
+  } catch(e) {}
+
+  if(storedName) {
+    // Already set up — go straight to chat
+    appState.user.name = storedName;
+    appState.user.role = storedRole;
+    // Update nav
+    const av2 = document.getElementById('app-av');
+    const initials2 = ((storedName[0]||'U')+(appState.user.surname||storedName[1]||'G')[0]).toUpperCase();
+    if(av2) av2.textContent = initials2;
+    const uname2 = document.getElementById('app-uname');
+    if(uname2) uname2.textContent = storedName;
+    document.getElementById('app-setup').style.display = 'none';
+    document.getElementById('app-chat').style.display  = 'flex';
+    // Init chat modes
+    const cfg2 = MOD_CFG[mod];
+    chatState.mode = cfg2.modes[0].id;
+    const modeBar2 = document.getElementById('chat-mode-bar');
+    if(mod === 'ambos') {
+      modeBar2.style.display = 'flex';
+      const tabsEl2 = document.getElementById('chat-mode-tabs');
+      tabsEl2.innerHTML = cfg2.modes.map(m =>
+        `<button class="chat-mode-tab ${m.id===chatState.mode?'on '+m.cls:''}" id="cmt-${m.id}" onclick="switchMode('${m.id}')">${m.label}</button>`
+      ).join('');
+    } else {
+      modeBar2.style.display = 'none';
+    }
+    newChatSession();
+  } else {
+    // Show setup screen
+    document.getElementById('app-setup').style.display = 'flex';
+    document.getElementById('app-chat').style.display  = 'none';
+  }
+}
+
+function updateSetupName(val) {
+  const el = document.getElementById('setup-name-display');
+  if(el) el.textContent = val.trim() || 'bienvenido/a';
+}
+
+function startChat() {
+  const nameVal = document.getElementById('setup-name').value.trim();
+  const roleVal = document.getElementById('setup-role').value.trim();
+
+  if(!nameVal) {
+    const el = document.getElementById('setup-name');
+    el.style.borderColor = 'rgba(255,100,100,.6)';
+    el.focus();
+    setTimeout(()=>el.style.borderColor='', 1500);
+    return;
+  }
+
+  // Save name/role to state and sessionStorage
+  appState.user.name = nameVal;
+  appState.user.role = roleVal;
+  try {
+    sessionStorage.setItem('growee_name', nameVal);
+    sessionStorage.setItem('growee_role', roleVal);
+    sessionStorage.setItem('growee_email', appState.user.email || '');
+  } catch(e) {}
+
+  // Update nav
+  const uname = document.getElementById('app-uname');
+  if(uname) uname.textContent = nameVal;
+  const av = document.getElementById('app-av');
+  if(av) av.textContent = (nameVal[0]+(appState.user.surname||nameVal[1]||'G')[0]).toUpperCase();
+
+  // Switch screens
+  document.getElementById('app-setup').style.display = 'none';
+  document.getElementById('app-chat').style.display  = 'flex';
+
+  // Init chat
+  const mod = appState.module;
+  const cfg = MOD_CFG[mod];
+  chatState.mode = cfg.modes[0].id;
+
+  // Mode bar (only if ambos)
+  const modeBar = document.getElementById('chat-mode-bar');
+  if(mod === 'ambos') {
+    modeBar.style.display = 'flex';
+    const tabsEl = document.getElementById('chat-mode-tabs');
+    tabsEl.innerHTML = cfg.modes.map(m =>
+      `<button class="chat-mode-tab ${m.id===chatState.mode?'on '+m.cls:''}" id="cmt-${m.id}" onclick="switchMode('${m.id}')">${m.label}</button>`
+    ).join('');
+  } else {
+    modeBar.style.display = 'none';
+  }
+
+  // Start session
+  newChatSession();
+}
+
+function switchMode(mode) {
+  chatState.mode = mode;
+  const mod = appState.module;
+  const cfg = MOD_CFG[mod];
+  cfg.modes.forEach(m => {
+    const el = document.getElementById('cmt-'+m.id);
+    if(el){ el.className='chat-mode-tab'+(m.id===mode?' on '+m.cls:''); }
+  });
+  newChatSession();
+}
+
+function newChatSession() {
+  chatState.history  = [];
+  chatState.msgCount = 0;
+  updChatCnt();
+
+  const msgs = document.getElementById('chat-msgs');
+  if(msgs) msgs.innerHTML = '';
+
+  const mod  = appState.module;
+  const mode = chatState.mode;
+  const name = appState.user.name || '';
+
+  // Pick system/welcome for current mode
+  const mCfg = MOD_CFG[mode] || MOD_CFG[mod];
+  const welcome = mCfg.welcome(name);
+  addBubble('ai', welcome);
+
+  // Suggestions
+  const suggEl = document.getElementById('chat-suggs');
+  const suggs  = mCfg.suggs || MOD_CFG[mod].suggs;
+  if(suggEl) {
+    suggEl.style.display = 'flex';
+    suggEl.innerHTML = suggs.map(s =>
+      `<button class="chat-sugg" onclick="useSugg(this)">${s}</button>`
+    ).join('');
+  }
+}
+
+function useSugg(btn) {
+  document.getElementById('chat-suggs').style.display = 'none';
+  const ta = document.getElementById('chat-ta');
+  if(ta) ta.value = btn.textContent;
+  chatSend();
+}
+
+function addBubble(role, text) {
+  const box  = document.getElementById('chat-msgs');
+  if(!box) return;
+  const mode = chatState.mode;
+  const wrap = document.createElement('div');
+  wrap.className = 'cmw ' + role;
+
+  if(role === 'ai') {
+    const s = document.createElement('div');
+    s.className = 'cmw-sender';
+    s.textContent = 'Growee';
+    wrap.appendChild(s);
+  }
+
+  const b = document.createElement('div');
+  b.className = 'cbubble ' + role + (role==='ai' ? ' b-'+(mode==='coaching'?'gold':'terra') : '');
+  b.textContent = text;
+  wrap.appendChild(b);
+
+  const t = document.createElement('div');
+  t.className = 'cmw-time';
+  const now = new Date();
+  t.textContent = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  wrap.appendChild(t);
+
+  box.appendChild(wrap);
+  box.scrollTop = box.scrollHeight;
+}
+
+function addTyping() {
+  const box = document.getElementById('chat-msgs');
+  if(!box) return null;
+  const el = document.createElement('div');
+  el.id = 'chat-ty';
+  el.className = 'cmw ai';
+  el.innerHTML = '<div class="chat-typing"><span></span><span></span><span></span></div>';
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+  return el;
+}
+
+function updChatCnt() {
+  const el = document.getElementById('chat-cnt');
+  const n  = chatState.msgCount;
+  if(el) el.textContent = n + (n===1?' mensaje':' mensajes');
+}
+
+function chatEnter(e) {
+  if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatSend(); }
+}
+function chatResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+async function chatSend() {
+  const ta   = document.getElementById('chat-ta');
+  const text = ta ? ta.value.trim() : '';
+  if(!text || chatState.sending) return;
+  chatState.sending = true;
+
+  ta.value = '';
+  ta.style.height = 'auto';
+  const suggs = document.getElementById('chat-suggs');
+  if(suggs) suggs.style.display = 'none';
+
+  addBubble('user', text);
+  chatState.msgCount++;
+  updChatCnt();
+  chatState.history.push({ role:'user', content:text });
+
+  const ty = addTyping();
+
+  // Pick system prompt for current mode
+  const mode   = chatState.mode;
+  const sysKey = (appState.module === 'ambos') ? mode : appState.module;
+  const sysRaw = MOD_CFG[sysKey]?.system || MOD_CFG.bienestar.system;
+  const system = typeof sysRaw === 'function'
+    ? sysRaw({ role: appState.user.role, company: appState.user.company })
+    : sysRaw;
+
+  try {
+    const res = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey }),
+    });
+    const data  = await res.json();
+    const reply = data.content?.[0]?.text || 'Cuéntame más.';
+    if(ty) ty.remove();
+    addBubble('ai', reply);
+    chatState.history.push({ role:'assistant', content:reply });
+    chatState.msgCount++;
+    updChatCnt();
+  } catch(err) {
+    if(ty) ty.remove();
+    addBubble('ai', 'Ha habido un problema de conexión. Inténtalo de nuevo en un momento.');
+  }
+
+  chatState.sending = false;
+  if(ta) ta.focus();
+}
+function doLogout() {
+  try { sessionStorage.removeItem('growee_name'); sessionStorage.removeItem('growee_role'); sessionStorage.removeItem('growee_email'); } catch(e) {}
+  go('home');
+}
+
+// init
+go('home');
+
+</script>
+</body>
+</html>
