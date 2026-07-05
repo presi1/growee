@@ -1,0 +1,334 @@
+{
+  "fragments": [
+    {
+      "file": "bienestar/tcc-reestructuracion-cognitiva.md",
+      "modulo": "bienestar",
+      "metodologia": "Reestructuración cognitiva",
+      "origen": "Aaron Beck, TCC",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tcc-catastrofizacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Catastrofización",
+      "origen": "Aaron Beck, TCC — catálogo de distorsiones cognitivas",
+      "tipo": "distorsion_especifica",
+      "fragmento_relacionado": "tcc-reestructuracion-cognitiva",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tcc-todo-o-nada.md",
+      "modulo": "bienestar",
+      "metodologia": "Pensamiento todo-o-nada",
+      "origen": "Aaron Beck, TCC — catálogo de distorsiones cognitivas",
+      "tipo": "distorsion_especifica",
+      "fragmento_relacionado": "tcc-reestructuracion-cognitiva",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tcc-sobregeneralizacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Sobregeneralización",
+      "origen": "Aaron Beck, TCC — catálogo de distorsiones cognitivas",
+      "tipo": "distorsion_especifica",
+      "fragmento_relacionado": "tcc-reestructuracion-cognitiva",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tcc-personalizacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Personalización",
+      "origen": "Aaron Beck, TCC — catálogo de distorsiones cognitivas",
+      "tipo": "distorsion_especifica",
+      "fragmento_relacionado": "tcc-reestructuracion-cognitiva",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tcc-lectura-de-mente.md",
+      "modulo": "bienestar",
+      "metodologia": "Lectura de mente",
+      "origen": "Aaron Beck, TCC — catálogo de distorsiones cognitivas",
+      "tipo": "distorsion_especifica",
+      "fragmento_relacionado": "tcc-reestructuracion-cognitiva",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tcc-filtraje-mental.md",
+      "modulo": "bienestar",
+      "metodologia": "Filtraje mental",
+      "origen": "Aaron Beck, TCC — catálogo de distorsiones cognitivas",
+      "tipo": "distorsion_especifica",
+      "fragmento_relacionado": "tcc-reestructuracion-cognitiva",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/grounding-5-4-3-2-1.md",
+      "modulo": "bienestar",
+      "metodologia": "Grounding / anclaje sensorial",
+      "origen": "Técnica común en terapias de trauma y ansiedad",
+      "tipo": "regulacion_en_crisis",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/dbt-tolerancia-al-malestar.md",
+      "modulo": "bienestar",
+      "metodologia": "Tolerancia al malestar",
+      "origen": "Marsha Linehan, DBT",
+      "tipo": "regulacion_en_crisis",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/autocompasion.md",
+      "modulo": "bienestar",
+      "metodologia": "Autocompasión",
+      "origen": "Kristin Neff",
+      "tipo": "relacion_con_uno_mismo",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/activacion-conductual.md",
+      "modulo": "bienestar",
+      "metodologia": "Activación conductual",
+      "origen": "Jacobson, Martell, Dimidjian",
+      "tipo": "relacion_con_uno_mismo",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/comunicacion-no-violenta.md",
+      "modulo": "bienestar",
+      "metodologia": "Comunicación No Violenta",
+      "origen": "Marshall Rosenberg",
+      "tipo": "relaciones_y_comunicacion",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/estilos-de-apego.md",
+      "modulo": "bienestar",
+      "metodologia": "Estilos de apego adulto",
+      "origen": "Bowlby, Ainsworth, Hazan y Shaver",
+      "tipo": "relaciones_y_comunicacion",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/act-defusion-y-aceptacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Defusión cognitiva y aceptación",
+      "origen": "Steven Hayes, ACT",
+      "tipo": "aceptacion_y_sentido",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/duelo-y-perdida.md",
+      "modulo": "bienestar",
+      "metodologia": "Duelo y pérdida",
+      "origen": "Kübler-Ross; Worden; Stroebe y Schut",
+      "tipo": "aceptacion_y_sentido",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tcc-i-sueno.md",
+      "modulo": "bienestar",
+      "metodologia": "TCC para el insomnio — control de estímulos",
+      "origen": "Richard Bootzin; Charles Morin",
+      "tipo": "sueno",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/asertividad-y-limites.md",
+      "modulo": "bienestar",
+      "metodologia": "Asertividad y límites — guion DESC",
+      "origen": "Wolpe, Salter; Sharon y Gordon Bower",
+      "tipo": "relaciones_y_comunicacion",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/soledad.md",
+      "modulo": "bienestar",
+      "metodologia": "Soledad — calidad frente a cantidad de conexión",
+      "origen": "John Cacioppo",
+      "tipo": "relaciones_y_comunicacion",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/procrastinacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Procrastinación como regulación emocional",
+      "origen": "Timothy Pychyl; Fuschia Sirois",
+      "tipo": "relacion_con_uno_mismo",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/act-valores-y-accion-comprometida.md",
+      "modulo": "bienestar",
+      "metodologia": "Clarificación de valores y acción comprometida",
+      "origen": "Steven Hayes, ACT",
+      "tipo": "aceptacion_y_sentido",
+      "fragmento_relacionado": "act-defusion-y-aceptacion",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/vocabulario-emocional.md",
+      "modulo": "bienestar",
+      "metodologia": "Granularidad emocional",
+      "origen": "Lisa Feldman Barrett",
+      "tipo": "diagnostico_conversacional",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/grow.md",
+      "modulo": "coaching",
+      "metodologia": "Modelo GROW",
+      "origen": "John Whitmore",
+      "tipo": "estructura_de_conversacion",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/feedback-sbi.md",
+      "modulo": "coaching",
+      "metodologia": "Feedback SBI/SBII",
+      "origen": "Center for Creative Leadership",
+      "tipo": "feedback",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/liderazgo-situacional.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo Situacional",
+      "origen": "Hersey y Blanchard",
+      "tipo": "estilo_de_liderazgo",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/delegacion-efectiva.md",
+      "modulo": "coaching",
+      "metodologia": "Delegación efectiva",
+      "origen": "Extensión práctica de Liderazgo Situacional",
+      "tipo": "estilo_de_liderazgo",
+      "fragmento_relacionado": "liderazgo-situacional",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/fases-de-tuckman.md",
+      "modulo": "coaching",
+      "metodologia": "Fases de desarrollo de equipos",
+      "origen": "Bruce Tuckman",
+      "tipo": "dinamica_de_equipos",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/seguridad-psicologica.md",
+      "modulo": "coaching",
+      "metodologia": "Seguridad psicológica",
+      "origen": "Amy Edmondson",
+      "tipo": "dinamica_de_equipos",
+      "fragmento_relacionado": "fases-de-tuckman",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/teoria-autodeterminacion.md",
+      "modulo": "coaching",
+      "metodologia": "Teoría de la Autodeterminación",
+      "origen": "Edward Deci y Richard Ryan",
+      "tipo": "motivacion",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/modos-de-conflicto-thomas-kilmann.md",
+      "modulo": "coaching",
+      "metodologia": "Modos de gestión de conflicto",
+      "origen": "Thomas y Kilmann",
+      "tipo": "gestion_de_conflictos",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/gestion-del-cambio-kotter.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión del cambio (8 pasos)",
+      "origen": "John Kotter",
+      "tipo": "gestion_del_cambio",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/preocupacion-cronica.md",
+      "modulo": "bienestar",
+      "metodologia": "Intolerancia a la incertidumbre",
+      "origen": "Michel Dugas y Robert Ladouceur",
+      "tipo": "relacion_con_uno_mismo",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/perfeccionismo.md",
+      "modulo": "bienestar",
+      "metodologia": "Perfeccionismo (modelo multidimensional)",
+      "origen": "Paul Hewitt y Gordon Flett",
+      "tipo": "relacion_con_uno_mismo",
+      "fragmento_relacionado": "tcc-todo-o-nada",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    }
+  ]
+}
