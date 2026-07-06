@@ -2005,6 +2005,31 @@ ol.cbubble-list li{padding-left:.3rem}
   margin-top:.45rem;
 }
 .chat-disc{font-size:.68rem;color:var(--inv-2)}
+.chat-history-link{
+  background:none;border:none;color:var(--inv-2);font-size:.68rem;
+  text-decoration:underline;cursor:pointer;font-family:'Inter',sans-serif;padding:0;
+}
+.chat-history-link:hover{color:var(--cream)}
+
+.history-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center}
+.history-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55)}
+.history-modal-panel{
+  position:relative;background:var(--ink-2);border:1px solid var(--border);border-radius:16px;
+  width:min(560px,92vw);max-height:80vh;display:flex;flex-direction:column;overflow:hidden;
+}
+.history-modal-header{
+  padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;
+  align-items:center;justify-content:space-between;font-size:.9rem;font-weight:600;color:var(--cream);
+}
+.history-modal-close{background:none;border:none;color:var(--inv-2);font-size:1rem;cursor:pointer;padding:.2rem .4rem}
+.history-modal-close:hover{color:var(--cream)}
+.history-modal-body{overflow-y:auto;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem}
+.history-modal-loading{color:var(--inv-2);font-size:.85rem;text-align:center;padding:2rem 0}
+.history-date-sep{font-size:.7rem;color:var(--inv-2);text-align:center;margin:.6rem 0 .2rem;text-transform:uppercase;letter-spacing:.04em}
+.history-msg{font-size:.82rem;line-height:1.55;padding:.6rem .8rem;border-radius:10px;max-width:88%}
+.history-msg.user{align-self:flex-end;background:var(--cream);color:var(--ink)}
+.history-msg.assistant{align-self:flex-start;background:rgba(248,246,241,.08);border:1px solid var(--border);color:var(--cream)}
+.history-msg-time{font-size:.62rem;color:var(--inv-2);margin-top:.25rem}
 .chat-cnt{font-size:.68rem;color:var(--inv-2)}
 
 /* Mobile */
@@ -2089,7 +2114,22 @@ ol.cbubble-list li{padding-left:.3rem}
       </div>
       <div class="chat-meta">
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
+        <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
         <span class="chat-cnt" id="chat-cnt">0 mensajes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de historial completo -->
+  <div id="history-modal" class="history-modal" style="display:none">
+    <div class="history-modal-backdrop" onclick="closeFullHistory()"></div>
+    <div class="history-modal-panel">
+      <div class="history-modal-header">
+        <span>Historial completo</span>
+        <button class="history-modal-close" onclick="closeFullHistory()">✕</button>
+      </div>
+      <div class="history-modal-body" id="history-modal-body">
+        <div class="history-modal-loading">Cargando...</div>
       </div>
     </div>
   </div>
@@ -2717,7 +2757,7 @@ function initApp() {
     } else {
       modeBar2.style.display = 'none';
     }
-    newChatSession();
+    openChatSession();
   } else {
     // Show setup screen
     document.getElementById('app-setup').style.display = 'flex';
@@ -2779,7 +2819,7 @@ function startChat() {
   }
 
   // Start session
-  newChatSession();
+  openChatSession();
 }
 
 function switchMode(mode) {
@@ -2790,27 +2830,18 @@ function switchMode(mode) {
     const el = document.getElementById('cmt-'+m.id);
     if(el){ el.className='chat-mode-tab'+(m.id===mode?' on '+m.cls:''); }
   });
-  newChatSession();
+  openChatSession();
 }
 
-function newChatSession() {
-  chatState.history  = [];
-  chatState.msgCount = 0;
-  updChatCnt();
-
-  const msgs = document.getElementById('chat-msgs');
-  if(msgs) msgs.innerHTML = '';
-
+function showWelcomeAndSuggestions() {
   const mod  = appState.module;
   const mode = chatState.mode;
   const name = appState.user.name || '';
 
-  // Pick system/welcome for current mode
   const mCfg = MOD_CFG[mode] || MOD_CFG[mod];
   const welcome = mCfg.welcome(name);
   addBubble('ai', welcome);
 
-  // Suggestions
   const suggEl = document.getElementById('chat-suggs');
   const suggs  = mCfg.suggs || MOD_CFG[mod].suggs;
   if(suggEl) {
@@ -2821,11 +2852,116 @@ function newChatSession() {
   }
 }
 
+function newChatSession() {
+  // Arranque en frío, sin recuperar historial — lo usa el botón "+ Nueva sesión"
+  chatState.history  = [];
+  chatState.msgCount = 0;
+  updChatCnt();
+  const msgs = document.getElementById('chat-msgs');
+  if(msgs) msgs.innerHTML = '';
+  showWelcomeAndSuggestions();
+}
+
+async function openChatSession() {
+  // Igual que newChatSession, pero primero intenta recuperar la conversación anterior
+  chatState.history  = [];
+  chatState.msgCount = 0;
+  updChatCnt();
+  const msgs = document.getElementById('chat-msgs');
+  if(msgs) msgs.innerHTML = '';
+
+  const mode = chatState.mode;
+  let restored = false;
+
+  if (appState.user.email) {
+    try {
+      const res = await fetch('/.netlify/functions/history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userEmail: appState.user.email, modulo: mode }),
+      });
+      if (res.ok) {
+        const rows = await res.json();
+        if (Array.isArray(rows) && rows.length > 0) {
+          const MAX_RESTORE = 40; // cap para no disparar el tamaño del contexto en cada mensaje nuevo
+          const recent = rows.slice(-MAX_RESTORE);
+          recent.forEach(r => {
+            const role = r.role === 'assistant' ? 'ai' : 'user';
+            addBubble(role, r.content);
+            chatState.history.push({ role: r.role === 'assistant' ? 'assistant' : 'user', content: r.content });
+          });
+          chatState.msgCount = chatState.history.filter(m => m.role === 'user').length;
+          updChatCnt();
+          restored = true;
+        }
+      }
+    } catch (e) {
+      console.error('No se pudo recuperar el historial de conversación:', e);
+    }
+  }
+
+  if (!restored) {
+    showWelcomeAndSuggestions();
+  }
+}
+
 function useSugg(btn) {
   document.getElementById('chat-suggs').style.display = 'none';
   const ta = document.getElementById('chat-ta');
   if(ta) ta.value = btn.textContent;
   chatSend();
+}
+
+function closeFullHistory() {
+  const modal = document.getElementById('history-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function showFullHistory() {
+  const modal = document.getElementById('history-modal');
+  const body  = document.getElementById('history-modal-body');
+  if (!modal || !body) return;
+
+  modal.style.display = 'flex';
+  body.innerHTML = '<div class="history-modal-loading">Cargando...</div>';
+
+  if (!appState.user.email) {
+    body.innerHTML = '<div class="history-modal-loading">No hay historial disponible.</div>';
+    return;
+  }
+
+  try {
+    const res = await fetch('/.netlify/functions/history', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userEmail: appState.user.email, modulo: chatState.mode }),
+    });
+    const rows = res.ok ? await res.json() : [];
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      body.innerHTML = '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
+      return;
+    }
+
+    let html = '';
+    let lastDate = '';
+    rows.forEach((r) => {
+      const d = new Date(r.created_at);
+      const dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+      if (dateLabel !== lastDate) {
+        html += `<div class="history-date-sep">${dateLabel}</div>`;
+        lastDate = dateLabel;
+      }
+      const time = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+      const safe = r.content
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      html += `<div class="history-msg ${r.role}">${safe}<div class="history-msg-time">${time}</div></div>`;
+    });
+    body.innerHTML = html;
+    body.scrollTop = body.scrollHeight;
+  } catch (e) {
+    body.innerHTML = '<div class="history-modal-loading">No se pudo cargar el historial. Inténtalo de nuevo.</div>';
+  }
 }
 
 function formatAiText(text) {
@@ -2967,7 +3103,7 @@ async function chatSend() {
     const res = await fetch('/.netlify/functions/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey }),
+      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey, userEmail: appState.user.email }),
     });
     const data  = await res.json();
     const reply = data.content?.[0]?.text || 'Cuéntame más.';
