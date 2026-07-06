@@ -1,9 +1,23 @@
+/**
+ * Growee — Netlify Function: /.netlify/functions/chat
+ * ══════════════════════════════════════════════════════════
+ * Recibe el historial de chat + el system prompt base del módulo activo,
+ * recupera los fragmentos de conocimiento más relevantes para el último
+ * mensaje del usuario (RAG), y llama a Claude con todo el contexto junto.
+ *
+ * Variables de entorno necesarias en Netlify (Site settings → Environment variables):
+ *   ANTHROPIC_API_KEY
+ *   VOYAGE_API_KEY
+ *   SUPABASE_URL
+ *   SUPABASE_SERVICE_ROLE_KEY
+ */
+
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const RETRIEVAL_COUNT = 4;
+const RETRIEVAL_COUNT = 4; // nº de fragmentos a recuperar por mensaje
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
@@ -15,7 +29,7 @@ async function embedQuery(text) {
     body: JSON.stringify({
       input: [text],
       model: 'voyage-3-lite',
-      input_type: 'query',
+      input_type: 'query', // 'query' en vez de 'document': optimizado para texto de búsqueda corto
     }),
   });
   if (!res.ok) throw new Error(`Voyage AI error: ${await res.text()}`);
@@ -39,7 +53,7 @@ async function retrieveKnowledge(embedding, modulo) {
   });
   if (!res.ok) {
     console.error('Supabase retrieval error:', await res.text());
-    return [];
+    return []; // fallar en silencio: mejor responder sin RAG que no responder
   }
   return res.json();
 }
@@ -52,13 +66,28 @@ function buildKnowledgeBlock(chunks) {
   return `\n\nCONOCIMIENTO RELEVANTE PARA ESTE MENSAJE (úsalo si aplica, cita la metodología y el autor cuando lo uses; no lo menciones si no aporta nada a este mensaje concreto):\n\n${formatted}`;
 }
 
+async function saveMessage(userEmail, modulo, role, content) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/chat_messages`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ user_email: userEmail, modulo, role, content }),
+  });
+  if (!res.ok) {
+    console.error('Error guardando mensaje en el historial:', await res.text());
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   try {
-    const { messages, system, modulo } = JSON.parse(event.body);
+    const { messages, system, modulo, userEmail } = JSON.parse(event.body);
 
     if (!messages || !system) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Faltan messages o system en el body' }) };
@@ -66,6 +95,7 @@ exports.handler = async (event) => {
 
     let finalSystem = system;
 
+    // RAG: solo si sabemos de qué módulo se trata y hay al menos un mensaje del usuario
     const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
     if (modulo && lastUserMsg && VOYAGE_API_KEY && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
       try {
@@ -73,6 +103,8 @@ exports.handler = async (event) => {
         const chunks = await retrieveKnowledge(embedding, modulo);
         finalSystem += buildKnowledgeBlock(chunks);
       } catch (ragError) {
+        // Si falla la recuperación (Voyage/Supabase caídos, etc.), seguimos sin RAG
+        // en vez de romper la conversación del usuario.
         console.error('RAG error, continuando sin contexto adicional:', ragError);
       }
     }
@@ -99,6 +131,23 @@ exports.handler = async (event) => {
     }
 
     const data = await res.json();
+
+    // Guardar el intercambio en el historial persistente (si tenemos email y módulo).
+    // Se espera a que termine (aunque sea rápido) porque una función serverless puede
+    // congelarse justo después de devolver la respuesta, y el guardado se perdería.
+    if (userEmail && modulo && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+      const replyText = data.content?.[0]?.text || '';
+      const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
+      try {
+        await Promise.all([
+          lastUserMsg ? saveMessage(userEmail, modulo, 'user', lastUserMsg.content) : null,
+          replyText ? saveMessage(userEmail, modulo, 'assistant', replyText) : null,
+        ]);
+      } catch (saveError) {
+        console.error('Error guardando historial (la respuesta al usuario no se ve afectada):', saveError);
+      }
+    }
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
