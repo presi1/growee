@@ -363,6 +363,7 @@ footer{border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;justi
   transition:border-color .2s;
 }
 .form-input:focus{border-color:rgba(82,183,136,.5)}
+.form-input:disabled{opacity:.6;cursor:not-allowed}
 .form-input::placeholder{color:var(--inv-2)}
 .form-input.invalid{border-color:#E5484D;background:rgba(229,72,77,.06)}
 .form-error-msg{color:#E5484D;font-size:.72rem;margin-top:.3rem;display:none}
@@ -1828,6 +1829,24 @@ document.addEventListener('scroll', function(e){
   display:flex;align-items:center;justify-content:center;
   font-size:.65rem;font-weight:700;color:var(--ink);flex-shrink:0;
 }
+.user-dd{
+  display:none;position:absolute;top:calc(100% + .6rem);right:0;z-index:350;
+  width:230px;background:var(--ink-2);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.4);
+}
+.user-dd.open{display:block}
+.user-dd-head{padding:.9rem 1rem;border-bottom:1px solid var(--border)}
+.user-dd-name{font-size:.85rem;font-weight:600;color:var(--cream)}
+.user-dd-email{font-size:.7rem;color:var(--inv-2);margin-top:.15rem}
+.user-dd-item{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  color:var(--inv);font-size:.82rem;padding:.7rem 1rem;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:background .15s;
+}
+.user-dd-item:hover{background:var(--mist)}
+.user-dd-sep{height:1px;background:var(--border);margin:.2rem 0}
+.user-dd-danger{color:#E5828A}
+.user-dd-danger:hover{background:rgba(229,72,77,.08)}
 .app-exit{
   background:none;border:1px solid var(--border);color:var(--inv-2);
   padding:.3rem .8rem;border-radius:50px;font-size:.75rem;
@@ -2064,13 +2083,50 @@ ol.cbubble-list li{padding-left:.3rem}
     <div class="app-nav-logo" onclick="go('home')">Grow<span>ee</span></div>
     <div class="app-nav-right">
       <div class="app-mod-pill" id="app-mod-pill">🧡 Módulo Bienestar</div>
-      <div class="app-user-chip" id="app-user-chip">
-        <div class="app-av" id="app-av">CG</div>
-        <span id="app-uname">Carmen</span>
+      <div class="app-user-wrap" style="position:relative">
+        <div class="app-user-chip" id="app-user-chip" onclick="toggleUserMenu(event)" style="cursor:pointer">
+          <div class="app-av" id="app-av">CG</div>
+          <span id="app-uname">Carmen</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="user-dd" id="user-dd">
+          <div class="user-dd-head">
+            <div class="user-dd-name" id="user-dd-name">Carmen García</div>
+            <div class="user-dd-email" id="user-dd-email">carmen@empresa.com</div>
+          </div>
+          <button class="user-dd-item" onclick="showProfileModal()">👤 Mi perfil</button>
+          <button class="user-dd-item" onclick="showFullHistory();closeUserMenu()">🕓 Ver historial completo</button>
+          <button class="user-dd-item" onclick="window.open('mailto:soporte@growee.es')">💬 Ayuda y soporte</button>
+          <div class="user-dd-sep"></div>
+          <button class="user-dd-item user-dd-danger" onclick="doLogout()">Cerrar sesión</button>
+        </div>
       </div>
       <button class="app-exit" onclick="doLogout()">Salir</button>
     </div>
   </nav>
+
+  <!-- Modal de perfil -->
+  <div id="profile-modal" class="history-modal" style="display:none">
+    <div class="history-modal-backdrop" onclick="closeProfileModal()"></div>
+    <div class="history-modal-panel" style="max-width:400px">
+      <div class="history-modal-header">
+        <span>Mi perfil</span>
+        <button class="history-modal-close" onclick="closeProfileModal()">✕</button>
+      </div>
+      <div style="padding:1.4rem">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="profile-nombre" type="text"></div>
+          <div class="form-group"><label class="form-label">Apellidos</label><input class="form-input" id="profile-apellidos" type="text"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="profile-email" type="text" disabled></div>
+        <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="profile-empresa" type="text"></div>
+        <div class="form-group" id="profile-rol-wrap" style="display:none"><label class="form-label">Rol</label><input class="form-input" id="profile-rol" type="text"></div>
+        <div style="font-size:.72rem;color:var(--inv-2);margin-bottom:1rem">El email no se puede cambiar aquí — es el identificador de tu cuenta.</div>
+        <button class="form-submit" onclick="saveProfile()">Guardar cambios</button>
+        <div style="font-size:.78rem;text-align:center;margin-top:.6rem;display:none" id="profile-saved-msg">✓ Guardado</div>
+      </div>
+    </div>
+  </div>
 
   <!-- ── SETUP SCREEN ── -->
   <div id="app-setup">
@@ -2809,7 +2865,29 @@ let chatState = {
   sending: false,
 };
 
-function initApp() {
+async function initApp() {
+  // Si hay un perfil guardado en Supabase para este email, lo aplicamos antes de pintar nada
+  if (appState.user.email) {
+    try {
+      const profRes = await fetch('/.netlify/functions/get-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: appState.user.email }),
+      });
+      if (profRes.ok) {
+        const saved = await profRes.json();
+        if (saved) {
+          if (saved.name)    appState.user.name    = saved.name;
+          if (saved.surname) appState.user.surname = saved.surname;
+          if (saved.company) appState.user.company = saved.company;
+          if (saved.role)    appState.user.role     = saved.role;
+        }
+      }
+    } catch (e) {
+      console.error('No se pudo recuperar el perfil guardado:', e);
+    }
+  }
+
   const mod  = appState.module;
   const cfg  = MOD_CFG[mod];
   const name = appState.user.name || 'tú';
@@ -2824,6 +2902,28 @@ function initApp() {
   if(av) av.textContent = initials;
   const uname = document.getElementById('app-uname');
   if(uname) uname.textContent = appState.user.name || 'Usuario';
+
+  // Menú de usuario + modal de perfil
+  const ddName = document.getElementById('user-dd-name');
+  if(ddName) ddName.textContent = [appState.user.name, appState.user.surname].filter(Boolean).join(' ') || 'Usuario';
+  const ddEmail = document.getElementById('user-dd-email');
+  if(ddEmail) ddEmail.textContent = appState.user.email || '';
+  const pNombre = document.getElementById('profile-nombre');
+  if(pNombre) pNombre.value = appState.user.name || '';
+  const pApellidos = document.getElementById('profile-apellidos');
+  if(pApellidos) pApellidos.value = appState.user.surname || '';
+  const pEmail = document.getElementById('profile-email');
+  if(pEmail) pEmail.value = appState.user.email || '';
+  const pEmpresa = document.getElementById('profile-empresa');
+  if(pEmpresa) pEmpresa.value = appState.user.company || '';
+  const pRolWrap = document.getElementById('profile-rol-wrap');
+  const pRol = document.getElementById('profile-rol');
+  if (appState.user.role) {
+    if(pRol) pRol.value = appState.user.role;
+    if(pRolWrap) pRolWrap.style.display = 'block';
+  } else if (pRolWrap) {
+    pRolWrap.style.display = 'none';
+  }
 
   // Setup screen
   const nameInput = document.getElementById('setup-name');
@@ -3023,6 +3123,78 @@ function useSugg(btn) {
   const ta = document.getElementById('chat-ta');
   if(ta) ta.value = btn.textContent;
   chatSend();
+}
+
+let userMenuOpen = false;
+function toggleUserMenu(e) {
+  if (e) e.stopPropagation();
+  userMenuOpen = !userMenuOpen;
+  const dd = document.getElementById('user-dd');
+  if (dd) dd.classList.toggle('open', userMenuOpen);
+}
+function closeUserMenu() {
+  userMenuOpen = false;
+  const dd = document.getElementById('user-dd');
+  if (dd) dd.classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  if (userMenuOpen && !e.target.closest('.app-user-wrap')) closeUserMenu();
+});
+
+function showProfileModal() {
+  closeUserMenu();
+  const modal = document.getElementById('profile-modal');
+  if (modal) modal.style.display = 'flex';
+}
+function closeProfileModal() {
+  const modal = document.getElementById('profile-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function saveProfile() {
+  if (!appState.user.email) return;
+
+  const btn = document.querySelector('#profile-modal .form-submit');
+  const originalLabel = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Guardando...'; btn.disabled = true; }
+
+  const name     = document.getElementById('profile-nombre').value.trim();
+  const surname  = document.getElementById('profile-apellidos').value.trim();
+  const company  = document.getElementById('profile-empresa').value.trim();
+  const roleEl   = document.getElementById('profile-rol');
+  const role     = roleEl ? roleEl.value.trim() : '';
+
+  try {
+    const res = await fetch('/.netlify/functions/save-profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: appState.user.email, name, surname, company, role }),
+    });
+    if (res.ok) {
+      appState.user.name = name;
+      appState.user.surname = surname;
+      appState.user.company = company;
+      if (role) appState.user.role = role;
+
+      // Refrescar lo que se ve en la nav sin esperar a la próxima carga
+      const uname = document.getElementById('app-uname');
+      if (uname) uname.textContent = name || 'Usuario';
+      const av = document.getElementById('app-av');
+      if (av) av.textContent = ((name||'U')[0] + (surname||'U')[0]).toUpperCase();
+      const ddName = document.getElementById('user-dd-name');
+      if (ddName) ddName.textContent = [name, surname].filter(Boolean).join(' ') || 'Usuario';
+
+      const msg = document.getElementById('profile-saved-msg');
+      if (msg) {
+        msg.style.display = 'block';
+        setTimeout(() => { msg.style.display = 'none'; }, 2500);
+      }
+    }
+  } catch (e) {
+    console.error('Error guardando el perfil:', e);
+  }
+
+  if (btn) { btn.textContent = originalLabel; btn.disabled = false; }
 }
 
 function closeFullHistory() {
