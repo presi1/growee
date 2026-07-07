@@ -364,6 +364,9 @@ footer{border-top:1px solid var(--border);padding:2.5rem 3rem;display:flex;justi
 }
 .form-input:focus{border-color:rgba(82,183,136,.5)}
 .form-input::placeholder{color:var(--inv-2)}
+.form-input.invalid{border-color:#E5484D;background:rgba(229,72,77,.06)}
+.form-error-msg{color:#E5484D;font-size:.72rem;margin-top:.3rem;display:none}
+.form-error-msg.show{display:block}
 select.form-input{cursor:pointer}
 select.form-input option{background:var(--ink-2);color:var(--cream)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
@@ -754,10 +757,9 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
       </div>
     </div>
     <button class="nav-link" onclick="go('casos')">Casos de éxito</button>
-    <button class="nav-link" onclick="go('precios')">Módulos</button>
+    <button class="nav-link" onclick="go('prod-bienestar')">Módulos</button>
   </div>
   <div class="nav-right">
-    <button class="btn-ghost" onclick="go('home')">Inicio</button>
     <button class="btn-ghost" onclick="go('login')">Acceder</button>
     <button class="btn-cta-nav" onclick="go('demo')">Solicitar demo</button>
   </div>
@@ -972,25 +974,33 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
 
 <!-- ═══════ HERO ═══════ -->
 <!-- ═══════ HERO — full width, centrado ═══════ -->
-<div style="min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 3rem 2rem;max-width:860px;margin:0 auto;background:#0D1B2A">
-  <h1 class="h-h1" style="font-size:4.6rem;max-width:800px">El equipo que cuidas<br><em>rinde más.</em></h1>
-  <p class="h-sub" style="max-width:560px;margin:1rem auto 1.8rem;font-size:1.1rem">Coaching profesional y apoyo emocional con IA especializada. Una plataforma que RRHH activa en 48h y que cada empleado usa cuando lo necesita.</p>
-  <div class="h-actions" style="justify-content:center;margin-bottom:2rem">
-    <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita</button>
-  </div>
-  <div class="h-trustbar" style="justify-content:center;border-top:none;padding-top:0">
-    <div class="h-trust"><div class="h-trust-dot"></div>Listo en 48h, sin IT</div>
-    <div class="h-trust"><div class="h-trust-dot"></div>RGPD · Datos en EU</div>
-    <div class="h-trust"><div class="h-trust-dot"></div>Conversaciones 100% confidenciales</div>
+<div style="position:relative;min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#0D1B2A;overflow:hidden">
+  <img src="images/foto-laptop.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.2">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,27,42,.55) 0%,rgba(13,27,42,.85) 55%,#0D1B2A 100%)"></div>
+  <div style="position:relative;z-index:1;max-width:860px;padding:3rem 3rem 2rem;margin:0 auto">
+    <h1 class="h-h1" style="font-size:4.6rem;max-width:800px">El equipo que cuidas<br><em>rinde más.</em></h1>
+    <p class="h-sub" style="max-width:560px;margin:1rem auto 1.8rem;font-size:1.1rem">Coaching profesional y apoyo emocional con IA especializada. Una plataforma que RRHH activa en 48h y que cada empleado usa cuando lo necesita.</p>
+    <div class="h-actions" style="justify-content:center;margin-bottom:2rem">
+      <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita</button>
+    </div>
+    <div class="h-trustbar" style="justify-content:center;border-top:none;padding-top:0">
+      <div class="h-trust"><div class="h-trust-dot"></div>Listo en 48h, sin IT</div>
+      <div class="h-trust"><div class="h-trust-dot"></div>RGPD · Datos en EU</div>
+      <div class="h-trust"><div class="h-trust-dot"></div>Conversaciones 100% confidenciales</div>
+    </div>
   </div>
 </div>
 <script>
 let lastScrollEl = window;
 document.addEventListener('scroll', function(e){
+  const btn = document.getElementById('scroll-top-btn');
+  if (typeof APP_PAGES !== 'undefined' && APP_PAGES.includes(currentPage)) {
+    if (btn) btn.style.display = 'none';
+    return;
+  }
   const target = e.target === document ? window : e.target;
   const y = target === window ? window.scrollY : target.scrollTop;
   if (y > 400) { lastScrollEl = target; }
-  const btn = document.getElementById('scroll-top-btn');
   if(btn) btn.style.display = y > 400 ? 'flex' : 'none';
 }, true);
 </script>
@@ -1011,24 +1021,6 @@ document.addEventListener('scroll', function(e){
 <!-- ═══════ PLATAFORMA — dos módulos + demos + steps ═══════ -->
 <div style="border-top:1px solid var(--border)">
 
-  <div class="h-photo-strip" style="padding-top:3rem">
-
-    <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
-      <img src="images/foto-laptop.jpg" alt="Tu espacio de trabajo, en cualquier dispositivo" style="width:100%;height:220px;object-fit:cover;display:block">
-      <div style="position:absolute;inset:auto 0 0 0;padding:.6rem .9rem;background:linear-gradient(0deg,rgba(13,27,42,.85),transparent);font-size:.72rem;color:rgba(248,246,241,.85)">Accede desde cualquier dispositivo, cuando lo necesites</div>
-    </div>
-
-    <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
-      <img src="images/foto-manos.jpg" alt="Apoyo emocional cuando más lo necesitas" style="width:100%;height:220px;object-fit:cover;display:block">
-      <div style="position:absolute;inset:auto 0 0 0;padding:.6rem .9rem;background:linear-gradient(0deg,rgba(13,27,42,.85),transparent);font-size:.72rem;color:rgba(248,246,241,.85)">Apoyo real, en el momento en que más pesa</div>
-    </div>
-
-    <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border)">
-      <img src="images/foto-butacas.jpg" alt="Conversaciones de coaching que importan" style="width:100%;height:220px;object-fit:cover;display:block">
-      <div style="position:absolute;inset:auto 0 0 0;padding:.6rem .9rem;background:linear-gradient(0deg,rgba(13,27,42,.85),transparent);font-size:.72rem;color:rgba(248,246,241,.85)">Conversaciones de coaching que preparan de verdad</div>
-    </div>
-
-  </div>
 
   <!-- Pilares -->
   <div style="max-width:1160px;margin:0 auto;padding:4rem 3rem 4rem">
@@ -1040,18 +1032,21 @@ document.addEventListener('scroll', function(e){
 
       <!-- BIENESTAR PILAR -->
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative">
-        <div style="height:3px;background:linear-gradient(90deg,var(--terra),transparent)"></div>
-        <div style="padding:2rem">
+        <img src="images/foto-manos.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.1;pointer-events:none">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,27,42,.4),var(--ink) 75%);pointer-events:none"></div>
+        <div style="height:3px;background:linear-gradient(90deg,var(--terra),transparent);position:relative">
+        </div>
+        <div style="padding:2rem;position:relative;z-index:1">
           <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Módulo Bienestar</div>
           <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:.6rem;color:var(--cream)">Apoyo Emocional</h3>
           <p style="font-size:.875rem;color:var(--inv);line-height:1.72;margin-bottom:1.5rem">IA entrenada en psicología cognitivo-conductual, mindfulness y ACT para acompañar a cada persona en sus dificultades emocionales, en cualquier momento.</p>
           <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem">
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Gestión del estrés y la ansiedad laboral</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Prevención y detección temprana de burnout</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Conflictos interpersonales y relaciones</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Conciliación vida personal y profesional</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Autoestima y confianza profesional</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span>Adaptación al cambio y resiliencia</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Gestión del estrés</strong>&nbsp;y la ansiedad laboral</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Prevención del burnout</strong>&nbsp;y detección temprana</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Conflictos interpersonales</strong>&nbsp;y relaciones</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Conciliación</strong>&nbsp;vida personal y profesional</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Autoestima y confianza</strong>&nbsp;profesional</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Adaptación al cambio</strong>&nbsp;y resiliencia</div>
           </div>
           <!-- Chat estático de impacto -->
           <div style="background:rgba(13,27,42,.6);border:1px solid rgba(217,130,90,.25);border-radius:16px;overflow:hidden">
@@ -1068,24 +1063,26 @@ document.addEventListener('scroll', function(e){
               <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Eso es exactamente lo que en psicología se llama <strong>activación conductual</strong>: recuperar antes lo que te sostenía que esperar a "tener ganas". ¿Qué haría falta para salir mañana, aunque sean 10 minutos?</div>
             </div>
           </div>
-          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--terra);color:var(--ink)" onclick="go('demo')">Solicitar demo de Bienestar</button>
+          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--terra);color:var(--ink)" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
         </div>
       </div>
 
       <!-- COACHING PILAR -->
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative">
-        <div style="height:3px;background:linear-gradient(90deg,var(--gold),transparent)"></div>
-        <div style="padding:2rem">
+        <img src="images/foto-butacas.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.1;pointer-events:none">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,27,42,.4),var(--ink) 75%);pointer-events:none"></div>
+        <div style="height:3px;background:linear-gradient(90deg,var(--gold),transparent);position:relative"></div>
+        <div style="padding:2rem;position:relative;z-index:1">
           <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Módulo Coaching</div>
           <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:.6rem;color:var(--cream)">Coaching Profesional</h3>
           <p style="font-size:.875rem;color:var(--inv);line-height:1.72;margin-bottom:1.5rem">IA entrenada en metodologías de coaching ejecutivo (ICF, GROW, Co-Active) para acompañar a managers y colaboradores en su desarrollo, sin agendar ni esperar.</p>
           <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem">
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Liderazgo y gestión de equipos</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Comunicación y conversaciones difíciles</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Delegación, feedback y motivación de equipo</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Gestión del tiempo y productividad</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Transiciones de carrera y promociones</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span>Objetivos OKR y desarrollo personal</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Liderazgo</strong>&nbsp;y gestión de equipos</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Comunicación</strong>&nbsp;y conversaciones difíciles</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Delegación y feedback</strong>&nbsp;de equipo</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Gestión del tiempo</strong>&nbsp;y productividad</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Transiciones de carrera</strong>&nbsp;y promociones</div>
+            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Objetivos OKR</strong>&nbsp;y desarrollo personal</div>
           </div>
           <!-- Chat estático de impacto -->
           <div style="background:rgba(13,27,42,.6);border:1px solid rgba(201,168,76,.2);border-radius:16px;overflow:hidden">
@@ -1102,7 +1099,7 @@ document.addEventListener('scroll', function(e){
               <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Perfecto. Eso es una habilidad concreta y enseñable, no un rasgo de personalidad. Vamos a estructurar el feedback con el modelo <strong>SBI (Situación-Comportamiento-Impacto)</strong> del Center for Creative Leadership: primero el hecho, luego el impacto, y cerramos con un plan de desarrollo de 6 meses que tú vas a apoyar. ¿Lo construimos juntos?</div>
             </div>
           </div>
-          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--gold);color:var(--ink)" onclick="go('demo')">Solicitar demo de Coaching</button>
+          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--gold);color:var(--ink)" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
         </div>
       </div>
 
@@ -1286,7 +1283,7 @@ document.addEventListener('scroll', function(e){
 
 <div class="divider"></div>
 <footer>
-  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
@@ -1317,7 +1314,7 @@ document.addEventListener('scroll', function(e){
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Conciliación vida personal y profesional</div>
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span>Autoestima y confianza profesional</div>
         </div>
-        <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
+        <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo</button>
       </div>
       <div style="background:var(--mist);border:1px solid rgba(217,130,90,.25);border-radius:20px;overflow:hidden">
         <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem">
@@ -1341,7 +1338,7 @@ document.addEventListener('scroll', function(e){
   </div>
   <div class="divider"></div>
   <footer>
-  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
@@ -1367,7 +1364,7 @@ document.addEventListener('scroll', function(e){
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Transiciones de carrera y promociones</div>
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span>Objetivos OKR y desarrollo personal</div>
         </div>
-        <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
+        <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo</button>
       </div>
       <div style="background:var(--mist);border:1px solid rgba(201,168,76,.2);border-radius:20px;overflow:hidden">
         <div style="padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.65rem">
@@ -1389,7 +1386,7 @@ document.addEventListener('scroll', function(e){
   </div>
   <div class="divider"></div>
   <footer>
-  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
@@ -1421,7 +1418,7 @@ document.addEventListener('scroll', function(e){
   </div>
   <div class="divider"></div>
   <footer>
-  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
@@ -1532,7 +1529,7 @@ document.addEventListener('scroll', function(e){
   </div>
   <div class="divider"></div>
   <footer>
-  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
@@ -1589,7 +1586,7 @@ document.addEventListener('scroll', function(e){
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Perfil personalizado por empleado</div>
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Disponible 24/7 desde web y móvil</div>
           </div>
-          <button class="pr2-cta terra-cta" onclick="go(&#39;demo&#39;)">Solicitar demo</button>
+          <button class="pr2-cta terra-cta" onclick="goDemoFor('bienestar')">Solicitar demo</button>
         </div>
       </div>
 
@@ -1608,7 +1605,7 @@ document.addEventListener('scroll', function(e){
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Perfil personalizado por empleado</div>
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Disponible 24/7 desde web y móvil</div>
           </div>
-          <button class="pr2-cta gold-cta" onclick="go(&#39;demo&#39;)">Solicitar demo</button>
+          <button class="pr2-cta gold-cta" onclick="goDemoFor('coaching')">Solicitar demo</button>
         </div>
       </div>
 
@@ -1630,7 +1627,7 @@ document.addEventListener('scroll', function(e){
 
   <div class="divider"></div>
   <footer>
-  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
@@ -1670,40 +1667,43 @@ document.addEventListener('scroll', function(e){
           <div class="demo-form-title">Solicita tu demo</div>
           <div class="demo-form-sub">Te confirmamos en menos de 24h</div>
           <div class="form-row">
-            <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" type="text" placeholder="Carmen"></div>
-            <div class="form-group"><label class="form-label">Apellidos</label><input class="form-input" type="text" placeholder="García"></div>
+            <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input" id="demo-nombre" type="text" placeholder="Carmen"><div class="form-error-msg" id="err-demo-nombre">Este campo es obligatorio</div></div>
+            <div class="form-group"><label class="form-label">Apellidos *</label><input class="form-input" id="demo-apellidos" type="text" placeholder="García"><div class="form-error-msg" id="err-demo-apellidos">Este campo es obligatorio</div></div>
           </div>
-          <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" type="email" placeholder="carmen@empresa.com"></div>
-          <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" type="text" placeholder="Nombre de la empresa"></div>
+          <div class="form-group"><label class="form-label">Email corporativo *</label><input class="form-input" id="demo-email" type="email" placeholder="carmen@empresa.com"><div class="form-error-msg" id="err-demo-email">Introduce un email válido</div></div>
+          <div class="form-group"><label class="form-label">Empresa *</label><input class="form-input" id="demo-empresa" type="text" placeholder="Nombre de la empresa"><div class="form-error-msg" id="err-demo-empresa">Este campo es obligatorio</div></div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Tamaño del equipo</label>
-              <select class="form-input">
+              <label class="form-label">Tamaño del equipo *</label>
+              <select class="form-input" id="demo-tamano">
                 <option value="">Selecciona...</option>
                 <option>10–50</option><option>51–200</option>
                 <option>201–500</option><option>501–2.000</option><option>+2.000</option>
               </select>
+              <div class="form-error-msg" id="err-demo-tamano">Selecciona una opción</div>
             </div>
             <div class="form-group">
-              <label class="form-label">Tu rol</label>
-              <select class="form-input">
+              <label class="form-label">Tu rol *</label>
+              <select class="form-input" id="demo-rol">
                 <option value="">Selecciona...</option>
                 <option>Director/a de RRHH</option><option>Head of People</option>
                 <option>CPO</option><option>CEO/Fundador</option><option>Otro</option>
               </select>
+              <div class="form-error-msg" id="err-demo-rol">Selecciona una opción</div>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">¿Qué módulo te interesa más?</label>
-            <select class="form-input">
+            <label class="form-label">¿Qué módulo te interesa más? *</label>
+            <select class="form-input" id="demo-modulo">
               <option value="">Selecciona...</option>
-              <option>🧡 Apoyo Emocional</option>
-              <option>◆ Coaching Profesional</option>
-              <option>Ambos módulos</option>
-              <option>Aún no lo sé, quiero ver las dos</option>
+              <option value="bienestar">🧡 Apoyo Emocional</option>
+              <option value="coaching">◆ Coaching Profesional</option>
+              <option value="ambos">Ambos módulos</option>
+              <option value="no_se">Aún no lo sé, quiero ver las dos</option>
             </select>
+            <div class="form-error-msg" id="err-demo-modulo">Selecciona una opción</div>
           </div>
-          <div class="form-group"><label class="form-label">¿Cuál es tu mayor reto ahora mismo? (opcional)</label><input class="form-input" type="text" placeholder="Ej: burnout, rotación alta, mejorar el liderazgo..."></div>
+          <div class="form-group"><label class="form-label">¿Cuál es tu mayor reto ahora mismo? (opcional)</label><input class="form-input" id="demo-reto" type="text" placeholder="Ej: burnout, rotación alta, mejorar el liderazgo..."></div>
           <button class="form-submit" onclick="submitDemo()">Solicitar demo gratuita</button>
           <div class="form-note">🔒 Sin spam. Solo te contactamos para confirmar la demo.<br>Tus datos se tratan según nuestro aviso de privacidad.</div>
         </div>
@@ -1713,7 +1713,7 @@ document.addEventListener('scroll', function(e){
 
   <div class="divider"></div>
   <footer>
-  <div class="footer-logo">Grow<span>ee</span></div>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
   <div class="footer-links">
     <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
     <a onclick="go('prod-coaching')">Coaching</a>
@@ -2023,6 +2023,18 @@ ol.cbubble-list li{padding-left:.3rem}
 }
 .history-modal-close{background:none;border:none;color:var(--inv-2);font-size:1rem;cursor:pointer;padding:.2rem .4rem}
 .history-modal-close:hover{color:var(--cream)}
+.history-download-link{
+  background:none;border:none;color:var(--moss-light);font-size:.76rem;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;padding:0;
+}
+.history-download-link:hover{color:#5fcf96}
+.history-modal-tabs{display:flex;gap:.4rem;padding:.8rem 1.2rem 0}
+.history-tab{
+  background:none;border:1px solid var(--border);color:var(--inv-2);
+  padding:.4rem .9rem;border-radius:50px;font-size:.76rem;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all .18s;
+}
+.history-tab.on{background:rgba(82,183,136,.14);border-color:transparent;color:var(--moss-light);font-weight:600}
 .history-modal-body{overflow-y:auto;padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem}
 .history-modal-loading{color:var(--inv-2);font-size:.85rem;text-align:center;padding:2rem 0}
 .history-date-sep{font-size:.7rem;color:var(--inv-2);text-align:center;margin:.6rem 0 .2rem;text-transform:uppercase;letter-spacing:.04em}
@@ -2115,7 +2127,6 @@ ol.cbubble-list li{padding-left:.3rem}
       <div class="chat-meta">
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
         <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
-        <span class="chat-cnt" id="chat-cnt">0 mensajes</span>
       </div>
     </div>
   </div>
@@ -2125,8 +2136,15 @@ ol.cbubble-list li{padding-left:.3rem}
     <div class="history-modal-backdrop" onclick="closeFullHistory()"></div>
     <div class="history-modal-panel">
       <div class="history-modal-header">
-        <span>Historial completo</span>
-        <button class="history-modal-close" onclick="closeFullHistory()">✕</button>
+        <span>Tu historial</span>
+        <div style="display:flex;align-items:center;gap:.9rem">
+          <button class="history-download-link" onclick="downloadHistory()">⬇ Descargar</button>
+          <button class="history-modal-close" onclick="closeFullHistory()">✕</button>
+        </div>
+      </div>
+      <div class="history-modal-tabs">
+        <button class="history-tab on" id="history-tab-hoy" onclick="setHistoryTab('hoy')">Hoy</button>
+        <button class="history-tab" id="history-tab-todo" onclick="setHistoryTab('todo')">Historial completo</button>
       </div>
       <div class="history-modal-body" id="history-modal-body">
         <div class="history-modal-loading">Cargando...</div>
@@ -2153,9 +2171,12 @@ ol.cbubble-list li{padding-left:.3rem}
   @media(max-width:800px){
     #float-demo-btn{padding:.7rem 1.1rem;font-size:.8rem;bottom:4.6rem;right:1rem}
     #back-btn{
-      top:74px;left:.8rem;width:38px;height:38px;padding:0;
+      top:74px;left:.8rem;width:40px;height:40px;padding:0;
       justify-content:center;border-radius:50%;
+      background:var(--cream);border:none;color:var(--ink);
+      box-shadow:0 3px 12px rgba(0,0,0,.35);
     }
+    #back-btn:hover{color:var(--ink)}
     #back-btn .back-btn-label{display:none}
   }
 
@@ -2195,16 +2216,20 @@ let pageHistory = ['home'];
 let historyIndex = 0;
 let navDirection = null; // 'back' | 'forward' | null — para el efecto de deslizar
 
+let lastScrollByPage = {};
+
 function go(id, _viaHistory) {
   closeMobileMenu();
   const prevId = currentPage;
+  lastScrollByPage[prevId] = window.scrollY;
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
   PAGES.forEach(p => {
     const el = document.getElementById('pg-' + p);
     if (el) el.classList.toggle('on', p === id);
   });
   const nav = document.getElementById('main-nav');
   if (nav) nav.style.display = APP_PAGES.includes(id) ? 'none' : 'flex';
-  window.scrollTo(0, 0);
+  window.scrollTo(0, _viaHistory ? (lastScrollByPage[id] || 0) : 0);
 
   // Efecto de deslizar (solo en móvil, solo cuando se navega por gesto o por los botones atrás/adelante)
   if (navDirection && window.innerWidth <= 800) {
@@ -2232,9 +2257,25 @@ function go(id, _viaHistory) {
 
   const floatDemo = document.getElementById('float-demo-btn');
   if (floatDemo) floatDemo.style.display = (id === 'demo' || APP_PAGES.includes(id)) ? 'none' : 'flex';
+
+  const scrollBtn = document.getElementById('scroll-top-btn');
+  if (scrollBtn && APP_PAGES.includes(id)) scrollBtn.style.display = 'none';
+
   if (id === 'app') {
     setTimeout(initApp, 50);
   }
+
+  if (id === 'demo' && pendingDemoModule) {
+    const sel = document.getElementById('demo-modulo');
+    if (sel) sel.value = pendingDemoModule;
+    pendingDemoModule = null;
+  }
+}
+
+let pendingDemoModule = null;
+function goDemoFor(modulo) {
+  pendingDemoModule = modulo;
+  go('demo');
 }
 function goBack() {
   if (historyIndex > 0) {
@@ -2341,7 +2382,75 @@ function togglePrDetails(id) {
 }
 
 // ── Demo form ──
-function submitDemo() {
+const DEMO_REQUIRED_FIELDS = [
+  { id: 'demo-nombre',    type: 'text'  },
+  { id: 'demo-apellidos', type: 'text'  },
+  { id: 'demo-email',     type: 'email' },
+  { id: 'demo-empresa',   type: 'text'  },
+  { id: 'demo-tamano',    type: 'text'  },
+  { id: 'demo-rol',       type: 'text'  },
+  { id: 'demo-modulo',    type: 'text'  },
+];
+
+function validateDemoForm() {
+  let firstInvalidEl = null;
+  let allValid = true;
+
+  DEMO_REQUIRED_FIELDS.forEach(({ id, type }) => {
+    const el  = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (!el) return;
+    const value = el.value.trim();
+    let valid = value !== '';
+    if (valid && type === 'email') {
+      valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+    el.classList.toggle('invalid', !valid);
+    if (err) err.classList.toggle('show', !valid);
+    if (!valid) {
+      allValid = false;
+      if (!firstInvalidEl) firstInvalidEl = el;
+    }
+  });
+
+  if (firstInvalidEl) {
+    firstInvalidEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    firstInvalidEl.focus();
+  }
+  return allValid;
+}
+
+async function submitDemo() {
+  if (!validateDemoForm()) return;
+
+  const btn = document.querySelector('#form-fields .form-submit');
+  const originalLabel = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Enviando...'; btn.disabled = true; }
+
+  const payload = {
+    nombre: document.getElementById('demo-nombre').value.trim(),
+    apellidos: document.getElementById('demo-apellidos').value.trim(),
+    email: document.getElementById('demo-email').value.trim(),
+    empresa: document.getElementById('demo-empresa').value.trim(),
+    tamano_equipo: document.getElementById('demo-tamano').value,
+    rol: document.getElementById('demo-rol').value,
+    modulo_interes: document.getElementById('demo-modulo').value,
+    reto: document.getElementById('demo-reto') ? document.getElementById('demo-reto').value.trim() : '',
+  };
+
+  try {
+    await fetch('/.netlify/functions/submit-demo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) {
+    console.error('Error enviando la solicitud de demo:', e);
+    // Aun si falla el guardado, no bloqueamos al usuario con un error confuso —
+    // pero lo dejamos registrado en consola para poder revisarlo.
+  }
+
+  if (btn) { btn.textContent = originalLabel; btn.disabled = false; }
   document.getElementById('form-fields').style.display = 'none';
   document.getElementById('form-success').classList.add('show');
 }
@@ -2917,16 +3026,22 @@ function closeFullHistory() {
   if (modal) modal.style.display = 'none';
 }
 
+let historyRows = [];
+let historyTab  = 'hoy';
+
 async function showFullHistory() {
   const modal = document.getElementById('history-modal');
   const body  = document.getElementById('history-modal-body');
   if (!modal || !body) return;
 
   modal.style.display = 'flex';
+  historyTab = 'hoy';
+  setHistoryTabButtons();
   body.innerHTML = '<div class="history-modal-loading">Cargando...</div>';
 
   if (!appState.user.email) {
     body.innerHTML = '<div class="history-modal-loading">No hay historial disponible.</div>';
+    historyRows = [];
     return;
   }
 
@@ -2936,32 +3051,96 @@ async function showFullHistory() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userEmail: appState.user.email, modulo: chatState.mode }),
     });
-    const rows = res.ok ? await res.json() : [];
-
-    if (!Array.isArray(rows) || rows.length === 0) {
-      body.innerHTML = '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
-      return;
-    }
-
-    let html = '';
-    let lastDate = '';
-    rows.forEach((r) => {
-      const d = new Date(r.created_at);
-      const dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-      if (dateLabel !== lastDate) {
-        html += `<div class="history-date-sep">${dateLabel}</div>`;
-        lastDate = dateLabel;
-      }
-      const time = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-      const safe = r.content
-        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      html += `<div class="history-msg ${r.role}">${safe}<div class="history-msg-time">${time}</div></div>`;
-    });
-    body.innerHTML = html;
-    body.scrollTop = body.scrollHeight;
+    historyRows = res.ok ? await res.json() : [];
+    if (!Array.isArray(historyRows)) historyRows = [];
   } catch (e) {
-    body.innerHTML = '<div class="history-modal-loading">No se pudo cargar el historial. Inténtalo de nuevo.</div>';
+    historyRows = [];
   }
+  renderHistoryBody();
+}
+
+function setHistoryTab(tab) {
+  historyTab = tab;
+  setHistoryTabButtons();
+  renderHistoryBody();
+}
+
+function setHistoryTabButtons() {
+  const hoy  = document.getElementById('history-tab-hoy');
+  const todo = document.getElementById('history-tab-todo');
+  if (hoy)  hoy.classList.toggle('on', historyTab === 'hoy');
+  if (todo) todo.classList.toggle('on', historyTab === 'todo');
+}
+
+function getFilteredHistoryRows() {
+  if (historyTab === 'todo') return historyRows;
+  const todayStr = new Date().toDateString();
+  return historyRows.filter(r => new Date(r.created_at).toDateString() === todayStr);
+}
+
+function renderHistoryBody() {
+  const body = document.getElementById('history-modal-body');
+  if (!body) return;
+
+  const rows = getFilteredHistoryRows();
+
+  if (rows.length === 0) {
+    body.innerHTML = historyTab === 'hoy'
+      ? '<div class="history-modal-loading">Todavía no has hablado hoy en este módulo.</div>'
+      : '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
+    return;
+  }
+
+  let html = '';
+  let lastDate = '';
+  rows.forEach((r) => {
+    const d = new Date(r.created_at);
+    const dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (dateLabel !== lastDate) {
+      html += `<div class="history-date-sep">${dateLabel}</div>`;
+      lastDate = dateLabel;
+    }
+    const time = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    const safe = r.content
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    html += `<div class="history-msg ${r.role}">${safe}<div class="history-msg-time">${time}</div></div>`;
+  });
+  body.innerHTML = html;
+  body.scrollTop = body.scrollHeight;
+}
+
+function downloadHistory() {
+  const rows = getFilteredHistoryRows();
+  if (rows.length === 0) return;
+
+  const modName = chatState.mode === 'coaching' ? 'Coaching' : 'Bienestar';
+  const rangeLabel = historyTab === 'hoy' ? 'hoy' : 'completo';
+  let text = `Growee — Historial de conversación (${modName}, ${rangeLabel})\n`;
+  text += `Exportado el ${new Date().toLocaleString('es-ES')}\n`;
+  text += '─'.repeat(50) + '\n\n';
+
+  let lastDate = '';
+  rows.forEach((r) => {
+    const d = new Date(r.created_at);
+    const dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (dateLabel !== lastDate) {
+      text += `\n— ${dateLabel} —\n\n`;
+      lastDate = dateLabel;
+    }
+    const time  = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    const quien = r.role === 'assistant' ? 'Growee' : 'Tú';
+    text += `[${time}] ${quien}: ${r.content}\n\n`;
+  });
+
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `growee-historial-${modName.toLowerCase()}-${rangeLabel}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function formatAiText(text) {
@@ -3014,7 +3193,25 @@ function formatAiText(text) {
   return html;
 }
 
-function addBubble(role, text) {
+function typeOutText(el, fullText, formattedHTML, scrollBox) {
+  const words = fullText.split(' ');
+  let i = 0;
+  el.textContent = '';
+  function step() {
+    if (i < words.length) {
+      el.textContent += (i === 0 ? '' : ' ') + words[i];
+      i++;
+      if (scrollBox) scrollBox.scrollTop = scrollBox.scrollHeight;
+      setTimeout(step, 16 + Math.random() * 14);
+    } else {
+      el.innerHTML = formattedHTML; // al terminar, aplica el formato real (negrita, listas)
+      if (scrollBox) scrollBox.scrollTop = scrollBox.scrollHeight;
+    }
+  }
+  step();
+}
+
+function addBubble(role, text, animate) {
   const box  = document.getElementById('chat-msgs');
   if(!box) return;
   const mode = chatState.mode;
@@ -3031,7 +3228,11 @@ function addBubble(role, text) {
   const b = document.createElement('div');
   b.className = 'cbubble ' + role + (role==='ai' ? ' b-'+(mode==='coaching'?'gold':'terra') : '');
   if (role === 'ai') {
-    b.innerHTML = formatAiText(text);
+    if (animate) {
+      typeOutText(b, text, formatAiText(text), box);
+    } else {
+      b.innerHTML = formatAiText(text);
+    }
   } else {
     b.textContent = text;
   }
@@ -3108,7 +3309,7 @@ async function chatSend() {
     const data  = await res.json();
     const reply = data.content?.[0]?.text || 'Cuéntame más.';
     if(ty) ty.remove();
-    addBubble('ai', reply);
+    addBubble('ai', reply, true);
     chatState.history.push({ role:'assistant', content:reply });
     chatState.msgCount++;
     updChatCnt();
