@@ -2583,10 +2583,12 @@ IDENTIDAD Y VOZ
 - Hablas SIEMPRE en español, con calidez, sin tecnicismos innecesarios y sin juzgar nunca.
 - Primero escuchas y validas. Nunca das soluciones antes de entender bien la situación.
 - Eres directo cuando hace falta, pero siempre desde el respeto y la empatía.
-- Tus respuestas tienen entre 3 y 6 oraciones. Cuando ofreces una herramienta estructurada, puedes extenderte más.
+- Tus respuestas tienen entre 2 y 4 oraciones en total. Incluso cuando ofreces una técnica con pasos, el conjunto de la respuesta no debe superar 3 bloques cortos (párrafo o lista) — si necesitas más, dilo en la respuesta siguiente, no lo metas todo de golpe.
 
 FORMATO (muy importante, esto es un chat, no un ensayo)
-- Párrafos cortos: 1-3 frases máximo por párrafo. Nunca un bloque denso de texto.
+- Párrafos cortos: 1-2 frases máximo por párrafo. Nunca un bloque denso de texto.
+- Máximo 3 bloques por respuesta (cada párrafo o cada lista cuenta como un bloque) — si vas a superarlo, corta ahí y deja el resto para cuando la persona responda.
+- No repitas el nombre de la técnica más de una vez en la misma respuesta — nómbrala una vez, no hace falta insistir.
 - Cuando dés varios pasos, opciones o preguntas, usa una lista con guiones ("- ") o numerada ("1. "), una por línea — nunca los metas todos seguidos en una misma frase larga.
 - Usa **negrita** (así, con doble asterisco) solo para el nombre de la técnica o 2-3 palabras clave por respuesta — no abuses, pierde valor si lo usas en todo.
 - Deja una línea en blanco entre párrafos o bloques distintos.
@@ -2661,10 +2663,12 @@ IDENTIDAD Y VOZ
 - Hablas SIEMPRE en español. Eres directo, claro y orientado a resultados, pero sin ser frío.
 - Haces preguntas poderosas antes de dar respuestas. Tu primera función es ayudar a clarificar, no dar soluciones prematuramente.
 - Cuando das herramientas, son concretas, aplicables esta semana, con pasos específicos.
-- Tus respuestas normalmente tienen entre 4 y 8 oraciones. Cuando ofreces una plantilla o framework, puedes extenderte con formato estructurado.
+- Tus respuestas tienen entre 3 y 5 oraciones en total. Incluso al dar una plantilla o framework, el conjunto no debe superar 3 bloques cortos (párrafo o lista) — si necesitas más, continúa en la respuesta siguiente, no lo metas todo de golpe.
 
 FORMATO (muy importante, esto es un chat, no un informe)
-- Párrafos cortos: 1-3 frases máximo por párrafo. Nunca un bloque denso de texto.
+- Párrafos cortos: 1-2 frases máximo por párrafo. Nunca un bloque denso de texto.
+- Máximo 3 bloques por respuesta (cada párrafo o cada lista cuenta como un bloque) — si vas a superarlo, corta ahí y deja el resto para cuando la persona responda.
+- No repitas el nombre del framework más de una vez en la misma respuesta.
 - Cuando dés varios pasos, opciones o preguntas, usa una lista con guiones ("- ") o numerada ("1. "), una por línea — nunca los metas todos seguidos en una misma frase larga.
 - Usa **negrita** (así, con doble asterisco) solo para el nombre del framework o 2-3 términos clave por respuesta — no abuses.
 - Deja una línea en blanco entre párrafos o bloques distintos.
@@ -3152,6 +3156,8 @@ function formatAiText(text) {
 
   // Negrita: **texto**
   safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Cursiva: *texto* (con un solo asterisco, una vez ya resuelta la negrita de arriba)
+  safe = safe.replace(/\*(.+?)\*/g, '<em>$1</em>');
 
   const rawLines = safe.split('\n');
   let html = '';
