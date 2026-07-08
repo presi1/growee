@@ -48,11 +48,11 @@ nav{
 }
 .logo{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:400;cursor:pointer;letter-spacing:-.02em}
 .logo span{color:var(--moss-light)}
-.nav-links{display:flex;gap:.25rem;align-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.nav-links{display:flex;gap:.15rem;align-items:center;flex:1;justify-content:center;min-width:0}
 .nav-link{
-  padding:.5rem .9rem;border-radius:8px;font-size:.875rem;
+  padding:.5rem .75rem;border-radius:8px;font-size:.83rem;white-space:nowrap;
   color:var(--inv);cursor:pointer;transition:all .18s;background:none;border:none;
-  display:flex;align-items:center;gap:.3rem;
+  display:flex;align-items:center;gap:.3rem;flex-shrink:0;
 }
 .nav-link:hover{color:var(--cream);background:var(--mist)}
 .nav-link.active{color:var(--cream)}
@@ -1280,6 +1280,7 @@ document.addEventListener('scroll', function(e){
   <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
 </footer>
 
+</div>
 </div>
 
 <!-- ═══════ CÓMO FUNCIONA — página propia ═══════ -->
