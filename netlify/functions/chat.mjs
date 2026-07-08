@@ -28,7 +28,7 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const RETRIEVAL_COUNT = 4;
+const RETRIEVAL_COUNT = 6; // subido de 4 a 6: con 61 fragmentos en catálogo, 4 se quedaba corto y dejaba fuera fragmentos relevantes por pura competencia
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
