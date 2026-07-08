@@ -550,6 +550,86 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
     },
     {
+      "file": "bienestar/respiracion-diafragmatica.md",
+      "modulo": "bienestar",
+      "metodologia": "Respiración diafragmática y regulación del sistema nervioso",
+      "origen": "Base fisiológica en el nervio vago; Andrew Weil (4-7-8)",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/higiene-del-sueno.md",
+      "modulo": "bienestar",
+      "metodologia": "Higiene del sueño",
+      "origen": "National Sleep Foundation",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/perma-seligman.md",
+      "modulo": "bienestar",
+      "metodologia": "Modelo PERMA de bienestar",
+      "origen": "Martin Seligman",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/ejercicio-fisico-salud-mental.md",
+      "modulo": "bienestar",
+      "metodologia": "Ejercicio físico como intervención de salud mental",
+      "origen": "Evidencia consolidada, American Psychological Association",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/escritura-expresiva-pennebaker.md",
+      "modulo": "bienestar",
+      "metodologia": "Escritura expresiva",
+      "origen": "James Pennebaker",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "coaching/mindset-crecimiento-dweck.md",
+      "modulo": "coaching",
+      "metodologia": "Mindset de crecimiento",
+      "origen": "Carol Dweck",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/escucha-activa.md",
+      "modulo": "coaching",
+      "metodologia": "Escucha activa",
+      "origen": "Carl Rogers",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/preguntas-poderosas.md",
+      "modulo": "coaching",
+      "metodologia": "Preguntas poderosas",
+      "origen": "Marco de competencias ICF",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/ventana-de-johari.md",
+      "modulo": "coaching",
+      "metodologia": "Ventana de Johari",
+      "origen": "Joseph Luft y Harrington Ingham",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/modelo-70-20-10.md",
+      "modulo": "coaching",
+      "metodologia": "Modelo 70-20-10 de desarrollo",
+      "origen": "Center for Creative Leadership",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
       "file": "bienestar/perfeccionismo.md",
       "modulo": "bienestar",
       "metodologia": "Perfeccionismo (modelo multidimensional)",
