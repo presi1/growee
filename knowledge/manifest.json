@@ -318,7 +318,79 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-05"
+    },{
+      "file": "coaching/eisenhower-rapid.md",
+      "modulo": "coaching",
+      "metodologia": "Matriz de Eisenhower y RAPID",
+      "origen": "Dwight D. Eisenhower; Bain & Company (RAPID)",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
     },
+    {
+      "file": "coaching/okr.md",
+      "modulo": "coaching",
+      "metodologia": "OKR (Objectives and Key Results)",
+      "origen": "Andy Grove, Intel — popularizado por John Doerr en Google",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/smart-goals.md",
+      "modulo": "coaching",
+      "metodologia": "Objetivos SMART",
+      "origen": "George T. Doran, Management Review (1981)",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/radical-candor.md",
+      "modulo": "coaching",
+      "metodologia": "Radical Candor",
+      "origen": "Kim Scott, exdirectiva de Google y Apple",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/inteligencia-emocional-goleman.md",
+      "modulo": "coaching",
+      "metodologia": "Inteligencia Emocional aplicada al liderazgo",
+      "origen": "Daniel Goleman",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/negociacion-getting-to-yes.md",
+      "modulo": "coaching",
+      "metodologia": "Negociación basada en intereses (BATNA)",
+      "origen": "Roger Fisher y William Ury, Harvard Negotiation Project",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/conversaciones-carrera.md",
+      "modulo": "coaching",
+      "metodologia": "Conversaciones de desarrollo de carrera",
+      "origen": "Práctica extendida en gestión de talento",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/reuniones-1-1.md",
+      "modulo": "coaching",
+      "metodologia": "1:1s y reuniones de equipo efectivas",
+      "origen": "Andy Grove, Intel",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/q12-gallup.md",
+      "modulo": "coaching",
+      "metodologia": "Q12 de Gallup",
+      "origen": "Gallup",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    }
+
     {
       "file": "bienestar/perfeccionismo.md",
       "modulo": "bienestar",
