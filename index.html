@@ -3114,6 +3114,24 @@ async function openChatSession() {
 
   if (!restored) {
     showWelcomeAndSuggestions();
+  } else if (appState.user.email) {
+    // Hay historial restaurado: intentamos añadir un mensaje de continuidad
+    // basado en la memoria de fondo (si existe), aparte del historial en crudo.
+    try {
+      const res = await fetch('/.netlify/functions/get-welcome', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userEmail: appState.user.email, modulo: mode, userName: appState.user.name }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.welcome) {
+          addBubble('ai', data.welcome, true);
+        }
+      }
+    } catch (e) {
+      console.error('No se pudo generar el mensaje de continuidad:', e);
+    }
   }
 }
 
