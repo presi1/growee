@@ -6,6 +6,12 @@
  * en vez de esperar a tenerla completa. El navegador ve el texto aparecer
  * palabra a palabra de verdad, no una simulación.
  *
+ * NUEVO en esta versión: memoria de fondo evolutiva. Además del historial en
+ * crudo, se mantiene un resumen compacto por usuario+módulo (tabla
+ * user_memory_summary) que se actualiza con un modelo barato (Haiku) tras
+ * cada intercambio, y se inyecta en el system prompt para dar continuidad
+ * sin tener que releer toda la conversación.
+ *
  * IMPORTANTE: este archivo usa el formato NUEVO de Netlify Functions
  * (export default, Request/Response), no el antiguo (exports.handler).
  * Por eso tiene extensión .mjs — así Netlify sabe que es un módulo ES
@@ -14,7 +20,9 @@
  * Límite real de Netlify a tener en cuenta: las funciones con streaming
  * tienen un tope de 10 segundos de ejecución total. Si Claude tarda más
  * que eso en terminar de generar la respuesta, el stream se corta. Por
- * eso aquí limitamos max_tokens a un valor conservador (700).
+ * eso aquí limitamos max_tokens a un valor conservador (700). La
+ * actualización de memoria añade un poco de tiempo tras el streaming —
+ * si ves respuestas cortadas con más frecuencia, avisa para ajustarlo.
  *
  * Variables de entorno necesarias (las mismas de siempre):
  *   ANTHROPIC_API_KEY
@@ -28,7 +36,7 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const RETRIEVAL_COUNT = 6; // subido de 4 a 6: con 61 fragmentos en catálogo, 4 se quedaba corto y dejaba fuera fragmentos relevantes por pura competencia
+const RETRIEVAL_COUNT = 6; // subido de 4 a 6: con 71 fragmentos en catálogo, 4 se quedaba corto
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
@@ -92,6 +100,91 @@ async function saveMessage(userEmail, modulo, role, content) {
   }
 }
 
+async function getMemorySummary(userEmail, modulo) {
+  const url = `${SUPABASE_URL}/rest/v1/user_memory_summary`
+    + `?email=eq.${encodeURIComponent(userEmail)}`
+    + `&modulo=eq.${encodeURIComponent(modulo)}`
+    + `&select=summary,last_commitment`;
+  const res = await fetch(url, {
+    headers: {
+      apikey: SUPABASE_SERVICE_ROLE_KEY,
+      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+    },
+  });
+  if (!res.ok) return null;
+  const rows = await res.json();
+  return rows[0] || null;
+}
+
+function buildMemoryBlock(memory) {
+  if (!memory || !memory.summary) return '';
+  let block = `\n\nMEMORIA DE FONDO DE ESTA PERSONA (resumen acumulado de conversaciones anteriores, úsalo para dar continuidad sin repetir preguntas ya respondidas):\n\n${memory.summary}`;
+  if (memory.last_commitment) {
+    block += `\n\nCompromiso o paso concreto que quedó pendiente de la última vez: ${memory.last_commitment}`;
+  }
+  return block;
+}
+
+async function updateMemorySummary(userEmail, modulo, previousMemory, userMsg, aiReply) {
+  const prompt = `Mantienes un resumen breve y actualizado de una conversación de ${modulo === 'coaching' ? 'coaching profesional' : 'apoyo emocional'} entre una persona y un asistente de IA, para dar continuidad entre sesiones.
+
+Resumen anterior:
+${previousMemory?.summary || '(sin resumen previo, es la primera conversación)'}
+
+Compromiso pendiente anterior:
+${previousMemory?.last_commitment || '(ninguno)'}
+
+Nuevo intercambio:
+Persona: ${userMsg}
+Asistente: ${aiReply}
+
+Devuelve SOLO un JSON con este formato exacto, sin texto antes ni después, sin bloques de código:
+{"summary": "resumen actualizado en máximo 100 palabras: situación de fondo relevante, objetivos en curso, técnicas ya probadas, personas importantes mencionadas", "last_commitment": "el paso concreto más reciente que el asistente propuso para la próxima vez, o null si no hubo ninguno"}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    if (!res.ok) {
+      console.error('Error generando resumen de memoria:', await res.text());
+      return;
+    }
+    const data = await res.json();
+    const raw = data.content?.[0]?.text || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    await fetch(`${SUPABASE_URL}/rest/v1/user_memory_summary?on_conflict=email,modulo`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates',
+      },
+      body: JSON.stringify({
+        email: userEmail,
+        modulo,
+        summary: parsed.summary || previousMemory?.summary || null,
+        last_commitment: parsed.last_commitment || null,
+        updated_at: new Date().toISOString(),
+      }),
+    });
+  } catch (memError) {
+    console.error('Error actualizando memoria de fondo (no afecta a la respuesta ya dada):', memError);
+  }
+}
+
 export default async (req) => {
   if (req.method !== 'POST') {
     return new Response('Method Not Allowed', { status: 405 });
@@ -110,6 +203,17 @@ export default async (req) => {
   }
 
   let finalSystem = system;
+
+  // Memoria de fondo: resumen acumulado de conversaciones anteriores (distinto del historial en crudo)
+  let previousMemory = null;
+  if (modulo && userEmail && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      previousMemory = await getMemorySummary(userEmail, modulo);
+      finalSystem += buildMemoryBlock(previousMemory);
+    } catch (memReadError) {
+      console.error('Error leyendo memoria de fondo, continuando sin ella:', memReadError);
+    }
+  }
 
   // RAG: igual que antes, se resuelve ANTES de llamar a Claude (rápido: embedding + búsqueda vectorial)
   const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
@@ -134,7 +238,7 @@ export default async (req) => {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 700, // conservador a propósito: el streaming se corta a los 10s totales
+        max_tokens: 700,
         system: finalSystem,
         stream: true,
         messages: messages.map((m) => ({ role: m.role, content: m.content })),
@@ -163,7 +267,7 @@ export default async (req) => {
           const { done, value } = await reader.read();
           if (done) break;
 
-          controller.enqueue(value); // reenvía el trozo tal cual al navegador, sin esperar
+          controller.enqueue(value);
 
           sseBuffer += decoder.decode(value, { stream: true });
           const lines = sseBuffer.split('\n');
@@ -182,7 +286,6 @@ export default async (req) => {
         console.error('Error leyendo el stream de Anthropic:', streamErr);
       } finally {
         controller.close();
-        // Guardar el intercambio en el historial persistente, ya con el texto completo acumulado.
         if (userEmail && modulo && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
           try {
             await Promise.all([
@@ -191,6 +294,10 @@ export default async (req) => {
             ]);
           } catch (saveError) {
             console.error('Error guardando historial (la respuesta al usuario no se ve afectada):', saveError);
+          }
+
+          if (lastUserMsg && fullText) {
+            await updateMemorySummary(userEmail, modulo, previousMemory, lastUserMsg.content, fullText);
           }
         }
       }
