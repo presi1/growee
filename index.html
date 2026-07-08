@@ -2866,6 +2866,7 @@ let chatState = {
 
 async function initApp() {
   // Si hay un perfil guardado en Supabase para este email, lo aplicamos antes de pintar nada
+  let savedProfile = null;
   if (appState.user.email) {
     try {
       const profRes = await fetch('/.netlify/functions/get-profile', {
@@ -2874,12 +2875,12 @@ async function initApp() {
         body: JSON.stringify({ email: appState.user.email }),
       });
       if (profRes.ok) {
-        const saved = await profRes.json();
-        if (saved) {
-          if (saved.name)    appState.user.name    = saved.name;
-          if (saved.surname) appState.user.surname = saved.surname;
-          if (saved.company) appState.user.company = saved.company;
-          if (saved.role)    appState.user.role     = saved.role;
+        savedProfile = await profRes.json();
+        if (savedProfile) {
+          if (savedProfile.name)    appState.user.name    = savedProfile.name;
+          if (savedProfile.surname) appState.user.surname = savedProfile.surname;
+          if (savedProfile.company) appState.user.company = savedProfile.company;
+          if (savedProfile.role)    appState.user.role     = savedProfile.role;
         }
       }
     } catch (e) {
@@ -2933,7 +2934,9 @@ async function initApp() {
   const modName = document.getElementById('setup-mod-name');
   if(modName) modName.textContent = cfg.setupName;
 
-  // Check if user already set up their profile this session
+  // Check if user already set up their profile — antes solo miraba sessionStorage
+  // (se borra al cerrar el navegador); ahora también cuenta el perfil persistente
+  // guardado en Supabase, para no repetir esta pantalla en cada sesión nueva.
   let storedName = '';
   let storedRole = '';
   try {
@@ -2943,6 +2946,12 @@ async function initApp() {
       storedRole = sessionStorage.getItem('growee_role') || '';
     }
   } catch(e) {}
+
+  // Si no había nada en sessionStorage pero sí hay un perfil guardado en Supabase, usarlo igual
+  if (!storedName && savedProfile && savedProfile.name) {
+    storedName = savedProfile.name;
+    storedRole = savedProfile.role || '';
+  }
 
   if(storedName) {
     // Already set up — go straight to chat
@@ -3002,6 +3011,22 @@ function startChat() {
     sessionStorage.setItem('growee_role', roleVal);
     sessionStorage.setItem('growee_email', appState.user.email || '');
   } catch(e) {}
+
+  // Guardar también en Supabase (no solo en sessionStorage), para no repetir esta
+  // pantalla la próxima vez que se acceda desde un navegador o sesión distinta.
+  if (appState.user.email) {
+    fetch('/.netlify/functions/save-profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: appState.user.email,
+        name: nameVal,
+        surname: appState.user.surname || '',
+        company: appState.user.company || '',
+        role: roleVal,
+      }),
+    }).catch(e => console.error('No se pudo guardar el perfil inicial en Supabase:', e));
+  }
 
   // Update nav
   const uname = document.getElementById('app-uname');
