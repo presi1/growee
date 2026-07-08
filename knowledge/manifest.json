@@ -389,7 +389,166 @@
       "origen": "Gallup",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },{
+      "file": "bienestar/burnout-maslach.md",
+      "modulo": "bienestar",
+      "metodologia": "Síndrome de Burnout",
+      "origen": "Christina Maslach",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
     },
+    {
+      "file": "bienestar/mindfulness-kabat-zinn.md",
+      "modulo": "bienestar",
+      "metodologia": "Mindfulness / Atención plena (MBSR)",
+      "origen": "Jon Kabat-Zinn",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/sindrome-impostor.md",
+      "modulo": "bienestar",
+      "metodologia": "Síndrome del impostor",
+      "origen": "Pauline Clance y Suzanne Imes; Valerie Young",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/ansiedad-social.md",
+      "modulo": "bienestar",
+      "metodologia": "Ansiedad social — modelo cognitivo",
+      "origen": "David M. Clark y Adrian Wells",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/gestion-de-la-ira.md",
+      "modulo": "bienestar",
+      "metodologia": "Gestión de la ira",
+      "origen": "Raymond Novaco",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/ventana-de-tolerancia.md",
+      "modulo": "bienestar",
+      "metodologia": "Ventana de tolerancia al estrés",
+      "origen": "Dan Siegel",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/culpa-vs-verguenza.md",
+      "modulo": "bienestar",
+      "metodologia": "Distinción entre culpa y vergüenza",
+      "origen": "Brené Brown",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/autoestima.md",
+      "modulo": "bienestar",
+      "metodologia": "Autoestima — valía incondicional",
+      "origen": "Nathaniel Branden; Carl Rogers",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/cuatro-jinetes-gottman.md",
+      "modulo": "bienestar",
+      "metodologia": "Los Cuatro Jinetes (Gottman)",
+      "origen": "John Gottman",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/transiciones-vitales-bridges.md",
+      "modulo": "bienestar",
+      "metodologia": "Transiciones vitales (modelo de Bridges)",
+      "origen": "William Bridges",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "coaching/cinco-disfunciones-lencioni.md",
+      "modulo": "coaching",
+      "metodologia": "Las 5 disfunciones de un equipo",
+      "origen": "Patrick Lencioni",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/primeros-90-dias.md",
+      "modulo": "coaching",
+      "metodologia": "Los primeros 90 días",
+      "origen": "Michael Watkins",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/evaluacion-desempeno-calibracion.md",
+      "modulo": "coaching",
+      "metodologia": "Evaluación de desempeño y calibración",
+      "origen": "Práctica extendida en gestión de talento",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/equipos-remotos-hibridos.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo de equipos remotos e híbridos",
+      "origen": "Práctica extendida; Erin Meyer",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/comunicacion-ejecutiva-minto.md",
+      "modulo": "coaching",
+      "metodologia": "Pirámide de Minto",
+      "origen": "Barbara Minto",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/networking-estrategico.md",
+      "modulo": "coaching",
+      "metodologia": "Networking estratégico",
+      "origen": "Herminia Ibarra",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/mentoring-vs-coaching.md",
+      "modulo": "coaching",
+      "metodologia": "Mentoring vs Coaching",
+      "origen": "Práctica extendida; marco ICF",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/gestion-agil-scrum-kanban.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión ágil básica (Scrum/Kanban)",
+      "origen": "Jeff Sutherland y Ken Schwaber; David J. Anderson",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/analisis-dafo.md",
+      "modulo": "coaching",
+      "metodologia": "Análisis DAFO/FODA",
+      "origen": "Albert Humphrey, Stanford Research Institute",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/burnout-en-el-liderazgo.md",
+      "modulo": "coaching",
+      "metodologia": "Prevención de burnout en el propio liderazgo",
+      "origen": "Extensión aplicada del modelo de Maslach",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    }
     {
       "file": "bienestar/perfeccionismo.md",
       "modulo": "bienestar",
