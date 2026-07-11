@@ -2585,6 +2585,20 @@ ol.cbubble-list li{padding-left:.3rem}
 }
 .chat-ta:focus{border-color:rgba(82,183,136,.45)}
 .chat-ta::placeholder{color:var(--inv-2)}
+.chat-attach-btn{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+  background:none;cursor:pointer;flex-shrink:0;font-size:1.05rem;
+  display:flex;align-items:center;justify-content:center;transition:all .18s;
+}
+.chat-attach-btn:hover{border-color:rgba(82,183,136,.5);background:rgba(82,183,136,.08)}
+.attach-chip{
+  display:flex;align-items:center;gap:.5rem;margin:0 1.8rem .6rem;
+  padding:.45rem .8rem;background:rgba(82,183,136,.08);border:1px solid rgba(82,183,136,.25);
+  border-radius:10px;font-size:.78rem;color:var(--cream);width:fit-content;max-width:calc(100% - 3.6rem);
+}
+.attach-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.attach-chip button{background:none;border:none;color:var(--inv-2);cursor:pointer;font-size:.85rem;flex-shrink:0;padding:0 .1rem}
+.attach-chip button:hover{color:var(--cream)}
 .chat-send{
   width:42px;height:42px;border-radius:50%;border:none;
   background:var(--moss-light);cursor:pointer;
@@ -2753,8 +2767,14 @@ ol.cbubble-list li{padding-left:.3rem}
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
     <div class="chat-suggs" id="chat-suggs"></div>
+    <div class="attach-chip" id="attach-chip" style="display:none">
+      <span id="attach-chip-name"></span>
+      <button onclick="removeAttachment()" title="Quitar">✕</button>
+    </div>
     <div class="chat-bar">
       <div class="chat-row">
+        <input type="file" id="attach-input" accept=".txt,.pdf,.docx" style="display:none" onchange="handleAttachmentSelected(event)">
+        <button class="chat-attach-btn" onclick="document.getElementById('attach-input').click()" title="Adjuntar un documento (transcripción, email...)">📎</button>
         <textarea class="chat-ta" id="chat-ta" rows="1"
           placeholder="Escríbeme lo que necesitas..."
           onkeydown="chatEnter(event)"
@@ -2768,6 +2788,7 @@ ol.cbubble-list li{padding-left:.3rem}
       </div>
       <div class="chat-meta">
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
+        <span class="chat-disc" style="opacity:.7">· Los documentos no se suben, solo se lee el texto en tu navegador</span>
         <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
       </div>
     </div>
@@ -4226,10 +4247,107 @@ function createLiveAiBubble() {
   return { box, bubbleEl: b };
 }
 
+let pendingAttachment = null; // { name, text }
+const ATTACH_MAX_CHARS = 16000; // ~4.000 palabras, límite para no disparar coste/contexto
+
+function removeAttachment() {
+  pendingAttachment = null;
+  const chip = document.getElementById('attach-chip');
+  if (chip) chip.style.display = 'none';
+  const input = document.getElementById('attach-input');
+  if (input) input.value = '';
+}
+
+function showAttachChip(name) {
+  const chip = document.getElementById('attach-chip');
+  const nameEl = document.getElementById('attach-chip-name');
+  if (nameEl) nameEl.textContent = '📎 ' + name;
+  if (chip) chip.style.display = 'flex';
+}
+
+function truncateAttachmentText(text) {
+  if (text.length <= ATTACH_MAX_CHARS) return text;
+  return text.slice(0, ATTACH_MAX_CHARS) + '\n\n[...documento recortado por longitud, se han usado los primeros ~4.000 palabras...]';
+}
+
+function extractTextFromTxt(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result || '');
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo de texto'));
+    reader.readAsText(file);
+  });
+}
+
+async function extractTextFromPdf(file) {
+  if (typeof pdfjsLib === 'undefined') throw new Error('El lector de PDF no se ha cargado todavía');
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text = '';
+  const maxPages = Math.min(pdf.numPages, 30); // límite razonable de páginas
+  for (let i = 1; i <= maxPages; i++) {
+    const page = await pdf.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map(it => it.str).join(' ') + '\n\n';
+  }
+  return text;
+}
+
+async function extractTextFromDocx(file) {
+  if (typeof mammoth === 'undefined') throw new Error('El lector de Word no se ha cargado todavía');
+  const buf = await file.arrayBuffer();
+  const result = await mammoth.extractRawText({ arrayBuffer: buf });
+  return result.value || '';
+}
+
+async function handleAttachmentSelected(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const ext = file.name.split('.').pop().toLowerCase();
+  const maxSizeMB = 15;
+  if (file.size > maxSizeMB * 1024 * 1024) {
+    alert(`El archivo pesa demasiado (máximo ${maxSizeMB}MB). Prueba con un documento más ligero.`);
+    removeAttachment();
+    return;
+  }
+
+  showAttachChip(file.name + ' (leyendo...)');
+
+  try {
+    let rawText = '';
+    if (ext === 'txt') {
+      rawText = await extractTextFromTxt(file);
+    } else if (ext === 'pdf') {
+      rawText = await extractTextFromPdf(file);
+    } else if (ext === 'docx') {
+      rawText = await extractTextFromDocx(file);
+    } else {
+      alert('Formato no soportado. Usa .txt, .pdf o .docx.');
+      removeAttachment();
+      return;
+    }
+
+    rawText = rawText.trim();
+    if (!rawText) {
+      alert('No se ha podido extraer texto de este documento (¿está vacío, o es un PDF escaneado como imagen?).');
+      removeAttachment();
+      return;
+    }
+
+    pendingAttachment = { name: file.name, text: truncateAttachmentText(rawText) };
+    showAttachChip(file.name);
+  } catch (err) {
+    console.error('Error leyendo el documento adjunto:', err);
+    alert('No se pudo leer este documento. Comprueba que no esté dañado o protegido con contraseña.');
+    removeAttachment();
+  }
+}
+
 async function chatSend() {
-  const ta   = document.getElementById('chat-ta');
-  const text = ta ? ta.value.trim() : '';
-  if(!text || chatState.sending) return;
+  const ta    = document.getElementById('chat-ta');
+  const typed = ta ? ta.value.trim() : '';
+  if((!typed && !pendingAttachment) || chatState.sending) return;
   chatState.sending = true;
 
   ta.value = '';
@@ -4237,10 +4355,21 @@ async function chatSend() {
   const suggs = document.getElementById('chat-suggs');
   if(suggs) suggs.style.display = 'none';
 
-  addBubble('user', text);
+  let displayText = typed;
+  let apiContent  = typed;
+
+  if (pendingAttachment) {
+    const label = `📎 ${pendingAttachment.name}`;
+    displayText = typed ? `${label}\n\n${typed}` : `${label}\n\n(Documento adjuntado sin comentario adicional)`;
+    const docBlock = `[Documento adjunto: ${pendingAttachment.name}]\n\n${pendingAttachment.text}\n\n[Fin del documento adjunto]`;
+    apiContent = typed ? `${docBlock}\n\n${typed}` : `${docBlock}\n\nHe adjuntado este documento, tenlo en cuenta para tu respuesta.`;
+    removeAttachment();
+  }
+
+  addBubble('user', displayText);
   chatState.msgCount++;
   updChatCnt();
-  chatState.history.push({ role:'user', content:text });
+  chatState.history.push({ role:'user', content: apiContent });
 
   const ty = addTyping();
 
@@ -4319,5 +4448,12 @@ go('home');
 </script>
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+<script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://unpkg.com/mammoth@1.7.0/mammoth.browser.min.js"></script>
+<script>
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+  }
+</script>
 </body>
 </html>
