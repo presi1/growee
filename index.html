@@ -2621,6 +2621,18 @@ ol.cbubble-list li{padding-left:.3rem}
   cursor:pointer;font-family:'Inter',sans-serif;padding:0;
 }
 .history-download-link:hover{color:#5fcf96}
+.history-download-menu{
+  display:none;position:absolute;top:calc(100% + .5rem);right:0;z-index:20;
+  background:var(--ink-2);border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.35);min-width:170px;
+}
+.history-download-menu.open{display:block}
+.history-download-menu button{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  color:var(--cream);font-size:.78rem;padding:.6rem .8rem;cursor:pointer;
+  font-family:'Inter',sans-serif;white-space:nowrap;
+}
+.history-download-menu button:hover{background:rgba(82,183,136,.1)}
 .history-modal-tabs{display:flex;gap:.4rem;padding:.8rem 1.2rem 0}
 .history-tab{
   background:none;border:1px solid var(--border);color:var(--inv-2);
@@ -2768,7 +2780,13 @@ ol.cbubble-list li{padding-left:.3rem}
       <div class="history-modal-header">
         <span>Tu historial</span>
         <div style="display:flex;align-items:center;gap:.9rem">
-          <button class="history-download-link" onclick="downloadHistory()">⬇ Descargar</button>
+          <div style="position:relative" id="download-menu-wrap">
+            <button class="history-download-link" onclick="toggleDownloadMenu(event)">⬇ Descargar</button>
+            <div class="history-download-menu" id="history-download-menu">
+              <button onclick="downloadHistoryAsPDF()">📄 Como PDF</button>
+              <button onclick="downloadHistoryAsDocx()">📝 Como Word (.docx)</button>
+            </div>
+          </div>
           <button class="history-modal-close" onclick="closeFullHistory()">✕</button>
         </div>
       </div>
@@ -3906,38 +3924,148 @@ function renderHistoryBody() {
   body.scrollTop = body.scrollHeight;
 }
 
-function downloadHistory() {
+let downloadMenuOpen = false;
+function toggleDownloadMenu(e) {
+  if (e) e.stopPropagation();
+  downloadMenuOpen = !downloadMenuOpen;
+  const menu = document.getElementById('history-download-menu');
+  if (menu) menu.classList.toggle('open', downloadMenuOpen);
+}
+function closeDownloadMenu() {
+  downloadMenuOpen = false;
+  const menu = document.getElementById('history-download-menu');
+  if (menu) menu.classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  if (downloadMenuOpen && !e.target.closest('#download-menu-wrap')) closeDownloadMenu();
+});
+
+function downloadHistoryAsPDF() {
+  closeDownloadMenu();
   const rows = getFilteredHistoryRows();
   if (rows.length === 0) return;
+  if (typeof window.jspdf === 'undefined') {
+    console.error('jsPDF no se ha cargado todavía. Inténtalo de nuevo en un momento.');
+    return;
+  }
 
   const modName = chatState.mode === 'coaching' ? 'Coaching' : 'Bienestar';
   const rangeLabel = historyTab === 'hoy' ? 'hoy' : 'completo';
-  let text = `Growee — Historial de conversación (${modName}, ${rangeLabel})\n`;
-  text += `Exportado el ${new Date().toLocaleString('es-ES')}\n`;
-  text += '─'.repeat(50) + '\n\n';
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const marginX = 40;
+  const maxWidth = doc.internal.pageSize.getWidth() - marginX * 2;
+  const pageHeight = doc.internal.pageSize.getHeight();
+  let y = 55;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(15);
+  doc.text(`Growee — Historial de conversación (${modName}, ${rangeLabel})`, marginX, y);
+  y += 20;
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(9);
+  doc.setTextColor(130);
+  doc.text(`Exportado el ${new Date().toLocaleString('es-ES')}`, marginX, y);
+  y += 24;
+  doc.setTextColor(20);
 
   let lastDate = '';
   rows.forEach((r) => {
     const d = new Date(r.created_at);
     const dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
     if (dateLabel !== lastDate) {
-      text += `\n— ${dateLabel} —\n\n`;
+      if (y > pageHeight - 70) { doc.addPage(); y = 55; }
+      y += 6;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text(dateLabel, marginX, y);
+      y += 18;
       lastDate = dateLabel;
     }
     const time  = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
     const quien = r.role === 'assistant' ? 'Growee' : 'Tú';
-    text += `[${time}] ${quien}: ${r.content}\n\n`;
+
+    if (y > pageHeight - 60) { doc.addPage(); y = 55; }
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text(`[${time}] ${quien}:`, marginX, y);
+    y += 15;
+
+    doc.setFont('helvetica', 'normal');
+    const lines = doc.splitTextToSize(r.content, maxWidth);
+    lines.forEach((line) => {
+      if (y > pageHeight - 50) { doc.addPage(); y = 55; }
+      doc.text(line, marginX, y);
+      y += 14;
+    });
+    y += 10;
   });
 
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href = url;
-  a.download = `growee-historial-${modName.toLowerCase()}-${rangeLabel}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  doc.save(`growee-historial-${modName.toLowerCase()}-${rangeLabel}.pdf`);
+}
+
+async function downloadHistoryAsDocx() {
+  closeDownloadMenu();
+  const rows = getFilteredHistoryRows();
+  if (rows.length === 0) return;
+  if (typeof docx === 'undefined') {
+    console.error('La librería docx no se ha cargado todavía. Inténtalo de nuevo en un momento.');
+    return;
+  }
+
+  const modName = chatState.mode === 'coaching' ? 'Coaching' : 'Bienestar';
+  const rangeLabel = historyTab === 'hoy' ? 'hoy' : 'completo';
+  const { Document, Paragraph, TextRun, HeadingLevel, Packer } = docx;
+
+  const children = [
+    new Paragraph({
+      heading: HeadingLevel.HEADING_1,
+      children: [new TextRun({ text: `Growee — Historial de conversación (${modName}, ${rangeLabel})` })],
+    }),
+    new Paragraph({
+      children: [new TextRun({ text: `Exportado el ${new Date().toLocaleString('es-ES')}`, italics: true, color: '888888' })],
+      spacing: { after: 300 },
+    }),
+  ];
+
+  let lastDate = '';
+  rows.forEach((r) => {
+    const d = new Date(r.created_at);
+    const dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (dateLabel !== lastDate) {
+      children.push(new Paragraph({
+        heading: HeadingLevel.HEADING_2,
+        spacing: { before: 300, after: 150 },
+        children: [new TextRun({ text: dateLabel })],
+      }));
+      lastDate = dateLabel;
+    }
+    const time  = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    const quien = r.role === 'assistant' ? 'Growee' : 'Tú';
+    children.push(new Paragraph({
+      spacing: { after: 200 },
+      children: [
+        new TextRun({ text: `[${time}] ${quien}: `, bold: true }),
+        new TextRun({ text: r.content }),
+      ],
+    }));
+  });
+
+  try {
+    const document = new Document({ sections: [{ children }] });
+    const blob = await Packer.toBlob(document);
+    const url  = URL.createObjectURL(blob);
+    const link = window.document.createElement('a');
+    link.href = url;
+    link.download = `growee-historial-${modName.toLowerCase()}-${rangeLabel}.docx`;
+    window.document.body.appendChild(link);
+    link.click();
+    window.document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error('Error generando el Word:', err);
+  }
 }
 
 function formatAiText(text) {
@@ -4187,5 +4315,7 @@ function doLogout() {
 go('home');
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/docx/build/index.js"></script>
 </body>
 </html>
