@@ -3945,7 +3945,8 @@ function downloadHistoryAsPDF() {
   const rows = getFilteredHistoryRows();
   if (rows.length === 0) return;
   if (typeof window.jspdf === 'undefined') {
-    console.error('jsPDF no se ha cargado todavía. Inténtalo de nuevo en un momento.');
+    alert('No se pudo cargar el generador de PDF. Comprueba tu conexión y vuelve a intentarlo en unos segundos.');
+    console.error('jsPDF no se ha cargado todavía.');
     return;
   }
 
@@ -4010,7 +4011,8 @@ async function downloadHistoryAsDocx() {
   const rows = getFilteredHistoryRows();
   if (rows.length === 0) return;
   if (typeof docx === 'undefined') {
-    console.error('La librería docx no se ha cargado todavía. Inténtalo de nuevo en un momento.');
+    alert('No se pudo cargar el generador de Word. Comprueba tu conexión y vuelve a intentarlo en unos segundos.');
+    console.error('La librería docx no se ha cargado todavía.');
     return;
   }
 
@@ -4315,7 +4317,7 @@ function doLogout() {
 go('home');
 
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/docx/build/index.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 </body>
 </html>
