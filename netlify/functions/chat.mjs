@@ -6,12 +6,6 @@
  * en vez de esperar a tenerla completa. El navegador ve el texto aparecer
  * palabra a palabra de verdad, no una simulación.
  *
- * NUEVO en esta versión: memoria de fondo evolutiva. Además del historial en
- * crudo, se mantiene un resumen compacto por usuario+módulo (tabla
- * user_memory_summary) que se actualiza con un modelo barato (Haiku) tras
- * cada intercambio, y se inyecta en el system prompt para dar continuidad
- * sin tener que releer toda la conversación.
- *
  * IMPORTANTE: este archivo usa el formato NUEVO de Netlify Functions
  * (export default, Request/Response), no el antiguo (exports.handler).
  * Por eso tiene extensión .mjs — así Netlify sabe que es un módulo ES
@@ -20,9 +14,7 @@
  * Límite real de Netlify a tener en cuenta: las funciones con streaming
  * tienen un tope de 10 segundos de ejecución total. Si Claude tarda más
  * que eso en terminar de generar la respuesta, el stream se corta. Por
- * eso aquí limitamos max_tokens a un valor conservador (700). La
- * actualización de memoria añade un poco de tiempo tras el streaming —
- * si ves respuestas cortadas con más frecuencia, avisa para ajustarlo.
+ * eso aquí limitamos max_tokens a un valor conservador (700).
  *
  * Variables de entorno necesarias (las mismas de siempre):
  *   ANTHROPIC_API_KEY
@@ -36,7 +28,7 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const RETRIEVAL_COUNT = 6; // subido de 4 a 6: con 71 fragmentos en catálogo, 4 se quedaba corto
+const RETRIEVAL_COUNT = 6; // subido de 4 a 6: con 61 fragmentos en catálogo, 4 se quedaba corto y dejaba fuera fragmentos relevantes por pura competencia
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
@@ -85,7 +77,11 @@ function buildKnowledgeBlock(chunks) {
   return `\n\nCONOCIMIENTO RELEVANTE PARA ESTE MENSAJE (úsalo si aplica, cita la metodología y el autor cuando lo uses; no lo menciones si no aporta nada a este mensaje concreto):\n\n${formatted}`;
 }
 
-async function saveMessage(userEmail, modulo, role, content) {
+async function saveMessage(userEmail, modulo, role, content, company, ragTopics) {
+  const payload = { user_email: userEmail, modulo, role, content };
+  if (company) payload.company = company;
+  if (ragTopics) payload.rag_topics = ragTopics;
+
   const res = await fetch(`${SUPABASE_URL}/rest/v1/chat_messages`, {
     method: 'POST',
     headers: {
@@ -93,7 +89,7 @@ async function saveMessage(userEmail, modulo, role, content) {
       Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ user_email: userEmail, modulo, role, content }),
+    body: JSON.stringify(payload),
   });
   if (!res.ok) {
     console.error('Error guardando mensaje en el historial:', await res.text());
@@ -150,7 +146,7 @@ Devuelve SOLO un JSON con este formato exacto, sin texto antes ni después, sin 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-haiku-4-5-20251001', // modelo barato y rápido: esto es mantenimiento interno, no una respuesta que ve el usuario
         max_tokens: 300,
         messages: [{ role: 'user', content: prompt }],
       }),
@@ -197,12 +193,13 @@ export default async (req) => {
     return new Response(JSON.stringify({ error: 'JSON inválido en el body' }), { status: 400 });
   }
 
-  const { messages, system, modulo, userEmail } = body;
+  const { messages, system, modulo, userEmail, company } = body;
   if (!messages || !system) {
     return new Response(JSON.stringify({ error: 'Faltan messages o system en el body' }), { status: 400 });
   }
 
   let finalSystem = system;
+  let ragTopicsList = [];
 
   // Memoria de fondo: resumen acumulado de conversaciones anteriores (distinto del historial en crudo)
   let previousMemory = null;
@@ -222,6 +219,7 @@ export default async (req) => {
       const embedding = await embedQuery(lastUserMsg.content);
       const chunks = await retrieveKnowledge(embedding, modulo);
       finalSystem += buildKnowledgeBlock(chunks);
+      ragTopicsList = (chunks || []).map((c) => c.metodologia).filter(Boolean);
     } catch (ragError) {
       console.error('RAG error, continuando sin contexto adicional:', ragError);
     }
@@ -238,7 +236,7 @@ export default async (req) => {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 700,
+        max_tokens: 700, // conservador a propósito: el streaming se corta a los 10s totales
         system: finalSystem,
         stream: true,
         messages: messages.map((m) => ({ role: m.role, content: m.content })),
@@ -267,7 +265,7 @@ export default async (req) => {
           const { done, value } = await reader.read();
           if (done) break;
 
-          controller.enqueue(value);
+          controller.enqueue(value); // reenvía el trozo tal cual al navegador, sin esperar
 
           sseBuffer += decoder.decode(value, { stream: true });
           const lines = sseBuffer.split('\n');
@@ -286,16 +284,18 @@ export default async (req) => {
         console.error('Error leyendo el stream de Anthropic:', streamErr);
       } finally {
         controller.close();
+        // Guardar el intercambio en el historial persistente, ya con el texto completo acumulado.
         if (userEmail && modulo && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
           try {
             await Promise.all([
-              lastUserMsg ? saveMessage(userEmail, modulo, 'user', lastUserMsg.content) : null,
-              fullText ? saveMessage(userEmail, modulo, 'assistant', fullText) : null,
+              lastUserMsg ? saveMessage(userEmail, modulo, 'user', lastUserMsg.content, company) : null,
+              fullText ? saveMessage(userEmail, modulo, 'assistant', fullText, company, ragTopicsList.join(', ')) : null,
             ]);
           } catch (saveError) {
             console.error('Error guardando historial (la respuesta al usuario no se ve afectada):', saveError);
           }
 
+          // Actualizar el resumen de memoria de fondo con un modelo barato (Haiku), en segundo plano.
           if (lastUserMsg && fullText) {
             await updateMemorySummary(userEmail, modulo, previousMemory, lastUserMsg.content, fullText);
           }
