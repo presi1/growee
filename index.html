@@ -3501,6 +3501,7 @@ async function checkExistingSession() {
         appState.user = { name: prettyName, surname: '', email, company: email.split('@')[1]?.split('.')[0] || 'Tu empresa' };
         appState.module = 'ambos';
       }
+      appState.user.companyId = getCompanyIdentifier(email); // fijo, para filtrar datos — nunca depende de lo que se edite en el perfil
       await checkAdminStatus();
       go('app');
     }
@@ -3520,6 +3521,17 @@ const DEMO_USERS = {
   'bien@growee.es':   { name:'Lucía',  surname:'Martín', company:'Retail Corp', module:'bienestar', pass:'demo123' },
   'coach@growee.es':  { name:'Jorge',  surname:'Ruiz',   company:'Industrial SA', module:'coaching', pass:'demo123' },
 };
+
+// Identificador de empresa SIEMPRE consistente: el dominio real del email para
+// cualquier usuario real (nunca depende de lo que alguien escriba a mano en su
+// perfil), y solo las 3 cuentas de demo internas mantienen un nombre fijo para
+// poder enseñar distintas "empresas" en una demo en vivo.
+function getCompanyIdentifier(email) {
+  if (!email) return 'Tu empresa';
+  const demoMatch = DEMO_USERS[email.toLowerCase()];
+  if (demoMatch) return demoMatch.company;
+  return email.split('@')[1] || 'Tu empresa';
+}
 
 async function doLogin() {
   const emailEl = document.getElementById('login-email-pass');
@@ -3541,6 +3553,7 @@ async function doLogin() {
   const user = DEMO_USERS[email];
   if(user && pass === user.pass) {
     appState.user = { name: user.name, surname: user.surname, email, company: user.company };
+    appState.user.companyId = getCompanyIdentifier(email);
     appState.module = user.module;
     await checkAdminStatus();
     go('app');
@@ -4839,7 +4852,7 @@ async function chatSend() {
     const res = await fetch('/.netlify/functions/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey, userEmail: appState.user.email, company: appState.user.company }),
+      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey, userEmail: appState.user.email, company: appState.user.companyId || appState.user.company }),
     });
 
     if (!res.ok || !res.body) throw new Error('Respuesta no válida del servidor');
