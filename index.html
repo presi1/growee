@@ -106,6 +106,17 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
 .divider{height:1px;background:var(--border);max-width:1160px;margin:0 auto}
 .tag-pill{display:inline-flex;align-items:center;gap:.4rem;padding:.32rem .85rem;border-radius:50px;font-size:.73rem;font-weight:600;letter-spacing:.04em}
 .tag-moss{background:rgba(82,183,136,.12);border:1px solid rgba(82,183,136,.2);color:var(--moss-light)}
+
+.rrhh-stat-card{background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem}
+.rrhh-stat-big{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:400;color:var(--moss-light)}
+.rrhh-stat-label{font-size:.8rem;color:var(--inv-2);margin-top:.3rem}
+.rrhh-panel-box{background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem}
+.rrhh-box-title{font-size:.85rem;font-weight:600;color:var(--cream)}
+.rrhh-bar-track{width:100%;height:8px;border-radius:4px;background:rgba(248,246,241,.08);overflow:hidden}
+.rrhh-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.rrhh-trend-bar{flex:1;background:var(--moss-light);border-radius:3px 3px 0 0;min-height:2px;position:relative}
+.rrhh-topic-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem;font-size:.82rem}
+.rrhh-topic-row .rrhh-bar-track{flex:1}
 .tag-terra{background:rgba(217,130,90,.12);border:1px solid rgba(217,130,90,.25);color:var(--terra)}
 .tag-gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.18);color:var(--gold)}
 
@@ -2730,6 +2741,7 @@ ol.cbubble-list li{padding-left:.3rem}
           </div>
           <button class="user-dd-item" onclick="showProfileModal()">👤 Mi perfil</button>
           <button class="user-dd-item" onclick="showFullHistory();closeUserMenu()">🕓 Ver historial completo</button>
+          <button class="user-dd-item" id="rrhh-panel-menu-item" style="display:none" onclick="closeUserMenu();go('rrhh-panel')">📊 Panel de RRHH</button>
           <button class="user-dd-item" onclick="showSupportModal()">💬 Ayuda y soporte</button>
           <div class="user-dd-sep"></div>
           <button class="user-dd-item user-dd-danger" onclick="doLogout()">Cerrar sesión</button>
@@ -2884,6 +2896,90 @@ ol.cbubble-list li{padding-left:.3rem}
 </div><!-- /app-root -->
 </div><!-- /pg-app -->
 
+<!-- ═══════ PANEL DE RRHH — datos agregados, sin conversaciones individuales ═══════ -->
+<div id="pg-rrhh-panel" class="pg">
+  <div style="max-width:1100px;margin:0 auto;padding:2.5rem 3rem 4rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.5rem">
+      <div>
+        <button class="btn-ghost" style="margin-bottom:1rem" onclick="go('app')">← Volver al chat</button>
+        <h1 style="font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300;margin:0">Panel de RRHH</h1>
+        <p style="color:var(--inv-2);font-size:.85rem;margin-top:.3rem" id="rrhh-panel-company"></p>
+      </div>
+      <div class="tag-pill tag-moss">🔒 Datos agregados y anonimizados — sin acceso a conversaciones</div>
+    </div>
+
+    <div id="rrhh-panel-loading" style="text-align:center;padding:4rem 0;color:var(--inv)">Cargando datos...</div>
+    <div id="rrhh-panel-error" style="display:none;text-align:center;padding:4rem 0;color:var(--inv)"></div>
+
+    <div id="rrhh-panel-content" style="display:none">
+
+      <!-- Tarjetas de estadísticas principales -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.5rem">
+        <div class="rrhh-stat-card">
+          <div class="rrhh-stat-big" id="stat-active-week">—</div>
+          <div class="rrhh-stat-label">Empleados activos esta semana</div>
+        </div>
+        <div class="rrhh-stat-card">
+          <div class="rrhh-stat-big" id="stat-active-month">—</div>
+          <div class="rrhh-stat-label">Empleados activos este mes</div>
+        </div>
+        <div class="rrhh-stat-card">
+          <div class="rrhh-stat-big" id="stat-messages-week">—</div>
+          <div class="rrhh-stat-label">Mensajes esta semana</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:1.2rem;margin-bottom:1.2rem">
+
+        <!-- Tendencia de actividad (14 días) -->
+        <div class="rrhh-panel-box">
+          <div class="rrhh-box-title">Actividad — últimos 14 días</div>
+          <div id="rrhh-trend-chart" style="display:flex;align-items:flex-end;gap:.4rem;height:140px;margin-top:1.2rem"></div>
+        </div>
+
+        <!-- Reparto por módulo -->
+        <div class="rrhh-panel-box">
+          <div class="rrhh-box-title">Reparto por módulo (30 días)</div>
+          <div style="margin-top:1.3rem">
+            <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.4rem">
+              <span>🧡 Apoyo Emocional</span><span id="split-bienestar-pct">—</span>
+            </div>
+            <div class="rrhh-bar-track"><div class="rrhh-bar-fill" id="split-bienestar-bar" style="background:var(--terra);width:0%"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:.8rem;margin:1rem 0 .4rem">
+              <span>◆ Coaching Profesional</span><span id="split-coaching-pct">—</span>
+            </div>
+            <div class="rrhh-bar-track"><div class="rrhh-bar-fill" id="split-coaching-bar" style="background:var(--gold);width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Temas más consultados -->
+      <div class="rrhh-panel-box">
+        <div class="rrhh-box-title">Metodologías más consultadas (30 días)</div>
+        <div id="rrhh-topics-list" style="margin-top:1rem"></div>
+        <div style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">Esto muestra qué metodologías ha usado la IA en sus respuestas, nunca el contenido de las conversaciones.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+      <a onclick="go('prod-coaching')">Coaching</a>
+      <a onclick="go('prod-rrhh')">Panel de RRHH</a>
+      <a onclick="go('como-funciona')">Cómo funciona</a>
+      <a onclick="go('casos')">Casos de éxito</a>
+      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+      <a onclick="go('recursos')">Recursos</a>
+      <a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
 <!-- Botones globales: flotan sobre cualquier página -->
 <button id="float-demo-btn" onclick="go('demo')" style="display:flex;position:fixed;bottom:5.8rem;right:1.5rem;z-index:290;align-items:center;gap:.5rem;background:var(--moss-light);color:var(--ink);border:none;padding:.75rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(58,158,110,.35);transition:all .2s">
   Solicitar demo
@@ -2940,8 +3036,8 @@ function closeMobileMenu() {
 }
 
 // ── Routing ──
-const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','precios','demo','login','app'];
-const APP_PAGES = ['login','onboarding','app'];
+const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','precios','demo','login','app','rrhh-panel'];
+const APP_PAGES = ['login','onboarding','app','rrhh-panel'];
 let currentPage = 'home';
 let pageHistory = ['home'];
 let historyIndex = 0;
@@ -2994,6 +3090,10 @@ function go(id, _viaHistory) {
 
   if (id === 'app') {
     setTimeout(initApp, 50);
+  }
+
+  if (id === 'rrhh-panel') {
+    setTimeout(loadRrhhPanel, 50);
   }
 
   if (id === 'demo' && pendingDemoModule) {
@@ -3267,6 +3367,124 @@ async function sendMagicLink() {
 
 // Si Supabase Auth ya tiene una sesión real (venimos de clicar el enlace mágico,
 // o ya habíamos entrado antes), entramos directo a la app sin pasar por el login.
+async function loadRrhhPanel() {
+  const loadingEl = document.getElementById('rrhh-panel-loading');
+  const errorEl   = document.getElementById('rrhh-panel-error');
+  const contentEl = document.getElementById('rrhh-panel-content');
+  const companyEl = document.getElementById('rrhh-panel-company');
+
+  loadingEl.style.display = 'block';
+  errorEl.style.display = 'none';
+  contentEl.style.display = 'none';
+
+  try {
+    const res = await fetch('/.netlify/functions/get-rrhh-stats', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: appState.user.email }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      loadingEl.style.display = 'none';
+      errorEl.style.display = 'block';
+      errorEl.textContent = res.status === 403
+        ? 'No tienes acceso a ningún panel de RRHH con esta cuenta.'
+        : (body.error || 'No se pudieron cargar los datos. Inténtalo de nuevo en un momento.');
+      return;
+    }
+
+    const { company, stats } = await res.json();
+    companyEl.textContent = company;
+
+    document.getElementById('stat-active-week').textContent = stats.active_week ?? 0;
+    document.getElementById('stat-active-month').textContent = stats.active_month ?? 0;
+    document.getElementById('stat-messages-week').textContent = stats.messages_week ?? 0;
+
+    // Reparto por módulo
+    const b = stats.messages_bienestar_30d ?? 0;
+    const c = stats.messages_coaching_30d ?? 0;
+    const total = b + c;
+    const bPct = total > 0 ? Math.round((b / total) * 100) : 0;
+    const cPct = total > 0 ? Math.round((c / total) * 100) : 0;
+    document.getElementById('split-bienestar-pct').textContent = total > 0 ? bPct + '%' : '—';
+    document.getElementById('split-coaching-pct').textContent = total > 0 ? cPct + '%' : '—';
+    document.getElementById('split-bienestar-bar').style.width = bPct + '%';
+    document.getElementById('split-coaching-bar').style.width = cPct + '%';
+
+    // Tendencia de 14 días (barras simples)
+    const trendEl = document.getElementById('rrhh-trend-chart');
+    trendEl.innerHTML = '';
+    const trend = stats.daily_trend || [];
+    const maxCount = Math.max(1, ...trend.map(d => d.count));
+    // Rellenar los 14 días aunque algún día no tenga datos, para que el eje sea continuo
+    const dayMap = {};
+    trend.forEach(d => { dayMap[d.day] = d.count; });
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      const count = dayMap[key] || 0;
+      const bar = document.createElement('div');
+      bar.className = 'rrhh-trend-bar';
+      bar.style.height = Math.max(2, (count / maxCount) * 100) + '%';
+      bar.title = `${key}: ${count} mensajes`;
+      trendEl.appendChild(bar);
+    }
+
+    // Temas más consultados
+    const topicsEl = document.getElementById('rrhh-topics-list');
+    topicsEl.innerHTML = '';
+    const topics = stats.top_topics || [];
+    if (topics.length === 0) {
+      topicsEl.innerHTML = '<div style="font-size:.85rem;color:var(--inv-2)">Todavía no hay datos suficientes.</div>';
+    } else {
+      const maxTopicCount = Math.max(...topics.map(t => t.count));
+      topics.forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'rrhh-topic-row';
+        const pct = Math.round((t.count / maxTopicCount) * 100);
+        row.innerHTML = `
+          <span style="width:220px;flex-shrink:0;color:var(--cream)">${t.topic}</span>
+          <div class="rrhh-bar-track"><div class="rrhh-bar-fill" style="background:var(--moss-light);width:${pct}%"></div></div>
+          <span style="width:30px;text-align:right;color:var(--inv-2);flex-shrink:0">${t.count}</span>
+        `;
+        topicsEl.appendChild(row);
+      });
+    }
+
+    loadingEl.style.display = 'none';
+    contentEl.style.display = 'block';
+  } catch (e) {
+    console.error('Error cargando el panel de RRHH:', e);
+    loadingEl.style.display = 'none';
+    errorEl.style.display = 'block';
+    errorEl.textContent = 'No se pudieron cargar los datos. Comprueba tu conexión.';
+  }
+}
+
+async function checkAdminStatus() {
+  appState.isRrhhAdmin = false;
+  appState.rrhhCompany = null;
+  if (!appState.user.email) return;
+  try {
+    const res = await fetch('/.netlify/functions/check-admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: appState.user.email }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      appState.isRrhhAdmin = !!data.isAdmin;
+      appState.rrhhCompany = data.company || null;
+    }
+  } catch (e) {
+    console.error('No se pudo comprobar el estado de administrador:', e);
+  }
+  const menuItem = document.getElementById('rrhh-panel-menu-item');
+  if (menuItem) menuItem.style.display = appState.isRrhhAdmin ? 'block' : 'none';
+}
+
 async function checkExistingSession() {
   try {
     const { data } = await supabaseClient.auth.getSession();
@@ -3282,6 +3500,7 @@ async function checkExistingSession() {
         appState.user = { name: prettyName, surname: '', email, company: email.split('@')[1]?.split('.')[0] || 'Tu empresa' };
         appState.module = 'ambos';
       }
+      await checkAdminStatus();
       go('app');
     }
   } catch (e) {
@@ -3301,7 +3520,7 @@ const DEMO_USERS = {
   'coach@growee.es':  { name:'Jorge',  surname:'Ruiz',   company:'Industrial SA', module:'coaching', pass:'demo123' },
 };
 
-function doLogin() {
+async function doLogin() {
   const emailEl = document.getElementById('login-email-pass');
   const passEl  = document.getElementById('login-pass');
   const email   = emailEl ? emailEl.value.trim().toLowerCase() : '';
@@ -3322,6 +3541,7 @@ function doLogin() {
   if(user && pass === user.pass) {
     appState.user = { name: user.name, surname: user.surname, email, company: user.company };
     appState.module = user.module;
+    await checkAdminStatus();
     go('app');
     return;
   }
@@ -4618,7 +4838,7 @@ async function chatSend() {
     const res = await fetch('/.netlify/functions/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey, userEmail: appState.user.email }),
+      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey, userEmail: appState.user.email, company: appState.user.company }),
     });
 
     if (!res.ok || !res.body) throw new Error('Respuesta no válida del servidor');
