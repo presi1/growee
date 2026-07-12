@@ -2707,7 +2707,7 @@ ol.cbubble-list li{padding-left:.3rem}
           </div>
           <button class="user-dd-item" onclick="showProfileModal()">👤 Mi perfil</button>
           <button class="user-dd-item" onclick="showFullHistory();closeUserMenu()">🕓 Ver historial completo</button>
-          <button class="user-dd-item" onclick="window.open('mailto:soporte@growee.es')">💬 Ayuda y soporte</button>
+          <button class="user-dd-item" onclick="showSupportModal()">💬 Ayuda y soporte</button>
           <div class="user-dd-sep"></div>
           <button class="user-dd-item user-dd-danger" onclick="doLogout()">Cerrar sesión</button>
         </div>
@@ -2735,6 +2735,27 @@ ol.cbubble-list li{padding-left:.3rem}
         <div style="font-size:.72rem;color:var(--inv-2);margin-bottom:1rem">El email no se puede cambiar aquí — es el identificador de tu cuenta.</div>
         <button class="form-submit" onclick="saveProfile()">Guardar cambios</button>
         <div style="font-size:.78rem;text-align:center;margin-top:.6rem;display:none" id="profile-saved-msg">✓ Guardado</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de ayuda y soporte -->
+  <div id="support-modal" class="history-modal" style="display:none">
+    <div class="history-modal-backdrop" onclick="closeSupportModal()"></div>
+    <div class="history-modal-panel" style="max-width:420px">
+      <div class="history-modal-header">
+        <span>Ayuda y soporte</span>
+        <button class="history-modal-close" onclick="closeSupportModal()">✕</button>
+      </div>
+      <div style="padding:1.4rem" id="support-modal-body">
+        <p style="font-size:.85rem;color:var(--inv);margin-bottom:1.1rem">Cuéntanos qué necesitas — te respondemos al email de tu cuenta.</p>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="support-email" type="text" disabled></div>
+        <div class="form-group">
+          <label class="form-label">Mensaje</label>
+          <textarea class="form-input" id="support-mensaje" rows="5" placeholder="Describe el problema o la duda que tengas..." style="resize:vertical;font-family:'Inter',sans-serif"></textarea>
+        </div>
+        <button class="form-submit" onclick="submitSupportRequest()">Enviar</button>
+        <div style="font-size:.72rem;color:var(--inv-2);text-align:center;margin-top:.6rem" id="support-error-msg"></div>
       </div>
     </div>
   </div>
@@ -3825,6 +3846,65 @@ function showProfileModal() {
 function closeProfileModal() {
   const modal = document.getElementById('profile-modal');
   if (modal) modal.style.display = 'none';
+}
+
+function showSupportModal() {
+  closeUserMenu();
+  const emailEl = document.getElementById('support-email');
+  if (emailEl) emailEl.value = appState.user.email || '';
+  const msgEl = document.getElementById('support-mensaje');
+  if (msgEl) msgEl.value = '';
+  const errEl = document.getElementById('support-error-msg');
+  if (errEl) errEl.textContent = '';
+  const modal = document.getElementById('support-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeSupportModal() {
+  const modal = document.getElementById('support-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function submitSupportRequest() {
+  const mensajeEl = document.getElementById('support-mensaje');
+  const mensaje = mensajeEl ? mensajeEl.value.trim() : '';
+  const errEl = document.getElementById('support-error-msg');
+
+  if (!mensaje) {
+    if (errEl) { errEl.textContent = 'Escribe un mensaje antes de enviar.'; errEl.style.color = '#E5828A'; }
+    return;
+  }
+
+  const btn = document.querySelector('#support-modal .form-submit');
+  const originalLabel = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Enviando...'; btn.disabled = true; }
+
+  try {
+    const res = await fetch('/.netlify/functions/submit-support', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: appState.user.name || null,
+        email: appState.user.email,
+        modulo: (appState.module === 'ambos') ? chatState.mode : appState.module,
+        mensaje,
+      }),
+    });
+
+    if (res.ok) {
+      const body = document.getElementById('support-modal-body');
+      if (body) {
+        body.innerHTML = '<div style="text-align:center;padding:1.5rem 0"><div style="font-size:2rem;margin-bottom:.8rem">✓</div><div style="font-weight:600;margin-bottom:.4rem">Mensaje enviado</div><div style="font-size:.85rem;color:var(--inv)">Te responderemos al email de tu cuenta en cuanto podamos.</div></div>';
+      }
+    } else {
+      if (errEl) { errEl.textContent = 'No se pudo enviar. Inténtalo de nuevo en un momento.'; errEl.style.color = '#E5828A'; }
+      if (btn) { btn.textContent = originalLabel; btn.disabled = false; }
+    }
+  } catch (e) {
+    console.error('Error enviando la solicitud de soporte:', e);
+    if (errEl) { errEl.textContent = 'No se pudo enviar. Comprueba tu conexión.'; errEl.style.color = '#E5828A'; }
+    if (btn) { btn.textContent = originalLabel; btn.disabled = false; }
+  }
 }
 
 async function saveProfile() {
