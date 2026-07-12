@@ -2474,8 +2474,19 @@ document.addEventListener('scroll', function(e){
 
 /* ── CHAT SCREEN ── */
 #app-chat{
-  flex:1;display:none;flex-direction:column;overflow:hidden;
+  flex:1;display:none;flex-direction:column;overflow:hidden;position:relative;
 }
+#app-chat.drag-over{background:rgba(82,183,136,.04)}
+#app-chat.drag-over .chat-msgs{outline:2px dashed rgba(82,183,136,.5);outline-offset:-8px}
+.drop-hint{
+  display:none;position:absolute;inset:0;z-index:50;
+  align-items:center;justify-content:center;flex-direction:column;gap:.6rem;
+  background:rgba(13,27,42,.85);backdrop-filter:blur(2px);pointer-events:none;
+}
+#app-chat.drag-over .drop-hint{display:flex}
+.drop-hint-icon{font-size:2.2rem}
+.drop-hint-text{font-size:1rem;font-weight:600;color:var(--cream)}
+.drop-hint-sub{font-size:.8rem;color:var(--inv-2)}
 /* Mode switcher (only if ambos) */
 .chat-mode-bar{
   display:flex;align-items:center;gap:.75rem;
@@ -2760,6 +2771,11 @@ ol.cbubble-list li{padding-left:.3rem}
 
   <!-- ── CHAT SCREEN ── -->
   <div id="app-chat">
+    <div class="drop-hint">
+      <div class="drop-hint-icon">📎</div>
+      <div class="drop-hint-text">Suelta aquí tu documento</div>
+      <div class="drop-hint-sub">.txt, .pdf o .docx</div>
+    </div>
     <!-- Mode bar (only shown when ambos) -->
     <div class="chat-mode-bar" id="chat-mode-bar" style="display:none">
       <div class="chat-mode-tabs" id="chat-mode-tabs"></div>
@@ -2788,7 +2804,7 @@ ol.cbubble-list li{padding-left:.3rem}
       </div>
       <div class="chat-meta">
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
-        <span class="chat-disc" style="opacity:.7">· Los documentos no se suben, solo se lee el texto en tu navegador</span>
+        <span class="chat-disc" style="opacity:.7">· 📎 o arrastra un documento aquí · nunca se sube, solo se lee el texto en tu navegador</span>
         <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
       </div>
     </div>
@@ -4303,7 +4319,10 @@ async function extractTextFromDocx(file) {
 async function handleAttachmentSelected(event) {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
+  await processAttachedFile(file);
+}
 
+async function processAttachedFile(file) {
   const ext = file.name.split('.').pop().toLowerCase();
   const maxSizeMB = 15;
   if (file.size > maxSizeMB * 1024 * 1024) {
@@ -4342,6 +4361,31 @@ async function handleAttachmentSelected(event) {
     alert('No se pudo leer este documento. Comprueba que no esté dañado o protegido con contraseña.');
     removeAttachment();
   }
+}
+
+function setupDragAndDrop() {
+  const dropZone = document.getElementById('app-chat');
+  if (!dropZone) return;
+  let dragCounter = 0;
+
+  dropZone.addEventListener('dragenter', (e) => {
+    e.preventDefault();
+    dragCounter++;
+    dropZone.classList.add('drag-over');
+  });
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); });
+  dropZone.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    dragCounter--;
+    if (dragCounter <= 0) { dragCounter = 0; dropZone.classList.remove('drag-over'); }
+  });
+  dropZone.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    dragCounter = 0;
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (file) await processAttachedFile(file);
+  });
 }
 
 async function chatSend() {
@@ -4444,6 +4488,7 @@ function doLogout() {
 
 // init
 go('home');
+setupDragAndDrop();
 
 </script>
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
