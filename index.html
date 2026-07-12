@@ -2355,11 +2355,34 @@ document.addEventListener('scroll', function(e){
     <div class="auth-panel">
       <button class="auth-close" onclick="go('home')">✕</button>
       <div class="auth-panel-title">Acceder</div>
-      <div class="auth-panel-sub">Introduce tus credenciales de empresa</div>
-      <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" id="login-email" type="email" placeholder="nombre@empresa.com" autocomplete="email"></div>
-      <div class="form-group"><label class="form-label">Contraseña</label><input class="form-input" id="login-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
-      <button class="form-submit" style="margin-top:.5rem" onclick="doLogin()">Entrar a Growee →</button>
-      <div class="login-hint">¿No tienes acceso todavía?<br><a onclick="go('demo')">Solicita una demo</a> para que tu empresa active Growee</div>
+      <div class="auth-panel-sub" id="auth-panel-sub">Te mandamos un enlace de acceso a tu email, sin contraseña que recordar</div>
+
+      <div id="auth-step-email">
+        <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" id="login-email" type="email" placeholder="nombre@empresa.com" autocomplete="email" onkeydown="if(event.key==='Enter')sendMagicLink()"></div>
+        <button class="form-submit" style="margin-top:.5rem" onclick="sendMagicLink()">Enviar enlace de acceso →</button>
+        <div style="font-size:.72rem;color:var(--inv-2);text-align:center;margin-top:.7rem" id="magic-link-error"></div>
+        <div class="login-hint" style="margin-top:1.4rem">
+          <a onclick="togglePasswordLogin()">¿Eres del equipo de Growee? Entra con contraseña</a>
+        </div>
+      </div>
+
+      <div id="auth-step-password" style="display:none">
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="login-email-pass" type="email" placeholder="nombre@empresa.com" autocomplete="email"></div>
+        <div class="form-group"><label class="form-label">Contraseña</label><input class="form-input" id="login-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <button class="form-submit" style="margin-top:.5rem" onclick="doLogin()">Entrar a Growee →</button>
+        <div class="login-hint" style="margin-top:1.4rem">
+          <a onclick="togglePasswordLogin()">← Volver al enlace de acceso</a>
+        </div>
+      </div>
+
+      <div id="auth-step-sent" style="display:none;text-align:center;padding:1.5rem 0">
+        <div style="font-size:2.2rem;margin-bottom:1rem">✉️</div>
+        <div style="font-weight:600;margin-bottom:.5rem">Revisa tu email</div>
+        <div style="font-size:.85rem;color:var(--inv);line-height:1.6">Te hemos mandado un enlace a <strong id="magic-link-sent-email" style="color:var(--cream)"></strong>. Ábrelo desde este mismo dispositivo para entrar.</div>
+        <button class="login-hint" style="background:none;border:none;margin-top:1.2rem;cursor:pointer" onclick="resetLoginForm()"><a>Usar otro email</a></button>
+      </div>
+
+      <div class="login-hint" style="margin-top:1.6rem">¿No tienes acceso todavía?<br><a onclick="go('demo')">Solicita una demo</a> para que tu empresa active Growee</div>
     </div>
   </div>
 </div>
@@ -3176,6 +3199,102 @@ let appState = {
 };
 
 // Demo credentials for easy access
+// ══════════════════════════════════════
+// AUTENTICACIÓN REAL (Supabase Auth — enlace mágico)
+// ══════════════════════════════════════
+const SUPABASE_URL = 'https://piacsqzhfmgtcervmmps.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpYWNzcXpoZm1ndGNlcnZtbXBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyMzk4ODcsImV4cCI6MjA5ODgxNTg4N30.AUXn6R2XjUd8kvit9fVtdKt4CJ-Hsmt0E8ETEOEHxAc';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+function togglePasswordLogin() {
+  const emailStep = document.getElementById('auth-step-email');
+  const passStep  = document.getElementById('auth-step-password');
+  const sub       = document.getElementById('auth-panel-sub');
+  const showingPassword = passStep.style.display !== 'none';
+  emailStep.style.display = showingPassword ? 'block' : 'none';
+  passStep.style.display  = showingPassword ? 'none'  : 'block';
+  sub.textContent = showingPassword
+    ? 'Te mandamos un enlace de acceso a tu email, sin contraseña que recordar'
+    : 'Solo para el equipo de Growee';
+}
+
+function resetLoginForm() {
+  document.getElementById('auth-step-sent').style.display = 'none';
+  document.getElementById('auth-step-email').style.display = 'block';
+  const emailEl = document.getElementById('login-email');
+  if (emailEl) { emailEl.value = ''; emailEl.focus(); }
+}
+
+async function sendMagicLink() {
+  const emailEl = document.getElementById('login-email');
+  const errEl   = document.getElementById('magic-link-error');
+  const email   = emailEl ? emailEl.value.trim().toLowerCase() : '';
+
+  if (errEl) errEl.textContent = '';
+  if (!email || !email.includes('@')) {
+    if (errEl) errEl.textContent = 'Escribe un email válido.';
+    if (emailEl) { emailEl.style.borderColor = 'rgba(255,100,100,.6)'; setTimeout(() => emailEl.style.borderColor = '', 1500); }
+    return;
+  }
+
+  const btn = document.querySelector('#auth-step-email .form-submit');
+  const originalLabel = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Enviando...'; btn.disabled = true; }
+
+  try {
+    const { error } = await supabaseClient.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin + window.location.pathname },
+    });
+
+    if (error) {
+      console.error('Error enviando el enlace mágico:', error);
+      if (errEl) errEl.textContent = 'No se pudo enviar el enlace. Inténtalo de nuevo en un momento.';
+      if (btn) { btn.textContent = originalLabel; btn.disabled = false; }
+      return;
+    }
+
+    document.getElementById('magic-link-sent-email').textContent = email;
+    document.getElementById('auth-step-email').style.display = 'none';
+    document.getElementById('auth-step-sent').style.display = 'block';
+  } catch (e) {
+    console.error('Error enviando el enlace mágico:', e);
+    if (errEl) errEl.textContent = 'No se pudo enviar el enlace. Comprueba tu conexión.';
+  }
+
+  if (btn) { btn.textContent = originalLabel; btn.disabled = false; }
+}
+
+// Si Supabase Auth ya tiene una sesión real (venimos de clicar el enlace mágico,
+// o ya habíamos entrado antes), entramos directo a la app sin pasar por el login.
+async function checkExistingSession() {
+  try {
+    const { data } = await supabaseClient.auth.getSession();
+    if (data && data.session && data.session.user && data.session.user.email) {
+      const email = data.session.user.email.toLowerCase();
+      const demoMatch = DEMO_USERS[email];
+      if (demoMatch) {
+        appState.user = { name: demoMatch.name, surname: demoMatch.surname, email, company: demoMatch.company };
+        appState.module = demoMatch.module;
+      } else {
+        const namePart = email.split('@')[0];
+        const prettyName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+        appState.user = { name: prettyName, surname: '', email, company: email.split('@')[1]?.split('.')[0] || 'Tu empresa' };
+        appState.module = 'ambos';
+      }
+      go('app');
+    }
+  } catch (e) {
+    console.error('Error comprobando la sesión de Supabase:', e);
+  }
+}
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session && session.user && session.user.email && currentPage !== 'app') {
+    checkExistingSession();
+  }
+});
+
 const DEMO_USERS = {
   'demo@growee.es':   { name:'Carmen', surname:'García', company:'Empresa Demo', module:'ambos', pass:'demo123' },
   'bien@growee.es':   { name:'Lucía',  surname:'Martín', company:'Retail Corp', module:'bienestar', pass:'demo123' },
@@ -3183,7 +3302,7 @@ const DEMO_USERS = {
 };
 
 function doLogin() {
-  const emailEl = document.getElementById('login-email');
+  const emailEl = document.getElementById('login-email-pass');
   const passEl  = document.getElementById('login-pass');
   const email   = emailEl ? emailEl.value.trim().toLowerCase() : '';
   const pass    = passEl  ? passEl.value : '';
@@ -3198,21 +3317,11 @@ function doLogin() {
   if(!email) { shakeField(emailEl); emailEl.focus(); return; }
   if(!pass)  { shakeField(passEl);  passEl.focus();  return; }
 
-  // Check demo users
+  // Solo cuentas de demo del propio equipo de Growee — el resto entra por enlace mágico
   const user = DEMO_USERS[email];
   if(user && pass === user.pass) {
     appState.user = { name: user.name, surname: user.surname, email, company: user.company };
     appState.module = user.module;
-    go('app');
-    return;
-  }
-
-  // Any email/pass combo works for preview (no real backend yet)
-  if(email && pass.length >= 4) {
-    const namePart = email.split('@')[0];
-    const prettyName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-    appState.user = { name: prettyName, surname: '', email, company: email.split('@')[1]?.split('.')[0] || 'Tu empresa' };
-    appState.module = 'ambos';
     go('app');
     return;
   }
@@ -4563,18 +4672,21 @@ async function chatSend() {
 }
 function doLogout() {
   try { sessionStorage.removeItem('growee_name'); sessionStorage.removeItem('growee_role'); sessionStorage.removeItem('growee_email'); } catch(e) {}
+  supabaseClient.auth.signOut().catch(e => console.error('Error cerrando sesión de Supabase:', e));
   go('home');
 }
 
 // init
 go('home');
 setupDragAndDrop();
+checkExistingSession();
 
 </script>
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
 <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script src="https://unpkg.com/mammoth@1.7.0/mammoth.browser.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
   if (typeof pdfjsLib !== 'undefined') {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
