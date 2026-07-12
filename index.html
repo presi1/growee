@@ -2619,15 +2619,15 @@ ol.cbubble-list li{padding-left:.3rem}
 .chat-send:hover{background:#5fcf96;transform:scale(1.06)}
 .chat-send svg{width:15px;height:15px}
 .chat-meta{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-top:.45rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+  gap:.3rem .9rem;margin-top:.6rem;
 }
-.chat-disc{font-size:.68rem;color:var(--inv-2)}
+.chat-disc{font-size:.78rem;color:var(--inv)}
 .chat-history-link{
-  background:none;border:none;color:var(--inv-2);font-size:.68rem;
+  background:none;border:none;color:var(--moss-light);font-size:.78rem;font-weight:600;
   text-decoration:underline;cursor:pointer;font-family:'Inter',sans-serif;padding:0;
 }
-.chat-history-link:hover{color:var(--cream)}
+.chat-history-link:hover{color:#5fcf96}
 
 .history-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center}
 .history-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55)}
@@ -2804,7 +2804,7 @@ ol.cbubble-list li{padding-left:.3rem}
       </div>
       <div class="chat-meta">
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
-        <span class="chat-disc" style="opacity:.7">· 📎 o arrastra un documento aquí · nunca se sube, solo se lee el texto en tu navegador</span>
+        <span class="chat-disc">📎 Adjunta o arrastra un documento · nunca se sube, solo se lee el texto en tu navegador</span>
         <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
       </div>
     </div>
