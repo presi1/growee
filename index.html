@@ -2961,6 +2961,21 @@ ol.cbubble-list li{padding-left:.3rem}
         <div style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">Esto muestra qué metodologías ha usado la IA en sus respuestas, nunca el contenido de las conversaciones.</div>
       </div>
 
+      <!-- Alta de empleados por CSV -->
+      <div class="rrhh-panel-box" style="margin-top:1.2rem">
+        <div class="rrhh-box-title">Dar de alta empleados</div>
+        <p style="font-size:.8rem;color:var(--inv);margin-top:.5rem;line-height:1.6">
+          Sube un CSV con dos columnas: <strong style="color:var(--cream)">nombre</strong> y <strong style="color:var(--cream)">email</strong> (con esos nombres exactos en la primera fila).
+          No hace falta que el empleado haga nada más — la próxima vez que entre con su email, ya tendrá su nombre y su empresa listos.
+        </p>
+        <div style="display:flex;align-items:center;gap:.8rem;margin-top:1rem">
+          <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleCsvSelected(event)">
+          <button class="btn-primary" onclick="document.getElementById('csv-input').click()">📎 Elegir archivo CSV</button>
+          <span id="csv-filename" style="font-size:.8rem;color:var(--inv-2)"></span>
+        </div>
+        <div id="csv-result" style="margin-top:1rem;font-size:.85rem"></div>
+      </div>
+
     </div>
   </div>
 
@@ -3368,6 +3383,79 @@ async function sendMagicLink() {
 
 // Si Supabase Auth ya tiene una sesión real (venimos de clicar el enlace mágico,
 // o ya habíamos entrado antes), entramos directo a la app sin pasar por el login.
+function parseEmployeesCsv(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length === 0) return [];
+
+  // Detectar separador (coma o punto y coma, común en CSV exportado desde Excel en español)
+  const sep = lines[0].includes(';') ? ';' : ',';
+
+  function splitRow(line) {
+    return line.split(sep).map(cell => cell.trim().replace(/^"(.*)"$/, '$1'));
+  }
+
+  const header = splitRow(lines[0]).map(h => h.toLowerCase());
+  let nameIdx = header.findIndex(h => h.includes('nombre') || h.includes('name'));
+  let emailIdx = header.findIndex(h => h.includes('email') || h.includes('correo'));
+
+  let startRow = 1;
+  if (nameIdx === -1 || emailIdx === -1) {
+    // No hay cabecera reconocible: asumimos que la primera columna es nombre y la segunda email
+    nameIdx = 0;
+    emailIdx = 1;
+    startRow = 0;
+  }
+
+  const rows = [];
+  for (let i = startRow; i < lines.length; i++) {
+    const cells = splitRow(lines[i]);
+    rows.push({ name: cells[nameIdx] || '', email: cells[emailIdx] || '' });
+  }
+  return rows;
+}
+
+async function handleCsvSelected(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const filenameEl = document.getElementById('csv-filename');
+  const resultEl = document.getElementById('csv-result');
+  if (filenameEl) filenameEl.textContent = file.name;
+  if (resultEl) resultEl.innerHTML = '<span style="color:var(--inv)">Procesando...</span>';
+
+  try {
+    const text = await file.text();
+    const employees = parseEmployeesCsv(text);
+
+    if (employees.length === 0) {
+      resultEl.innerHTML = '<span style="color:#E5828A">El archivo está vacío o no se ha podido leer.</span>';
+      return;
+    }
+
+    const res = await fetch('/.netlify/functions/bulk-add-employees', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adminEmail: appState.user.email, employees }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      resultEl.innerHTML = `<span style="color:#E5828A">${data.error || 'No se pudo procesar el archivo.'}</span>`;
+      return;
+    }
+
+    let html = `<span style="color:var(--moss-light)">✓ ${data.added} empleado${data.added === 1 ? '' : 's'} dado${data.added === 1 ? '' : 's'} de alta correctamente.</span>`;
+    if (data.invalid > 0) {
+      html += `<br><span style="color:var(--inv-2)">${data.invalid} fila${data.invalid === 1 ? '' : 's'} con email no válido, no se ${data.invalid === 1 ? 'ha' : 'han'} incluido.</span>`;
+    }
+    resultEl.innerHTML = html;
+  } catch (e) {
+    console.error('Error procesando el CSV:', e);
+    resultEl.innerHTML = '<span style="color:#E5828A">No se pudo leer el archivo. Comprueba que es un CSV válido.</span>';
+  }
+}
+
 async function loadRrhhPanel() {
   const loadingEl = document.getElementById('rrhh-panel-loading');
   const errorEl   = document.getElementById('rrhh-panel-error');
