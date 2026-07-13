@@ -6,6 +6,18 @@
  * en vez de esperar a tenerla completa. El navegador ve el texto aparecer
  * palabra a palabra de verdad, no una simulación.
  *
+ * NUEVO en esta versión: soporte para mensajes con imagen (capturas de
+ * pantalla, fotos). El contenido puede llegar como texto plano (string) o
+ * como array multimodal [{type:'image',...}, {type:'text', text:'...'}] —
+ * getTextFromContent() se encarga de extraer siempre el texto plano para
+ * el RAG, la memoria y el historial guardado en Supabase.
+ *
+ * También guarda memoria de fondo evolutiva. Además del historial en
+ * crudo, se mantiene un resumen compacto por usuario+módulo (tabla
+ * user_memory_summary) que se actualiza con un modelo barato (Haiku) tras
+ * cada intercambio, y se inyecta en el system prompt para dar continuidad
+ * sin tener que releer toda la conversación.
+ *
  * IMPORTANTE: este archivo usa el formato NUEVO de Netlify Functions
  * (export default, Request/Response), no el antiguo (exports.handler).
  * Por eso tiene extensión .mjs — así Netlify sabe que es un módulo ES
@@ -14,7 +26,9 @@
  * Límite real de Netlify a tener en cuenta: las funciones con streaming
  * tienen un tope de 10 segundos de ejecución total. Si Claude tarda más
  * que eso en terminar de generar la respuesta, el stream se corta. Por
- * eso aquí limitamos max_tokens a un valor conservador (700).
+ * eso aquí limitamos max_tokens a un valor conservador (700). La
+ * actualización de memoria añade un poco de tiempo tras el streaming —
+ * si ves respuestas cortadas con más frecuencia, avisa para ajustarlo.
  *
  * Variables de entorno necesarias (las mismas de siempre):
  *   ANTHROPIC_API_KEY
@@ -28,7 +42,7 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const RETRIEVAL_COUNT = 6; // subido de 4 a 6: con 61 fragmentos en catálogo, 4 se quedaba corto y dejaba fuera fragmentos relevantes por pura competencia
+const RETRIEVAL_COUNT = 6; // con 100 fragmentos en catálogo, 4 se quedaba corto
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
@@ -146,7 +160,7 @@ Devuelve SOLO un JSON con este formato exacto, sin texto antes ni después, sin 
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001', // modelo barato y rápido: esto es mantenimiento interno, no una respuesta que ve el usuario
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 300,
         messages: [{ role: 'user', content: prompt }],
       }),
@@ -179,6 +193,18 @@ Devuelve SOLO un JSON con este formato exacto, sin texto antes ni después, sin 
   } catch (memError) {
     console.error('Error actualizando memoria de fondo (no afecta a la respuesta ya dada):', memError);
   }
+}
+
+// Los mensajes con imagen llegan como array [{type:'image',...}, {type:'text', text:'...'}].
+// Esta función siempre devuelve el texto plano, para usarlo en RAG, memoria e historial.
+function getTextFromContent(content) {
+  if (typeof content === 'string') return content;
+  if (Array.isArray(content)) {
+    const textBlock = content.find((b) => b.type === 'text');
+    const hasImage = content.some((b) => b.type === 'image');
+    return (hasImage ? '[Imagen adjunta] ' : '') + (textBlock ? textBlock.text : '');
+  }
+  return '';
 }
 
 export default async (req) => {
@@ -216,7 +242,7 @@ export default async (req) => {
   const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
   if (modulo && lastUserMsg && VOYAGE_API_KEY && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
     try {
-      const embedding = await embedQuery(lastUserMsg.content);
+      const embedding = await embedQuery(getTextFromContent(lastUserMsg.content));
       const chunks = await retrieveKnowledge(embedding, modulo);
       finalSystem += buildKnowledgeBlock(chunks);
       ragTopicsList = (chunks || []).map((c) => c.metodologia).filter(Boolean);
@@ -236,7 +262,7 @@ export default async (req) => {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 700, // conservador a propósito: el streaming se corta a los 10s totales
+        max_tokens: 700,
         system: finalSystem,
         stream: true,
         messages: messages.map((m) => ({ role: m.role, content: m.content })),
@@ -265,7 +291,7 @@ export default async (req) => {
           const { done, value } = await reader.read();
           if (done) break;
 
-          controller.enqueue(value); // reenvía el trozo tal cual al navegador, sin esperar
+          controller.enqueue(value);
 
           sseBuffer += decoder.decode(value, { stream: true });
           const lines = sseBuffer.split('\n');
@@ -284,20 +310,18 @@ export default async (req) => {
         console.error('Error leyendo el stream de Anthropic:', streamErr);
       } finally {
         controller.close();
-        // Guardar el intercambio en el historial persistente, ya con el texto completo acumulado.
         if (userEmail && modulo && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
           try {
             await Promise.all([
-              lastUserMsg ? saveMessage(userEmail, modulo, 'user', lastUserMsg.content, company) : null,
+              lastUserMsg ? saveMessage(userEmail, modulo, 'user', getTextFromContent(lastUserMsg.content), company) : null,
               fullText ? saveMessage(userEmail, modulo, 'assistant', fullText, company, ragTopicsList.join(', ')) : null,
             ]);
           } catch (saveError) {
             console.error('Error guardando historial (la respuesta al usuario no se ve afectada):', saveError);
           }
 
-          // Actualizar el resumen de memoria de fondo con un modelo barato (Haiku), en segundo plano.
           if (lastUserMsg && fullText) {
-            await updateMemorySummary(userEmail, modulo, previousMemory, lastUserMsg.content, fullText);
+            await updateMemorySummary(userEmail, modulo, previousMemory, getTextFromContent(lastUserMsg.content), fullText);
           }
         }
       }
