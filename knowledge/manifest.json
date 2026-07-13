@@ -628,6 +628,237 @@
       "origen": "Center for Creative Leadership",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },{
+      "file": "bienestar/teoria-polivagal-porges.md",
+      "modulo": "bienestar",
+      "metodologia": "Teoría Polivagal",
+      "origen": "Stephen Porges",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/autoeficacia-bandura.md",
+      "modulo": "bienestar",
+      "metodologia": "Autoeficacia",
+      "origen": "Albert Bandura",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/regulacion-emocional-dbt.md",
+      "modulo": "bienestar",
+      "metodologia": "Regulación emocional (DBT)",
+      "origen": "Marsha Linehan",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/neurodivergencia-laboral.md",
+      "modulo": "bienestar",
+      "metodologia": "Neurodivergencia en el entorno laboral",
+      "origen": "Marco de neurodiversidad, Judy Singer",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/boreout.md",
+      "modulo": "bienestar",
+      "metodologia": "Boreout",
+      "origen": "Philippe Rothlin y Peter Werder",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/logoterapia-frankl.md",
+      "modulo": "bienestar",
+      "metodologia": "Logoterapia",
+      "origen": "Viktor Frankl",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/resiliencia-factores-protectores.md",
+      "modulo": "bienestar",
+      "metodologia": "Resiliencia — factores protectores",
+      "origen": "American Psychological Association; Emmy Werner",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/codependencia-limites.md",
+      "modulo": "bienestar",
+      "metodologia": "Codependencia y límites",
+      "origen": "Melody Beattie",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/perdon-enright.md",
+      "modulo": "bienestar",
+      "metodologia": "El perdón como proceso psicológico",
+      "origen": "Robert Enright",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/comparacion-social-festinger.md",
+      "modulo": "bienestar",
+      "metodologia": "Teoría de la comparación social",
+      "origen": "Leon Festinger",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/cronotipos-roenneberg.md",
+      "modulo": "bienestar",
+      "metodologia": "Ritmo circadiano y cronotipos",
+      "origen": "Till Roenneberg",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/retorno-parentalidad.md",
+      "modulo": "bienestar",
+      "metodologia": "Matrescencia/patrescencia y retorno al trabajo",
+      "origen": "Dana Raphael",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "coaching/sesgos-cognitivos-kahneman.md",
+      "modulo": "coaching",
+      "metodologia": "Sesgos cognitivos en la toma de decisiones",
+      "origen": "Daniel Kahneman",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/liderazgo-transformacional-bass.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo transformacional vs. transaccional",
+      "origen": "Bernard M. Bass",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/cultura-organizacional-schein.md",
+      "modulo": "coaching",
+      "metodologia": "Los tres niveles de la cultura organizacional",
+      "origen": "Edgar Schein",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/evaluacion-360.md",
+      "modulo": "coaching",
+      "metodologia": "Evaluación 360 grados",
+      "origen": "Práctica extendida en desarrollo de liderazgo",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/curva-emocional-cambio.md",
+      "modulo": "coaching",
+      "metodologia": "La curva emocional del cambio",
+      "origen": "Adaptación de Elisabeth Kübler-Ross",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/matriz-stakeholders.md",
+      "modulo": "coaching",
+      "metodologia": "Matriz de gestión de stakeholders",
+      "origen": "Aubrey Mendelow",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/liderazgo-servicial-greenleaf.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo servicial (Servant Leadership)",
+      "origen": "Robert K. Greenleaf",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/storytelling-comunicacion.md",
+      "modulo": "coaching",
+      "metodologia": "Storytelling y comunicación persuasiva",
+      "origen": "Estructuras narrativas clásicas aplicadas a negocio",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/job-crafting-wrzesniewski.md",
+      "modulo": "coaching",
+      "metodologia": "Job crafting",
+      "origen": "Amy Wrzesniewski y Jane Dutton",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/inteligencia-cultural-cq.md",
+      "modulo": "coaching",
+      "metodologia": "Inteligencia cultural (CQ)",
+      "origen": "P. Christopher Earley y Soon Ang",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/feedback-ascendente.md",
+      "modulo": "coaching",
+      "metodologia": "Feedback ascendente y managing up",
+      "origen": "John Gabarro y John Kotter",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/trabajo-profundo-newport.md",
+      "modulo": "coaching",
+      "metodologia": "Trabajo profundo (Deep Work)",
+      "origen": "Cal Newport",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/presencia-ejecutiva-hewlett.md",
+      "modulo": "coaching",
+      "metodologia": "Presencia ejecutiva",
+      "origen": "Sylvia Ann Hewlett",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/design-thinking.md",
+      "modulo": "coaching",
+      "metodologia": "Design Thinking",
+      "origen": "David Kelley, Stanford d.school",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/liderazgo-inclusivo-deloitte.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo inclusivo — los seis rasgos",
+      "origen": "Juliet Bourke y Andrea Espedido, Deloitte",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/decision-vroom-yetton.md",
+      "modulo": "coaching",
+      "metodologia": "Estilos de toma de decisiones en equipo",
+      "origen": "Vroom, Yetton y Jago",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/empowerment-spreitzer.md",
+      "modulo": "coaching",
+      "metodologia": "Empowerment psicológico y estructural",
+      "origen": "Gretchen Spreitzer",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
     },
     {
       "file": "bienestar/perfeccionismo.md",
