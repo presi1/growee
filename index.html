@@ -118,6 +118,26 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
 .rrhh-trend-bar{flex:1;background:var(--moss-light);border-radius:3px 3px 0 0;min-height:2px;position:relative}
 .rrhh-topic-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem;font-size:.82rem}
 .rrhh-topic-row .rrhh-bar-track{flex:1}
+
+.cookie-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:400;
+  background:var(--ink-2);border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+  padding:.9rem 1.5rem;flex-wrap:wrap;
+  box-shadow:0 -4px 20px rgba(0,0,0,.25);
+}
+.cookie-banner-text{font-size:.8rem;color:var(--inv);max-width:760px;line-height:1.5;margin:0}
+.cookie-banner-text a{color:var(--moss-light);cursor:pointer;text-decoration:underline}
+.cookie-banner-btn{
+  background:var(--moss-light);color:var(--ink);border:none;padding:.55rem 1.4rem;
+  border-radius:50px;font-size:.82rem;font-weight:700;cursor:pointer;flex-shrink:0;
+  font-family:'Inter',sans-serif;transition:background .2s;
+}
+.cookie-banner-btn:hover{background:#5fcf96}
+@media(max-width:600px){
+  .cookie-banner{padding:1rem}
+  .cookie-banner-text{font-size:.76rem}
+}
 .tag-terra{background:rgba(217,130,90,.12);border:1px solid rgba(217,130,90,.25);color:var(--terra)}
 .tag-gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.18);color:var(--gold)}
 
@@ -743,6 +763,12 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
 </head>
 <body>
 
+<!-- Aviso de privacidad — informativo, no de consentimiento, porque no usamos cookies de rastreo -->
+<div id="cookie-banner" class="cookie-banner" style="display:none">
+  <p class="cookie-banner-text">🍪 No usamos cookies de publicidad ni de rastreo. Solo el almacenamiento técnico esencial para que puedas iniciar sesión, y una analítica propia sin cookies ni datos personales. <a onclick="go('seguridad-rgpd')">Más información</a></p>
+  <button class="cookie-banner-btn" onclick="dismissCookieBanner()">Entendido</button>
+</div>
+
 <!-- ════ NAV ════ -->
 <nav id="main-nav">
   <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menú">
@@ -1243,23 +1269,22 @@ document.addEventListener('scroll', function(e){
 <div class="h-metrics">
   <div class="h-metrics-inner">
     <div>
-      <div class="h-section-eye">Impacto medible</div>
-      <h2 class="h-section-h2" style="margin-bottom:1rem">Números que tu<br><em>CEO va a querer ver</em></h2>
-      <p style="color:var(--inv);font-size:.9rem;line-height:1.75;margin-bottom:2rem">Datos reales de empresas que llevan más de 12 meses usando Growee. Compartimos el método de medición en la demo.</p>
-      <button class="h-cta" style="font-size:.88rem;padding:.82rem 1.8rem" onclick="go('casos')">Ver casos de éxito →</button>
+      <div class="h-section-eye">Transparencia</div>
+      <h2 class="h-section-h2" style="margin-bottom:1rem">Todavía no tenemos<br><em>12 meses de datos que enseñarte</em></h2>
+      <p style="color:var(--inv);font-size:.9rem;line-height:1.75;margin-bottom:2rem">Somos una plataforma joven, y preferimos decírtelo claro antes que inventar cifras. Lo que sí puedes ver en la demo es el producto real, funcionando, con tu propio caso de uso.</p>
+      <button class="h-cta" style="font-size:.88rem;padding:.82rem 1.8rem" onclick="go('casos')">Ver ejemplos reales →</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:1.2rem">
       <div class="h-metrics-grid">
-        <div class="h-metric"><div class="h-metric-val"><span class="u">↓</span>34<small style="font-size:1.6rem">%</small></div><div class="h-metric-label">bajas por estrés en 6 meses</div></div>
-        <div class="h-metric"><div class="h-metric-val">91<span class="u">%</span></div><div class="h-metric-label">empleados se siente más apoyado</div></div>
-        <div class="h-metric"><div class="h-metric-val">3.8<span class="ud">x</span></div><div class="h-metric-label">ROI medio a 12 meses</div></div>
-        <div class="h-metric"><div class="h-metric-val">73<span class="u">%</span></div><div class="h-metric-label">adopción voluntaria media</div></div>
+        <div class="h-metric"><div class="h-metric-val">48<span class="u">h</span></div><div class="h-metric-label">de contratación a plataforma activa</div></div>
+        <div class="h-metric"><div class="h-metric-val">2</div><div class="h-metric-label">módulos, activables por separado</div></div>
+        <div class="h-metric"><div class="h-metric-val">100</div><div class="h-metric-label">metodologías verificadas en el catálogo</div></div>
+        <div class="h-metric"><div class="h-metric-val"><span class="u">100</span>%</div><div class="h-metric-label">confidencial — ni RRHH ve el contenido</div></div>
       </div>
       <div class="h-metrics-quote">
-        <div class="h-mq-text">"Growee lo usa el 73% de nuestro equipo de forma voluntaria. Eso no lo habíamos visto nunca con ninguna otra herramienta de bienestar."</div>
+        <div class="h-mq-text">No prometemos un ROI que no hemos medido todavía. Prometemos que en la demo verás el producto real respondiendo a una situación real de tu equipo — sin filtros ni cifras infladas.</div>
         <div class="h-mq-who">
-          <strong>María López — Head of People</strong>
-          Fintech scale-up · 340 empleados · Plan Profesional
+          <strong>El equipo de Growee</strong>
         </div>
       </div>
     </div>
@@ -1538,74 +1563,44 @@ document.addEventListener('scroll', function(e){
 </style>
   <div style="max-width:700px;margin:0 auto;padding:5rem 3rem 3rem;text-align:center">
     <div style="font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.7rem;display:flex;justify-content:center">Casos de éxito</div>
-    <h2 style="font-family:Fraunces,serif;font-size:2.8rem;font-weight:300;line-height:1.12;letter-spacing:-.025em;margin-bottom:1rem">Empresas reales.<br><em style="font-style:italic;color:var(--moss-light)">Impacto medible.</em></h2>
-    <p style="color:var(--inv);font-size:.95rem;line-height:1.72">No vendemos promesas. Compartimos los resultados exactos de empresas que llevan meses usando Growee con sus equipos.</p>
-  </div>
-  <div style="padding:0 3rem 3.5rem">
-    <div class="casos-kpi">
-      <div class="casos-kpi-cell"><div class="casos-kpi-val"><span class="gu">↓</span>34<small style="font-size:1.9rem">%</small></div><div class="casos-kpi-lbl">reducción de bajas por estrés en los primeros 6 meses</div></div>
-      <div class="casos-kpi-cell"><div class="casos-kpi-val">91<span class="gu">%</span></div><div class="casos-kpi-lbl">de empleados se siente más apoyado tras 3 meses</div></div>
-      <div class="casos-kpi-cell"><div class="casos-kpi-val">3.8<span class="gu">x</span></div><div class="casos-kpi-lbl">ROI medio en empresas con más de 12 meses activos</div></div>
-      <div class="casos-kpi-cell"><div class="casos-kpi-val">73<span class="gu">%</span></div><div class="casos-kpi-lbl">adopción voluntaria media — sin incentivos internos</div></div>
-    </div>
+    <h2 style="font-family:Fraunces,serif;font-size:2.8rem;font-weight:300;line-height:1.12;letter-spacing:-.025em;margin-bottom:1rem">Estamos construyendo<br><em style="font-style:italic;color:var(--moss-light)">las primeras historias reales.</em></h2>
+    <p style="color:var(--inv);font-size:.95rem;line-height:1.72">Growee es una plataforma joven. Todavía no tenemos clientes con meses de datos que enseñarte — preferimos decírtelo así de claro a inventar cifras que sonarían bien. Lo que sí podemos mostrarte es exactamente cómo funciona, con ejemplos reales de conversación, y construir contigo el primer caso de éxito real.</p>
   </div>
   <div style="padding:0 3rem 4rem">
     <div class="casos-testi-grid">
       <div class="casos-testi featured">
-        <div class="casos-testi-quote">"Llevábamos años buscando algo que fuera más allá del EAP clásico. Growee lo usa el 73% de nuestro equipo de forma completamente voluntaria, sin que hayamos tenido que incentivar nada. Eso no lo habíamos visto nunca."</div>
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem">
-          <div class="casos-testi-author">
-            <div class="casos-testi-av">ML</div>
-            <div><div class="casos-testi-name">María López</div><div class="casos-testi-role">Head of People</div><div class="casos-testi-co">● Fintech scale-up · 340 empleados · 8 meses</div></div>
-          </div>
-          <div class="casos-testi-metrics">
-            <div class="casos-metric"><div class="casos-metric-val">73%</div><div class="casos-metric-lbl">Adopción</div></div>
-            <div class="casos-metric"><div class="casos-metric-val">↓41%</div><div class="casos-metric-lbl">Rotación</div></div>
-            <div class="casos-metric"><div class="casos-metric-val">4.8/5</div><div class="casos-metric-lbl">NPS empleado</div></div>
-          </div>
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem">
+          <div class="tag-pill tag-moss" style="font-size:.68rem">Ejemplo real de conversación</div>
         </div>
+        <div class="casos-testi-quote">"Tengo que dar feedback difícil a alguien de mi equipo, y no sé cómo plantearlo sin que se lo tome mal."</div>
+        <p style="font-size:.85rem;color:var(--inv);line-height:1.6">Growee estructura la conversación con el modelo SBI (Situación-Comportamiento-Impacto) del Center for Creative Leadership, ayudando a preparar exactamente qué decir, con ejemplos concretos — no un consejo genérico de "sé más directo".</p>
       </div>
       <div class="casos-testi">
-        <div class="casos-testi-quote">"El módulo de coaching transformó cómo nuestros managers abordan las conversaciones de desarrollo. Lo más sorprendente: el ROI fue evidente ya en el primer trimestre."</div>
-        <div class="casos-testi-author">
-          <div class="casos-testi-av">JR</div>
-          <div><div class="casos-testi-name">Jordi Roca</div><div class="casos-testi-role">Director de Personas</div><div class="casos-testi-co">◆ Industrial · 1.200 empleados · 14 meses</div></div>
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem">
+          <div class="tag-pill tag-terra" style="font-size:.68rem">Ejemplo real de conversación</div>
         </div>
-        <div class="casos-testi-metrics">
-          <div class="casos-metric"><div class="casos-metric-val">4.2x</div><div class="casos-metric-lbl">ROI año 1</div></div>
-          <div class="casos-metric"><div class="casos-metric-val">↑28%</div><div class="casos-metric-lbl">Engagement</div></div>
-          <div class="casos-metric"><div class="casos-metric-val">↓19%</div><div class="casos-metric-lbl">Conflictos</div></div>
-        </div>
+        <div class="casos-testi-quote">"Llevo meses agotada y ya ni me importa si el proyecto sale bien o mal."</div>
+        <p style="font-size:.85rem;color:var(--inv);line-height:1.6">Growee identifica las tres dimensiones del burnout según el modelo de Christina Maslach — agotamiento, cinismo y baja realización — en vez de responder solo con "deberías descansar".</p>
       </div>
       <div class="casos-testi">
-        <div class="casos-testi-quote">"La confidencialidad real fue lo que convenció a nuestros empleados para usarlo. Saben que nadie en la empresa puede leer sus conversaciones — y eso marcó toda la diferencia."</div>
-        <div class="casos-testi-author">
-          <div class="casos-testi-av">AS</div>
-          <div><div class="casos-testi-name">Ana Serrano</div><div class="casos-testi-role">Chief People Officer</div><div class="casos-testi-co">● Consultoría · 580 empleados · 12 meses</div></div>
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem">
+          <div class="tag-pill tag-gold" style="font-size:.68rem">Ejemplo real de conversación</div>
         </div>
-        <div class="casos-testi-metrics">
-          <div class="casos-metric"><div class="casos-metric-val">↓34%</div><div class="casos-metric-lbl">Bajas estrés</div></div>
-          <div class="casos-metric"><div class="casos-metric-val">91%</div><div class="casos-metric-lbl">Satisfacción</div></div>
-          <div class="casos-metric"><div class="casos-metric-val">68%</div><div class="casos-metric-lbl">Adopción</div></div>
-        </div>
+        <div class="casos-testi-quote">"Empiezo a liderar un equipo nuevo la semana que viene y no sé por dónde empezar."</div>
+        <p style="font-size:.85rem;color:var(--inv);line-height:1.6">Growee aplica el marco de Michael Watkins para diagnosticar qué tipo de situación es (inicio, cambio de rumbo, crecimiento o mantenimiento) antes de proponer un plan genérico.</p>
       </div>
       <div class="casos-testi">
-        <div class="casos-testi-quote">"Implementamos Growee como parte del employer branding. Hoy los candidatos lo mencionan espontáneamente en entrevistas como uno de los motivos para querer trabajar con nosotros."</div>
-        <div class="casos-testi-author">
-          <div class="casos-testi-av">PR</div>
-          <div><div class="casos-testi-name">Paula Ríos</div><div class="casos-testi-role">People Director</div><div class="casos-testi-co">● Retail Tech · 800 empleados · 10 meses</div></div>
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem">
+          <div class="tag-pill tag-moss" style="font-size:.68rem">Lo que sí podemos prometer</div>
         </div>
-        <div class="casos-testi-metrics">
-          <div class="casos-metric"><div class="casos-metric-val">↑19%</div><div class="casos-metric-lbl">Atracción talento</div></div>
-          <div class="casos-metric"><div class="casos-metric-val">↓23%</div><div class="casos-metric-lbl">Rotación</div></div>
-          <div class="casos-metric"><div class="casos-metric-val">3.6x</div><div class="casos-metric-lbl">ROI</div></div>
-        </div>
+        <div class="casos-testi-quote">Confidencialidad real, activación en 48h, y un catálogo de 100 metodologías verificadas.</div>
+        <p style="font-size:.85rem;color:var(--inv);line-height:1.6">No inventamos estadísticas de adopción o ROI que no hemos medido todavía. Lo que sí puedes verificar tú mismo, en la propia demo, es cómo responde Growee a situaciones reales de tu equipo.</p>
       </div>
     </div>
   </div>
   <div style="text-align:center;padding:3rem;background:linear-gradient(180deg,rgba(45,106,79,.07),rgba(13,27,42,0));border-top:1px solid rgba(82,183,136,.12);max-width:600px;margin:0 auto">
-    <h3 style="font-family:Fraunces,serif;font-size:1.8rem;font-weight:300;margin-bottom:.7rem">¿Quieres resultados así<br>en tu empresa?</h3>
-    <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.8rem">En la demo te mostramos el caso más parecido al tuyo y cómo replicarlo.</p>
+    <h3 style="font-family:Fraunces,serif;font-size:1.8rem;font-weight:300;margin-bottom:.7rem">¿Quieres ser de los primeros<br>casos de éxito reales?</h3>
+    <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.8rem">En la demo te enseñamos el producto real, sin cifras infladas — y si encaja, construimos el caso juntos.</p>
     <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
   </div>
   <div class="divider"></div>
@@ -2637,6 +2632,16 @@ ol.cbubble-list li{padding-left:.3rem}
   display:flex;align-items:center;justify-content:center;transition:all .18s;
 }
 .chat-attach-btn:hover{border-color:rgba(82,183,136,.5);background:rgba(82,183,136,.08)}
+.chat-attach-btn.recording{
+  background:rgba(229,130,138,.15);border-color:rgba(229,130,138,.6);
+  animation:mic-pulse 1.2s ease-in-out infinite;
+}
+@keyframes mic-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(229,130,138,.4)}
+  50%{box-shadow:0 0 0 6px rgba(229,130,138,0)}
+}
+.attach-chip.image-chip{padding:.3rem .8rem .3rem .3rem}
+.attach-chip-thumb{width:32px;height:32px;border-radius:6px;object-fit:cover;flex-shrink:0}
 .attach-chip{
   display:flex;align-items:center;gap:.5rem;margin:0 1.8rem .6rem;
   padding:.45rem .8rem;background:rgba(82,183,136,.08);border:1px solid rgba(82,183,136,.25);
@@ -2831,7 +2836,7 @@ ol.cbubble-list li{padding-left:.3rem}
     <div class="drop-hint">
       <div class="drop-hint-icon">📎</div>
       <div class="drop-hint-text">Suelta aquí tu documento</div>
-      <div class="drop-hint-sub">.txt, .pdf o .docx</div>
+      <div class="drop-hint-sub">.txt, .pdf, .docx, .png, .jpg</div>
     </div>
     <!-- Mode bar (only shown when ambos) -->
     <div class="chat-mode-bar" id="chat-mode-bar" style="display:none">
@@ -2841,13 +2846,15 @@ ol.cbubble-list li{padding-left:.3rem}
     <div class="chat-msgs" id="chat-msgs"></div>
     <div class="chat-suggs" id="chat-suggs"></div>
     <div class="attach-chip" id="attach-chip" style="display:none">
+      <img id="attach-chip-thumb" class="attach-chip-thumb" style="display:none">
       <span id="attach-chip-name"></span>
       <button onclick="removeAttachment()" title="Quitar">✕</button>
     </div>
     <div class="chat-bar">
       <div class="chat-row">
-        <input type="file" id="attach-input" accept=".txt,.pdf,.docx" style="display:none" onchange="handleAttachmentSelected(event)">
-        <button class="chat-attach-btn" onclick="document.getElementById('attach-input').click()" title="Adjuntar un documento (transcripción, email...)">📎</button>
+        <input type="file" id="attach-input" accept=".txt,.pdf,.docx,.png,.jpg,.jpeg,.webp" style="display:none" onchange="handleAttachmentSelected(event)">
+        <button class="chat-attach-btn" onclick="document.getElementById('attach-input').click()" title="Adjuntar un documento o imagen">📎</button>
+        <button class="chat-attach-btn" id="mic-btn" onclick="toggleVoiceRecording()" title="Grabar un mensaje de voz">🎤</button>
         <textarea class="chat-ta" id="chat-ta" rows="1"
           placeholder="Escríbeme lo que necesitas..."
           onkeydown="chatEnter(event)"
@@ -2861,7 +2868,7 @@ ol.cbubble-list li{padding-left:.3rem}
       </div>
       <div class="chat-meta">
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
-        <span class="chat-disc">📎 Adjunta o arrastra un documento · nunca se sube, solo se lee el texto en tu navegador</span>
+        <span class="chat-disc">📎 Adjunta documentos o imágenes · 🎤 o graba tu mensaje por voz</span>
         <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
       </div>
     </div>
@@ -3073,6 +3080,8 @@ function go(id, _viaHistory) {
   const nav = document.getElementById('main-nav');
   if (nav) nav.style.display = APP_PAGES.includes(id) ? 'none' : 'flex';
   window.scrollTo(0, _viaHistory ? (lastScrollByPage[id] || 0) : 0);
+
+  trackPageView(id);
 
   // Efecto de deslizar (solo en móvil, solo cuando se navega por gesto o por los botones atrás/adelante)
   if (navDirection && window.innerWidth <= 800) {
@@ -3321,6 +3330,19 @@ let appState = {
 const SUPABASE_URL = 'https://piacsqzhfmgtcervmmps.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpYWNzcXpoZm1ndGNlcnZtbXBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyMzk4ODcsImV4cCI6MjA5ODgxNTg4N30.AUXn6R2XjUd8kvit9fVtdKt4CJ-Hsmt0E8ETEOEHxAc';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let lastTrackedPage = null;
+function trackPageView(page) {
+  if (page === lastTrackedPage) return; // evita duplicar si go() se llama dos veces seguidas a la misma página
+  lastTrackedPage = page;
+  try {
+    supabaseClient.from('page_views').insert({
+      page,
+      referrer: document.referrer ? new URL(document.referrer).hostname : null,
+      is_mobile: window.innerWidth <= 800,
+    }).then(() => {}).catch(() => {}); // silencioso: si falla, no debe afectar a la navegación
+  } catch (e) { /* nunca debe romper la navegación por esto */ }
+}
 
 function togglePasswordLogin() {
   const emailStep = document.getElementById('auth-step-email');
@@ -4688,7 +4710,7 @@ function typeOutText(el, fullText, formattedHTML, scrollBox) {
   step();
 }
 
-function addBubble(role, text, animate) {
+function addBubble(role, text, animate, imageSrc) {
   const box  = document.getElementById('chat-msgs');
   if(!box) return;
   const mode = chatState.mode;
@@ -4709,6 +4731,16 @@ function addBubble(role, text, animate) {
       typeOutText(b, text, formatAiText(text), box);
     } else {
       b.innerHTML = formatAiText(text);
+    }
+  } else if (imageSrc) {
+    const img = document.createElement('img');
+    img.src = imageSrc;
+    img.style.cssText = 'max-width:220px;max-height:220px;border-radius:10px;display:block;margin-bottom:.5rem;object-fit:cover';
+    b.appendChild(img);
+    if (text) {
+      const txt = document.createElement('div');
+      txt.textContent = text;
+      b.appendChild(txt);
     }
   } else {
     b.textContent = text;
@@ -4775,20 +4807,88 @@ function createLiveAiBubble() {
 }
 
 let pendingAttachment = null; // { name, text }
+
+// ══════════════════════════════════════════════
+// Mensajes de voz — reconocimiento nativo del navegador
+// (Claude no acepta audio directamente; se transcribe aquí y se manda como texto)
+// ══════════════════════════════════════════════
+let voiceRecognition = null;
+let isRecording = false;
+
+function getSpeechRecognitionClass() {
+  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+}
+
+function toggleVoiceRecording() {
+  const SR = getSpeechRecognitionClass();
+  if (!SR) {
+    alert('Tu navegador no soporta grabación de voz todavía. Funciona en Chrome y Edge — prueba desde ahí, o escribe tu mensaje directamente.');
+    return;
+  }
+
+  if (isRecording) {
+    voiceRecognition.stop();
+    return;
+  }
+
+  const ta = document.getElementById('chat-ta');
+  const micBtn = document.getElementById('mic-btn');
+  const baseText = ta.value ? ta.value.trim() + ' ' : '';
+
+  voiceRecognition = new SR();
+  voiceRecognition.lang = 'es-ES';
+  voiceRecognition.continuous = true;
+  voiceRecognition.interimResults = true;
+
+  voiceRecognition.onstart = () => {
+    isRecording = true;
+    if (micBtn) { micBtn.classList.add('recording'); micBtn.title = 'Grabando... clica para parar'; }
+  };
+
+  voiceRecognition.onresult = (event) => {
+    let transcript = '';
+    for (let i = 0; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+    }
+    ta.value = baseText + transcript;
+    chatResize(ta);
+  };
+
+  voiceRecognition.onerror = (event) => {
+    console.error('Error de reconocimiento de voz:', event.error);
+    if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+      alert('No se pudo acceder al micrófono. Comprueba los permisos de tu navegador para este sitio.');
+    }
+  };
+
+  voiceRecognition.onend = () => {
+    isRecording = false;
+    if (micBtn) { micBtn.classList.remove('recording'); micBtn.title = 'Grabar un mensaje de voz'; }
+  };
+
+  voiceRecognition.start();
+}
 const ATTACH_MAX_CHARS = 16000; // ~4.000 palabras, límite para no disparar coste/contexto
 
 function removeAttachment() {
   pendingAttachment = null;
   const chip = document.getElementById('attach-chip');
-  if (chip) chip.style.display = 'none';
+  if (chip) { chip.style.display = 'none'; chip.classList.remove('image-chip'); }
+  const thumb = document.getElementById('attach-chip-thumb');
+  if (thumb) { thumb.style.display = 'none'; thumb.src = ''; }
   const input = document.getElementById('attach-input');
   if (input) input.value = '';
 }
 
-function showAttachChip(name) {
+function showAttachChip(name, thumbSrc) {
   const chip = document.getElementById('attach-chip');
   const nameEl = document.getElementById('attach-chip-name');
-  if (nameEl) nameEl.textContent = '📎 ' + name;
+  const thumb = document.getElementById('attach-chip-thumb');
+  if (nameEl) nameEl.textContent = (thumbSrc ? '' : '📎 ') + name;
+  if (thumb) {
+    if (thumbSrc) { thumb.src = thumbSrc; thumb.style.display = 'block'; chip.classList.add('image-chip'); }
+    else { thumb.style.display = 'none'; chip.classList.remove('image-chip'); }
+  }
   if (chip) chip.style.display = 'flex';
 }
 
@@ -4833,15 +4933,44 @@ async function handleAttachmentSelected(event) {
   await processAttachedFile(file);
 }
 
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result); // devuelve el data URL completo (data:image/png;base64,....)
+    reader.onerror = () => reject(new Error('No se pudo leer la imagen'));
+    reader.readAsDataURL(file);
+  });
+}
+
+const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'webp'];
+
 async function processAttachedFile(file) {
   const ext = file.name.split('.').pop().toLowerCase();
   const maxSizeMB = 15;
   if (file.size > maxSizeMB * 1024 * 1024) {
-    alert(`El archivo pesa demasiado (máximo ${maxSizeMB}MB). Prueba con un documento más ligero.`);
+    alert(`El archivo pesa demasiado (máximo ${maxSizeMB}MB). Prueba con uno más ligero.`);
     removeAttachment();
     return;
   }
 
+  // ── Imágenes / capturas de pantalla: se envían tal cual, Claude puede verlas ──
+  if (IMAGE_EXTENSIONS.includes(ext)) {
+    showAttachChip(file.name + ' (leyendo...)');
+    try {
+      const dataUrl = await fileToBase64(file);
+      const mediaType = dataUrl.slice(5, dataUrl.indexOf(';')); // "image/png", etc.
+      const base64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
+      pendingAttachment = { type: 'image', name: file.name, mediaType, base64 };
+      showAttachChip(file.name, dataUrl);
+    } catch (err) {
+      console.error('Error leyendo la imagen:', err);
+      alert('No se pudo leer esta imagen.');
+      removeAttachment();
+    }
+    return;
+  }
+
+  // ── Documentos de texto: se extrae el contenido y se manda como texto ──
   showAttachChip(file.name + ' (leyendo...)');
 
   try {
@@ -4853,7 +4982,7 @@ async function processAttachedFile(file) {
     } else if (ext === 'docx') {
       rawText = await extractTextFromDocx(file);
     } else {
-      alert('Formato no soportado. Usa .txt, .pdf o .docx.');
+      alert('Formato no soportado. Usa .txt, .pdf, .docx, .png, .jpg o .webp.');
       removeAttachment();
       return;
     }
@@ -4865,7 +4994,7 @@ async function processAttachedFile(file) {
       return;
     }
 
-    pendingAttachment = { name: file.name, text: truncateAttachmentText(rawText) };
+    pendingAttachment = { type: 'document', name: file.name, text: truncateAttachmentText(rawText) };
     showAttachChip(file.name);
   } catch (err) {
     console.error('Error leyendo el documento adjunto:', err);
@@ -4910,10 +5039,19 @@ async function chatSend() {
   const suggs = document.getElementById('chat-suggs');
   if(suggs) suggs.style.display = 'none';
 
-  let displayText = typed;
-  let apiContent  = typed;
+  let displayText  = typed;
+  let apiContent   = typed;
+  let bubbleImgSrc = null;
 
-  if (pendingAttachment) {
+  if (pendingAttachment && pendingAttachment.type === 'image') {
+    bubbleImgSrc = `data:${pendingAttachment.mediaType};base64,${pendingAttachment.base64}`;
+    displayText = typed; // el nombre del archivo no hace falta mostrarlo, ya se ve la propia imagen
+    apiContent = [
+      { type: 'image', source: { type: 'base64', media_type: pendingAttachment.mediaType, data: pendingAttachment.base64 } },
+      { type: 'text', text: typed || 'Coméntame esta imagen, por favor.' },
+    ];
+    removeAttachment();
+  } else if (pendingAttachment) {
     const label = `📎 ${pendingAttachment.name}`;
     displayText = typed ? `${label}\n\n${typed}` : `${label}\n\n(Documento adjuntado sin comentario adicional)`;
     const docBlock = `[Documento adjunto: ${pendingAttachment.name}]\n\n${pendingAttachment.text}\n\n[Fin del documento adjunto]`;
@@ -4921,7 +5059,7 @@ async function chatSend() {
     removeAttachment();
   }
 
-  addBubble('user', displayText);
+  addBubble('user', displayText, false, bubbleImgSrc);
   chatState.msgCount++;
   updChatCnt();
   chatState.history.push({ role:'user', content: apiContent });
@@ -4998,11 +5136,25 @@ function doLogout() {
   go('home');
 }
 
+function showCookieBannerIfNeeded() {
+  try {
+    if (localStorage.getItem('growee_cookie_notice_dismissed') === 'true') return;
+  } catch (e) { /* si localStorage no está disponible, mostramos el aviso igualmente */ }
+  const banner = document.getElementById('cookie-banner');
+  if (banner) banner.style.display = 'flex';
+}
+
+function dismissCookieBanner() {
+  try { localStorage.setItem('growee_cookie_notice_dismissed', 'true'); } catch (e) {}
+  const banner = document.getElementById('cookie-banner');
+  if (banner) banner.style.display = 'none';
+}
+
 // init
 go('home');
 setupDragAndDrop();
 checkExistingSession();
-
+showCookieBannerIfNeeded();
 </script>
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
