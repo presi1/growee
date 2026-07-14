@@ -2703,7 +2703,10 @@ document.addEventListener('scroll', function(e){
             <div class="form-group"><label class="form-label">Apellidos</label><input class="form-input" id="demo-apellidos" type="text" placeholder="García"><div class="form-error-msg" id="err-demo-apellidos">Este campo es obligatorio</div></div>
           </div>
           <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" id="demo-email" type="email" placeholder="carmen@empresa.com"><div class="form-error-msg" id="err-demo-email">Introduce un email válido</div></div>
-          <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="demo-empresa" type="text" placeholder="Nombre de la empresa"><div class="form-error-msg" id="err-demo-empresa">Este campo es obligatorio</div></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="demo-empresa" type="text" placeholder="Nombre de la empresa"><div class="form-error-msg" id="err-demo-empresa">Este campo es obligatorio</div></div>
+            <div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" id="demo-telefono" type="tel" placeholder="+34 600 000 000"><div class="form-error-msg" id="err-demo-telefono">Introduce un teléfono válido</div></div>
+          </div>
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">Tamaño del equipo</label>
@@ -3718,6 +3721,7 @@ const DEMO_REQUIRED_FIELDS = [
   { id: 'demo-apellidos', type: 'text'  },
   { id: 'demo-email',     type: 'email' },
   { id: 'demo-empresa',   type: 'text'  },
+  { id: 'demo-telefono',  type: 'tel'   },
   { id: 'demo-tamano',    type: 'text'  },
   { id: 'demo-rol',       type: 'text'  },
   { id: 'demo-modulo',    type: 'text'  },
@@ -3735,6 +3739,9 @@ function validateDemoForm() {
     let valid = value !== '';
     if (valid && type === 'email') {
       valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+    if (valid && type === 'tel') {
+      valid = /^[\d\s+().-]{7,}$/.test(value);
     }
     el.classList.toggle('invalid', !valid);
     if (err) err.classList.toggle('show', !valid);
@@ -3763,6 +3770,7 @@ async function submitDemo() {
     apellidos: document.getElementById('demo-apellidos').value.trim(),
     email: document.getElementById('demo-email').value.trim(),
     empresa: document.getElementById('demo-empresa').value.trim(),
+    telefono: document.getElementById('demo-telefono').value.trim(),
     tamano_equipo: document.getElementById('demo-tamano').value,
     rol: document.getElementById('demo-rol').value,
     modulo_interes: document.getElementById('demo-modulo').value,
