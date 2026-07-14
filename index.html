@@ -119,6 +119,29 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
 .rrhh-topic-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem;font-size:.82rem}
 .rrhh-topic-row .rrhh-bar-track{flex:1}
 
+.recursos-card{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column}
+.recursos-filtro-btn{
+  background:none;border:1px solid var(--border);color:var(--inv);padding:.5rem 1rem;
+  border-radius:50px;font-size:.82rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;
+}
+.recursos-filtro-btn:hover{border-color:rgba(82,183,136,.5)}
+.recursos-filtro-btn.active{background:var(--moss-light);color:var(--ink);border-color:var(--moss-light);font-weight:600}
+.recursos-search-wrap{position:relative;display:flex;align-items:center}
+.recursos-search-wrap svg{position:absolute;left:.8rem;width:15px;height:15px;color:var(--inv-2);pointer-events:none}
+.recursos-search-wrap input{
+  background:var(--mist);border:1px solid var(--border);border-radius:50px;
+  padding:.55rem 1rem .55rem 2.3rem;font-size:.82rem;color:var(--cream);width:220px;
+  font-family:'Inter',sans-serif;
+}
+.recursos-search-wrap input:focus{outline:none;border-color:rgba(82,183,136,.5)}
+
+.guia-gated-content{display:none}
+.guia-gated-content.unlocked{display:block}
+.guia-gate-fade{height:90px;background:linear-gradient(180deg, transparent, var(--ink) 85%);position:relative;z-index:1;pointer-events:none}
+.guia-gate-box{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:2rem;text-align:center;position:relative;z-index:2;margin-top:-1.5rem}
+.guia-gate-box p{color:var(--cream);font-size:.95rem;margin-bottom:1rem;font-family:'Fraunces',serif}
+.guia-gate-form{max-width:340px;margin:0 auto;text-align:left}
+
 .cookie-banner{
   position:fixed;bottom:0;left:0;right:0;z-index:400;
   background:var(--ink-2);border-top:1px solid var(--border);
@@ -783,7 +806,7 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
       </button>
       <div class="dropdown" id="dd-menu">
         <div style="grid-column:1/-1;padding:.1rem 0 .8rem;border-bottom:1px solid var(--border);margin-bottom:.4rem">
-          <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2)">Módulos</div>
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2)">Para empleados</div>
         </div>
         <div class="dd-item" onclick="go('prod-bienestar');closeDD()">
           <div class="dd-icon terra">🧡</div>
@@ -793,7 +816,10 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
           <div class="dd-icon gold">◆</div>
           <div class="dd-text"><h5>Coaching Profesional</h5><p>Liderazgo, comunicación y desarrollo de managers</p></div>
         </div>
-        <div class="dd-item" onclick="go('prod-rrhh');closeDD()">
+        <div style="grid-column:1/-1;padding:.9rem 0 .8rem .0;border-bottom:1px solid var(--border);margin-bottom:.4rem;margin-top:.3rem">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2)">Para empresas</div>
+        </div>
+        <div class="dd-item" onclick="go('prod-rrhh');closeDD()" style="grid-column:1/-1">
           <div class="dd-icon moss">📊</div>
           <div class="dd-text"><h5>Panel de RRHH</h5><p>Índices agregados y anonimizados, sin acceso a conversaciones</p></div>
         </div>
@@ -802,7 +828,6 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
     </div>
     <button class="nav-link" onclick="go('como-funciona')">Cómo funciona</button>
     <button class="nav-link" onclick="go('casos')">Casos de éxito</button>
-    <button class="nav-link" onclick="go('seguridad-rgpd')">Seguridad y RGPD</button>
     <button class="nav-link" onclick="go('recursos')">Recursos</button>
   </div>
   <div class="nav-right">
@@ -820,14 +845,14 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
   <div class="mobile-nav">
     <button class="mobile-nav-item" onclick="go('home');closeMobileMenu()">🏠 Inicio</button>
     <div class="mobile-nav-divider"></div>
-    <div class="mobile-nav-section">Producto</div>
+    <div class="mobile-nav-section">Para empleados</div>
     <button class="mobile-nav-item" onclick="go('prod-bienestar');closeMobileMenu()">🧡 Apoyo Emocional</button>
     <button class="mobile-nav-item" onclick="go('prod-coaching');closeMobileMenu()">◆ Coaching Profesional</button>
+    <div class="mobile-nav-section">Para empresas</div>
     <button class="mobile-nav-item" onclick="go('prod-rrhh');closeMobileMenu()">📊 Panel de RRHH</button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-item" onclick="go('como-funciona');closeMobileMenu()">⚙️ Cómo funciona</button>
     <button class="mobile-nav-item" onclick="go('casos');closeMobileMenu()">🏆 Casos de éxito</button>
-    <button class="mobile-nav-item" onclick="go('seguridad-rgpd');closeMobileMenu()">🔒 Seguridad y RGPD</button>
     <button class="mobile-nav-item" onclick="go('recursos');closeMobileMenu()">📚 Recursos</button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-item" onclick="go('login');closeMobileMenu()">Acceder</button>
@@ -1028,14 +1053,9 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
   <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,27,42,.05) 0%,rgba(13,27,42,.4) 45%,rgba(13,27,42,.68) 60%,rgba(13,27,42,.92) 78%,#0D1B2A 100%)"></div>
   <div style="position:relative;z-index:1;max-width:860px;padding:3rem 3rem 4rem;margin:0 auto;text-align:center;width:100%;display:flex;flex-direction:column;align-items:center">
     <h1 class="h-h1" style="font-size:4.6rem;max-width:800px">El equipo que cuidas<br><em>rinde más.</em></h1>
-    <p class="h-sub" style="max-width:580px;margin:1rem auto 1.8rem;font-size:1.18rem;color:rgba(248,246,241,.92);font-weight:500;line-height:1.6">Coaching profesional y apoyo emocional con IA especializada. Una plataforma que RRHH activa en 48h y que cada empleado usa cuando lo necesita.</p>
+    <p class="h-sub" style="max-width:580px;margin:1rem auto 1.8rem;font-size:1.18rem;color:rgba(248,246,241,.92);font-weight:500;line-height:1.6">Un chat de IA especializado en coaching profesional y apoyo emocional. Una plataforma que RRHH activa en 48h y que cada empleado usa cuando lo necesita.</p>
     <div class="h-actions" style="justify-content:center;margin-bottom:2rem">
       <button class="h-cta" onclick="go('demo')">Solicitar demo gratuita</button>
-    </div>
-    <div class="h-trustbar" style="justify-content:center;border-top:none;padding-top:0">
-      <div class="h-trust"><div class="h-trust-dot"></div>Listo en 48h, sin IT</div>
-      <div class="h-trust"><div class="h-trust-dot"></div>RGPD · Datos en EU</div>
-      <div class="h-trust"><div class="h-trust-dot"></div>Conversaciones 100% confidenciales</div>
     </div>
   </div>
 </div>
@@ -1071,92 +1091,95 @@ document.addEventListener('scroll', function(e){
 <div style="border-top:1px solid var(--border)">
 
 
-  <!-- Pilares -->
+  <!-- Por qué Growee -->
   <div style="max-width:1160px;margin:0 auto;padding:4rem 3rem 4rem">
     <div style="text-align:center;margin-bottom:3rem">
-      <div class="h-section-eye">La plataforma</div>
-      <h2 class="h-section-h2">Elige un módulo o<br><em>actívalos ambos</em></h2>
+      <div class="h-section-eye">Por qué Growee</div>
+      <h2 class="h-section-h2">No es otro chat de IA<br><em>genérico como ChatGPT o Claude</em></h2>
+      <p class="lead" style="margin:1.2rem auto 0;max-width:640px">Los módulos ya los has visto en el menú de arriba. Esto es lo que hay detrás, y por qué importa de verdad para tu empresa.</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
 
-      <!-- BIENESTAR PILAR -->
-      <div style="background:var(--mist);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative">
-        <div style="height:3px;background:linear-gradient(90deg,var(--terra),transparent)"></div>
-        <div style="padding:2rem">
-          <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Módulo Bienestar</div>
-          <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:.6rem;color:var(--cream)">Apoyo Emocional</h3>
-          <p style="font-size:.875rem;color:var(--inv);line-height:1.72;margin-bottom:1.5rem">IA entrenada en psicología cognitivo-conductual, mindfulness y ACT para acompañar a cada persona en sus dificultades emocionales, en cualquier momento.</p>
-          <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem">
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Gestión del estrés</strong>&nbsp;y la ansiedad laboral</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Prevención del burnout</strong>&nbsp;y detección temprana</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Conflictos interpersonales</strong>&nbsp;y relaciones</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Conciliación</strong>&nbsp;vida personal y profesional</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Autoestima y confianza</strong>&nbsp;profesional</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--terra);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Adaptación al cambio</strong>&nbsp;y resiliencia</div>
-          </div>
-          <!-- Chat estático de impacto -->
-          <div style="background:rgba(13,27,42,.6);border:1px solid rgba(217,130,90,.25);border-radius:16px;overflow:hidden">
-            <div style="padding:.75rem 1rem;border-bottom:1px solid rgba(217,130,90,.18);display:flex;align-items:center;gap:.6rem;background:rgba(217,130,90,.08)">
-              <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--terra-dark),var(--terra));flex-shrink:0"></div>
-              <span style="font-size:.78rem;font-weight:600;color:var(--cream)">Growee · Apoyo Emocional</span>
-              <span style="margin-left:auto;display:flex;align-items:center;gap:.35rem;font-size:.68rem;color:var(--terra)"><span style="width:6px;height:6px;border-radius:50%;background:var(--terra);display:inline-block"></span>En línea</span>
-            </div>
-            <div style="padding:1rem;display:flex;flex-direction:column;gap:.7rem">
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:88%;border-left:2px solid rgba(217,130,90,.55)">Hola. Este es tu espacio, completamente confidencial. ¿Qué está pasando?</div>
-              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Llevo meses sin dormir bien. Siento que el trabajo me ha comido. Ya no sé cuándo fue la última vez que me sentí yo mismo.</div>
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Lo que describes tiene mucho peso. Perder el hilo de quién eres no es "estar cansado" — es una señal importante. ¿Hay algo que antes te cargaba las pilas y que ahora has dejado de hacer?</div>
-              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Corría. Hace un año que no salgo a correr.</div>
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(217,130,90,.55)">Eso es exactamente lo que en psicología se llama <strong>activación conductual</strong>: recuperar antes lo que te sostenía que esperar a "tener ganas". ¿Qué haría falta para salir mañana, aunque sean 10 minutos?</div>
-            </div>
-          </div>
-          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--terra);color:var(--ink)" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    <!-- 5 diferenciales frente a un chat de IA suelto -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-bottom:3.5rem">
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">🎯</div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Consistencia de comportamiento</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">Cita siempre metodología y autor, nunca da relleno, y máximo 3 preguntas antes de proponer algo — por diseño, no por suerte del día.</p></div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">🧠</div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Memoria persistente entre sesiones</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">Un resumen evolutivo real, no solo el historial en crudo — retoma el hilo entre conversaciones, algo que un chat suelto no hace por defecto.</p></div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">🏢</div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">El envoltorio B2B completo</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">Cuenta de empresa, alta por CSV, panel de RRHH agregado sin ver contenido individual — nada de esto existe en "usa ChatGPT directamente".</p></div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">📚</div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Contenido validado, no improvisado</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">100 metodologías con nombre y autor citado, revisadas por un profesional cualificado — no un catálogo generado una vez y olvidado.</p></div>
+      </div>
+    </div>
+    <div style="max-width:700px;margin:-2rem auto 3.5rem;text-align:center">
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;text-align:left">
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;flex-shrink:0">🤝</div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Un partner real cuando la IA no basta</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">Acuerdo de derivación con una red de profesionales para cerrar el ciclo en casos que lo requieran — la IA sabe reconocer sus propios límites.</p></div>
+      </div>
+    </div>
+
+    <!-- El problema, con datos reales -->
+    <div style="border-top:1px solid var(--border);padding-top:3rem;margin-bottom:3rem">
+      <div style="text-align:center;margin-bottom:2.3rem">
+        <div class="h-section-eye">El problema, en cifras</div>
+        <h3 style="font-family:'Fraunces',serif;font-size:1.7rem;font-weight:300">La salud mental ya es la 2ª causa<br>de baja laboral en España</h3>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:1.3rem">
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">671.618</div>
+          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">bajas por salud mental en 2024 — casi el doble que en 2016 (283.999)</div>
+        </div>
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--gold)">~20%</div>
+          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">de las bajas de más de 3 meses ya son por trastornos mentales</div>
+        </div>
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--terra)">2,5x</div>
+          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">más duración media que el resto de bajas laborales (2023)</div>
+        </div>
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">708</div>
+          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">de 420.000+ bajas (2025) reconocidas como derivadas del trabajo</div>
         </div>
       </div>
+      <p style="font-size:.72rem;color:var(--inv-2);text-align:center;max-width:640px;margin:0 auto">Fuentes: informe "Salud Mental y Trabajo 2025" de UGT; Observatorio de Contingencias Comunes de Asepeyo; Francisco Trujillo (Universidad Jaume I). La Estrategia Española de Seguridad y Salud en el Trabajo 2023-2027 ya compromete a las empresas a gestionar el bienestar psicológico — la presión regulatoria va a más, no a menos.</p>
+    </div>
 
-      <!-- COACHING PILAR -->
-      <div style="background:var(--mist);border:1px solid var(--border);border-radius:20px;overflow:hidden;position:relative">
-        <div style="height:3px;background:linear-gradient(90deg,var(--gold),transparent)"></div>
-        <div style="padding:2rem">
-          <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Módulo Coaching</div>
-          <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:.6rem;color:var(--cream)">Coaching Profesional</h3>
-          <p style="font-size:.875rem;color:var(--inv);line-height:1.72;margin-bottom:1.5rem">IA entrenada en metodologías de coaching ejecutivo (ICF, GROW, Co-Active) para acompañar a managers y colaboradores en su desarrollo, sin agendar ni esperar.</p>
-          <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.8rem">
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Liderazgo</strong>&nbsp;y gestión de equipos</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Comunicación</strong>&nbsp;y conversaciones difíciles</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Delegación y feedback</strong>&nbsp;de equipo</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Gestión del tiempo</strong>&nbsp;y productividad</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Transiciones de carrera</strong>&nbsp;y promociones</div>
-            <div style="display:flex;gap:.65rem;font-size:.82rem;color:rgba(248,246,241,.68);align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Objetivos OKR</strong>&nbsp;y desarrollo personal</div>
+    <!-- Comparador de coste -->
+    <div style="border-top:1px solid var(--border);padding-top:3rem;margin-bottom:3rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center">
+        <div>
+          <div class="h-section-eye">El comparador de coste</div>
+          <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:1rem">Lo que ya pagáis vs.<br>lo que cuesta prevenir</h3>
+          <p style="font-size:.85rem;color:var(--inv);line-height:1.75">Por ley, la empresa paga directamente el 60% del salario entre el día 4 y el 15 de cualquier baja — y sigue cotizando a la Seguridad Social durante <strong style="color:var(--cream)">toda</strong> su duración. Con una baja media por salud mental de más de 100 días, ese coste ya está ahí, se use Growee o no.</p>
+        </div>
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:1rem;border-bottom:1px solid var(--border);margin-bottom:1rem">
+            <span style="font-size:.85rem;color:var(--inv)">Growee, un empleado, un año completo</span>
+            <span style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--moss-light)">72–144 €</span>
           </div>
-          <!-- Chat estático de impacto -->
-          <div style="background:rgba(13,27,42,.6);border:1px solid rgba(201,168,76,.2);border-radius:16px;overflow:hidden">
-            <div style="padding:.75rem 1rem;border-bottom:1px solid rgba(201,168,76,.15);display:flex;align-items:center;gap:.6rem;background:rgba(184,146,42,.07)">
-              <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#9A7A28,var(--gold));flex-shrink:0"></div>
-              <span style="font-size:.78rem;font-weight:600;color:var(--cream)">Growee · Coaching Profesional</span>
-              <span style="margin-left:auto;display:flex;align-items:center;gap:.35rem;font-size:.68rem;color:var(--gold)"><span style="width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block"></span>En línea</span>
-            </div>
-            <div style="padding:1rem;display:flex;flex-direction:column;gap:.7rem">
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:88%;border-left:2px solid rgba(201,168,76,.45)">Hola. ¿En qué estás trabajando hoy?</div>
-              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Tengo que decirle a alguien de mi equipo que no va a ser promocionado. Ha trabajado duro pero no está listo. No sé cómo decírselo sin destruir su motivación.</div>
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Esta conversación, bien hecha, puede ser el momento más importante en su carrera. La clave no es el "no" — es el "todavía no, y aquí está exactamente el camino". ¿Qué es lo que le falta en concreto?</div>
-              <div style="background:var(--cream);border-radius:12px 12px 3px 12px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:var(--ink);max-width:84%;align-self:flex-end;font-weight:500">Toma buenas decisiones técnicas pero le cuesta influir sin autoridad formal.</div>
-              <div style="background:rgba(248,246,241,.12);border-radius:12px 12px 12px 3px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6;color:rgba(248,246,241,.9);max-width:90%;border-left:2px solid rgba(201,168,76,.45)">Perfecto. Eso es una habilidad concreta y enseñable, no un rasgo de personalidad. Vamos a estructurar el feedback con el modelo <strong>SBI (Situación-Comportamiento-Impacto)</strong> del Center for Creative Leadership: primero el hecho, luego el impacto, y cerramos con un plan de desarrollo de 6 meses que tú vas a apoyar. ¿Lo construimos juntos?</div>
-            </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:.85rem;color:var(--inv)">Solo el pago obligatorio de la empresa,<br>días 4-15 de una baja (60% salario)</span>
+            <span style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--terra)">Ya lo pagas</span>
           </div>
-          <button class="btn-primary" style="width:100%;margin-top:1.4rem;background:var(--gold);color:var(--ink)" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
         </div>
       </div>
+    </div>
 
-    </div><!-- /grid -->
-
-    <!-- Tabla comparativa común -->
-    <div style="margin-top:1.5rem;background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem">
-      <div style="font-size:.73rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--inv-2);margin-bottom:1.1rem">Incluido en ambos módulos</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem">
-        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Historial permanente de sesiones</div>
-        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Personalización por perfil y reto</div>
-        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Conversaciones 100% confidenciales</div>
-        <div style="display:flex;align-items:center;gap:.55rem;font-size:.82rem;color:rgba(248,246,241,.72)"><span style="color:var(--moss-light);font-size:.75rem">✓</span>Disponible 24/7 · Web y móvil</div>
+    <!-- Investigación de la categoría (honesto: no es un dato propio de Growee) -->
+    <div style="border-top:1px solid var(--border);padding-top:3rem">
+      <div style="max-width:760px;margin:0 auto;text-align:center">
+        <div class="h-section-eye">Lo que dice la investigación</div>
+        <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:1rem">4,8–6,5% menos horas perdidas<br>por enfermedad al mes</h3>
+        <p style="font-size:.85rem;color:var(--inv);line-height:1.75;margin-bottom:.8rem">Es el resultado de un estudio con grupo de control real sobre programas de apoyo al empleado (EAP) en general — no una cifra propia de Growee, que es un producto nuevo y todavía sin datos propios que enseñarte. Lo compartimos porque es la investigación más rigurosa que hemos encontrado sobre esta categoría de intervención, no porque queramos venderte algo que no hemos medido.</p>
+        <p style="font-size:.72rem;color:var(--inv-2)">Fuente: estudio con grupo de control emparejado y datos objetivos de fichaje, sobre empleados públicos.</p>
       </div>
     </div>
   </div>
@@ -1170,6 +1193,7 @@ document.addEventListener('scroll', function(e){
       <button class="btn-primary" onclick="go('como-funciona')">Ver el proceso completo →</button>
     </div>
   </div>
+
 
 
 
@@ -1688,57 +1712,141 @@ document.addEventListener('scroll', function(e){
 
 <!-- ═══════ RECURSOS / BLOG ═══════ -->
 <div id="pg-recursos" class="pg">
-  <div style="max-width:900px;margin:0 auto;padding:5rem 3rem 3rem;text-align:center">
+  <div style="max-width:900px;margin:0 auto;padding:5rem 3rem 2rem;text-align:center">
     <div class="h-section-eye">Recursos</div>
     <h1 style="font-family:'Fraunces',serif;font-size:2.6rem;font-weight:300;margin:1rem 0 1.2rem">Guías y plantillas<br><em>para RRHH y managers</em></h1>
     <p class="lead" style="max-width:600px;margin:0 auto">Contenido práctico sobre bienestar laboral y liderazgo, hecho para aplicarse el mismo día, no solo para leerse.</p>
   </div>
 
-  <div style="max-width:1000px;margin:0 auto;padding:1rem 3rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+  <!-- Filtro por módulo + buscador -->
+  <div style="max-width:1000px;margin:0 auto;padding:0 3rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+    <div style="display:flex;gap:.5rem" id="recursos-filtros">
+      <button class="recursos-filtro-btn active" data-filtro="todos" onclick="filtrarRecursos('todos', this)">Todos</button>
+      <button class="recursos-filtro-btn" data-filtro="bienestar" onclick="filtrarRecursos('bienestar', this)">🧡 Bienestar</button>
+      <button class="recursos-filtro-btn" data-filtro="coaching" onclick="filtrarRecursos('coaching', this)">◆ Coaching</button>
+    </div>
+    <div class="recursos-search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="recursos-search" placeholder="Buscar por palabra..." oninput="filtrarRecursosPorTexto(this.value)">
+    </div>
+  </div>
 
-    <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+  <div style="max-width:1000px;margin:0 auto;padding:0 3rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" id="recursos-grid">
+
+    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo dar feedback difícil sin que se ponga a la defensiva sbi center for creative leadership">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo dar feedback difícil sin que se ponga a la defensiva</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Una guía práctica del modelo SBI (Situación-Comportamiento-Impacto) del Center for Creative Leadership, con ejemplos reales de qué decir y qué evitar.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-feedback-sbi')">Leer guía →</button>
     </div>
 
-    <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="señales tempranas de burnout que rrhh no debería ignorar maslach">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Señales tempranas de burnout que RRHH no debería ignorar</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Basado en el modelo de las tres dimensiones de Christina Maslach: qué mirar antes de que el desgaste se convierta en baja laboral.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-burnout')">Leer guía →</button>
     </div>
 
-    <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+    <div class="recursos-card" data-modulo="coaching" data-titulo="plantilla de 1:1s que de verdad sirven reuniones individuales">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Plantilla de 1:1s que de verdad sirven</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué la mayoría de 1:1s se quedan en un repaso de tareas, y una estructura concreta para que dejen de serlo.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-1-1s')">Leer guía →</button>
     </div>
 
-    <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="cómo hablar de salud mental en la empresa sin sonar forzado">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo hablar de salud mental en la empresa sin sonar forzado</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Qué decir (y qué evitar) cuando quieres que tu equipo sepa que puede hablar de esto sin que suene a campaña de RRHH.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-salud-mental')">Leer guía →</button>
     </div>
 
-    <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo preparar una conversación de objetivos con el modelo grow whitmore">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo preparar una conversación de objetivos con el modelo GROW</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">La estructura de John Whitmore para que un objetivo deje de ser una frase bonita y se convierta en un plan que la persona sienta suyo.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-grow')">Leer guía →</button>
     </div>
 
-    <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="qué decir cuando alguien de tu equipo te dice que está agotado">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué decir cuando alguien de tu equipo te dice que está agotado</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Un guion real para managers: qué preguntar, qué evitar, y cuándo el problema ya no es algo que puedas (ni debas) resolver tú solo.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-agotamiento-equipo')">Leer guía →</button>
     </div>
 
+    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo delegar sin perder el control liderazgo situacional hersey blanchard">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo delegar sin perder el control</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">El modelo de Hersey y Blanchard para saber cuánta guía necesita cada persona, según la tarea, no según su cargo.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-delegacion')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="coaching" data-titulo="qué hacer cuando dos personas de tu equipo no se llevan bien conflicto thomas kilmann">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué hacer cuando dos personas de tu equipo no se llevan bien</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">El modelo Thomas-Kilmann para mediar sin tener que hacer de juez de quién tiene razón.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-conflicto-equipo')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo motivar a alguien que ha perdido las ganas autodeterminación deci ryan">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo motivar a alguien que ha perdido las ganas</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué los incentivos externos a veces empeoran las cosas, según la Teoría de la Autodeterminación.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-motivacion')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="coaching" data-titulo="tu primer mes liderando un equipo remoto o híbrido">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Tu primer mes liderando un equipo remoto o híbrido</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Lo que se pierde sin querer al pasar a remoto, y cómo recuperarlo de forma deliberada.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-equipo-remoto')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo dar una evaluación de desempeño que no se sienta injusta">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo dar una evaluación de desempeño que no se sienta injusta</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué la percepción de justicia depende más del proceso que de la nota final.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-evaluacion-justa')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="qué hacer cuando no puedes dejar de darle vueltas a algo rumiación">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué hacer cuando no puedes dejar de darle vueltas a algo</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Cómo distinguir pensar de rumiar, y una técnica simple para cortar el bucle.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-rumiacion')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="cómo poner un límite sin sentir que eres la persona mala asertividad">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo poner un límite sin sentir que eres la persona mala</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué la culpa al poner un límite no significa que esté mal puesto.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-limites-culpa')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="señales de que necesitas parar antes de llegar al burnout">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Señales de que necesitas parar antes de llegar al burnout</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Las señales tempranas, más sutiles que el agotamiento evidente, y por qué merece la pena mirarlas antes.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-senales-tempranas')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="cómo acompañar a un compañero que lo está pasando mal">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo acompañar a un compañero que lo está pasando mal</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Lo que no ayuda aunque parezca que sí, y dónde termina tu papel como compañero.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-acompanar-companero')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card" data-modulo="bienestar" data-titulo="por qué duermes mal aunque estés agotado cronotipo sueño">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Por qué duermes mal aunque estés agotado</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">El cronotipo, la ansiedad anticipatoria, y qué revisar antes de nada.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-dormir-mal')">Leer guía →</button>
+    </div>
+
   </div>
+  <p id="recursos-empty" style="display:none;text-align:center;color:var(--inv-2);font-size:.9rem;padding:2rem 0 4rem">No hay guías que coincidan con tu búsqueda.</p>
 
   <div style="max-width:900px;margin:0 auto;padding:0 3rem 5rem">
     <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
@@ -1774,7 +1882,7 @@ document.addEventListener('scroll', function(e){
     <p style="color:var(--inv-2);font-size:.82rem">8 min de lectura · Basado en el modelo SBI, Center for Creative Leadership</p>
   </div>
 
-  <div style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
     <p style="margin-bottom:1.3rem">La mayoría de conversaciones de feedback difícil fracasan antes de empezar, por un motivo muy concreto: mezclan el hecho observable con el juicio sobre la persona. "Últimamente llegas tarde y da la sensación de que no te importa el equipo" son en realidad dos frases distintas —una es un dato, la otra es una interpretación— pero se dicen como si fueran la misma cosa. La persona que la recibe responde a la parte que más duele, no a la que más ayuda.</p>
 
     <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El modelo SBI, en tres piezas</h2>
@@ -1840,7 +1948,7 @@ document.addEventListener('scroll', function(e){
     <p style="color:var(--inv-2);font-size:.82rem">7 min de lectura · Basado en el modelo de Christina Maslach</p>
   </div>
 
-  <div style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
     <p style="margin-bottom:1.3rem">Cuando el burnout llega a una baja laboral, RRHH suele descubrir que las señales llevaban meses ahí — solo que nadie las estaba mirando en el momento adecuado. El problema no es la falta de datos, es que se busca la señal equivocada: casi todo el mundo vigila el cansancio, y el cansancio es, de las tres señales de Christina Maslach, la más tardía y la más fácil de disimular en una videollamada de 30 minutos.</p>
 
     <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Las tres señales, y cuál llega antes</h2>
@@ -1899,7 +2007,7 @@ document.addEventListener('scroll', function(e){
     <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Inspirado en la práctica de Andy Grove en Intel</p>
   </div>
 
-  <div style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
     <p style="margin-bottom:1.3rem">Si tu 1:1 se parece a un repaso del estado de las tareas, tiene un problema de fondo: ese repaso ya existe, se llama tablero de proyecto, y no necesita que dos personas se sienten media hora para reproducirlo en voz alta. El valor real de un 1:1 está en lo que <em>no</em> cabe en ningún tablero — cómo se siente la persona con su carga, qué no está diciendo abiertamente, qué necesita que nadie le ha preguntado todavía.</p>
 
     <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La regla que cambia todo: la agenda no es tuya</h2>
@@ -1958,7 +2066,7 @@ document.addEventListener('scroll', function(e){
     <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
   </div>
 
-  <div style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
     <p style="margin-bottom:1.3rem">Hay una forma de hablar de salud mental en la empresa que suena a campaña de comunicación interna, y otra que suena a que a alguien de verdad le importa. La diferencia casi nunca está en las palabras exactas — está en si el mensaje viene acompañado de algo concreto, o se queda en la intención.</p>
 
     <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El problema del mensaje sin sustento</h2>
@@ -2016,7 +2124,7 @@ document.addEventListener('scroll', function(e){
     <p style="color:var(--inv-2);font-size:.82rem">7 min de lectura · Basado en el modelo de John Whitmore</p>
   </div>
 
-  <div style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
     <p style="margin-bottom:1.3rem">La mayoría de conversaciones de objetivos fracasan por el mismo motivo: el manager llega con la solución ya decidida y la conversación se convierte en venderla, no en construirla. La persona asiente, pero el objetivo nunca llega a sentirlo suyo — y algo que no se siente propio se abandona en cuanto aparece la primera dificultad. El modelo GROW, de John Whitmore, resuelve esto con una secuencia de cuatro fases que hay que respetar en orden, sin saltar a la solución antes de tiempo.</p>
 
     <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Las cuatro fases, y por qué el orden importa</h2>
@@ -2071,7 +2179,7 @@ document.addEventListener('scroll', function(e){
     <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
   </div>
 
-  <div style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
     <p style="margin-bottom:1.3rem">Es uno de los momentos donde más managers se quedan en blanco: alguien de tu equipo te dice, en una conversación normal, que está agotado. No es una evaluación de desempeño ni una crisis abierta — es una frase suelta que puede pasar desapercibida o puede ser la única vez que esa persona lo diga en voz alta. Lo que respondas en los siguientes 30 segundos importa más de lo que parece.</p>
 
     <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La primera respuesta, antes de cualquier solución</h2>
@@ -2109,6 +2217,352 @@ document.addEventListener('scroll', function(e){
       <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Delegar sin perder el control ═══════ -->
+<div id="pg-guia-delegacion" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo delegar sin perder el control</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Basado en el liderazgo situacional de Hersey y Blanchard</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">El miedo más común a la hora de delegar no es "no tener tiempo de explicar" — es perder el control sobre cómo sale el resultado. Y ese miedo suele resolverse mal: o no se delega nada, o se delega y después se supervisa tan de cerca que la persona nunca aprende a hacerlo sola. Ninguna de las dos funciona.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La pregunta que cambia cómo delegas</h2>
+    <p style="margin-bottom:1.3rem">Hersey y Blanchard proponen que la forma correcta de delegar depende del nivel de madurez de la persona en <em>esa tarea concreta</em>, no de su cargo ni de la confianza general que le tengas. Alguien puede ser muy autónomo en una tarea y necesitar mucha guía en otra completamente distinta.</p>
+    <p style="margin-bottom:.6rem"><strong style="color:var(--cream)">Nivel bajo (nuevo en la tarea):</strong> instrucciones claras y concretas, seguimiento frecuente.</p>
+    <p style="margin-bottom:.6rem"><strong style="color:var(--cream)">Nivel medio-bajo:</strong> ya sabe hacerlo, pero le falta confianza — necesita apoyo emocional, no más instrucciones técnicas.</p>
+    <p style="margin-bottom:.6rem"><strong style="color:var(--cream)">Nivel medio-alto:</strong> tiene la habilidad pero le falta compromiso o constancia — necesita participar en la decisión, no que se le imponga.</p>
+    <p style="margin-bottom:1.3rem"><strong style="color:var(--cream)">Nivel alto:</strong> autónomo de verdad — aquí delegar significa soltar, no supervisar de cerca.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El error más común</h2>
+    <p style="margin-bottom:1.3rem">Tratar a alguien con nivel alto como si tuviera nivel bajo (supervisión excesiva que se siente como desconfianza), o al revés, soltar del todo a alguien que todavía necesita guía (que se siente como abandono). El nivel de supervisión correcto no es una cuestión de personalidad del manager, es una cuestión de diagnóstico correcto de la tarea concreta.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Cómo empezar bien una delegación</h2>
+    <p style="margin-bottom:1.3rem">Antes de delegar, pregúntate en voz alta con la persona: "¿qué margen de decisión tienes aquí, y qué necesitas que yo revise antes de que sigas adelante?". Esa conversación, de dos minutos, evita malentendidos que si no aparecen semanas después, ya con frustración de por medio.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a diagnosticar el nivel correcto</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Antes de delegar, te ayuda a pensar qué necesita esa persona en concreto, no una plantilla genérica</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Conflicto entre dos personas del equipo ═══════ -->
+<div id="pg-guia-conflicto-equipo" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Qué hacer cuando dos personas de tu equipo no se llevan bien</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">7 min de lectura · Basado en el modelo Thomas-Kilmann</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">El instinto de muchos managers ante un conflicto entre dos personas es evitarlo, esperando que se resuelva solo. Casi nunca pasa — el conflicto no resuelto simplemente se vuelve crónico y contamina al resto del equipo.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Primero, entiende qué modo está usando cada uno</h2>
+    <p style="margin-bottom:1.3rem">El modelo Thomas-Kilmann describe cinco formas de afrontar un conflicto, cruzando cuánto se prioriza el propio interés frente a la relación: <strong style="color:var(--cream)">competir</strong> (imponer), <strong style="color:var(--cream)">complacer</strong> (ceder), <strong style="color:var(--cream)">evitar</strong> (ignorar), <strong style="color:var(--cream)">colaborar</strong> (buscar una solución que satisfaga a ambos) y <strong style="color:var(--cream)">comprometer</strong> (ceder cada uno un poco). Ninguno es "el malo" en abstracto — el problema es cuando dos personas usan modos incompatibles sin saberlo: alguien que compite frente a alguien que evita nunca llega a una conversación real, uno presiona y el otro se calla.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Tu papel: mediar, no juzgar quién tiene razón</h2>
+    <p style="margin-bottom:1.3rem">El error más común es intentar determinar quién tiene razón, como un juez. Rara vez ayuda, porque casi todos los conflictos sostenidos tienen algo de razón en ambas partes. Lo que sí ayuda es una conversación estructurada, por separado primero: pregunta a cada uno qué necesita de la relación de trabajo, no qué piensa que el otro hizo mal.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La conversación conjunta</h2>
+    <p style="margin-bottom:1.3rem">Cuando ya tengas el diagnóstico de fondo, junta a las dos personas con una regla clara: hablar de comportamientos concretos, no de intenciones supuestas ("cuando llegas tarde a mis reuniones" en vez de "no te importa mi tiempo"). Cierra siempre con un acuerdo operativo concreto — qué va a cambiar cada uno, no solo "vamos a llevarnos mejor".</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a preparar esta conversación</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Diagnostica el estilo de cada persona y estructura la mediación paso a paso</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Motivar a alguien desmotivado ═══════ -->
+<div id="pg-guia-motivacion" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo motivar a alguien que ha perdido las ganas</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Basado en la Teoría de la Autodeterminación (Deci y Ryan)</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">El primer error al intentar motivar a alguien desmotivado es ofrecer más incentivos externos — un bono, un reconocimiento público. A veces funciona un momento, pero rara vez dura, porque la desmotivación sostenida casi nunca es un problema de recompensa, es un problema de necesidades psicológicas de fondo sin cubrir.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Las tres necesidades que hay que revisar</h2>
+    <p style="margin-bottom:.6rem"><strong style="color:var(--cream)">Autonomía:</strong> ¿siente que tiene margen real de decisión, o solo ejecuta órdenes sin ningún criterio propio?</p>
+    <p style="margin-bottom:.6rem"><strong style="color:var(--cream)">Competencia:</strong> ¿siente que está mejorando en algo, o lleva tiempo estancado sin ningún reto nuevo?</p>
+    <p style="margin-bottom:1.3rem"><strong style="color:var(--cream)">Relación:</strong> ¿se siente conectado genuinamente con su equipo, o trabaja de forma aislada?</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La conversación que revela la causa</h2>
+    <p style="margin-bottom:1.3rem">En vez de preguntar directamente "¿por qué estás desmotivado?" (pregunta que casi nadie sabe responder con precisión), pregunta algo más concreto: "¿qué parte de tu trabajo sientes que decides tú, y qué parte sientes que simplemente ejecutas?". La respuesta suele señalar directamente cuál de las tres necesidades está fallando.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Por qué los incentivos externos a veces empeoran las cosas</h2>
+    <p style="margin-bottom:1.3rem">Un hallazgo importante de esta teoría es el "efecto de sobrejustificación": cuando se introduce una recompensa externa por algo que la persona ya hacía por motivación propia, la motivación intrínseca puede reducirse, no aumentar — el cerebro reinterpreta la actividad como "algo que hago por el dinero", no por interés genuino. Por eso, para tareas que ya tenían algo de sentido propio, a veces es mejor devolver autonomía que añadir un incentivo.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee ayuda a diagnosticar la causa real</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Antes de proponer soluciones, te ayuda a identificar cuál de las tres necesidades está fallando</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Liderar un equipo remoto ═══════ -->
+<div id="pg-guia-equipo-remoto" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Tu primer mes liderando un equipo remoto o híbrido</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Liderar un equipo remoto no es "lo mismo pero por videollamada" — hay dinámicas que en oficina se resuelven solas y que en remoto requieren diseño explícito, o simplemente no ocurren.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Lo que se pierde sin querer</h2>
+    <p style="margin-bottom:1.3rem">La conversación informal de pasillo, donde se resuelven malentendidos pequeños antes de que crezcan, no existe por defecto en remoto — hay que crearla deliberadamente (un canal de charla no relacionada con el trabajo, unos minutos al principio de cada reunión sin agenda). Sin esto, los equipos remotos tienden a una relación puramente transaccional, que a la larga debilita la confianza.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Comunicación asíncrona: la habilidad más subestimada</h2>
+    <p style="margin-bottom:1.3rem">En oficina, una duda se resuelve con una pregunta rápida. En remoto, sobre todo con equipos en distintas franjas horarias, hay que aprender a escribir mensajes que se entiendan sin necesidad de una respuesta inmediata — contexto completo, decisión clara pedida, plazo razonable. Los equipos que dominan esto tienen muchas menos reuniones innecesarias.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El riesgo real: la desigualdad entre presenciales y remotos</h2>
+    <p style="margin-bottom:1.3rem">En equipos híbridos (parte en oficina, parte en remoto), existe un riesgo documentado de que las decisiones informales se tomen entre quienes están presentes físicamente, dejando a quienes están en remoto sistemáticamente un paso por detrás. Un manager de equipo híbrido tiene que vigilar esto activamente — por ejemplo, llevando cualquier decisión importante tomada informalmente en la oficina a un canal donde todos la vean, sin excepción.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te acompaña en esta transición</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Un espacio disponible para todo el equipo, esté donde esté, sin depender de coincidir en horario</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Evaluación de desempeño justa ═══════ -->
+<div id="pg-guia-evaluacion-justa" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo dar una evaluación de desempeño que no se sienta injusta</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">La queja más común sobre las evaluaciones de desempeño no es "la nota estuvo mal" — es "no entendí de dónde salió esa nota". La percepción de justicia depende más del proceso que del resultado en sí.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Sin sorpresas: la regla de oro</h2>
+    <p style="margin-bottom:1.3rem">Si algo aparece en la evaluación anual que la persona no había escuchado antes en todo el año, algo ha fallado mucho antes de esa conversación. Una evaluación formal debería ser un resumen de conversaciones ya tenidas, nunca el primer momento en que se comunica un problema.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El sesgo de reciente: el enemigo silencioso</h2>
+    <p style="margin-bottom:1.3rem">Es muy común que una evaluación anual esté desproporcionadamente influida por lo que pasó en el último mes o dos, olvidando los primeros diez. Llevar notas breves a lo largo del año (aunque sea un documento simple actualizado cada mes) es la forma más efectiva de evitar este sesgo, mucho más que confiar en la memoria al final del periodo.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Separar comportamiento de resultado</h2>
+    <p style="margin-bottom:1.3rem">Alguien puede tener buen comportamiento (esfuerzo, actitud, colaboración) y mal resultado por factores fuera de su control, o al revés. Mezclar ambas cosas en una sola nota genera sensación de injusticia. Nombrar los dos por separado, aunque al final se resuma en una valoración conjunta, ayuda a que la persona sienta que se ha entendido bien lo que ha pasado, no solo el número final.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a preparar la conversación completa</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Estructura el feedback con SBI y te ayuda a separar comportamiento de resultado</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Rumiación ═══════ -->
+<div id="pg-guia-rumiacion" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Qué hacer cuando no puedes dejar de darle vueltas a algo</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Darle vueltas a algo se siente como estar resolviendo un problema, pero la rumiación real casi nunca resuelve nada — es la misma idea repitiéndose en bucle, sin avanzar ni un paso hacia una conclusión.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Cómo distinguir pensar de rumiar</h2>
+    <p style="margin-bottom:1.3rem">Pensar de forma productiva sobre un problema avanza: genera una idea nueva, una decisión, un siguiente paso. La rumiación repite la misma idea sin generar nada nuevo, solo malestar acumulado. Una señal clara: si llevas más de 15 minutos con el mismo pensamiento y no ha cambiado nada en tu comprensión del problema, probablemente estás rumiando, no pensando.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La técnica que interrumpe el bucle</h2>
+    <p style="margin-bottom:1.3rem">Ponerle un límite de tiempo explícito ayuda más de lo que parece: "voy a darle vueltas a esto 10 minutos, con un temporizador, y después voy a hacer otra cosa aunque no haya llegado a ninguna conclusión". El cerebro, sabiendo que hay un límite, a veces llega antes a algo útil — y si no llega, al menos se corta el bucle en vez de dejarlo indefinido.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Escribirlo, no solo pensarlo</h2>
+    <p style="margin-bottom:1.3rem">Sacar el pensamiento de la cabeza y ponerlo por escrito (aunque sea desordenado) suele romper el bucle mejor que seguir dándole vueltas mentalmente — la escritura obliga a cierta linealidad que el pensamiento circular no tiene. No hace falta que sea profundo ni bien redactado, solo sacarlo fuera.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a sacarlo de la cabeza</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Un espacio para escribirlo y procesarlo, disponible cuando el bucle empieza, no cuando ya lleva horas</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Poner límites sin culpa ═══════ -->
+<div id="pg-guia-limites-culpa" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo poner un límite sin sentir que eres la persona mala</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">La culpa al poner un límite casi nunca significa que el límite esté mal puesto — suele significar que no estás acostumbrado a ponerlos, y el malestar es del hábito nuevo, no de estar haciendo algo incorrecto.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Un límite no es un rechazo a la persona</h2>
+    <p style="margin-bottom:1.3rem">Es fácil confundir "decir que no a esta petición concreta" con "rechazar a la persona que la hizo". Son cosas distintas, y separar ambas ayuda mucho: puedes valorar mucho a alguien y aun así no poder (o no querer) hacer lo que te pide en un momento dado. El límite protege tu propio recurso (tiempo, energía), no juzga a quien lo pide.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">No hace falta justificar de más</h2>
+    <p style="margin-bottom:1.3rem">Un error común es dar tantas explicaciones al poner un límite que suena a que se está pidiendo permiso para ponerlo. "No puedo esta semana" es una frase completa — no necesita ir seguida de tres justificaciones para ser legítima. Cuantas más explicaciones se dan, más se invita a que la otra persona las cuestione una por una.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La incomodidad inicial es normal, y pasa</h2>
+    <p style="margin-bottom:1.3rem">Si llevas tiempo sin poner límites, los primeros van a sentirse mal, casi seguro — no porque estén mal puestos, sino porque el cuerpo asocia "decepcionar a alguien" con peligro social, un reflejo antiguo que no distingue bien entre una incomodidad pasajera y un riesgo real. Con la repetición, esa incomodidad inicial se reduce — no porque dejes de importarte el otro, sino porque el sistema nervioso aprende que poner un límite no tiene las consecuencias catastróficas que anticipaba.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a construir la frase exacta</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Sin sobre-justificar, con la seguridad de haberlo pensado antes de decirlo</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Señales tempranas antes del burnout ═══════ -->
+<div id="pg-guia-senales-tempranas" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Señales de que necesitas parar antes de llegar al burnout</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Para cuando alguien reconoce abiertamente "estoy quemado", suelen llevar meses en ese camino. Las señales tempranas son más sutiles, y precisamente por eso más útiles: se pueden actuar antes de que el desgaste esté instalado del todo.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La señal más temprana: el cinismo, no el cansancio</h2>
+    <p style="margin-bottom:1.3rem">Antes del agotamiento evidente, suele aparecer un distanciamiento emocional sutil — hablar de clientes, proyectos o compañeros con un tono más frío y transaccional del habitual. No es maldad, es un mecanismo de protección temprano, y suele aparecer antes que el cansancio verbalizado.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Otra señal: perder el margen entre trabajo y descanso</h2>
+    <p style="margin-bottom:1.3rem">Cuando el descanso deja de sentirse como descanso (revisar el email "solo un momento" durante el fin de semana, no poder desconectar aunque no haya nada urgente), es una señal de que el sistema nervioso ya no está distinguiendo bien entre trabajo y no-trabajo — un paso previo importante antes del agotamiento franco.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Qué hacer con estas señales, antes de que sea tarde</h2>
+    <p style="margin-bottom:1.3rem">No hace falta esperar a estar agotado para actuar. Si reconoces cinismo creciente o dificultad para desconectar, vale la pena mirar las seis áreas de Maslach (carga, control, recompensa, comunidad, equidad, valores) y preguntarte cuál está más desajustada ahora mismo — actuar en esa área concreta, pronto, suele evitar llegar al punto de agotamiento total.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee detecta estas señales pronto</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Antes de que el desgaste se instale del todo, no solo cuando ya es evidente</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Acompañar a un compañero ═══════ -->
+<div id="pg-guia-acompanar-companero" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo acompañar a un compañero que lo está pasando mal</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">No hace falta ser psicólogo para ayudar de verdad a un compañero — a veces basta con no hacer las cosas que, sin querer, cierran la conversación en vez de abrirla.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Escuchar antes de arreglar</h2>
+    <p style="margin-bottom:1.3rem">El instinto de ofrecer soluciones rápido viene de buena intención, pero a menudo comunica "quiero que dejes de sentir esto" más que "quiero entender lo que sientes". Antes de proponer nada, prueba a parafrasear lo que has entendido — confirma que escuchas de verdad, sin todavía intentar resolver nada.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Lo que no ayuda, aunque parezca que sí</h2>
+    <p style="margin-bottom:1.3rem">Comparar con situaciones peores ("otros lo tienen peor") o minimizar ("seguro que se pasa pronto") suele cerrar la conversación, no aliviarla — aunque la intención sea ayudar a poner las cosas en perspectiva. Validar primero lo que siente, sin matizarlo de inmediato, suele funcionar mejor.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Dónde termina tu papel</h2>
+    <p style="margin-bottom:1.3rem">Puedes escuchar, acompañar y estar presente — pero no eres responsable de resolver un problema de salud mental de fondo, y no pasa nada por decirlo con honestidad: "esto suena a algo que merece más apoyo del que yo puedo darte — ¿tienes algún recurso al que puedas recurrir?". Señalar el recurso adecuado es, a menudo, lo más útil que puedes hacer.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee es ese recurso al que puedes derivar</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Disponible 24/7 para tu compañero, sin que tengas que ser tú quien lo resuelva todo</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+    </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Por qué duermes mal ═══════ -->
+<div id="pg-guia-dormir-mal" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Por qué duermes mal aunque estés agotado</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Parece contradictorio: cuanto más cansado, peor se suele dormir. Pero el cansancio físico y la capacidad de dormir bien dependen de mecanismos distintos, y no siempre van de la mano.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El cronotipo, no solo el hábito</h2>
+    <p style="margin-bottom:1.3rem">Si te sientes forzado a un horario que no encaja con tu energía natural, el cuerpo lo nota como si tuvieras jet lag de forma crónica, entre semana. Una pista: si duermes notablemente mejor los fines de semana, cuando eliges tu propio horario, es probable que el problema no sea tu capacidad de dormir, sino el desajuste con el horario que te exige el trabajo.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La ansiedad anticipatoria sobre el propio sueño</h2>
+    <p style="margin-bottom:1.3rem">Un patrón muy común: la propia preocupación por no poder dormir se convierte en el principal obstáculo para dormir. La cama empieza a asociarse con la ansiedad de "otra vez sin poder dormir", en vez de con el descanso — un círculo que se retroalimenta.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Qué revisar primero</h2>
+    <p style="margin-bottom:1.3rem">Antes de nada, la base: horarios consistentes (incluso fin de semana), pantallas fuera de la cama, cafeína controlada por la tarde. Si con eso no mejora y la ansiedad sobre el propio sueño parece ser el problema central, ahí es donde una técnica más específica (control de estímulos, entre otras) empieza a tener sentido — no antes de revisar lo básico.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a identificar la causa real</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Cronotipo, ansiedad anticipatoria o hábitos generales — cada uno necesita un enfoque distinto</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links">
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -3076,7 +3530,7 @@ function closeMobileMenu() {
 }
 
 // ── Routing ──
-const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','precios','demo','login','app','rrhh-panel'];
+const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','guia-delegacion','guia-conflicto-equipo','guia-motivacion','guia-equipo-remoto','guia-evaluacion-justa','guia-rumiacion','guia-limites-culpa','guia-senales-tempranas','guia-acompanar-companero','guia-dormir-mal','precios','demo','login','app','rrhh-panel'];
 const APP_PAGES = ['login','onboarding','app','rrhh-panel'];
 let currentPage = 'home';
 let pageHistory = ['home'];
@@ -3136,6 +3590,10 @@ function go(id, _viaHistory) {
 
   if (id === 'rrhh-panel') {
     setTimeout(loadRrhhPanel, 50);
+  }
+
+  if (id.startsWith('guia-')) {
+    setTimeout(() => applyContentGate(id), 50);
   }
 
   if (id === 'demo' && pendingDemoModule) {
@@ -3493,6 +3951,116 @@ async function handleCsvSelected(event) {
     console.error('Error procesando el CSV:', e);
     resultEl.innerHTML = '<span style="color:#E5828A">No se pudo leer el archivo. Comprueba que es un CSV válido.</span>';
   }
+}
+
+let recursosFiltroModulo = 'todos';
+let recursosFiltroTexto = '';
+
+function filtrarRecursos(modulo, btn) {
+  recursosFiltroModulo = modulo;
+  document.querySelectorAll('.recursos-filtro-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  aplicarFiltrosRecursos();
+}
+
+function filtrarRecursosPorTexto(texto) {
+  recursosFiltroTexto = texto.trim().toLowerCase();
+  aplicarFiltrosRecursos();
+}
+
+function aplicarFiltrosRecursos() {
+  const cards = document.querySelectorAll('.recursos-card');
+  let visibleCount = 0;
+  cards.forEach(card => {
+    const matchModulo = recursosFiltroModulo === 'todos' || card.dataset.modulo === recursosFiltroModulo;
+    const matchTexto = !recursosFiltroTexto || card.dataset.titulo.includes(recursosFiltroTexto);
+    const visible = matchModulo && matchTexto;
+    card.style.display = visible ? 'flex' : 'none';
+    if (visible) visibleCount++;
+  });
+  const emptyMsg = document.getElementById('recursos-empty');
+  if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+function applyContentGate(pageId) {
+  const body = document.querySelector('#pg-' + pageId + ' .guia-article-body');
+  if (!body) return;
+
+  // Si esta persona ya nos dejó su email en otra guía, no volvemos a pedirlo
+  let alreadyUnlocked = false;
+  try { alreadyUnlocked = !!localStorage.getItem('growee_lead_email'); } catch(e) {}
+  if (alreadyUnlocked) return;
+
+  // Evitar aplicar el muro dos veces si go() se llama varias veces a la misma página
+  if (body.dataset.gateApplied === 'true') return;
+
+  const children = Array.from(body.children);
+  const VISIBLE_BLOCKS = 3; // aprox. 5-10 líneas según el contenido de cada guía
+  if (children.length <= VISIBLE_BLOCKS + 1) return; // guía corta, no merece la pena gatear
+
+  body.dataset.gateApplied = 'true';
+
+  const hidden = children.slice(VISIBLE_BLOCKS);
+  const wrapper = document.createElement('div');
+  wrapper.className = 'guia-gated-content';
+  hidden.forEach(el => wrapper.appendChild(el));
+  body.appendChild(wrapper);
+
+  const gate = document.createElement('div');
+  gate.id = 'guia-gate';
+  gate.innerHTML = `
+    <div class="guia-gate-fade"></div>
+    <div class="guia-gate-box">
+      <div id="guia-gate-cta">
+        <p>Sigue leyendo la guía completa, gratis</p>
+        <button class="btn-primary" onclick="showGateForm()">Seguir leyendo →</button>
+      </div>
+      <div class="guia-gate-form" id="guia-gate-form" style="display:none">
+        <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="gate-nombre" type="text"></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="gate-email" type="email" placeholder="nombre@empresa.com"></div>
+        <button class="form-submit" onclick="submitGateForm()">Desbloquear guía completa →</button>
+        <div style="font-size:.7rem;color:var(--inv-2);text-align:center;margin-top:.6rem" id="gate-error"></div>
+      </div>
+    </div>
+  `;
+  body.appendChild(gate);
+}
+
+function showGateForm() {
+  const cta = document.getElementById('guia-gate-cta');
+  const form = document.getElementById('guia-gate-form');
+  if (cta) cta.style.display = 'none';
+  if (form) form.style.display = 'block';
+}
+
+async function submitGateForm() {
+  const nombreEl = document.getElementById('gate-nombre');
+  const emailEl = document.getElementById('gate-email');
+  const errEl = document.getElementById('gate-error');
+  const nombre = nombreEl ? nombreEl.value.trim() : '';
+  const email = emailEl ? emailEl.value.trim() : '';
+
+  if (!email || !email.includes('@')) {
+    if (errEl) errEl.textContent = 'Escribe un email válido.';
+    return;
+  }
+
+  // Guardar el lead no debe bloquear ni impedir que la persona lea el contenido
+  try {
+    await fetch('/.netlify/functions/submit-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email, guia: currentPage }),
+    });
+  } catch (e) {
+    console.error('Error guardando el lead (no afecta a la lectura):', e);
+  }
+
+  try { localStorage.setItem('growee_lead_email', email); } catch (e) {}
+
+  const gate = document.getElementById('guia-gate');
+  if (gate) gate.remove();
+  document.querySelectorAll('.guia-gated-content').forEach(c => c.classList.add('unlocked'));
 }
 
 async function loadRrhhPanel() {
