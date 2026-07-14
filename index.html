@@ -2582,6 +2582,17 @@ document.addEventListener('scroll', function(e){
 ol.cbubble-list{list-style:decimal;padding-left:1.3rem}
 ol.cbubble-list li{padding-left:.3rem}
 .cmw-time{font-size:.64rem;color:var(--inv-2);padding:0 .2rem}
+.cmw-actions{
+  display:flex;gap:.3rem;padding:0 .2rem;opacity:0;transition:opacity .15s;
+}
+.cmw:hover .cmw-actions{opacity:1}
+.cmw-action-btn{
+  background:none;border:none;color:var(--inv-2);cursor:pointer;padding:.2rem;
+  display:flex;align-items:center;justify-content:center;border-radius:6px;transition:all .15s;
+}
+.cmw-action-btn svg{width:14px;height:14px}
+.cmw-action-btn:hover{color:var(--cream);background:rgba(255,255,255,.06)}
+.cmw-action-btn.speaking{color:var(--moss-light)}
 
 /* Typing indicator */
 .chat-typing{
@@ -4732,6 +4743,7 @@ function addBubble(role, text, animate, imageSrc) {
 
   const b = document.createElement('div');
   b.className = 'cbubble ' + role + (role==='ai' ? ' b-'+(mode==='coaching'?'gold':'terra') : '');
+  b.dataset.rawText = text || '';
   if (role === 'ai') {
     if (animate) {
       typeOutText(b, text, formatAiText(text), box);
@@ -4752,6 +4764,21 @@ function addBubble(role, text, animate, imageSrc) {
     b.textContent = text;
   }
   wrap.appendChild(b);
+
+  if (text) {
+    const actions = document.createElement('div');
+    actions.className = 'cmw-actions';
+    actions.innerHTML = `
+      <button class="cmw-action-btn" onclick="copyBubbleText(this)" title="Copiar mensaje">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      </button>
+      ${role === 'ai' ? `
+      <button class="cmw-action-btn" onclick="toggleSpeakBubble(this)" title="Escuchar mensaje">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+      </button>` : ''}
+    `;
+    wrap.appendChild(actions);
+  }
 
   const t = document.createElement('div');
   t.className = 'cmw-time';
@@ -4810,6 +4837,49 @@ function createLiveAiBubble() {
   box.appendChild(wrap);
   box.scrollTop = box.scrollHeight;
   return { box, bubbleEl: b };
+}
+
+function copyBubbleText(btn) {
+  const bubble = btn.closest('.cmw').querySelector('.cbubble');
+  const text = bubble ? bubble.dataset.rawText : '';
+  if (!text) return;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    btn.title = '¡Copiado!';
+    setTimeout(() => { btn.innerHTML = originalHTML; btn.title = 'Copiar mensaje'; }, 1500);
+  }).catch(err => {
+    console.error('Error copiando el mensaje:', err);
+    alert('No se pudo copiar. Selecciona el texto manualmente.');
+  });
+}
+
+let currentUtterance = null;
+function toggleSpeakBubble(btn) {
+  if (!window.speechSynthesis) {
+    alert('Tu navegador no soporta lectura en voz alta.');
+    return;
+  }
+
+  const wasSpeakingThisOne = btn.classList.contains('speaking');
+  window.speechSynthesis.cancel(); // para cualquier lectura en curso, sea esta u otra
+  document.querySelectorAll('.cmw-action-btn.speaking').forEach(b => b.classList.remove('speaking'));
+
+  if (wasSpeakingThisOne) return; // si ya estaba hablando esta burbuja, el clic solo la para
+
+  const bubble = btn.closest('.cmw').querySelector('.cbubble');
+  const text = bubble ? bubble.dataset.rawText : '';
+  if (!text) return;
+
+  currentUtterance = new SpeechSynthesisUtterance(text);
+  currentUtterance.lang = 'es-ES';
+  currentUtterance.rate = 1;
+  currentUtterance.onend = () => btn.classList.remove('speaking');
+  currentUtterance.onerror = () => btn.classList.remove('speaking');
+
+  btn.classList.add('speaking');
+  window.speechSynthesis.speak(currentUtterance);
 }
 
 function handlePasteEvent(event) {
