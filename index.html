@@ -120,6 +120,7 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
 .rrhh-topic-row .rrhh-bar-track{flex:1}
 
 .recursos-card{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column}
+.recursos-card.recursos-extra{display:none}
 .recursos-filtro-btn{
   background:none;border:1px solid var(--border);color:var(--inv);padding:.5rem 1rem;
   border-radius:50px;font-size:.82rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s;
@@ -134,6 +135,13 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
   font-family:'Inter',sans-serif;
 }
 .recursos-search-wrap input:focus{outline:none;border-color:rgba(82,183,136,.5)}
+.recursos-search-hero{width:100%}
+.recursos-search-hero svg{left:1.1rem;width:19px;height:19px;color:var(--moss-light)}
+.recursos-search-hero input{
+  width:100%;padding:.95rem 1.2rem .95rem 3rem;font-size:.95rem;border-radius:14px;
+  border:1.5px solid rgba(82,183,136,.3);background:var(--ink-2);
+}
+.recursos-search-hero input:focus{border-color:var(--moss-light);box-shadow:0 0 0 4px rgba(82,183,136,.12)}
 
 .guia-gated-content{display:none}
 .guia-gated-content.unlocked{display:block}
@@ -1715,19 +1723,23 @@ document.addEventListener('scroll', function(e){
   <div style="max-width:900px;margin:0 auto;padding:5rem 3rem 2rem;text-align:center">
     <div class="h-section-eye">Recursos</div>
     <h1 style="font-family:'Fraunces',serif;font-size:2.6rem;font-weight:300;margin:1rem 0 1.2rem">Guías y plantillas<br><em>para RRHH y managers</em></h1>
-    <p class="lead" style="max-width:600px;margin:0 auto">Contenido práctico sobre bienestar laboral y liderazgo, hecho para aplicarse el mismo día, no solo para leerse.</p>
+    <p class="lead" style="max-width:600px;margin:0 auto">30 guías prácticas sobre bienestar laboral y liderazgo. Usa el buscador para encontrar la tuya en segundos.</p>
   </div>
 
-  <!-- Filtro por módulo + buscador -->
-  <div style="max-width:1000px;margin:0 auto;padding:0 3rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+  <!-- Buscador — el elemento principal para explorar las 30 guías -->
+  <div style="max-width:560px;margin:0 auto;padding:0 3rem 1.3rem">
+    <div class="recursos-search-wrap recursos-search-hero">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="recursos-search" placeholder="Busca por tema: feedback, burnout, delegar, límites..." oninput="filtrarRecursosPorTexto(this.value)">
+    </div>
+  </div>
+
+  <!-- Filtro por módulo, como refinamiento secundario -->
+  <div style="max-width:1000px;margin:0 auto;padding:0 3rem 2rem;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:1rem">
     <div style="display:flex;gap:.5rem" id="recursos-filtros">
       <button class="recursos-filtro-btn active" data-filtro="todos" onclick="filtrarRecursos('todos', this)">Todos</button>
       <button class="recursos-filtro-btn" data-filtro="bienestar" onclick="filtrarRecursos('bienestar', this)">🧡 Bienestar</button>
       <button class="recursos-filtro-btn" data-filtro="coaching" onclick="filtrarRecursos('coaching', this)">◆ Coaching</button>
-    </div>
-    <div class="recursos-search-wrap">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="recursos-search" placeholder="Buscar por palabra..." oninput="filtrarRecursosPorTexto(this.value)">
     </div>
   </div>
 
@@ -1761,92 +1773,194 @@ document.addEventListener('scroll', function(e){
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-salud-mental')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo preparar una conversación de objetivos con el modelo grow whitmore">
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo preparar una conversación de objetivos con el modelo grow whitmore">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo preparar una conversación de objetivos con el modelo GROW</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">La estructura de John Whitmore para que un objetivo deje de ser una frase bonita y se convierta en un plan que la persona sienta suyo.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-grow')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="bienestar" data-titulo="qué decir cuando alguien de tu equipo te dice que está agotado">
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="qué decir cuando alguien de tu equipo te dice que está agotado">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué decir cuando alguien de tu equipo te dice que está agotado</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Un guion real para managers: qué preguntar, qué evitar, y cuándo el problema ya no es algo que puedas (ni debas) resolver tú solo.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-agotamiento-equipo')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo delegar sin perder el control liderazgo situacional hersey blanchard">
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo delegar sin perder el control liderazgo situacional hersey blanchard">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo delegar sin perder el control</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">El modelo de Hersey y Blanchard para saber cuánta guía necesita cada persona, según la tarea, no según su cargo.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-delegacion')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="coaching" data-titulo="qué hacer cuando dos personas de tu equipo no se llevan bien conflicto thomas kilmann">
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="qué hacer cuando dos personas de tu equipo no se llevan bien conflicto thomas kilmann">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué hacer cuando dos personas de tu equipo no se llevan bien</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">El modelo Thomas-Kilmann para mediar sin tener que hacer de juez de quién tiene razón.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-conflicto-equipo')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo motivar a alguien que ha perdido las ganas autodeterminación deci ryan">
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo motivar a alguien que ha perdido las ganas autodeterminación deci ryan">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo motivar a alguien que ha perdido las ganas</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué los incentivos externos a veces empeoran las cosas, según la Teoría de la Autodeterminación.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-motivacion')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="coaching" data-titulo="tu primer mes liderando un equipo remoto o híbrido">
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="tu primer mes liderando un equipo remoto o híbrido">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Tu primer mes liderando un equipo remoto o híbrido</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Lo que se pierde sin querer al pasar a remoto, y cómo recuperarlo de forma deliberada.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-equipo-remoto')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="coaching" data-titulo="cómo dar una evaluación de desempeño que no se sienta injusta">
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo dar una evaluación de desempeño que no se sienta injusta">
       <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo dar una evaluación de desempeño que no se sienta injusta</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué la percepción de justicia depende más del proceso que de la nota final.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-evaluacion-justa')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="bienestar" data-titulo="qué hacer cuando no puedes dejar de darle vueltas a algo rumiación">
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="qué hacer cuando no puedes dejar de darle vueltas a algo rumiación">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué hacer cuando no puedes dejar de darle vueltas a algo</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Cómo distinguir pensar de rumiar, y una técnica simple para cortar el bucle.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-rumiacion')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="bienestar" data-titulo="cómo poner un límite sin sentir que eres la persona mala asertividad">
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="cómo poner un límite sin sentir que eres la persona mala asertividad">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo poner un límite sin sentir que eres la persona mala</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué la culpa al poner un límite no significa que esté mal puesto.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-limites-culpa')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="bienestar" data-titulo="señales de que necesitas parar antes de llegar al burnout">
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="señales de que necesitas parar antes de llegar al burnout">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Señales de que necesitas parar antes de llegar al burnout</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Las señales tempranas, más sutiles que el agotamiento evidente, y por qué merece la pena mirarlas antes.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-senales-tempranas')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="bienestar" data-titulo="cómo acompañar a un compañero que lo está pasando mal">
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="cómo acompañar a un compañero que lo está pasando mal">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo acompañar a un compañero que lo está pasando mal</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Lo que no ayuda aunque parezca que sí, y dónde termina tu papel como compañero.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-acompanar-companero')">Leer guía →</button>
     </div>
 
-    <div class="recursos-card" data-modulo="bienestar" data-titulo="por qué duermes mal aunque estés agotado cronotipo sueño">
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="por qué duermes mal aunque estés agotado cronotipo sueño">
       <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
       <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Por qué duermes mal aunque estés agotado</h3>
       <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">El cronotipo, la ansiedad anticipatoria, y qué revisar antes de nada.</p>
       <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-dormir-mal')">Leer guía →</button>
     </div>
 
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="cómo gestionar la ansiedad antes de una presentación importante">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo gestionar la ansiedad antes de una presentación importante</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Reinterpretar la activación física, la respiración antes de entrar, y qué ayuda de verdad a medio plazo.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-ansiedad-presentacion')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="qué es el síndrome del impostor y cómo reconocerlo clance imes">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué es el síndrome del impostor y cómo reconocerlo</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué aparece más entre quienes más logran, no menos, y cómo romper el ciclo.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-sindrome-impostor')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="por qué te cuesta tanto pedir ayuda">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Por qué te cuesta tanto pedir ayuda</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">La creencia de fondo que casi nadie cuestiona, y por qué pedir ayuda suele generar más confianza, no menos.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-pedir-ayuda')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="cómo recuperarte de un día realmente malo autocompasión">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo recuperarte de un día realmente malo</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Autocompasión frente a autoindulgencia, y una pregunta simple para cerrar el día.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-recuperar-mal-dia')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="qué hacer con la culpa que no te suelta brené brown">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué hacer con la culpa que no te suelta</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">La diferencia entre culpa útil y vergüenza, y cuándo la culpa deja de servir para algo.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-culpa-persistente')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="cómo gestionar un cambio que no elegiste transición william bridges">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo gestionar un cambio que no elegiste</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Las tres fases de William Bridges, y el error de saltarse la zona neutra.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-cambio-no-elegido')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="bienestar" data-titulo="el poder de nombrar bien lo que sientes vocabulario emocional feldman barrett">
+      <div class="tag-pill tag-terra" style="margin-bottom:1rem;align-self:flex-start">● Bienestar</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">El poder de nombrar bien lo que sientes</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué "estresado" casi nunca es preciso, y un ejercicio simple para encontrar la palabra exacta.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-nombrar-emociones')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo tener la conversación de no vas a ser promocionado este año">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo tener la conversación de "no vas a ser promocionado este año"</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Por qué la clave no es el "no", y cómo ser específico en vez de genérico.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-conversacion-no-promocion')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="qué preguntar en un 1:1 para que no sea un simple checklist preguntas poderosas">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué preguntar en un 1:1 para que no sea un simple checklist</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Tres preguntas que sí revelan algo, y por qué hay que aguantar el silencio después.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-preguntas-1-1')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo saber si estás liderando o solo gestionando bass">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo saber si estás liderando o solo gestionando</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">La pregunta que lo revela, y las cuatro señales de liderazgo real según Bernard Bass.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-liderar-vs-gestionar')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="tu equipo no confía en ti todavía seguridad psicológica edmondson">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Tu equipo no confía en ti todavía — por dónde empezar</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Seguridad psicológica según Amy Edmondson, y por qué el primer paso es modelar tú la vulnerabilidad.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-equipo-sin-confianza')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo negociar sin que se sienta una guerra getting to yes fisher ury">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo negociar sin que se sienta una guerra</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Posición frente a interés, según el método de negociación de Harvard.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-negociar-sin-guerra')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="qué hacer cuando heredas un equipo con mala fama lencioni cinco disfunciones">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Qué hacer cuando heredas un equipo con mala fama</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Las cinco disfunciones de Lencioni, en cascada, y por dónde empezar de verdad.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-heredar-equipo-dificil')">Leer guía →</button>
+    </div>
+
+    <div class="recursos-card recursos-extra" data-modulo="coaching" data-titulo="cómo construir una cultura de feedback continuo radical candor kim scott">
+      <div class="tag-pill tag-gold" style="margin-bottom:1rem;align-self:flex-start">◆ Coaching</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.7rem">Cómo construir una cultura de feedback continuo, no solo anual</h3>
+      <p style="color:var(--inv);line-height:1.7;font-size:.85rem;margin-bottom:1rem;flex:1">Los dos ejes de Radical Candor, y por qué pequeño y frecuente gana a grande y raro.</p>
+      <button class="btn-ghost" style="align-self:flex-start" onclick="go('guia-cultura-feedback-continuo')">Leer guía →</button>
+    </div>
+
   </div>
   <p id="recursos-empty" style="display:none;text-align:center;color:var(--inv-2);font-size:.9rem;padding:2rem 0 4rem">No hay guías que coincidan con tu búsqueda.</p>
+
+  <div style="text-align:center;margin:-1.5rem 0 3rem" id="recursos-ver-todas-wrap">
+    <button class="btn-ghost" onclick="mostrarTodasLasGuias()">Ver las 30 guías →</button>
+  </div>
 
   <div style="max-width:900px;margin:0 auto;padding:0 3rem 5rem">
     <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
@@ -2564,6 +2678,456 @@ document.addEventListener('scroll', function(e){
     <div class="footer-links">
       <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Ansiedad antes de presentar ═══════ -->
+<div id="pg-guia-ansiedad-presentacion" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo gestionar la ansiedad antes de una presentación importante</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Los nervios antes de hablar en público no son una señal de que algo vaya mal — son la respuesta normal del cuerpo ante algo que le importa. El problema no es sentirlos, es lo que hacemos con ellos.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Reinterpretar la activación, no eliminarla</h2>
+    <p style="margin-bottom:1.3rem">El corazón acelerado antes de presentar es fisiológicamente casi idéntico a la emoción, y una técnica sencilla y bien estudiada es decirse a uno mismo "estoy emocionado" en vez de "estoy nervioso" — el cuerpo siente lo mismo, pero la interpretación cambia cómo se afronta.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La respiración, antes de entrar</h2>
+    <p style="margin-bottom:1.3rem">Alargar la exhalación más que la inhalación (por ejemplo, inhalar 4 segundos, exhalar 8) activa el sistema nervioso parasimpático y baja la activación física en minutos — es la palanca más rápida y fiable justo antes de empezar.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Lo que de verdad ayuda a medio plazo</h2>
+    <p style="margin-bottom:1.3rem">La preparación reduce la ansiedad más que cualquier técnica en el momento — no por eliminar la incertidumbre del todo, sino por reducirla a un nivel manejable. Ensayar en voz alta (no solo repasar mentalmente) y anticipar las dos o tres preguntas más incómodas que te pueden hacer, son las dos acciones con más impacto real.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a prepararte antes del momento</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Técnicas de regulación inmediata, y ayuda a anticipar las preguntas difíciles</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Síndrome del impostor ═══════ -->
+<div id="pg-guia-sindrome-impostor" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Qué es el síndrome del impostor y cómo reconocerlo</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Basado en Clance e Imes</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">La sensación de "en cualquier momento se van a dar cuenta de que no doy la talla" no depende del nivel real de competencia — aparece igual en gente muy capaz, y de hecho es más frecuente entre quienes más logran, no menos.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El patrón central</h2>
+    <p style="margin-bottom:1.3rem">Clance e Imes lo describieron como la incapacidad de interiorizar los propios logros como reales, atribuyéndolos a suerte, buen momento o haber engañado a los demás, en vez de a la propia capacidad. El logro no cambia la creencia de fondo — cada éxito nuevo se descarta como excepción, no como evidencia.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Un ciclo que se retroalimenta</h2>
+    <p style="margin-bottom:1.3rem">Ante un reto, aparece ansiedad; para manejarla, la persona sobre-prepara o sobre-trabaja; el éxito resultante se atribuye al esfuerzo extra, no a la capacidad real — reforzando la creencia de que sin ese esfuerzo desproporcionado, habría fracasado. El ciclo se repite y se vuelve más difícil de romper con cada vuelta.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Qué ayuda de verdad</h2>
+    <p style="margin-bottom:1.3rem">Nombrar el patrón en voz alta ya reduce su intensidad — mucha gente se siente aliviada solo al saber que tiene un nombre y es común. Y llevar un registro simple de logros propios, con la evidencia concreta de por qué se consiguieron, ayuda a contrarrestar la tendencia automática a descartarlos.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a nombrarlo y trabajarlo</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Un espacio para revisar tus propios logros con perspectiva, no solo con autocrítica</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Pedir ayuda ═══════ -->
+<div id="pg-guia-pedir-ayuda" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Por qué te cuesta tanto pedir ayuda</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Pedir ayuda se suele vivir como admitir una debilidad, cuando en realidad es una habilidad — y como cualquier habilidad, algunas personas la han entrenado más que otras, no es un rasgo fijo de carácter.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La creencia de fondo más común</h2>
+    <p style="margin-bottom:1.3rem">Muchas veces hay una ecuación implícita no cuestionada: "necesitar ayuda = no soy suficiente". Esa ecuación rara vez se aplica a los demás (nadie piensa que alguien es incompetente por pedir ayuda), solo a uno mismo — una asimetría que vale la pena notar.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El efecto Ben Franklin, al revés</h2>
+    <p style="margin-bottom:1.3rem">La investigación muestra que pedir un favor a alguien suele aumentar, no reducir, cómo esa persona te valora — contrario a la intuición de que "voy a parecer menos capaz". Pedir ayuda de forma puntual y concreta comunica confianza en la relación, no debilidad.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Cómo empezar, si nunca lo haces</h2>
+    <p style="margin-bottom:1.3rem">Empieza con algo pequeño y concreto, no con la petición más difícil que tengas guardada. Pedir algo específico y acotado ("¿me revisas este párrafo?") es mucho más fácil de sostener como hábito que esperar a tener una crisis para pedir algo grande de golpe.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee es un sitio seguro para practicarlo</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Pedir ayuda aquí no tiene el coste social que a veces se anticipa en persona</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Recuperarte de un mal día ═══════ -->
+<div id="pg-guia-recuperar-mal-dia" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo recuperarte de un día realmente malo</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Un día realmente malo no se arregla forzando positividad — se procesa mejor tratándose con la misma amabilidad que se ofrecería a un amigo en la misma situación.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Autocompasión, no autoindulgencia</h2>
+    <p style="margin-bottom:1.3rem">Kristin Neff distingue tres componentes: amabilidad hacia uno mismo (en vez de autocrítica dura), reconocer que el sufrimiento es parte de la experiencia humana común (no algo que solo te pasa a ti), y mantener cierta perspectiva sin exagerar el drama ni negarlo. No es "no pasa nada", es "esto duele, y está bien que duela".</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Actuar antes de sentir ganas</h2>
+    <p style="margin-bottom:1.3rem">Después de un mal día, la motivación para hacer algo que ayudaría (moverse, ver a alguien, salir) suele estar muy baja. La activación conductual propone actuar primero, aunque no haya ganas, confiando en que el ánimo mejora después de la acción, no antes.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Una pregunta simple para cerrar el día</h2>
+    <p style="margin-bottom:1.3rem">Antes de dormir, en vez de repasar todo lo que salió mal, pregúntate: "¿qué necesito ahora mismo?" — a veces es simplemente reconocer que ha sido un día difícil, sin necesidad de resolver nada más esa misma noche.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee está ahí también en los días malos</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Disponible a cualquier hora, sin tener que esperar a que sea "lo bastante grave"</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Culpa persistente ═══════ -->
+<div id="pg-guia-culpa-persistente" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Qué hacer con la culpa que no te suelta</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura · Basado en Brené Brown</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">No toda culpa es igual, y la diferencia importa mucho para saber qué hacer con ella.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Culpa vs. vergüenza: la distinción clave</h2>
+    <p style="margin-bottom:1.3rem">Brené Brown distingue la culpa ("hice algo malo") de la vergüenza ("soy alguien malo"). La culpa, bien gestionada, es útil — señala que algo no encaja con los propios valores y puede motivar a repararlo. La vergüenza, en cambio, rara vez motiva un cambio real; suele generar más ocultamiento y aislamiento.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Cuándo la culpa deja de ser útil</h2>
+    <p style="margin-bottom:1.3rem">Si ya has reparado lo que podías reparar (una disculpa, un cambio de conducta) y la culpa sigue igual de intensa meses después, ya no está cumpliendo su función de señal — se ha quedado atascada. En ese punto, seguir dándole vueltas no repara nada más, solo mantiene el malestar.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Una pregunta que ayuda a distinguir</h2>
+    <p style="margin-bottom:1.3rem">Pregúntate: "¿esta culpa me está señalando algo que todavía puedo reparar, o solo repite lo mismo sin llevarme a ninguna acción nueva?". Si es lo segundo, probablemente ha pasado de ser culpa útil a rumiación — y ahí aplican más las técnicas para cortar el bucle que las de reparación.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a distinguir cuál es tu caso</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Culpa útil, vergüenza, o rumiación — cada una necesita un enfoque distinto</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Cambio no elegido ═══════ -->
+<div id="pg-guia-cambio-no-elegido" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo gestionar un cambio que no elegiste</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura · Basado en William Bridges</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Un cambio impuesto (una reestructuración, una mudanza obligada, una relación que termina) se procesa distinto a uno elegido, y merece su propio tiempo, no una prisa por "estar ya bien con ello".</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Tres fases, no un interruptor</h2>
+    <p style="margin-bottom:1.3rem">Bridges describe un "Final" (dejar ir lo anterior, con su propio duelo aunque el cambio sea positivo en general), una "Zona Neutra" (la fase incómoda de estar entre lo viejo y lo nuevo, sin pertenecer del todo a ninguno) y un "Nuevo Comienzo" que llega con tiempo, no de golpe.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El error más común: saltarse la Zona Neutra</h2>
+    <p style="margin-bottom:1.3rem">La presión (propia o externa) de "ya deberías estar adaptado" suele empujar a saltarse esta fase intermedia, incómoda pero necesaria. Sin pasar por ella de verdad, el nuevo comienzo se queda superficial — se actúa como si ya se hubiera aceptado, sin haberlo hecho del todo.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Qué ayuda en la Zona Neutra</h2>
+    <p style="margin-bottom:1.3rem">Nombrar explícitamente que se está en esa fase incómoda, sin exigirse haber llegado ya al otro lado, suele aliviar bastante. Es una fase de verdad, no un fallo personal por no haberla superado todavía.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te acompaña en cada fase de la transición</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Con memoria entre sesiones, para no tener que explicar el contexto cada vez</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Nombrar emociones ═══════ -->
+<div id="pg-guia-nombrar-emociones" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-terra" style="margin-bottom:1rem">● Bienestar</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">El poder de nombrar bien lo que sientes</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura · Basado en Lisa Feldman Barrett</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Decir "estoy mal" describe muy poco. Decir "estoy decepcionado, no triste" cambia la forma en que el propio cerebro procesa y regula esa emoción.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La granularidad emocional importa</h2>
+    <p style="margin-bottom:1.3rem">Lisa Feldman Barrett ha investigado cómo la capacidad de distinguir emociones con precisión (no solo "bien" o "mal") se asocia con mejor regulación emocional — un vocabulario emocional más rico da al cerebro más opciones de respuesta específica, en vez de una reacción genérica de malestar.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Por qué "estresado" no siempre es preciso</h2>
+    <p style="margin-bottom:1.3rem">"Estresado" se usa a menudo como cajón de sastre para frustración, sobrecarga, miedo o decepción — emociones distintas con causas y soluciones distintas. Nombrar cuál es realmente ayuda a saber qué hacer: la frustración pide un cambio concreto; el miedo pide seguridad; la decepción pide procesar una expectativa no cumplida.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Un ejercicio simple</h2>
+    <p style="margin-bottom:1.3rem">La próxima vez que digas "estoy mal", detente un momento y busca una palabra más precisa antes de seguir. No hace falta acertar del todo — el simple esfuerzo de buscar precisión ya activa una regulación emocional más eficaz que quedarse en lo genérico.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a encontrar la palabra exacta</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">A veces el primer paso es solo saber cómo se llama lo que sientes</p>
+      <button class="btn-primary" onclick="goDemoFor('bienestar')">Solicitar demo de Bienestar</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Conversación de no-promoción ═══════ -->
+<div id="pg-guia-conversacion-no-promocion" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo tener la conversación de "no vas a ser promocionado este año"</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Es una de las conversaciones que más se posponen, precisamente porque importan mucho. Postponerla no la hace más fácil — la hace más tardía y más dolorosa.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El error de fondo: centrarse en el "no"</h2>
+    <p style="margin-bottom:1.3rem">La clave no es el "no" de este año, es el "todavía no, y aquí está el camino concreto" — sin ese segundo elemento, la conversación se siente como un portazo, no como desarrollo.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Sé específico, no genérico</h2>
+    <p style="margin-bottom:1.3rem">"Necesitas más liderazgo" no da a nadie un camino real. "Necesitas demostrar que puedes influir en decisiones sin autoridad formal, en al menos dos proyectos" sí lo hace. Cuanto más concreto el criterio que falta, más accionable se siente la conversación.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Antes de la reunión</h2>
+    <p style="margin-bottom:1.3rem">Prepara por escrito, con antelación, exactamente qué le falta (en términos de comportamiento observable) y un plan de desarrollo concreto para los próximos meses que tú mismo vas a apoyar activamente — no solo un consejo abstracto que la persona tenga que resolver sola.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a preparar esta conversación difícil</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Con SBI para el feedback y un plan de desarrollo concreto, no genérico</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Preguntas para 1:1 ═══════ -->
+<div id="pg-guia-preguntas-1-1" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Qué preguntar en un 1:1 para que no sea un simple checklist</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Si tus 1:1s se reducen a "¿cómo va el proyecto X?", ya tienes ese dato en el tablero — el valor real de la reunión está en lo que el tablero no muestra.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Preguntas abiertas, no dirigidas</h2>
+    <p style="margin-bottom:1.3rem">Evita preguntas que ya llevan la respuesta dentro ("¿no crees que deberíamos hacerlo así?"). Cambia los "¿por qué hiciste esto?" (suena a justificación) por "¿qué te llevó a decidir esto?" (invita a explorar sin ponerse a la defensiva).</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Tres preguntas que sí revelan algo</h2>
+    <p style="margin-bottom:.6rem">— "¿Qué obstáculo no me has contado todavía porque no parecía lo bastante importante?"</p>
+    <p style="margin-bottom:.6rem">— "¿Qué necesitas de mí que no te estoy dando ahora mismo?"</p>
+    <p style="margin-bottom:1.3rem">— "Si pudieras cambiar una cosa de cómo trabajamos juntos, ¿cuál sería?"</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Aguanta el silencio</h2>
+    <p style="margin-bottom:1.3rem">Tras estas preguntas, es normal que haya unos segundos de silencio. Resiste la tentación de rellenarlo con otra pregunta — ese silencio suele ser la señal de que la persona está pensando de verdad, no de que la pregunta ha fallado.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda con preguntas nuevas cada vez</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Adaptadas al contexto real de cada persona, no una lista genérica repetida</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Liderar vs gestionar ═══════ -->
+<div id="pg-guia-liderar-vs-gestionar" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo saber si estás liderando o solo gestionando</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Basado en Bernard Bass</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Gestionar bien (asignar tareas, revisar resultados, corregir desviaciones) es necesario, pero tiene un techo: genera cumplimiento, no compromiso genuino.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">La pregunta que lo revela</h2>
+    <p style="margin-bottom:1.3rem">¿Tu equipo hace lo que hace porque tú lo pides, o porque conecta con algo que a ellos mismos les importa? Si la respuesta honesta es "porque yo lo pido", probablemente estás gestionando bien, pero no liderando todavía.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Las cuatro señales de liderazgo real</h2>
+    <p style="margin-bottom:1.3rem">Bass las resume así: ser modelo de los valores que predicas (no solo exigirlos), dar una visión que dé sentido al trabajo diario (no solo tareas), animar a cuestionar y pensar distinto (no solo ejecutar), y atender el desarrollo específico de cada persona (no un trato uniforme).</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">No es sustituir, es sumar</h2>
+    <p style="margin-bottom:1.3rem">El liderazgo no sustituye a la buena gestión — sin gestionar bien lo básico (expectativas claras, seguimiento consistente), el liderazgo se queda en discurso bonito sin ejecución real. Las dos capas son necesarias, en ese orden.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a trabajar las cuatro dimensiones</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">No solo la gestión del día a día, también el desarrollo del liderazgo real</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Equipo sin confianza ═══════ -->
+<div id="pg-guia-equipo-sin-confianza" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Tu equipo no confía en ti todavía — por dónde empezar</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Basado en Amy Edmondson</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">La confianza no se pide, se construye con evidencia acumulada de que es seguro arriesgarse. Y como manager nuevo o poco conocido, esa evidencia todavía no existe.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Seguridad psicológica: la base de todo</h2>
+    <p style="margin-bottom:1.3rem">Amy Edmondson la define como la creencia compartida de que el equipo es un lugar seguro para asumir riesgos interpersonales — decir que no se sabe algo, admitir un error, discrepar del jefe. Sin esto, cualquier otra cosa que intentes construir (innovación, feedback honesto) se queda en la superficie.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">El primer paso, y el más contraintuitivo</h2>
+    <p style="margin-bottom:1.3rem">Modelar tú mismo la vulnerabilidad primero: admitir un error propio, decir "no lo sé" en voz alta cuando sea cierto. El equipo no se arriesga primero — espera ver que el líder lo hace, y solo entonces empieza a hacerlo también.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Cómo reaccionas al primer error importa más que cualquier discurso</h2>
+    <p style="margin-bottom:1.3rem">La primera vez que alguien comete un error y lo cuenta abiertamente, tu reacción en ese momento vale más que cualquier declaración de intenciones anterior. Una reacción punitiva, aunque sea sutil, cierra la puerta que llevabas semanas intentando abrir.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a construir seguridad psicológica</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Con pasos concretos, no solo el concepto teórico</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Negociar sin guerra ═══════ -->
+<div id="pg-guia-negociar-sin-guerra" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo negociar sin que se sienta una guerra</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Basado en Getting to Yes (Fisher y Ury)</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">La mayoría de negociaciones se plantean como un tira y afloja donde uno gana y otro pierde. El método de Harvard propone algo distinto: separar a las personas del problema, y centrarse en intereses, no en posiciones.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Posición vs. interés: la distinción central</h2>
+    <p style="margin-bottom:1.3rem">La posición es lo que alguien dice que quiere ("necesito un aumento del 15%"); el interés es el porqué de fondo (seguridad económica, sentirse valorado, equidad con el mercado). Dos posiciones pueden parecer incompatibles mientras que los intereses de fondo tienen mucho más margen de encaje.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Preguntar el porqué, no solo el qué</h2>
+    <p style="margin-bottom:1.3rem">"¿Qué es lo que de verdad te preocupa detrás de esta petición?" suele revelar un interés más flexible que la posición inicial rígida. A veces el interés real se puede satisfacer de una forma completamente distinta a la posición original.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Criterios objetivos, no pulso de voluntades</h2>
+    <p style="margin-bottom:1.3rem">Apoyarse en un estándar externo (banda salarial del mercado, política ya escrita, dato comparable) saca la negociación del terreno de "quién presiona más" y la lleva a un terreno más fácil de aceptar para ambas partes.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a preparar la negociación</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Identifica intereses de fondo antes de entrar en la conversación</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Heredar un equipo difícil ═══════ -->
+<div id="pg-guia-heredar-equipo-dificil" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Qué hacer cuando heredas un equipo con mala fama</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">6 min de lectura · Basado en Patrick Lencioni</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Antes de intentar arreglar nada, vale la pena diagnosticar bien qué disfunción concreta explica la mala fama — casi nunca es "el equipo es conflictivo" sin más.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Las cinco disfunciones, en cascada</h2>
+    <p style="margin-bottom:1.3rem">Lencioni las describe como una pirámide: ausencia de confianza (nadie muestra vulnerabilidad) lleva a miedo al conflicto (se evita el desacuerdo real), lo que lleva a falta de compromiso genuino con las decisiones, lo que lleva a evitar la responsabilidad mutua, y termina en falta de atención a los resultados colectivos.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Por qué el orden importa</h2>
+    <p style="margin-bottom:1.3rem">Intentar arreglar el compromiso o los resultados sin resolver primero la confianza de base rara vez funciona — es como pintar una pared con grietas estructurales debajo. Hay que empezar por la base, aunque sea la más lenta de reparar.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Un primer paso concreto</h2>
+    <p style="margin-bottom:1.3rem">Antes de proponer ningún cambio de proceso, dedica las primeras semanas a escuchar individualmente a cada persona — qué ha fallado, según su perspectiva, y qué necesitaría para confiar de nuevo. Sin ese diagnóstico real, cualquier solución llega antes de tiempo.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee te ayuda a diagnosticar la disfunción real</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Antes de proponer soluciones que lleguen antes de tiempo</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+  </footer>
+</div>
+
+<!-- ═══════ GUÍA: Cultura de feedback continuo ═══════ -->
+<div id="pg-guia-cultura-feedback-continuo" class="pg">
+  <div style="max-width:720px;margin:0 auto;padding:4rem 3rem 2rem">
+    <button class="btn-ghost" style="margin-bottom:2rem" onclick="go('recursos')">← Volver a Recursos</button>
+    <div class="tag-pill tag-gold" style="margin-bottom:1rem">◆ Coaching</div>
+    <h1 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;line-height:1.25;margin-bottom:1rem">Cómo construir una cultura de feedback continuo, no solo anual</h1>
+    <p style="color:var(--inv-2);font-size:.82rem">5 min de lectura · Basado en Radical Candor (Kim Scott)</p>
+  </div>
+  <div class="guia-article-body" style="max-width:720px;margin:0 auto;padding:0 3rem 3rem;color:var(--inv);line-height:1.8;font-size:.95rem">
+    <p style="margin-bottom:1.3rem">Si el único feedback que da un equipo es en la evaluación anual, ya ha llegado demasiado tarde para cambiar nada de lo ocurrido en los últimos meses.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Los dos ejes de Kim Scott</h2>
+    <p style="margin-bottom:1.3rem">Radical Candor cruza "preocuparte de verdad por la persona" con "desafiar directamente". Sin ambos a la vez, se cae en la Empatía Ruinosa (amable pero sin sustancia, no ayuda a mejorar) o en la Agresión Desagradable (directa pero sin cuidado, genera defensa en vez de cambio).</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Pequeño y frecuente, mejor que grande y raro</h2>
+    <p style="margin-bottom:1.3rem">Un feedback breve dado la misma semana que ocurre algo tiene mucho más impacto que uno detallado guardado para la evaluación anual — llega cuando todavía se puede hacer algo con él, y no se acumula como sorpresa incómoda meses después.</p>
+    <h2 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.4rem;margin:2rem 0 1rem">Empieza pidiéndolo tú primero</h2>
+    <p style="margin-bottom:1.3rem">Antes de exigir que tu equipo te dé feedback honesto, pídelo tú activamente y de forma visible ("¿qué podría estar haciendo mejor?") — modelar recibir crítica bien es lo que da permiso real al equipo para hacerlo también.</p>
+  </div>
+  <div style="max-width:720px;margin:0 auto;padding:0 3rem 5rem">
+    <div style="text-align:center;padding:2.5rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;margin-bottom:.6rem">Growee ayuda a dar feedback en el momento, no meses después</div>
+      <p style="color:var(--inv);font-size:.85rem;margin-bottom:1.3rem">Disponible cuando el momento ocurre, no solo en la evaluación anual</p>
+      <button class="btn-primary" onclick="goDemoFor('coaching')">Solicitar demo de Coaching</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+    <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3533,7 +4097,7 @@ function closeMobileMenu() {
 }
 
 // ── Routing ──
-const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','guia-delegacion','guia-conflicto-equipo','guia-motivacion','guia-equipo-remoto','guia-evaluacion-justa','guia-rumiacion','guia-limites-culpa','guia-senales-tempranas','guia-acompanar-companero','guia-dormir-mal','precios','demo','login','app','rrhh-panel'];
+const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','guia-delegacion','guia-conflicto-equipo','guia-motivacion','guia-equipo-remoto','guia-evaluacion-justa','guia-rumiacion','guia-limites-culpa','guia-senales-tempranas','guia-acompanar-companero','guia-dormir-mal','guia-ansiedad-presentacion','guia-sindrome-impostor','guia-pedir-ayuda','guia-recuperar-mal-dia','guia-culpa-persistente','guia-cambio-no-elegido','guia-nombrar-emociones','guia-conversacion-no-promocion','guia-preguntas-1-1','guia-liderar-vs-gestionar','guia-equipo-sin-confianza','guia-negociar-sin-guerra','guia-heredar-equipo-dificil','guia-cultura-feedback-continuo','precios','demo','login','app','rrhh-panel'];
 const APP_PAGES = ['login','onboarding','app','rrhh-panel'];
 let currentPage = 'home';
 let pageHistory = ['home'];
@@ -3963,6 +4527,7 @@ async function handleCsvSelected(event) {
 
 let recursosFiltroModulo = 'todos';
 let recursosFiltroTexto = '';
+let recursosExpandido = false;
 
 function filtrarRecursos(modulo, btn) {
   recursosFiltroModulo = modulo;
@@ -3976,18 +4541,31 @@ function filtrarRecursosPorTexto(texto) {
   aplicarFiltrosRecursos();
 }
 
+function mostrarTodasLasGuias() {
+  recursosExpandido = true;
+  aplicarFiltrosRecursos();
+}
+
 function aplicarFiltrosRecursos() {
+  const buscandoOFiltrando = recursosFiltroTexto !== '' || recursosFiltroModulo !== 'todos';
   const cards = document.querySelectorAll('.recursos-card');
   let visibleCount = 0;
   cards.forEach(card => {
     const matchModulo = recursosFiltroModulo === 'todos' || card.dataset.modulo === recursosFiltroModulo;
     const matchTexto = !recursosFiltroTexto || card.dataset.titulo.includes(recursosFiltroTexto);
-    const visible = matchModulo && matchTexto;
+    const esExtra = card.classList.contains('recursos-extra');
+    // Una tarjeta "extra" se ve si: ya se ha desplegado todo, o se está buscando/filtrando activamente
+    const puedeMostrarseSiEsExtra = !esExtra || recursosExpandido || buscandoOFiltrando;
+    const visible = matchModulo && matchTexto && puedeMostrarseSiEsExtra;
     card.style.display = visible ? 'flex' : 'none';
     if (visible) visibleCount++;
   });
+
   const emptyMsg = document.getElementById('recursos-empty');
   if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+
+  const verTodasWrap = document.getElementById('recursos-ver-todas-wrap');
+  if (verTodasWrap) verTodasWrap.style.display = (recursosExpandido || buscandoOFiltrando) ? 'none' : 'block';
 }
 
 function applyContentGate(pageId) {
