@@ -3908,6 +3908,7 @@ ol.cbubble-list li{padding-left:.3rem}
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
         <span class="chat-disc">📎 Adjunta documentos o imágenes · 🎤 o graba tu mensaje por voz</span>
         <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
+        <button class="chat-history-link" id="btn-resumen-pdf" onclick="generarResumenPDF()">📄 Resumen de esta sesión en PDF</button>
       </div>
     </div>
   </div>
@@ -4932,6 +4933,9 @@ Un chat genérico responde con generalidades ("intenta relajarte", "date tiempo"
 - Máximo 3 preguntas de diagnóstico seguidas antes de ofrecer una técnica concreta. Si tras 3 preguntas todavía falta claridad, ofrece de todos modos la técnica que mejor encaje con lo que ya sabes, dejando claro que es un punto de partida ajustable. Nunca encadenes una cuarta pregunta sin haber ofrecido antes algo concreto.
 - Cuando ofrezcas una herramienta, nómbrala explícitamente ("esto es una técnica de TCC llamada...", "en ACT esto se conoce como..."). La persona debe notar que está recibiendo algo entrenado, no un consejo genérico.
 - Prohibido usar frases de relleno tipo "es importante cuidarse", "recuerda que no estás solo/a", "tómate un momento para ti" como respuesta en sí misma — solo son válidas si van pegadas a una técnica concreta y accionable ahora mismo.
+
+SI LA PERSONA PIDE UN PDF, UN RESUMEN DESCARGABLE, O UN DOCUMENTO
+No puedes generar archivos ni descargas desde dentro de la conversación — solo puedes escribir texto. Si alguien pide algo como "hazme un resumen en PDF" o "pásamelo en un documento", NUNCA finjas que lo has generado ni escribas un resumen largo como si fuera el documento en sí. En su lugar, responde brevemente indicando que hay un botón para eso: "Para eso tienes el botón '📄 Resumen de esta sesión en PDF', justo debajo del chat — te genera un PDF de verdad con las metodologías y los pasos que hemos hablado." No añadas nada más largo detrás de esta indicación.
 - Cada respuesta debe dejar a la persona con algo que puede hacer literalmente en el siguiente minuto, no una reflexión abstracta.
 
 CONTINUIDAD DENTRO DE LA CONVERSACIÓN
@@ -5013,6 +5017,9 @@ Un chat genérico da consejos de liderazgo de manual ("comunica con claridad", "
 - Máximo 3 preguntas de diagnóstico seguidas antes de proponer algo concreto. Si tras 3 preguntas todavía falta información, propón de todos modos con la mejor hipótesis disponible, dejando claro que es provisional ("con lo que tengo, mi hipótesis es X — ajustamos si no encaja"). Nunca encadenes una cuarta pregunta sin haber propuesto nada aún.
 - Nombra siempre el framework que estás aplicando ("vamos a usar el modelo GROW para esto", "esto pide una estructura SBI"). La persona debe notar que hay una metodología real detrás.
 - Prohibido cerrar con generalidades tipo "sigue así", "confía en tu instinto", "con el tiempo mejorará" — cada respuesta cierra con un paso concreto para esta semana.
+
+SI LA PERSONA PIDE UN PDF, UN RESUMEN DESCARGABLE, O UN DOCUMENTO
+No puedes generar archivos ni descargas desde dentro de la conversación — solo puedes escribir texto. Si alguien pide algo como "hazme un resumen en PDF" o "pásamelo en un documento", NUNCA finjas que lo has generado ni escribas un resumen largo como si fuera el documento en sí. En su lugar, responde brevemente indicando que hay un botón para eso: "Para eso tienes el botón '📄 Resumen de esta sesión en PDF', justo debajo del chat — te genera un PDF de verdad con las metodologías y los pasos que hemos hablado." No añadas nada más largo detrás de esta indicación.
 
 CONTINUIDAD DENTRO DE LA CONVERSACIÓN
 - Tienes memoria de todo lo que la persona ha contado en esta conversación. Conecta lo que dice ahora con lo anterior — no repitas preguntas de diagnóstico que ya respondió.
@@ -5680,6 +5687,124 @@ function closeDownloadMenu() {
 document.addEventListener('click', function(e) {
   if (downloadMenuOpen && !e.target.closest('#download-menu-wrap')) closeDownloadMenu();
 });
+
+async function generarResumenPDF() {
+  const btn = document.getElementById('btn-resumen-pdf');
+  if (!chatState.history || chatState.history.length < 2) {
+    alert('Todavía no hay suficiente conversación en esta sesión para generar un resumen.');
+    return;
+  }
+  if (typeof window.jspdf === 'undefined') {
+    alert('No se pudo cargar el generador de PDF. Comprueba tu conexión e inténtalo de nuevo.');
+    return;
+  }
+
+  const originalLabel = btn.textContent;
+  btn.textContent = 'Generando resumen...';
+  btn.disabled = true;
+
+  try {
+    const sysKey = (appState.module === 'ambos') ? chatState.mode : appState.module;
+    const res = await fetch('/.netlify/functions/summarize-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatState.history, modulo: sysKey }),
+    });
+
+    if (!res.ok) {
+      alert('No se pudo generar el resumen. Inténtalo de nuevo en un momento.');
+      return;
+    }
+
+    const resumen = await res.json();
+    construirPDFResumen(resumen, sysKey);
+  } catch (e) {
+    console.error('Error generando el resumen en PDF:', e);
+    alert('No se pudo generar el resumen. Comprueba tu conexión.');
+  } finally {
+    btn.textContent = originalLabel;
+    btn.disabled = false;
+  }
+}
+
+function construirPDFResumen(resumen, modulo) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const marginX = 50;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const maxWidth = pageWidth - marginX * 2;
+  const accentColor = modulo === 'coaching' ? [201, 168, 76] : [217, 130, 90]; // dorado o terracota, según módulo
+  let y = 0;
+
+  // Cabecera con marca
+  doc.setFillColor(13, 27, 42); // navy de Growee
+  doc.rect(0, 0, pageWidth, 90, 'F');
+  doc.setFont('times', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(248, 246, 241);
+  doc.text('Growee', marginX, 45);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(200, 200, 200);
+  doc.text(`Resumen de tu sesión de ${modulo === 'coaching' ? 'Coaching Profesional' : 'Apoyo Emocional'}`, marginX, 65);
+
+  y = 130;
+  doc.setTextColor(20, 20, 20);
+  doc.setFont('times', 'bold');
+  doc.setFontSize(17);
+  const tituloLines = doc.splitTextToSize(resumen.titulo || 'Resumen de la conversación', maxWidth);
+  tituloLines.forEach((line) => { doc.text(line, marginX, y); y += 22; });
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(9);
+  doc.setTextColor(120, 120, 120);
+  doc.text(`Generado el ${new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}`, marginX, y + 6);
+  y += 30;
+
+  function seccion(titulo, items) {
+    if (!items || items.length === 0) return;
+    if (y > pageHeight - 100) { doc.addPage(); y = 50; }
+    doc.setFillColor(...accentColor);
+    doc.rect(marginX, y - 12, 3, 16, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12.5);
+    doc.setTextColor(20, 20, 20);
+    doc.text(titulo, marginX + 12, y);
+    y += 22;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10.5);
+    doc.setTextColor(50, 50, 50);
+    items.forEach((item) => {
+      if (y > pageHeight - 60) { doc.addPage(); y = 50; }
+      const lines = doc.splitTextToSize('•  ' + item, maxWidth - 10);
+      lines.forEach((line) => {
+        if (y > pageHeight - 50) { doc.addPage(); y = 50; }
+        doc.text(line, marginX + 10, y);
+        y += 15;
+      });
+      y += 4;
+    });
+    y += 14;
+  }
+
+  seccion('Metodologías aplicadas', resumen.metodologias);
+  seccion('Estrategias y consejos clave', resumen.estrategias);
+  seccion('Próximos pasos', resumen.proximos_pasos);
+
+  // Pie de página en todas las páginas
+  const totalPages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text('Growee · Documento confidencial generado para tu uso personal', marginX, pageHeight - 25);
+  }
+
+  doc.save(`growee-resumen-${modulo}-${new Date().toISOString().slice(0,10)}.pdf`);
+}
 
 function downloadHistoryAsPDF() {
   closeDownloadMenu();
