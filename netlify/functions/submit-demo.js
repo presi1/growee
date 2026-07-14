@@ -51,9 +51,9 @@ exports.handler = async (event) => {
 
   try {
     const body = JSON.parse(event.body);
-    const { nombre, apellidos, email, empresa, tamano_equipo, rol, modulo_interes, reto } = body;
+    const { nombre, apellidos, email, empresa, telefono, tamano_equipo, rol, modulo_interes, reto } = body;
 
-    if (!nombre || !apellidos || !email || !empresa || !tamano_equipo || !rol || !modulo_interes) {
+    if (!nombre || !apellidos || !email || !empresa || !telefono || !tamano_equipo || !rol || !modulo_interes) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Faltan campos obligatorios' }) };
     }
 
@@ -65,7 +65,7 @@ exports.handler = async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        nombre, apellidos, email, empresa,
+        nombre, apellidos, email, empresa, telefono,
         tamano_equipo, rol, modulo_interes,
         reto: reto || null,
       }),
@@ -84,6 +84,7 @@ exports.handler = async (event) => {
         <h2>Nueva solicitud de demo</h2>
         <p><strong>Nombre:</strong> ${nombre} ${apellidos}</p>
         <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Teléfono:</strong> ${telefono}</p>
         <p><strong>Empresa:</strong> ${empresa}</p>
         <p><strong>Tamaño de equipo:</strong> ${tamano_equipo}</p>
         <p><strong>Rol:</strong> ${rol}</p>
