@@ -1103,7 +1103,7 @@ document.addEventListener('scroll', function(e){
   <div style="max-width:1160px;margin:0 auto;padding:4rem 3rem 4rem">
     <div style="text-align:center;margin-bottom:3rem">
       <div class="h-section-eye">Por qué Growee</div>
-      <h2 class="h-section-h2">No es otro chat de IA<br><em>genérico como ChatGPT o Claude</em></h2>
+      <h2 class="h-section-h2" style="font-size:3.6rem;line-height:1.1">No es otro chat de IA<br><em>genérico como ChatGPT o Claude</em></h2>
       <p class="lead" style="margin:1.2rem auto 0;max-width:640px">Los módulos ya los has visto en el menú de arriba. Esto es lo que hay detrás, y por qué importa de verdad para tu empresa.</p>
     </div>
 
@@ -1959,7 +1959,7 @@ document.addEventListener('scroll', function(e){
   <p id="recursos-empty" style="display:none;text-align:center;color:var(--inv-2);font-size:.9rem;padding:2rem 0 4rem">No hay guías que coincidan con tu búsqueda.</p>
 
   <div style="text-align:center;margin:-1.5rem 0 3rem" id="recursos-ver-todas-wrap">
-    <button class="btn-ghost" onclick="mostrarTodasLasGuias()">Ver las 30 guías →</button>
+    <button class="btn-ghost" id="recursos-ver-mas-btn" onclick="verMasRecursos()">Ver 4 más (4/30) →</button>
   </div>
 
   <div style="max-width:900px;margin:0 auto;padding:0 3rem 5rem">
@@ -4160,6 +4160,10 @@ function go(id, _viaHistory) {
     setTimeout(loadRrhhPanel, 50);
   }
 
+  if (id === 'recursos') {
+    setTimeout(resetRecursosState, 50);
+  }
+
   if (id.startsWith('guia-')) {
     setTimeout(() => applyContentGate(id), 50);
   }
@@ -4528,7 +4532,21 @@ async function handleCsvSelected(event) {
 
 let recursosFiltroModulo = 'todos';
 let recursosFiltroTexto = '';
-let recursosExpandido = false;
+let recursosVisibleExtra = 0; // cuántas tarjetas "extra" se han revelado con "Ver más"
+const RECURSOS_INCREMENTO = 4;
+const RECURSOS_TOTAL_EXTRA = 26; // 30 guías en total, 4 siempre visibles + 26 que se despliegan poco a poco
+
+function resetRecursosState() {
+  recursosFiltroModulo = 'todos';
+  recursosFiltroTexto = '';
+  recursosVisibleExtra = 0;
+  const searchInput = document.getElementById('recursos-search');
+  if (searchInput) searchInput.value = '';
+  document.querySelectorAll('.recursos-filtro-btn').forEach(b => b.classList.remove('active'));
+  const todosBtn = document.querySelector('.recursos-filtro-btn[data-filtro="todos"]');
+  if (todosBtn) todosBtn.classList.add('active');
+  aplicarFiltrosRecursos();
+}
 
 function filtrarRecursos(modulo, btn) {
   recursosFiltroModulo = modulo;
@@ -4542,21 +4560,64 @@ function filtrarRecursosPorTexto(texto) {
   aplicarFiltrosRecursos();
 }
 
-function mostrarTodasLasGuias() {
-  recursosExpandido = true;
+function verMasRecursos() {
+  recursosVisibleExtra = Math.min(recursosVisibleExtra + RECURSOS_INCREMENTO, RECURSOS_TOTAL_EXTRA);
   aplicarFiltrosRecursos();
+}
+
+// Búsqueda con tolerancia a errores tipográficos — distancia de edición (Levenshtein) simple,
+// pensada para textos cortos como títulos de guía, no para documentos largos.
+function distanciaEdicion(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const fila = new Array(n + 1);
+  for (let j = 0; j <= n; j++) fila[j] = j;
+  for (let i = 1; i <= m; i++) {
+    let anterior = fila[0];
+    fila[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const temp = fila[j];
+      fila[j] = a[i - 1] === b[j - 1]
+        ? anterior
+        : 1 + Math.min(anterior, fila[j], fila[j - 1]);
+      anterior = temp;
+    }
+  }
+  return fila[n];
+}
+
+function coincideConTolerancia(busqueda, titulo) {
+  if (!busqueda) return true;
+  if (titulo.includes(busqueda)) return true; // coincidencia exacta, el camino más rápido y común
+
+  // Si no hay coincidencia exacta, comprobamos palabra por palabra del título,
+  // permitiendo hasta 1-2 errores según la longitud de la palabra buscada
+  const palabrasBusqueda = busqueda.split(/\s+/).filter(Boolean);
+  const palabrasTitulo = titulo.split(/\s+/).filter(Boolean);
+
+  return palabrasBusqueda.every((palabraBuscada) => {
+    if (palabraBuscada.length < 3) return titulo.includes(palabraBuscada); // palabras muy cortas, sin tolerancia (ruido si no)
+    const tolerancia = palabraBuscada.length <= 5 ? 1 : 2;
+    return palabrasTitulo.some((palabraTitulo) => distanciaEdicion(palabraBuscada, palabraTitulo) <= tolerancia);
+  });
 }
 
 function aplicarFiltrosRecursos() {
   const buscandoOFiltrando = recursosFiltroTexto !== '' || recursosFiltroModulo !== 'todos';
   const cards = document.querySelectorAll('.recursos-card');
   let visibleCount = 0;
+  let extraIndex = 0;
+
   cards.forEach(card => {
     const matchModulo = recursosFiltroModulo === 'todos' || card.dataset.modulo === recursosFiltroModulo;
-    const matchTexto = !recursosFiltroTexto || card.dataset.titulo.includes(recursosFiltroTexto);
+    const matchTexto = coincideConTolerancia(recursosFiltroTexto, card.dataset.titulo);
     const esExtra = card.classList.contains('recursos-extra');
-    // Una tarjeta "extra" se ve si: ya se ha desplegado todo, o se está buscando/filtrando activamente
-    const puedeMostrarseSiEsExtra = !esExtra || recursosExpandido || buscandoOFiltrando;
+    let puedeMostrarseSiEsExtra = true;
+    if (esExtra) {
+      extraIndex++;
+      puedeMostrarseSiEsExtra = buscandoOFiltrando || (extraIndex <= recursosVisibleExtra);
+    }
     const visible = matchModulo && matchTexto && puedeMostrarseSiEsExtra;
     card.style.display = visible ? 'flex' : 'none';
     if (visible) visibleCount++;
@@ -4566,7 +4627,14 @@ function aplicarFiltrosRecursos() {
   if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
 
   const verTodasWrap = document.getElementById('recursos-ver-todas-wrap');
-  if (verTodasWrap) verTodasWrap.style.display = (recursosExpandido || buscandoOFiltrando) ? 'none' : 'block';
+  const verMasBtn = document.getElementById('recursos-ver-mas-btn');
+  const yaMostradoTodo = recursosVisibleExtra >= RECURSOS_TOTAL_EXTRA;
+  if (verTodasWrap) verTodasWrap.style.display = (yaMostradoTodo || buscandoOFiltrando) ? 'none' : 'block';
+  if (verMasBtn && !yaMostradoTodo && !buscandoOFiltrando) {
+    const mostrando = 4 + recursosVisibleExtra;
+    const siguienteTanda = Math.min(RECURSOS_INCREMENTO, RECURSOS_TOTAL_EXTRA - recursosVisibleExtra);
+    verMasBtn.textContent = `Ver ${siguienteTanda} más (${mostrando}/30) →`;
+  }
 }
 
 function applyContentGate(pageId) {
@@ -6135,6 +6203,31 @@ function copyBubbleText(btn) {
 }
 
 let currentUtterance = null;
+let vocesDisponibles = [];
+
+function cargarVoces() {
+  vocesDisponibles = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+}
+if (window.speechSynthesis) {
+  cargarVoces();
+  window.speechSynthesis.onvoiceschanged = cargarVoces; // en muchos navegadores las voces tardan un poco en estar listas
+}
+
+function getMejorVozEspanola() {
+  if (!vocesDisponibles || vocesDisponibles.length === 0) cargarVoces();
+  if (!vocesDisponibles || vocesDisponibles.length === 0) return null;
+
+  // Prioridad: es-ES (España) sobre otras variantes de español, y voces "locales" (normalmente mejor calidad) sobre las remotas
+  const esES = vocesDisponibles.filter(v => v.lang === 'es-ES');
+  const esCualquiera = vocesDisponibles.filter(v => v.lang && v.lang.startsWith('es'));
+
+  const candidatas = esES.length > 0 ? esES : esCualquiera;
+  if (candidatas.length === 0) return null;
+
+  const local = candidatas.find(v => v.localService);
+  return local || candidatas[0];
+}
+
 function toggleSpeakBubble(btn) {
   if (!window.speechSynthesis) {
     alert('Tu navegador no soporta lectura en voz alta.');
@@ -6152,8 +6245,15 @@ function toggleSpeakBubble(btn) {
   if (!text) return;
 
   currentUtterance = new SpeechSynthesisUtterance(text);
-  currentUtterance.lang = 'es-ES';
-  currentUtterance.rate = 1;
+  const voz = getMejorVozEspanola();
+  if (voz) {
+    currentUtterance.voice = voz;
+    currentUtterance.lang = voz.lang;
+  } else {
+    currentUtterance.lang = 'es-ES'; // si el navegador no tiene ninguna voz española instalada, al menos lo intenta con este idioma
+  }
+  currentUtterance.rate = 0.97;  // ligeramente más lento que el default, suena algo más natural
+  currentUtterance.pitch = 1;
   currentUtterance.onend = () => btn.classList.remove('speaking');
   currentUtterance.onerror = () => btn.classList.remove('speaking');
 
