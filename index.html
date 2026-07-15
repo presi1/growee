@@ -142,6 +142,50 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
   border:1.5px solid rgba(82,183,136,.3);background:var(--ink-2);
 }
 .recursos-search-hero input:focus{border-color:var(--moss-light);box-shadow:0 0 0 4px rgba(82,183,136,.12)}
+.recursos-search-suggestions{
+  display:none;position:absolute;top:calc(100% - 2px);left:3rem;right:3rem;z-index:20;
+  background:var(--ink-2);border:1px solid var(--border);border-radius:12px;
+  padding:.4rem 0;box-shadow:0 12px 30px rgba(0,0,0,.3);
+}
+.recursos-suggestion-item{
+  padding:.55rem 1rem;font-size:.85rem;color:var(--inv);cursor:pointer;transition:background .15s;
+}
+.recursos-suggestion-item:hover{background:rgba(82,183,136,.1);color:var(--cream)}
+
+.help-widget-panel{
+  position:fixed;bottom:5.8rem;left:1.5rem;z-index:290;width:340px;max-width:calc(100vw - 3rem);
+  background:var(--ink-2);border:1px solid var(--border);border-radius:18px;
+  box-shadow:0 20px 50px rgba(0,0,0,.4);overflow:hidden;display:flex;flex-direction:column;max-height:480px;
+}
+.help-widget-header{
+  padding:1rem 1.2rem;background:rgba(82,183,136,.08);border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;font-size:.9rem;font-weight:600;color:var(--cream);
+}
+.help-widget-close{background:none;border:none;color:var(--inv-2);cursor:pointer;font-size:1rem;padding:0}
+.help-widget-close:hover{color:var(--cream)}
+.help-widget-body{padding:1rem 1.2rem;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:.8rem;min-height:80px}
+.help-widget-intro{font-size:.83rem;color:var(--inv);line-height:1.6}
+.help-widget-msg{font-size:.85rem;line-height:1.6;color:var(--inv)}
+.help-widget-msg.user{color:var(--cream);font-weight:500;align-self:flex-end;text-align:right}
+.help-widget-cta{
+  display:inline-flex;align-items:center;gap:.4rem;margin-top:.5rem;background:var(--moss-light);
+  color:var(--ink);border:none;padding:.5rem 1rem;border-radius:50px;font-size:.78rem;font-weight:700;
+  cursor:pointer;font-family:'Inter',sans-serif;
+}
+.help-widget-input-row{display:flex;gap:.5rem;padding:.8rem;border-top:1px solid var(--border)}
+.help-widget-input-row input{
+  flex:1;background:var(--mist);border:1px solid var(--border);border-radius:50px;
+  padding:.55rem 1rem;font-size:.82rem;color:var(--cream);font-family:'Inter',sans-serif;
+}
+.help-widget-input-row input:focus{outline:none;border-color:rgba(82,183,136,.5)}
+.help-widget-input-row button{
+  width:36px;height:36px;border-radius:50%;background:var(--moss-light);border:none;color:var(--ink);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;
+}
+.help-widget-input-row button:hover{background:#5fcf96}
+@media(max-width:600px){
+  .help-widget-panel{left:.8rem;bottom:5.2rem;width:calc(100vw - 1.6rem)}
+}
 
 .guia-gated-content{display:none}
 .guia-gated-content.unlocked{display:block}
@@ -1727,11 +1771,12 @@ document.addEventListener('scroll', function(e){
   </div>
 
   <!-- Buscador — el elemento principal para explorar las 30 guías -->
-  <div style="max-width:560px;margin:0 auto;padding:0 3rem 1.3rem">
+  <div style="max-width:560px;margin:0 auto;padding:0 3rem 1.3rem;position:relative">
     <div class="recursos-search-wrap recursos-search-hero">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="recursos-search" placeholder="Busca por tema: feedback, burnout, delegar, límites..." oninput="filtrarRecursosPorTexto(this.value)">
+      <input type="text" id="recursos-search" placeholder="Busca por tema: feedback, burnout, delegar, límites..." oninput="filtrarRecursosPorTexto(this.value)" onfocus="mostrarSugerenciasBusqueda()" onblur="ocultarSugerenciasBusqueda()">
     </div>
+    <div id="recursos-search-suggestions" class="recursos-search-suggestions"></div>
   </div>
 
   <!-- Filtro por módulo, como refinamiento secundario -->
@@ -1956,7 +2001,10 @@ document.addEventListener('scroll', function(e){
     </div>
 
   </div>
-  <p id="recursos-empty" style="display:none;text-align:center;color:var(--inv-2);font-size:.9rem;padding:2rem 0 4rem">No hay guías que coincidan con tu búsqueda.</p>
+  <div id="recursos-empty" style="display:none;text-align:center;color:var(--inv-2);font-size:.9rem;padding:2rem 0 4rem">
+    <p>No hay guías que coincidan con tu búsqueda.</p>
+    <p id="recursos-sugerencia" style="display:none;margin-top:.5rem"></p>
+  </div>
 
   <div style="text-align:center;margin:-1.5rem 0 3rem" id="recursos-ver-todas-wrap">
     <button class="btn-ghost" id="recursos-ver-mas-btn" onclick="verMasRecursos()">Ver 4 más (4/30) →</button>
@@ -4046,6 +4094,28 @@ ol.cbubble-list li{padding-left:.3rem}
 <button id="float-demo-btn" onclick="go('demo')" style="display:flex;position:fixed;bottom:5.8rem;right:1.5rem;z-index:290;align-items:center;gap:.5rem;background:var(--moss-light);color:var(--ink);border:none;padding:.75rem 1.3rem;border-radius:50px;font-size:.85rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(58,158,110,.35);transition:all .2s">
   Solicitar demo
 </button>
+
+<!-- Widget de ayuda de la web pública — no es el chat del producto, es un ayudante de navegación -->
+<button id="float-help-btn" onclick="toggleHelpWidget()" style="display:flex;position:fixed;bottom:1.5rem;left:1.5rem;z-index:290;align-items:center;justify-content:center;width:52px;height:52px;background:var(--ink-2);border:1px solid rgba(82,183,136,.35);border-radius:50%;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:all .2s" title="¿En qué puedo ayudarte?">
+  <svg viewBox="0 0 24 24" fill="none" stroke="var(--moss-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+
+<div id="help-widget-panel" class="help-widget-panel" style="display:none">
+  <div class="help-widget-header">
+    <span>¿En qué puedo ayudarte?</span>
+    <button class="help-widget-close" onclick="toggleHelpWidget()">✕</button>
+  </div>
+  <div class="help-widget-body" id="help-widget-body">
+    <p class="help-widget-intro">Pregúntame lo que necesites saber sobre Growee — te digo dónde encontrarlo.</p>
+  </div>
+  <div class="help-widget-input-row">
+    <input type="text" id="help-widget-input" placeholder="Ej: ¿cuánto cuesta para 200 empleados?" onkeydown="if(event.key==='Enter')enviarPreguntaWidget()">
+    <button onclick="enviarPreguntaWidget()" aria-label="Enviar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
 <button id="back-btn" onclick="goBack()" style="display:none;position:fixed;top:80px;left:1.5rem;z-index:290;align-items:center;gap:.4rem;background:rgba(13,27,42,.85);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--inv);padding:.5rem 1rem;border-radius:50px;font-size:.8rem;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> <span class="back-btn-label">Volver</span>
 </button>
@@ -4148,6 +4218,13 @@ function go(id, _viaHistory) {
 
   const floatDemo = document.getElementById('float-demo-btn');
   if (floatDemo) floatDemo.style.display = (id === 'demo' || APP_PAGES.includes(id)) ? 'none' : 'flex';
+
+  const floatHelp = document.getElementById('float-help-btn');
+  if (floatHelp) floatHelp.style.display = APP_PAGES.includes(id) ? 'none' : 'flex';
+  if (APP_PAGES.includes(id)) {
+    const panel = document.getElementById('help-widget-panel');
+    if (panel) panel.style.display = 'none';
+  }
 
   const scrollBtn = document.getElementById('scroll-top-btn');
   if (scrollBtn && APP_PAGES.includes(id)) scrollBtn.style.display = 'none';
@@ -4555,9 +4632,64 @@ function filtrarRecursos(modulo, btn) {
   aplicarFiltrosRecursos();
 }
 
+let recursosSearchDebounce = null;
 function filtrarRecursosPorTexto(texto) {
   recursosFiltroTexto = texto.trim().toLowerCase();
   aplicarFiltrosRecursos();
+  ocultarSugerenciasBusqueda(true); // en cuanto se escribe algo, se ocultan las sugerencias
+
+  clearTimeout(recursosSearchDebounce);
+  const terminoFinal = recursosFiltroTexto;
+  recursosSearchDebounce = setTimeout(() => {
+    if (terminoFinal.length >= 3) registrarBusquedaRecursos(terminoFinal);
+  }, 800);
+}
+
+function registrarBusquedaRecursos(termino) {
+  try {
+    const key = 'growee_recursos_busquedas';
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[termino] = (data[termino] || 0) + 1;
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) { /* si localStorage falla, simplemente no se guarda el histórico, no rompe la búsqueda */ }
+}
+
+function obtenerSugerenciasPopulares() {
+  const porDefecto = ['feedback', 'burnout', 'delegar'];
+  try {
+    const data = JSON.parse(localStorage.getItem('growee_recursos_busquedas') || '{}');
+    const ordenadas = Object.entries(data).sort((a, b) => b[1] - a[1]).map(([term]) => term);
+    return [...new Set([...ordenadas, ...porDefecto])].slice(0, 3);
+  } catch (e) {
+    return porDefecto;
+  }
+}
+
+function mostrarSugerenciasBusqueda() {
+  const input = document.getElementById('recursos-search');
+  const dropdown = document.getElementById('recursos-search-suggestions');
+  if (!input || !dropdown || input.value.trim() !== '') return;
+
+  const sugerencias = obtenerSugerenciasPopulares();
+  dropdown.innerHTML = '<div style="font-size:.7rem;color:var(--inv-2);padding:.4rem 1rem .3rem">Búsquedas frecuentes</div>'
+    + sugerencias.map((s) => `<div class="recursos-suggestion-item" onmousedown="seleccionarSugerenciaBusqueda('${s}')">🔍 ${s}</div>`).join('');
+  dropdown.style.display = 'block';
+}
+
+function ocultarSugerenciasBusqueda(inmediato) {
+  const dropdown = document.getElementById('recursos-search-suggestions');
+  if (!dropdown) return;
+  if (inmediato) { dropdown.style.display = 'none'; return; }
+  // pequeño margen para que el click (mousedown) en una sugerencia se registre antes de que el blur la oculte
+  setTimeout(() => { dropdown.style.display = 'none'; }, 150);
+}
+
+function seleccionarSugerenciaBusqueda(termino) {
+  const input = document.getElementById('recursos-search');
+  if (input) input.value = termino;
+  recursosFiltroTexto = termino.toLowerCase();
+  aplicarFiltrosRecursos();
+  ocultarSugerenciasBusqueda(true);
 }
 
 function verMasRecursos() {
@@ -4585,6 +4717,53 @@ function distanciaEdicion(a, b) {
     }
   }
   return fila[n];
+}
+
+// Grupos de palabras relacionadas — si alguien busca una palabra que no aparece en ningún
+// título, pero está en el mismo grupo que otra que sí, se lo sugerimos en vez de dejarle
+// con un "sin resultados" sin más contexto.
+const RECURSOS_SINONIMOS = [
+  ['dormir', 'sueño', 'insomnio', 'descansar', 'cronotipo'],
+  ['jefe', 'manager', 'liderazgo', 'liderar'],
+  ['enfado', 'ira', 'rabia', 'conflicto', 'pelea', 'discusión'],
+  ['triste', 'tristeza', 'ánimo', 'bajón'],
+  ['miedo', 'nervios', 'ansiedad', 'nervioso', 'nerviosismo'],
+  ['confianza', 'seguridad', 'inseguridad', 'inseguro'],
+  ['motivación', 'ganas', 'desmotivado', 'desmotivación', 'motivar'],
+  ['cansado', 'agotado', 'quemado', 'burnout', 'cansancio', 'agotamiento'],
+  ['límites', 'límite', 'negarse', 'rechazar'],
+  ['presentación', 'presentar', 'exponer', 'público'],
+  ['ascenso', 'promoción', 'promocionado', 'ascender'],
+  ['feedback', 'crítica', 'retroalimentación'],
+  ['delegar', 'soltar', 'delegación'],
+  ['remoto', 'teletrabajo', 'híbrido', 'distancia'],
+  ['evaluación', 'revisión', 'desempeño'],
+  ['negociar', 'salario', 'sueldo', 'negociación'],
+  ['culpa', 'culpable', 'culposo'],
+  ['cambio', 'mudanza', 'transición'],
+  ['emociones', 'sentimientos', 'sentir', 'emocional'],
+  ['ayuda', 'pedir'],
+  ['impostor'],
+  ['rumiar', 'pensamientos', 'pensar', 'vueltas', 'rumiación'],
+  ['compañero', 'apoyar', 'apoyo'],
+  ['heredar', 'fama'],
+  ['gestionar', 'gestión'],
+  ['reunión', 'reuniones', 'uno a uno'],
+  ['estrés', 'estresado'],
+];
+
+// Dado un término sin resultados, busca en qué grupo cae y prueba con sus alternativas,
+// devolviendo la primera que sí tenga coincidencias.
+function buscarSugerenciaSinonimo(termino) {
+  const grupo = RECURSOS_SINONIMOS.find((g) => g.some((palabra) => distanciaEdicion(termino, palabra) <= 1));
+  if (!grupo) return null;
+  const cards = document.querySelectorAll('.recursos-card');
+  for (const alternativa of grupo) {
+    if (distanciaEdicion(termino, alternativa) <= 1) continue; // no sugerir la misma palabra que ya buscó
+    const hayResultados = Array.from(cards).some((c) => c.dataset.titulo.includes(alternativa));
+    if (hayResultados) return alternativa;
+  }
+  return null;
 }
 
 function coincideConTolerancia(busqueda, titulo) {
@@ -4624,7 +4803,20 @@ function aplicarFiltrosRecursos() {
   });
 
   const emptyMsg = document.getElementById('recursos-empty');
+  const sugerenciaEl = document.getElementById('recursos-sugerencia');
   if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+  if (visibleCount === 0 && recursosFiltroTexto && sugerenciaEl) {
+    const primeraPalabra = recursosFiltroTexto.split(/\s+/)[0];
+    const sugerencia = buscarSugerenciaSinonimo(primeraPalabra);
+    if (sugerencia) {
+      sugerenciaEl.style.display = 'block';
+      sugerenciaEl.innerHTML = `¿Quisiste decir <a onclick="document.getElementById('recursos-search').value='${sugerencia}';filtrarRecursosPorTexto('${sugerencia}')" style="color:var(--moss-light);cursor:pointer;text-decoration:underline">"${sugerencia}"</a>?`;
+    } else {
+      sugerenciaEl.style.display = 'none';
+    }
+  } else if (sugerenciaEl) {
+    sugerenciaEl.style.display = 'none';
+  }
 
   const verTodasWrap = document.getElementById('recursos-ver-todas-wrap');
   const verMasBtn = document.getElementById('recursos-ver-mas-btn');
@@ -6287,6 +6479,63 @@ let isRecording = false;
 
 function getSpeechRecognitionClass() {
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+}
+
+function toggleHelpWidget() {
+  const panel = document.getElementById('help-widget-panel');
+  if (!panel) return;
+  const abriendo = panel.style.display === 'none';
+  panel.style.display = abriendo ? 'flex' : 'none';
+  if (abriendo) {
+    const input = document.getElementById('help-widget-input');
+    if (input) setTimeout(() => input.focus(), 100);
+  }
+}
+
+async function enviarPreguntaWidget() {
+  const input = document.getElementById('help-widget-input');
+  const body = document.getElementById('help-widget-body');
+  const pregunta = input ? input.value.trim() : '';
+  if (!pregunta || !body) return;
+
+  const userMsg = document.createElement('div');
+  userMsg.className = 'help-widget-msg user';
+  userMsg.textContent = pregunta;
+  body.appendChild(userMsg);
+
+  input.value = '';
+  input.disabled = true;
+
+  const loadingMsg = document.createElement('div');
+  loadingMsg.className = 'help-widget-msg';
+  loadingMsg.textContent = 'Pensando...';
+  body.appendChild(loadingMsg);
+  body.scrollTop = body.scrollHeight;
+
+  try {
+    const res = await fetch('/.netlify/functions/route-visitor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pregunta }),
+    });
+
+    const data = await res.json();
+    loadingMsg.textContent = data.respuesta || 'No he podido procesar tu pregunta. Prueba a reformularla.';
+
+    if (data.destino) {
+      const cta = document.createElement('button');
+      cta.className = 'help-widget-cta';
+      cta.textContent = (data.destino_label || 'Ver más') + ' →';
+      cta.onclick = () => { go(data.destino); toggleHelpWidget(); };
+      body.appendChild(cta);
+    }
+  } catch (e) {
+    console.error('Error en el widget de ayuda:', e);
+    loadingMsg.textContent = 'No se pudo procesar tu pregunta. Comprueba tu conexión e inténtalo de nuevo.';
+  } finally {
+    input.disabled = false;
+    body.scrollTop = body.scrollHeight;
+  }
 }
 
 function toggleVoiceRecording() {
