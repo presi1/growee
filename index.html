@@ -151,6 +151,12 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
   padding:.55rem 1rem;font-size:.85rem;color:var(--inv);cursor:pointer;transition:background .15s;
 }
 .recursos-suggestion-item:hover{background:rgba(82,183,136,.1);color:var(--cream)}
+.recursos-sugerencia-inline{
+  margin-top:.6rem;text-align:center;font-size:.85rem;color:var(--inv);
+  background:rgba(82,183,136,.08);border:1px solid rgba(82,183,136,.2);
+  border-radius:10px;padding:.6rem 1rem;
+}
+.recursos-sugerencia-inline a{color:var(--moss-light);font-weight:700;cursor:pointer;text-decoration:underline}
 
 .help-widget-panel{
   position:fixed;bottom:5.8rem;left:1.5rem;z-index:290;width:340px;max-width:calc(100vw - 3rem);
@@ -1777,6 +1783,7 @@ document.addEventListener('scroll', function(e){
       <input type="text" id="recursos-search" placeholder="Busca por tema: feedback, burnout, delegar, límites..." oninput="filtrarRecursosPorTexto(this.value)" onfocus="mostrarSugerenciasBusqueda()" onblur="ocultarSugerenciasBusqueda()">
     </div>
     <div id="recursos-search-suggestions" class="recursos-search-suggestions"></div>
+    <div id="recursos-sugerencia-inline" class="recursos-sugerencia-inline" style="display:none"></div>
   </div>
 
   <!-- Filtro por módulo, como refinamiento secundario -->
@@ -2003,7 +2010,6 @@ document.addEventListener('scroll', function(e){
   </div>
   <div id="recursos-empty" style="display:none;text-align:center;color:var(--inv-2);font-size:.9rem;padding:2rem 0 4rem">
     <p>No hay guías que coincidan con tu búsqueda.</p>
-    <p id="recursos-sugerencia" style="display:none;margin-top:.5rem"></p>
   </div>
 
   <div style="text-align:center;margin:-1.5rem 0 3rem" id="recursos-ver-todas-wrap">
@@ -4803,14 +4809,14 @@ function aplicarFiltrosRecursos() {
   });
 
   const emptyMsg = document.getElementById('recursos-empty');
-  const sugerenciaEl = document.getElementById('recursos-sugerencia');
+  const sugerenciaEl = document.getElementById('recursos-sugerencia-inline');
   if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
   if (visibleCount === 0 && recursosFiltroTexto && sugerenciaEl) {
     const primeraPalabra = recursosFiltroTexto.split(/\s+/)[0];
     const sugerencia = buscarSugerenciaSinonimo(primeraPalabra);
     if (sugerencia) {
       sugerenciaEl.style.display = 'block';
-      sugerenciaEl.innerHTML = `¿Quisiste decir <a onclick="document.getElementById('recursos-search').value='${sugerencia}';filtrarRecursosPorTexto('${sugerencia}')" style="color:var(--moss-light);cursor:pointer;text-decoration:underline">"${sugerencia}"</a>?`;
+      sugerenciaEl.innerHTML = `¿Quisiste decir <a onclick="document.getElementById('recursos-search').value='${sugerencia}';filtrarRecursosPorTexto('${sugerencia}')">"${sugerencia}"</a>?`;
     } else {
       sugerenciaEl.style.display = 'none';
     }
