@@ -792,6 +792,10 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
   /* Client cards */
   [style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:1fr 1fr!important}
 
+  /* Recursos: el grid pasa a 1 columna, así que el margen negativo del contador
+     "Ver X más" (pensado para 2 columnas) pisa la última guía visible */
+  #recursos-ver-todas-wrap{margin-top:1.2rem!important}
+
   /* Benefits */
   .h-ben-panel.on{grid-template-columns:1fr!important}
 
@@ -1158,8 +1162,8 @@ document.addEventListener('scroll', function(e){
   <!-- Por qué Growee -->
   <div style="max-width:1160px;margin:0 auto;padding:4rem 3rem 4rem">
     <div style="text-align:center;margin-bottom:3rem">
-      <div class="h-section-eye">Por qué Growee</div>
-      <h2 class="h-section-h2" style="font-size:3.6rem;line-height:1.1">No es otro chat de IA<br><em>genérico como ChatGPT o Claude</em></h2>
+      <div class="h-section-eye" style="font-size:1.35rem;letter-spacing:.02em">Por qué Growee</div>
+      <h2 class="h-section-h2" style="font-size:2.3rem;line-height:1.18">No es otro chat de IA<br><em>genérico como ChatGPT o Claude</em></h2>
       <p class="lead" style="margin:1.2rem auto 0;max-width:640px">Los módulos ya los has visto en el menú de arriba. Esto es lo que hay detrás, y por qué importa de verdad para tu empresa.</p>
     </div>
 
@@ -3818,6 +3822,9 @@ ol.cbubble-list li{padding-left:.3rem}
   .chat-suggs{padding:.5rem 1rem 0}
   .cbubble{max-width:88%}
   .chat-mode-bar{padding:.65rem 1rem}
+  /* iOS Safari hace zoom automático al enfocar inputs con font-size menor a 16px,
+     lo que deja el botón de enviar fuera de la vista visible */
+  .chat-ta{font-size:16px}
 }
 </style>
 
@@ -4141,14 +4148,14 @@ ol.cbubble-list li{padding-left:.3rem}
   @media(max-width:800px){
     #float-demo-btn{padding:.7rem 1.1rem;font-size:.8rem;bottom:4.6rem;right:1rem}
     #back-btn{
-      top:70px;left:.8rem;width:38px;height:38px;padding:0;
+      top:70px;left:.8rem;width:34px;height:34px;padding:0;
       justify-content:center;border-radius:50%;
-      background:rgba(13,27,42,.72);backdrop-filter:blur(10px);
-      border:1px solid rgba(248,246,241,.16);color:var(--cream);
-      box-shadow:0 2px 10px rgba(0,0,0,.25);
+      background:rgba(15,26,40,.94);backdrop-filter:blur(10px);
+      border:1.5px solid rgba(82,183,136,.55);color:var(--moss-light);
+      box-shadow:0 3px 14px rgba(0,0,0,.45);
     }
-    #back-btn svg{width:16px;height:16px}
-    #back-btn:hover{border-color:rgba(248,246,241,.3)}
+    #back-btn svg{width:15px;height:15px}
+    #back-btn:hover{border-color:var(--moss-light)}
     #back-btn .back-btn-label{display:none}
   }
 
