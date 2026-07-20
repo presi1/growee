@@ -54,7 +54,7 @@ nav{
 .logo span{color:var(--moss-light)}
 .nav-links{display:flex;gap:.15rem;align-items:center;justify-content:center;flex:1 1 auto;min-width:0}
 .nav-link{
-  padding:.5rem .75rem;border-radius:8px;font-size:.83rem;white-space:nowrap;
+  padding:.5rem .75rem;border-radius:8px;font-size:.98rem;white-space:nowrap;
   color:var(--inv);cursor:pointer;transition:all .18s;background:none;border:none;
   display:flex;align-items:center;gap:.3rem;flex-shrink:0;
 }
@@ -889,7 +889,7 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
           <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2)">Para empleados</div>
         </div>
         <div class="dd-item" onclick="go('prod-bienestar');closeDD()">
-          <div class="dd-icon terra">🧡</div>
+          <div class="dd-icon terra" style="color:var(--terra)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
           <div class="dd-text"><h5>Apoyo Emocional</h5><p>Bienestar, estrés, burnout y gestión emocional</p></div>
         </div>
         <div class="dd-item" onclick="go('prod-coaching');closeDD()">
@@ -900,18 +900,21 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
           <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2)">Para empresas</div>
         </div>
         <div class="dd-item" onclick="go('prod-rrhh');closeDD()">
-          <div class="dd-icon moss">📊</div>
+          <div class="dd-icon moss" style="color:var(--moss-light)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div>
           <div class="dd-text"><h5>Panel de RRHH</h5><p>Índices agregados y anonimizados, sin acceso a conversaciones</p></div>
         </div>
         <div class="dd-item" onclick="go('precios');closeDD()">
           <div class="dd-icon gold">€</div>
-          <div class="dd-text"><h5>Precios</h5><p>Desde 10€/empleado/mes, sin permanencia mínima</p></div>
+          <div class="dd-text"><h5>Precios</h5><p>Desde 12€/empleado/mes, sin permanencia mínima</p></div>
+        </div>
+        <div class="dd-item" onclick="go('prod-aseguradoras');closeDD()">
+          <div class="dd-icon gold" style="color:var(--gold)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="5" y1="21" x2="5" y2="10"/><line x1="19" y1="21" x2="19" y2="10"/><polygon points="12 3 21 9 3 9"/></svg></div>
+          <div class="dd-text"><h5>Para aseguradoras</h5><p>Growee como valor añadido dentro de la póliza de salud</p></div>
         </div>
 
       </div>
     </div>
     <button class="nav-link" onclick="go('como-funciona')">Cómo funciona</button>
-    <button class="nav-link" onclick="go('casos')">Casos de éxito</button>
     <button class="nav-link" onclick="go('recursos')">Recursos</button>
   </div>
   <div class="nav-right">
@@ -935,9 +938,9 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
     <div class="mobile-nav-section">Para empresas</div>
     <button class="mobile-nav-item" onclick="go('prod-rrhh');closeMobileMenu()">📊 Panel de RRHH</button>
     <button class="mobile-nav-item" onclick="go('precios');closeMobileMenu()">€ Precios</button>
+    <button class="mobile-nav-item" onclick="go('prod-aseguradoras');closeMobileMenu()">🏦 Para aseguradoras</button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-item" onclick="go('como-funciona');closeMobileMenu()">⚙️ Cómo funciona</button>
-    <button class="mobile-nav-item" onclick="go('casos');closeMobileMenu()">🏆 Casos de éxito</button>
     <button class="mobile-nav-item" onclick="go('recursos');closeMobileMenu()">📚 Recursos</button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-item" onclick="go('login');closeMobileMenu()">Acceder</button>
@@ -1084,6 +1087,7 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
   border-radius:16px;padding:1.6rem 1.4rem;
 }
 .ben-icon{font-size:1.6rem;margin-bottom:.9rem}
+.ben-icon svg{width:26px;height:26px}
 .ben-title{font-size:.93rem;font-weight:600;margin-bottom:.4rem}
 .ben-desc{font-size:.81rem;color:var(--inv);line-height:1.65}
 .ben-card.moss-border{border-top:2px solid rgba(82,183,136,.4)}
@@ -1145,11 +1149,42 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
     <div class="h-actions" style="justify-content:center;margin-bottom:1.2rem">
       <button class="h-cta" onclick="go('demo')">Solicitar demo</button>
     </div>
-    <p style="font-size:.78rem;color:rgba(248,246,241,.65);max-width:560px;margin:0 auto 2rem">643.000 procesos de baja por salud mental en España en 2024. Duración media: 116 días — más del doble que una baja laboral general. <span style="color:rgba(248,246,241,.45)">— PIMEC / INSST, 2026</span></p>
   </div>
 </div>
 <script>
 let lastScrollEl = window;
+
+/* Conteo animado de cifras al entrar en pantalla */
+function initCountUps(root) {
+  const els = (root || document).querySelectorAll('.js-countup:not(.js-counted)');
+  if (!els.length) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      el.classList.add('js-counted');
+      obs.unobserve(el);
+      const to = parseFloat(el.dataset.to || '0');
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const useEs = el.dataset.format === 'es';
+      const duration = 1400;
+      const start = performance.now();
+      function frame(now) {
+        const p = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(to * eased);
+        const display = useEs ? val.toLocaleString('es-ES') : String(val);
+        el.textContent = prefix + display + suffix;
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    });
+  }, { threshold: 0.4 });
+  els.forEach((el) => obs.observe(el));
+}
+document.addEventListener('DOMContentLoaded', () => initCountUps());
+
 document.addEventListener('scroll', function(e){
   const btn = document.getElementById('scroll-top-btn');
   if (typeof APP_PAGES !== 'undefined' && APP_PAGES.includes(currentPage)) {
@@ -1186,19 +1221,31 @@ document.addEventListener('scroll', function(e){
       <div style="text-align:center;margin-bottom:2.3rem">
         <div class="h-section-eye">Qué es Growee</div>
         <h3 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300">Metodología científica, no una capa de<br>prompt sobre un modelo genérico</h3>
-        <p class="lead" style="margin:1rem auto 0;max-width:600px">Dos módulos construidos y revisados por psicólogos colegiados y coaches certificados ICF.</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-bottom:1.3rem">
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
-          <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;margin-bottom:.6rem;color:var(--moss-light)">Apoyo emocional</h4>
-          <p style="font-size:.85rem;color:var(--inv);line-height:1.7">Gestión del estrés y la ansiedad laboral. Prevención y detección temprana de burnout. Conflictos interpersonales. Conciliación de vida personal y profesional. Técnicas de Terapia Cognitivo-Conductual, Mindfulness (MBSR) y Terapia de Aceptación y Compromiso (ACT).</p>
+          <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;margin-bottom:.9rem;color:var(--moss-light)">Apoyo emocional</h4>
+          <div style="display:flex;flex-direction:column;gap:.65rem">
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Gestión del estrés y la ansiedad laboral</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Prevención y detección temprana de burnout</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Conflictos interpersonales</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Conciliación de vida personal y profesional</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Técnicas de TCC, Mindfulness (MBSR) y ACT</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Deriva activamente a una red de profesionales cuando la situación requiere atención clínica — no diagnostica ni sustituye a un especialista</div>
+          </div>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
-          <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;margin-bottom:.6rem;color:var(--gold)">Coaching profesional</h4>
-          <p style="font-size:.85rem;color:var(--inv);line-height:1.7">Liderazgo y gestión de equipos. Comunicación y conversaciones difíciles. Delegación, feedback y motivación. Transiciones de carrera y promociones. Metodología GROW de John Whitmore, estándares ICF y modelo Co-Active.</p>
+          <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;margin-bottom:.9rem;color:var(--gold)">Coaching profesional</h4>
+          <div style="display:flex;flex-direction:column;gap:.65rem">
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Liderazgo y gestión de equipos</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Comunicación y conversaciones difíciles</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Delegación, feedback y motivación</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Transiciones de carrera y promociones</div>
+            <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Metodología GROW de John Whitmore, estándares ICF y modelo Co-Active</div>
+          </div>
         </div>
       </div>
-      <p style="font-size:.8rem;color:var(--inv);text-align:center;max-width:680px;margin:0 auto;line-height:1.7">Cada respuesta cita la metodología y el autor en los que se apoya. Cuando una situación requiere atención clínica, Growee deriva activamente a una red de profesionales — no diagnostica ni sustituye a un especialista.</p>
+      <p style="font-size:1.15rem;font-family:'Fraunces',serif;color:var(--cream);text-align:center;max-width:680px;margin:0 auto;line-height:1.5">Cada respuesta cita la metodología y el autor en los que se apoya.</p>
     </div>
   </div>
 
@@ -1213,26 +1260,26 @@ document.addEventListener('scroll', function(e){
     <!-- 5 diferenciales frente a un chat de IA suelto -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-bottom:3.5rem">
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
-        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">🎯</div>
-        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Consistencia de comportamiento, por diseño</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">El sistema está obligado a nombrar siempre la metodología aplicada, citar al autor y limitar el número de preguntas antes de proponer algo concreto, de una forma predecible y sin improvisar. Growee la hace consistente cada vez.</p></div>
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg></div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Consistencia de comportamiento, por diseño</h4><p style="font-size:.95rem;color:var(--inv);line-height:1.65">El sistema está obligado a nombrar siempre la metodología aplicada, citar al autor y limitar el número de preguntas antes de proponer algo concreto, de una forma predecible y sin improvisar. Growee la hace consistente cada vez.</p></div>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
-        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">🧠</div>
-        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Memoria persistente entre sesiones</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">Resumen evolutivo del historial vinculado a la cuenta de empresa. Es infraestructura real, no una configuración puntual.</p></div>
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3a3 3 0 0 0-3 3v.3A3 3 0 0 0 4 9v.5a3 3 0 0 0 1 5.6 3 3 0 0 0 3 3.4 3 3 0 0 0 3-2.3V6a3 3 0 0 0-1.5-3z"/><path d="M14.5 3a3 3 0 0 1 3 3v.3A3 3 0 0 1 20 9v.5a3 3 0 0 1-1 5.6 3 3 0 0 1-3 3.4 3 3 0 0 1-3-2.3V6a3 3 0 0 1 1.5-3z"/></svg></div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Memoria persistente entre sesiones</h4><p style="font-size:.95rem;color:var(--inv);line-height:1.65">Resumen evolutivo del historial vinculado a la cuenta de empresa. Es infraestructura real, no una configuración puntual.</p></div>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
-        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">🏢</div>
-        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Infraestructura B2B completa</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">Cuenta de empresa, onboarding por CSV, panel de RRHH con datos agregados y acceso individual por empleado. Nada de esto existe en una cuenta personal de asistente.</p></div>
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="7" x2="8" y2="7.01"/><line x1="12" y1="7" x2="12" y2="7.01"/><line x1="16" y1="7" x2="16" y2="7.01"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="9" y1="21" x2="9" y2="16"/><line x1="15" y1="21" x2="15" y2="16"/></svg></div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Infraestructura B2B completa</h4><p style="font-size:.95rem;color:var(--inv);line-height:1.65">Cuenta de empresa, onboarding por CSV, panel de RRHH con datos agregados y acceso individual por empleado. Nada de esto existe en una cuenta personal de asistente.</p></div>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
-        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem">📚</div>
-        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Contenido validado por profesionales</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">100 metodologías con nombre y autor citado, revisadas por profesionales cualificados. No un catálogo generado una vez y olvidado.</p></div>
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Contenido validado por profesionales</h4><p style="font-size:.95rem;color:var(--inv);line-height:1.65">100 metodologías con nombre y autor citado, revisadas por profesionales cualificados. No un catálogo generado una vez y olvidado.</p></div>
       </div>
     </div>
     <div style="max-width:700px;margin:-2rem auto 3.5rem;text-align:center">
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;text-align:left">
-        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem;flex-shrink:0">🤝</div>
-        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Un partner real cuando la IA no basta</h4><p style="font-size:.83rem;color:var(--inv);line-height:1.65">Acuerdo de derivación con una red de profesionales para cerrar el ciclo en casos que lo requieran — la IA sabe reconocer sus propios límites.</p></div>
+        <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Un partner real cuando la IA no basta</h4><p style="font-size:.95rem;color:var(--inv);line-height:1.65">Acuerdo de derivación con una red de profesionales para cerrar el ciclo en casos que lo requieran — la IA sabe reconocer sus propios límites.</p></div>
       </div>
     </div>
 
@@ -1245,23 +1292,23 @@ document.addEventListener('scroll', function(e){
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:1.3rem">
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
-          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">643.000</div>
+          <div class="js-countup" data-to="643000" data-format="es" style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">0</div>
           <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">procesos de baja por salud mental en España, el doble que en 2019</div>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
-          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--gold)">116 días</div>
+          <div class="js-countup" data-to="116" data-suffix=" días" style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--gold)">0 días</div>
           <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">duración media de una baja, frente a 45 de una baja general</div>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
-          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--terra)">≈13.000 €</div>
+          <div class="js-countup" data-to="13000" data-format="es" data-prefix="≈" data-suffix=" €" style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--terra)">≈0 €</div>
           <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">coste estimado por caso para la empresa</div>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
-          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">3–5%</div>
+          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">3–5%<span style="font-size:1.1rem;vertical-align:super;color:var(--inv-2)">*</span></div>
           <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">utilización real de un EAP tradicional</div>
         </div>
       </div>
-      <p style="font-size:.85rem;color:var(--inv);text-align:center;max-width:680px;margin:0 auto;line-height:1.7">El motivo no es la falta de necesidad. Son tres barreras estructurales: estigma y miedo a que la empresa se entere, listas de espera en el sistema público, y sesiones limitadas sin continuidad real.</p>
+      <p style="font-size:1rem;color:var(--cream);text-align:center;max-width:700px;margin:0 auto;line-height:1.75;background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.18);border-radius:14px;padding:1.3rem 1.6rem"><strong style="color:var(--moss-light)">*</strong> El motivo no es la falta de necesidad. Son tres barreras estructurales: estigma y miedo a que la empresa se entere, listas de espera en el sistema público, y sesiones limitadas sin continuidad real. <strong style="color:var(--cream)">Growee elimina las tres a la vez:</strong> es privado por diseño, no hay listas de espera porque está disponible 24/7, y el acceso es ilimitado sin límite de sesiones.</p>
     </div>
 
     <!-- Comparativa -->
@@ -1271,26 +1318,26 @@ document.addEventListener('scroll', function(e){
         <h3 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300">La única combinación de IA y profesionales<br>humanos, en un solo producto</h3>
       </div>
       <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:.85rem;min-width:560px">
+        <table style="width:100%;border-collapse:collapse;font-size:.98rem;min-width:560px">
           <thead>
             <tr style="border-bottom:1px solid var(--border)">
               <th style="text-align:left;padding:.8rem;color:var(--inv-2);font-weight:400"></th>
-              <th style="text-align:center;padding:.8rem;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:400">Growee</th>
+              <th style="text-align:center;padding:.8rem;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:400;border-top:2px solid var(--moss-light);border-bottom:2px solid var(--moss-light)">Growee</th>
               <th style="text-align:center;padding:.8rem;color:var(--inv-2);font-weight:400">IA genérica</th>
               <th style="text-align:center;padding:.8rem;color:var(--inv-2);font-weight:400">Presencial</th>
             </tr>
           </thead>
           <tbody>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Metodología científica citada</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">No</td><td style="text-align:center;color:var(--inv-2)">Sí</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Disponible 24/7</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">Sí</td><td style="text-align:center;color:var(--inv-2)">No</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Confidencialidad gestionada ante RRHH</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">—</td><td style="text-align:center;color:var(--inv-2)">—</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Acceso inmediato, sin listas de espera</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">Sí</td><td style="text-align:center;color:var(--inv-2)">No</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Deriva a profesional real si hace falta</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">No</td><td style="text-align:center;color:var(--inv-2)">—</td></tr>
-            <tr><td style="padding:.8rem;color:var(--inv)">Precio aproximado por persona</td><td style="text-align:center;color:var(--moss-light);font-family:'Fraunces',serif">10–16 €/mes</td><td style="text-align:center;color:var(--inv-2);font-family:'Fraunces',serif">20–25 €/mes</td><td style="text-align:center;color:var(--inv-2);font-family:'Fraunces',serif">50–300 €/sesión</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Metodología científica citada</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td><td style="text-align:center;color:var(--moss-light)">Sí</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Disponible 24/7</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Confidencialidad gestionada ante RRHH</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">—</td><td style="text-align:center;color:var(--inv-2)">—</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Acceso inmediato, sin listas de espera</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td></tr>
+            <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Deriva a profesional real si hace falta</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td><td style="text-align:center;color:var(--inv-2)">—</td></tr>
+            <tr><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Precio aproximado por persona</td><td style="text-align:center;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light);border-bottom:2px solid var(--moss-light)">12–20 €/mes</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">20–25 €/mes</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">50–300 €/sesión</td></tr>
           </tbody>
         </table>
       </div>
-      <p style="font-size:.8rem;color:var(--inv);text-align:center;max-width:600px;margin:1.3rem auto 0">Ningún competidor combina hoy IA y profesionales humanos ofreciendo apoyo emocional y coaching a la vez.</p>
+      <p style="font-size:1rem;color:var(--cream);text-align:center;max-width:600px;margin:1.5rem auto 0">Ningún competidor combina hoy IA y profesionales humanos ofreciendo apoyo emocional y coaching a la vez.</p>
     </div>
 
     <!-- El retorno, en cifras -->
@@ -1299,25 +1346,25 @@ document.addEventListener('scroll', function(e){
         <div>
           <div class="h-section-eye">El retorno, en cifras</div>
           <h3 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;margin-bottom:1rem">Hasta un 98% menos coste<br>que el modelo presencial</h3>
-          <p style="font-size:.85rem;color:var(--inv);line-height:1.75">Empresa de 500 empleados, 10% de la plantilla usando cada servicio una vez por semana, con el mismo patrón de uso.</p>
-          <p style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">En una empresa de 250 empleados, el coste anual estimado de bajas por salud mental es de ≈91.000 €.</p>
+          <p style="font-size:1rem;color:var(--cream);line-height:1.75">Empresa de 500 empleados, 10% de la plantilla usando cada servicio una vez por semana, con el mismo patrón de uso.</p>
+          <p style="font-size:.95rem;color:var(--inv);margin-top:1rem">En una empresa de 250 empleados, el coste anual estimado de bajas por salud mental es de ≈91.000 €.</p>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
           <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
-            <span style="font-size:.82rem;color:var(--inv)">Apoyo emocional privado<br><span style="font-size:.72rem;color:var(--inv-2)">50 personas × 70 €/sesión</span></span>
-            <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">168.000 €/año</span>
+            <span style="font-size:.92rem;color:var(--cream)">Apoyo emocional privado<br><span style="font-size:.8rem;color:var(--inv)">50 personas × 70 €/sesión</span></span>
+            <span class="js-countup" data-to="168000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--terra)">0 €/año</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
-            <span style="font-size:.82rem;color:var(--inv)">Coaching privado<br><span style="font-size:.72rem;color:var(--inv-2)">50 personas × 150 €/sesión</span></span>
-            <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">360.000 €/año</span>
+            <span style="font-size:.92rem;color:var(--cream)">Coaching privado<br><span style="font-size:.8rem;color:var(--inv)">50 personas × 150 €/sesión</span></span>
+            <span class="js-countup" data-to="360000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--terra)">0 €/año</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
-            <span style="font-size:.82rem;color:var(--inv)">Total modelo tradicional</span>
-            <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">528.000 €/año</span>
+            <span style="font-size:.92rem;color:var(--cream)">Total modelo tradicional</span>
+            <span class="js-countup" data-to="528000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--terra)">0 €/año</span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:.85rem;color:var(--cream)">Growee — 2 módulos, misma plantilla</span>
-            <span style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--moss-light)">9.600 €/año</span>
+            <span style="font-size:.98rem;color:var(--cream)">Growee — 2 módulos, misma plantilla</span>
+            <span class="js-countup" data-to="9600" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-light)">0 €/año</span>
           </div>
         </div>
       </div>
@@ -1328,7 +1375,7 @@ document.addEventListener('scroll', function(e){
       <div style="max-width:760px;margin:0 auto;text-align:center">
         <div class="h-section-eye">Marco regulatorio</div>
         <h3 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;margin-bottom:1rem">La evaluación psicosocial ha dejado<br>de ser una recomendación</h3>
-        <p style="font-size:.85rem;color:var(--inv);line-height:1.75">La reforma de la Ley de Prevención de Riesgos Laborales incorpora por primera vez la salud mental y los riesgos psicosociales como categoría propia. La evaluación psicosocial es ahora obligación legal inspeccionable para empresas de cualquier tamaño, con sanciones de entre 2.045 € y <strong style="color:var(--cream)">819.780 €</strong> por incumplimiento.</p>
+        <p style="font-size:1rem;color:var(--cream);line-height:1.75">La reforma de la Ley de Prevención de Riesgos Laborales incorpora por primera vez la salud mental y los riesgos psicosociales como categoría propia. La evaluación psicosocial es ahora obligación legal inspeccionable para empresas de cualquier tamaño, con sanciones de entre 2.045 € y 819.780 € por incumplimiento.</p>
       </div>
     </div>
   </div>
@@ -1399,50 +1446,24 @@ document.addEventListener('scroll', function(e){
     <button class="h-ben-tab" onclick="benTab('empresa',this,'gold')">Para la empresa</button>
   </div>
   <div class="h-ben-panel on" id="bp-empleado">
-    <div class="ben-card moss-border"><div class="ben-icon">🕐</div><div class="ben-title">Disponible 24/7</div><div class="ben-desc">Apoyo emocional y coaching cuando lo necesiten, sin depender de horarios ni disponibilidad.</div></div>
-    <div class="ben-card moss-border"><div class="ben-icon">🔒</div><div class="ben-title">Completamente confidencial</div><div class="ben-desc">Nadie en la empresa ve el contenido de las conversaciones. Tu equipo lo sabe con certeza.</div></div>
-    <div class="ben-card moss-border"><div class="ben-icon">🧠</div><div class="ben-title">IA que te recuerda</div><div class="ben-desc">El historial persiste entre sesiones. Recuerda lo importante para acompañar el progreso de verdad.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg></div><div class="ben-title">Disponible 24/7</div><div class="ben-desc">Apoyo emocional y coaching cuando lo necesiten, sin depender de horarios ni disponibilidad.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="ben-title">Completamente confidencial</div><div class="ben-desc">Nadie en la empresa ve el contenido de las conversaciones. Tu equipo lo sabe con certeza.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3a3 3 0 0 0-3 3v.3A3 3 0 0 0 4 9v.5a3 3 0 0 0 1 5.6 3 3 0 0 0 3 3.4 3 3 0 0 0 3-2.3V6a3 3 0 0 0-1.5-3z"/><path d="M14.5 3a3 3 0 0 1 3 3v.3A3 3 0 0 1 20 9v.5a3 3 0 0 1-1 5.6 3 3 0 0 1-3 3.4 3 3 0 0 1-3-2.3V6a3 3 0 0 1 1.5-3z"/></svg></div><div class="ben-title">IA que te recuerda</div><div class="ben-desc">El historial persiste entre sesiones. Recuerda lo importante para acompañar el progreso de verdad.</div></div>
   </div>
   <div class="h-ben-panel" id="bp-empresa">
-    <div class="ben-card gold-border"><div class="ben-icon">⚡</div><div class="ben-title">Listo en 48 horas</div><div class="ben-desc">Importas la plantilla con un CSV y en 48h todo el equipo tiene acceso. Sin IT, sin instalaciones.</div></div>
-    <div class="ben-card gold-border"><div class="ben-icon">💰</div><div class="ben-title">Hasta 98% menos coste</div><div class="ben-desc">Una baja por salud mental cuesta a la empresa ≈13.000 € de media. Growee cuesta 10–16 €/empleado/mes, con acceso ilimitado.</div></div>
-    <div class="ben-card gold-border"><div class="ben-icon">🏆</div><div class="ben-title">Factor de retención</div><div class="ben-desc">El 81% de los profesionales en España considera el paquete de beneficios decisivo para permanecer en una empresa.</div></div>
-    <div class="ben-card gold-border"><div class="ben-icon">🔒</div><div class="ben-title">Confidencialidad gestionada</div><div class="ben-desc">La empresa activa la plataforma y ve datos agregados. El contenido de cada conversación pertenece solo al empleado.</div></div>
-    <div class="ben-card gold-border"><div class="ben-icon">⚖️</div><div class="ben-title">Cumplimiento normativo</div><div class="ben-desc">La reforma de la Ley de PRL convierte la evaluación psicosocial en obligación legal, con sanciones de hasta 819.780 €.</div></div>
-    <div class="ben-card gold-border"><div class="ben-icon">🤝</div><div class="ben-title">Un modelo diferencial</div><div class="ben-desc">Ningún competidor combina IA y profesionales humanos en apoyo emocional y coaching en un solo producto.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 11 14 10 22 21 10 13 10 13 2"/></svg></div><div class="ben-title">Listo en 48 horas</div><div class="ben-desc">Importas la plantilla con un CSV y en 48h todo el equipo tiene acceso. Sin IT, sin instalaciones.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.2a4.2 4.2 0 1 0 0 7.6"/><line x1="7" y1="10.3" x2="13.5" y2="10.3"/><line x1="7" y1="13.3" x2="13.5" y2="13.3"/></svg></div><div class="ben-title">Hasta 98% menos coste</div><div class="ben-desc">Una baja por salud mental cuesta a la empresa ≈13.000 € de media. Growee cuesta 12–20 €/empleado/mes, con acceso ilimitado.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M8.3 12.6 7 21l5-3 5 3-1.3-8.4"/></svg></div><div class="ben-title">Factor de retención</div><div class="ben-desc">El 81% de los profesionales en España considera el paquete de beneficios decisivo para permanecer en una empresa.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="ben-title">Confidencialidad gestionada</div><div class="ben-desc">La empresa activa la plataforma y ve datos agregados. El contenido de cada conversación pertenece solo al empleado.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><line x1="5" y1="7" x2="19" y2="7"/><path d="M5 7l-3 6a3.5 3.5 0 0 0 6 0z"/><path d="M19 7l-3 6a3.5 3.5 0 0 0 6 0z"/></svg></div><div class="ben-title">Cumplimiento normativo</div><div class="ben-desc">La reforma de la Ley de PRL convierte la evaluación psicosocial en obligación legal, con sanciones de hasta 819.780 €.</div></div>
+    <div class="ben-card gold-border"><div class="ben-icon" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="ben-title">Un modelo diferencial</div><div class="ben-desc">Ningún competidor combina IA y profesionales humanos en apoyo emocional y coaching en un solo producto.</div></div>
   </div>
 </div>
 
 <!-- ═══════ MÉTRICAS ═══════ -->
-<div class="h-metrics">
-  <div class="h-metrics-inner">
-    <div>
-      <div class="h-section-eye">Transparencia</div>
-      <h2 class="h-section-h2" style="margin-bottom:1rem">Todavía no disponemos de<br><em>12 meses de datos propios que mostrar</em></h2>
-      <p style="color:var(--inv);font-size:.9rem;line-height:1.75;margin-bottom:2rem">Somos una plataforma joven y preferimos comunicarlo con claridad antes que anticipar cifras que no hemos medido. Lo que sí puede verse en la demo es el producto funcionando sobre un caso de uso real de tu equipo.</p>
-      <button class="h-cta" style="font-size:.88rem;padding:.82rem 1.8rem" onclick="go('demo')">Solicitar una demo →</button>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:1.2rem">
-      <div class="h-metrics-grid">
-        <div class="h-metric"><div class="h-metric-val">48<span class="u">h</span></div><div class="h-metric-label">de contratación a acompañamiento activo</div></div>
-        <div class="h-metric"><div class="h-metric-val">2</div><div class="h-metric-label">módulos construidos y validados por profesionales</div></div>
-        <div class="h-metric"><div class="h-metric-val">100</div><div class="h-metric-label">metodologías con nombre y autor citado</div></div>
-        <div class="h-metric"><div class="h-metric-val"><span class="u">100</span>%</div><div class="h-metric-label">de las respuestas trazables a su fuente</div></div>
-      </div>
-      <div class="h-metrics-quote">
-        <div class="h-mq-text">No prometemos un ROI que no hemos medido todavía. Prometemos que en la demo verás el producto real respondiendo a una situación real de tu equipo — sin filtros ni cifras infladas.</div>
-        <div class="h-mq-who">
-          <strong>El equipo de Growee</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ═══════ CTA FINAL ═══════ -->
 <div class="h-cta-final">
   <h2>Hablemos sobre<br><em>el bienestar de tu equipo</em></h2>
-  <p>Demo de 30 minutos. Sin compromiso.</p>
   <div class="h-cta-btns">
     <button class="h-cta" onclick="go('demo')">Solicitar demo</button>
   </div>
@@ -1456,7 +1477,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -1514,8 +1534,7 @@ document.addEventListener('scroll', function(e){
   <div style="max-width:900px;margin:0 auto;padding:0 3rem 5rem">
     <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Lo vemos con tu propio caso?</div>
-      <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">30 minutos, sin compromiso, con RRHH de tu empresa</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
     </div>
   </div>
 
@@ -1527,7 +1546,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -1547,7 +1565,7 @@ document.addEventListener('scroll', function(e){
       <div>
         <div class="tag-pill tag-terra" style="margin-bottom:1.2rem">● Módulo Bienestar Emocional</div>
         <h2 style="margin-bottom:1rem">Apoyo emocional<br><em style="color:var(--terra)">respaldado por evidencia clínica</em></h2>
-        <p class="lead" style="margin-bottom:2rem">IA entrenada en TCC, mindfulness y ACT para acompañar a cada persona — sin listas de espera, sin estigma, disponible 24/7.</p>
+        <p class="lead" style="margin-bottom:2rem">IA entrenada en TCC, mindfulness y ACT, y muchos más, para acompañar a cada persona — sin listas de espera, sin estigma, disponible 24/7.</p>
         <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem">
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Gestión del estrés</strong>&nbsp;y ansiedad laboral</div>
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--terra);margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Prevención del burnout</strong>&nbsp;y detección temprana</div>
@@ -1573,8 +1591,7 @@ document.addEventListener('scroll', function(e){
     </div>
     <div style="text-align:center;padding:3rem;background:rgba(217,130,90,.06);border:1px solid rgba(217,130,90,.18);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres ver esto en acción para tu empresa?</div>
-      <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Demo personalizada de 30 minutos · Sin compromiso</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
     </div>
   </div>
   <div class="divider"></div>
@@ -1585,7 +1602,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -1601,7 +1617,7 @@ document.addEventListener('scroll', function(e){
       <div>
         <div class="tag-pill tag-gold" style="margin-bottom:1.2rem">◆ Módulo Coaching Profesional</div>
         <h2 style="margin-bottom:1rem">Coaching profesional<br><em>sin agenda ni espera</em></h2>
-        <p class="lead" style="margin-bottom:2rem">IA entrenada en las metodologías GROW, ICF y Co-Active para acompañar a managers y colaboradores en su desarrollo profesional — cuando lo necesitan, no cuando hay hueco en un calendario.</p>
+        <p class="lead" style="margin-bottom:2rem">IA entrenada en las metodologías GROW, ICF y Co-Active, y muchas más, para acompañar a managers y colaboradores en su desarrollo profesional — cuando lo necesitan, no cuando hay hueco en un calendario.</p>
         <div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem">
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Liderazgo</strong>&nbsp;y gestión de equipos</div>
           <div style="display:flex;gap:.75rem;font-size:.875rem;color:rgba(248,246,241,.75);align-items:flex-start"><span style="color:var(--gold);margin-top:.1rem">→</span><strong style="color:var(--cream);font-weight:600">Comunicación</strong>&nbsp;y conversaciones difíciles</div>
@@ -1625,8 +1641,7 @@ document.addEventListener('scroll', function(e){
     </div>
     <div style="text-align:center;padding:3rem;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres ver el coaching en acción con tu equipo?</div>
-      <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Demo personalizada de 30 minutos · Sin compromiso</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
     </div>
   </div>
   <div class="divider"></div>
@@ -1637,7 +1652,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -1650,8 +1664,8 @@ document.addEventListener('scroll', function(e){
 <div id="pg-prod-rrhh" class="pg">
   <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
     <div style="text-align:center;max-width:620px;margin:0 auto 3.5rem">
-      <div class="tag-pill tag-moss" style="margin-bottom:1.2rem;display:inline-flex">📊 Panel de RRHH</div>
-      <h2 style="margin-bottom:1rem">Por fin datos de bienestar<br><em>que puedes presentar</em></h2>
+      <div class="tag-pill tag-moss" style="margin-bottom:1.2rem;display:inline-flex"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> Panel de RRHH</div>
+      <h2 style="margin-bottom:1rem">Datos de bienestar que<br><em>por fin puedes presentar</em></h2>
       <p class="lead">Dashboard anonimizado con índices de bienestar del equipo, temas más trabajados e informes mensuales automáticos. Sin acceder a ninguna conversación individual.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem">
@@ -1661,8 +1675,7 @@ document.addEventListener('scroll', function(e){
     </div>
     <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">Ver el panel en acción</div>
-      <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Te lo mostramos con datos reales en la demo de 30 minutos</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
     </div>
   </div>
   <div class="divider"></div>
@@ -1673,7 +1686,62 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
+    <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+    <a onclick="go('recursos')">Recursos</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
+</div>
+
+<!-- PARA ASEGURADORAS -->
+<div id="pg-prod-aseguradoras" class="pg">
+  <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
+    <div style="text-align:center;max-width:660px;margin:0 auto 3.5rem">
+      <div class="tag-pill tag-gold" style="margin-bottom:1.2rem;display:inline-flex"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="5" y1="21" x2="5" y2="10"/><line x1="19" y1="21" x2="19" y2="10"/><polygon points="12 3 21 9 3 9"/></svg> Para aseguradoras</div>
+      <h2 style="margin-bottom:1rem">Un servicio de valor añadido<br><em>dentro de tu póliza de salud</em></h2>
+      <p class="lead">Growee se integra como cobertura de apoyo emocional y coaching dentro de la póliza de salud — sin coste adicional gestionado directamente por la empresa asegurada, ni fricción para el asegurado.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:3rem">
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+        <div class="js-countup" data-to="13443" data-format="es" data-suffix="M €" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--moss-light)">0M €</div>
+        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">facturación del ramo de salud en España (2025) — +11,4% interanual</div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+        <div class="js-countup" data-to="12" data-suffix="M+" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--gold)">0M+</div>
+        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">españoles con seguro médico privado — mercado maduro</div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+        <div class="js-countup" data-to="900" data-prefix="≈" data-suffix=" €" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--terra)">≈0 €</div>
+        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">prima media anual por asegurado en España</div>
+      </div>
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
+        <div class="js-countup" data-to="76" data-suffix="%" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--moss-light)">0%</div>
+        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">del mercado en 5 aseguradoras: Adeslas, Sanitas, Asisa, DKV, Mapfre</div>
+      </div>
+    </div>
+    <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:3rem">
+      <h3 style="font-family:'Fraunces',serif;font-size:1.3rem;font-weight:400;margin-bottom:1.2rem">Por qué una aseguradora quiere Growee en su póliza</h3>
+      <div style="display:flex;flex-direction:column;gap:.85rem">
+        <div style="display:flex;gap:.7rem;font-size:.95rem;color:var(--inv);line-height:1.6"><span style="color:var(--gold);flex-shrink:0">→</span>La salud mental es ya un diferenciador explícito de póliza — coberturas con apoyo psicológico ganan cuota frente a las que no lo ofrecen.</div>
+        <div style="display:flex;gap:.7rem;font-size:.95rem;color:var(--inv);line-height:1.6"><span style="color:var(--gold);flex-shrink:0">→</span>Menos visitas a médico general y urgencias por causas asociadas al estrés, con impacto directo en la siniestralidad.</div>
+        <div style="display:flex;gap:.7rem;font-size:.95rem;color:var(--inv);line-height:1.6"><span style="color:var(--gold);flex-shrink:0">→</span>Growee se integra como servicio de valor añadido dentro de la póliza — un mercado de 12M+ asegurados.</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:3rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Ya ofrecéis un seguro médico privado a vuestra plantilla?</div>
+      <button class="btn-primary" onclick="go('demo')">Hablar sobre el canal aseguradoras</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('prod-rrhh')">Panel de RRHH</a>
+    <a onclick="go('prod-aseguradoras')">Para aseguradoras</a>
+    <a onclick="go('como-funciona')">Cómo funciona</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -1748,7 +1816,7 @@ document.addEventListener('scroll', function(e){
   <div style="text-align:center;padding:3rem;background:linear-gradient(180deg,rgba(45,106,79,.07),rgba(13,27,42,0));border-top:1px solid rgba(82,183,136,.12);max-width:600px;margin:0 auto">
     <h3 style="font-family:Fraunces,serif;font-size:1.8rem;font-weight:300;margin-bottom:.7rem">¿Quieres ser de los primeros<br>casos de éxito reales?</h3>
     <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.8rem">En la demo te enseñamos el producto real, sin cifras infladas — y si encaja, construimos el caso juntos.</p>
-    <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
+    <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
   </div>
   <div class="divider"></div>
   <footer>
@@ -1758,7 +1826,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -1812,7 +1879,7 @@ document.addEventListener('scroll', function(e){
     <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Alguna duda antes de decidir?</div>
       <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">Resolvemos cualquier pregunta de seguridad en la propia demo</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
     </div>
   </div>
 
@@ -1824,7 +1891,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -2085,7 +2151,7 @@ document.addEventListener('scroll', function(e){
     <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.05);border:1px solid rgba(82,183,136,.15);border-radius:20px">
       <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres estas plantillas dentro del chat?</div>
       <p style="color:var(--inv);font-size:.88rem;margin-bottom:1.5rem">En Growee, tu equipo las recibe integradas en la conversación, no como PDF suelto</p>
-      <button class="btn-primary" onclick="go('demo')">Solicitar demo gratuita</button>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
     </div>
   </div>
 
@@ -2097,7 +2163,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -2163,8 +2228,7 @@ document.addEventListener('scroll', function(e){
       <a onclick="go('prod-coaching')">Coaching</a>
       <a onclick="go('prod-rrhh')">Panel de RRHH</a>
       <a onclick="go('como-funciona')">Cómo funciona</a>
-      <a onclick="go('casos')">Casos de éxito</a>
-      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+        <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
     </div>
@@ -2222,8 +2286,7 @@ document.addEventListener('scroll', function(e){
       <a onclick="go('prod-coaching')">Coaching</a>
       <a onclick="go('prod-rrhh')">Panel de RRHH</a>
       <a onclick="go('como-funciona')">Cómo funciona</a>
-      <a onclick="go('casos')">Casos de éxito</a>
-      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+        <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
     </div>
@@ -2281,8 +2344,7 @@ document.addEventListener('scroll', function(e){
       <a onclick="go('prod-coaching')">Coaching</a>
       <a onclick="go('prod-rrhh')">Panel de RRHH</a>
       <a onclick="go('como-funciona')">Cómo funciona</a>
-      <a onclick="go('casos')">Casos de éxito</a>
-      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+        <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
     </div>
@@ -2339,8 +2401,7 @@ document.addEventListener('scroll', function(e){
       <a onclick="go('prod-coaching')">Coaching</a>
       <a onclick="go('prod-rrhh')">Panel de RRHH</a>
       <a onclick="go('como-funciona')">Cómo funciona</a>
-      <a onclick="go('casos')">Casos de éxito</a>
-      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+        <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
     </div>
@@ -2394,8 +2455,7 @@ document.addEventListener('scroll', function(e){
       <a onclick="go('prod-coaching')">Coaching</a>
       <a onclick="go('prod-rrhh')">Panel de RRHH</a>
       <a onclick="go('como-funciona')">Cómo funciona</a>
-      <a onclick="go('casos')">Casos de éxito</a>
-      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+        <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
     </div>
@@ -2446,8 +2506,7 @@ document.addEventListener('scroll', function(e){
       <a onclick="go('prod-coaching')">Coaching</a>
       <a onclick="go('prod-rrhh')">Panel de RRHH</a>
       <a onclick="go('como-funciona')">Cómo funciona</a>
-      <a onclick="go('casos')">Casos de éxito</a>
-      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+        <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
     </div>
@@ -2487,7 +2546,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2521,7 +2580,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2557,7 +2616,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2591,7 +2650,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2625,7 +2684,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2659,7 +2718,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2693,7 +2752,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2727,7 +2786,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2761,7 +2820,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2795,7 +2854,7 @@ document.addEventListener('scroll', function(e){
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
     <div class="footer-links">
-      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
+      <a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a>
     </div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
@@ -2828,7 +2887,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -2860,7 +2919,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -2892,7 +2951,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -2924,7 +2983,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -2956,7 +3015,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -2988,7 +3047,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3020,7 +3079,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3052,7 +3111,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3086,7 +3145,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3118,7 +3177,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3150,7 +3209,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3182,7 +3241,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3214,7 +3273,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3246,7 +3305,7 @@ document.addEventListener('scroll', function(e){
   <div class="divider"></div>
   <footer>
     <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
-    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('casos')">Casos de éxito</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
+    <div class="footer-links"><a onclick="go('prod-bienestar')">Apoyo Emocional</a><a onclick="go('prod-coaching')">Coaching</a><a onclick="go('prod-rrhh')">Panel de RRHH</a><a onclick="go('como-funciona')">Cómo funciona</a><a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a><a onclick="go('recursos')">Recursos</a><a onclick="go('demo')">Demo</a></div>
     <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
   </footer>
 </div>
@@ -3288,7 +3347,7 @@ document.addEventListener('scroll', function(e){
         <div class="pr2-card-inner">
           <div class="pr2-tag tag-terra">● Apoyo Emocional o Coaching</div>
           <div class="pr2-title">Un módulo, acceso ilimitado</div>
-          <div class="pr2-price"><span class="pr2-price-num">10 €</span><span class="pr2-price-unit">/empleado<br>/mes</span></div>
+          <div class="pr2-price"><span class="pr2-price-num">12 €</span><span class="pr2-price-unit">/empleado<br>/mes</span></div>
           <div class="pr2-feats">
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Chat de IA disponible 24/7</div>
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--terra)">✓</span>Metodología clínica o de coaching citada en cada respuesta</div>
@@ -3306,7 +3365,7 @@ document.addEventListener('scroll', function(e){
         <div class="pr2-card-inner">
           <div class="pr2-tag tag-gold">◆ Apoyo Emocional + Coaching</div>
           <div class="pr2-title">Los dos módulos, acceso ilimitado</div>
-          <div class="pr2-price"><span class="pr2-price-num">16 €</span><span class="pr2-price-unit">/empleado<br>/mes</span></div>
+          <div class="pr2-price"><span class="pr2-price-num">20 €</span><span class="pr2-price-unit">/empleado<br>/mes</span></div>
           <div class="pr2-feats">
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Todo lo del plan anterior</div>
             <div class="pr2-feat"><span class="pr2-check" style="color:var(--gold)">✓</span>Apoyo emocional y coaching profesional en una sola plataforma</div>
@@ -3325,27 +3384,26 @@ document.addEventListener('scroll', function(e){
   <div style="max-width:1000px;margin:0 auto;padding:1rem 3rem 4rem;border-top:1px solid var(--border)">
     <div style="text-align:center;margin:3rem 0 2rem">
       <div class="h-section-eye">Por qué cuesta lo que cuesta</div>
-      <h3 style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300">Comparativa con las alternativas actuales</h3>
+      <h3 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:300">Lo que pagarías por lo mismo, sin Growee</h3>
     </div>
     <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse;font-size:.85rem;min-width:560px">
+      <table style="width:100%;border-collapse:collapse;font-size:.98rem;min-width:560px">
         <thead>
           <tr style="border-bottom:1px solid var(--border)">
             <th style="text-align:left;padding:.8rem;color:var(--inv-2);font-weight:400"></th>
-            <th style="text-align:center;padding:.8rem;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:400">Growee</th>
-            <th style="text-align:center;padding:.8rem;color:var(--inv-2);font-weight:400">Psicólogo privado</th>
-            <th style="text-align:center;padding:.8rem;color:var(--inv-2);font-weight:400">Coach profesional</th>
+            <th style="text-align:center;padding:.8rem;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:400;border-top:2px solid var(--moss-light);border-bottom:2px solid var(--moss-light)">Growee</th>
+            <th style="text-align:center;padding:.8rem;color:var(--cream);font-weight:400">Psicólogo privado</th>
+            <th style="text-align:center;padding:.8rem;color:var(--cream);font-weight:400">Coach profesional</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Precio</td><td style="text-align:center;color:var(--moss-light);font-family:'Fraunces',serif">10–16 €/mes</td><td style="text-align:center;color:var(--inv-2);font-family:'Fraunces',serif">50–90 €/sesión</td><td style="text-align:center;color:var(--inv-2);font-family:'Fraunces',serif">80–300 €/sesión</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Coste mensual (1 sesión/semana)</td><td style="text-align:center;color:var(--moss-light);font-family:'Fraunces',serif">10–16 €</td><td style="text-align:center;color:var(--inv-2);font-family:'Fraunces',serif">200–360 €/mes</td><td style="text-align:center;color:var(--inv-2);font-family:'Fraunces',serif">320–1.200 €/mes</td></tr>
-          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--inv)">Disponibilidad</td><td style="text-align:center;color:var(--moss-light)">24/7</td><td style="text-align:center;color:var(--inv-2)">Con cita previa</td><td style="text-align:center;color:var(--inv-2)">Con cita previa</td></tr>
-          <tr><td style="padding:.8rem;color:var(--inv)">Listas de espera</td><td style="text-align:center;color:var(--moss-light)">No</td><td style="text-align:center;color:var(--inv-2)">Habitual</td><td style="text-align:center;color:var(--inv-2)">Habitual</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Precio</td><td style="text-align:center;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">12–20 €/mes</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">50–90 €/sesión</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">80–300 €/sesión</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Coste mensual (1 sesión/semana)</td><td style="text-align:center;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">12–20 €</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">200–360 €/mes</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">320–1.200 €/mes</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Disponibilidad</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">24/7</td><td style="text-align:center;color:var(--cream)">Con cita previa</td><td style="text-align:center;color:var(--cream)">Con cita previa</td></tr>
+          <tr><td style="padding:.8rem;color:var(--cream);font-size:1.02rem">Listas de espera</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light);border-bottom:2px solid var(--moss-light)">No</td><td style="text-align:center;color:var(--cream)">Habitual</td><td style="text-align:center;color:var(--cream)">Habitual</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:.72rem;color:var(--inv-2);text-align:center;margin-top:1rem">Fuente: PIMEC/INSST 2026</p>
   </div>
 
   <!-- El cálculo para tu empresa -->
@@ -3353,27 +3411,26 @@ document.addEventListener('scroll', function(e){
     <div style="max-width:1000px;margin:0 auto;padding:3.5rem 3rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center">
       <div>
         <div class="h-section-eye">El cálculo para tu empresa</div>
-        <h3 style="font-family:'Fraunces',serif;font-size:1.5rem;font-weight:300;margin-bottom:1rem">98% menos coste que el modelo<br>tradicional, con el mismo uso</h3>
-        <p style="font-size:.85rem;color:var(--inv);line-height:1.75">Empresa de 500 empleados, 10% de la plantilla usando cada servicio una vez por semana.</p>
-        <p style="font-size:.8rem;color:var(--inv);line-height:1.7;margin-top:1rem">El coste de no actuar: una baja por salud mental cuesta a la empresa ≈13.000 € de media (116 días de duración media). En una plantilla de 250 empleados, el coste anual estimado de bajas por salud mental es de ≈91.000 €.</p>
-        <p style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">Fuentes: PIMEC/INSST 2026 · Coverflex 2026</p>
+        <h3 style="font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300;margin-bottom:1rem">98% menos coste que el modelo<br>tradicional, con el mismo uso</h3>
+        <p style="font-size:1rem;color:var(--cream);line-height:1.75">Empresa de 500 empleados, 10% de la plantilla usando cada servicio una vez por semana.</p>
+        <p style="font-size:.95rem;color:var(--inv);line-height:1.7;margin-top:1rem">El coste de no actuar: una baja por salud mental cuesta a la empresa ≈13.000 € de media (116 días de duración media). En una plantilla de 250 empleados, el coste anual estimado de bajas por salud mental es de ≈91.000 €.</p>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
-          <span style="font-size:.82rem;color:var(--inv)">Apoyo emocional privado<br><span style="font-size:.72rem;color:var(--inv-2)">50 personas × 70 €/sesión</span></span>
-          <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">168.000 €/año</span>
+          <span style="font-size:.92rem;color:var(--cream)">Apoyo emocional privado<br><span style="font-size:.8rem;color:var(--inv)">50 personas × 70 €/sesión</span></span>
+          <span class="js-countup" data-to="168000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">0 €/año</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
-          <span style="font-size:.82rem;color:var(--inv)">Coaching privado<br><span style="font-size:.72rem;color:var(--inv-2)">50 personas × 150 €/sesión</span></span>
-          <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">360.000 €/año</span>
+          <span style="font-size:.92rem;color:var(--cream)">Coaching privado<br><span style="font-size:.8rem;color:var(--inv)">50 personas × 150 €/sesión</span></span>
+          <span class="js-countup" data-to="360000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">0 €/año</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
-          <span style="font-size:.82rem;color:var(--inv)">Total modelo tradicional</span>
-          <span style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">528.000 €/año</span>
+          <span style="font-size:.92rem;color:var(--cream)">Total modelo tradicional</span>
+          <span class="js-countup" data-to="528000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.15rem;color:var(--terra)">0 €/año</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:.85rem;color:var(--cream)">Growee — 2 módulos, misma plantilla</span>
-          <span style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--moss-light)">9.600 €/año</span>
+          <span style="font-size:.95rem;color:var(--cream)">Growee — 2 módulos, misma plantilla</span>
+          <span class="js-countup" data-to="9600" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--moss-light)">0 €/año</span>
         </div>
       </div>
     </div>
@@ -3415,7 +3472,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -3506,7 +3562,7 @@ document.addEventListener('scroll', function(e){
             <div class="form-error-msg" id="err-demo-modulo">Selecciona una opción</div>
           </div>
           <div class="form-group"><label class="form-label">¿Cuál es tu mayor reto ahora mismo? (opcional)</label><input class="form-input" id="demo-reto" type="text" placeholder="Ej: burnout, rotación alta, mejorar el liderazgo..."><div style="font-size:.72rem;color:var(--inv-2);margin-top:.4rem">Este campo nos ayuda a preparar la simulación en vivo con un caso relevante para tu equipo.</div></div>
-          <button class="form-submit" onclick="submitDemo()">Solicitar demo gratuita</button>
+          <button class="form-submit" onclick="submitDemo()">Solicitar demo</button>
           <div class="form-note">🔒 Sin spam. Solo te contactamos para confirmar la demo.<br>Tus datos se tratan según nuestro aviso de privacidad.</div>
         </div>
       </div>
@@ -3521,7 +3577,6 @@ document.addEventListener('scroll', function(e){
     <a onclick="go('prod-coaching')">Coaching</a>
     <a onclick="go('prod-rrhh')">Panel de RRHH</a>
     <a onclick="go('como-funciona')">Cómo funciona</a>
-    <a onclick="go('casos')">Casos de éxito</a>
     <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
     <a onclick="go('recursos')">Recursos</a>
     <a onclick="go('demo')">Demo</a>
@@ -4240,8 +4295,7 @@ ol.cbubble-list li{padding-left:.3rem}
       <a onclick="go('prod-coaching')">Coaching</a>
       <a onclick="go('prod-rrhh')">Panel de RRHH</a>
       <a onclick="go('como-funciona')">Cómo funciona</a>
-      <a onclick="go('casos')">Casos de éxito</a>
-      <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+        <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
       <a onclick="go('recursos')">Recursos</a>
       <a onclick="go('demo')">Demo</a>
     </div>
@@ -4327,7 +4381,7 @@ function closeMobileMenu() {
 }
 
 // ── Routing ──
-const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','guia-delegacion','guia-conflicto-equipo','guia-motivacion','guia-equipo-remoto','guia-evaluacion-justa','guia-rumiacion','guia-limites-culpa','guia-senales-tempranas','guia-acompanar-companero','guia-dormir-mal','guia-ansiedad-presentacion','guia-sindrome-impostor','guia-pedir-ayuda','guia-recuperar-mal-dia','guia-culpa-persistente','guia-cambio-no-elegido','guia-nombrar-emociones','guia-conversacion-no-promocion','guia-preguntas-1-1','guia-liderar-vs-gestionar','guia-equipo-sin-confianza','guia-negociar-sin-guerra','guia-heredar-equipo-dificil','guia-cultura-feedback-continuo','precios','demo','login','app','rrhh-panel'];
+const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','prod-aseguradoras','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','guia-delegacion','guia-conflicto-equipo','guia-motivacion','guia-equipo-remoto','guia-evaluacion-justa','guia-rumiacion','guia-limites-culpa','guia-senales-tempranas','guia-acompanar-companero','guia-dormir-mal','guia-ansiedad-presentacion','guia-sindrome-impostor','guia-pedir-ayuda','guia-recuperar-mal-dia','guia-culpa-persistente','guia-cambio-no-elegido','guia-nombrar-emociones','guia-conversacion-no-promocion','guia-preguntas-1-1','guia-liderar-vs-gestionar','guia-equipo-sin-confianza','guia-negociar-sin-guerra','guia-heredar-equipo-dificil','guia-cultura-feedback-continuo','precios','demo','login','app','rrhh-panel'];
 const APP_PAGES = ['login','onboarding','app','rrhh-panel'];
 let currentPage = 'home';
 let pageHistory = ['home'];
