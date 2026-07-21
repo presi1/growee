@@ -1156,17 +1156,20 @@ let lastScrollEl = window;
 
 /* Conteo animado de cifras al entrar en pantalla */
 function initCountUps(root) {
-  const els = (root || document).querySelectorAll('.js-countup:not(.js-counted)');
+  const els = (root || document).querySelectorAll('.js-countup');
   if (!els.length) return;
   const obs = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
       const el = entry.target;
-      el.classList.add('js-counted');
-      obs.unobserve(el);
-      const to = parseFloat(el.dataset.to || '0');
       const prefix = el.dataset.prefix || '';
       const suffix = el.dataset.suffix || '';
+      if (!entry.isIntersecting) {
+        // Sale de pantalla: se reinicia a 0 para que la próxima vez vuelva a animarse
+        cancelAnimationFrame(el._countupRaf);
+        el.textContent = prefix + '0' + suffix;
+        return;
+      }
+      const to = parseFloat(el.dataset.to || '0');
       const useEs = el.dataset.format === 'es';
       const duration = 1400;
       const start = performance.now();
@@ -1176,9 +1179,9 @@ function initCountUps(root) {
         const val = Math.round(to * eased);
         const display = useEs ? val.toLocaleString('es-ES') : String(val);
         el.textContent = prefix + display + suffix;
-        if (p < 1) requestAnimationFrame(frame);
+        if (p < 1) el._countupRaf = requestAnimationFrame(frame);
       }
-      requestAnimationFrame(frame);
+      el._countupRaf = requestAnimationFrame(frame);
     });
   }, { threshold: 0.4 });
   els.forEach((el) => obs.observe(el));
@@ -1233,6 +1236,7 @@ document.addEventListener('scroll', function(e){
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Técnicas de TCC, Mindfulness (MBSR) y ACT</div>
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Deriva activamente a una red de profesionales cuando la situación requiere atención clínica — no diagnostica ni sustituye a un especialista</div>
           </div>
+          <button class="btn-secondary" style="margin-top:1.3rem;width:100%;border-color:rgba(217,130,90,.35);color:var(--terra)" onclick="goDemoFor('bienestar')">Solicitar demo →</button>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
           <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;margin-bottom:.9rem;color:var(--gold)">Coaching profesional</h4>
@@ -1243,6 +1247,8 @@ document.addEventListener('scroll', function(e){
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Transiciones de carrera y promociones</div>
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Metodología GROW de John Whitmore, estándares ICF y modelo Co-Active</div>
           </div>
+          <button class="btn-secondary" style="margin-top:1.3rem;width:100%;border-color:rgba(201,168,76,.35);color:var(--gold)" onclick="goDemoFor('coaching')">Solicitar demo →</button>
+        </div>
         </div>
       </div>
       <p style="font-size:1.15rem;font-family:'Fraunces',serif;color:var(--cream);text-align:center;max-width:680px;margin:0 auto;line-height:1.5">Cada respuesta cita la metodología y el autor en los que se apoya.</p>
@@ -1293,22 +1299,29 @@ document.addEventListener('scroll', function(e){
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:1.3rem">
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
           <div class="js-countup" data-to="643000" data-format="es" style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">0</div>
-          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">procesos de baja por salud mental en España, el doble que en 2019</div>
+          <div style="font-size:.76rem;color:var(--cream);margin-top:.3rem">procesos de baja por salud mental en España, el doble que en 2019</div>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
           <div class="js-countup" data-to="116" data-suffix=" días" style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--gold)">0 días</div>
-          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">duración media de una baja, frente a 45 de una baja general</div>
+          <div style="font-size:.76rem;color:var(--cream);margin-top:.3rem">duración media de una baja, frente a 45 de una baja general</div>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
           <div class="js-countup" data-to="13000" data-format="es" data-prefix="≈" data-suffix=" €" style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--terra)">≈0 €</div>
-          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">coste estimado por caso para la empresa</div>
+          <div style="font-size:.76rem;color:var(--cream);margin-top:.3rem">coste estimado por caso para la empresa</div>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
-          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">3–5%<span style="font-size:1.1rem;vertical-align:super;color:var(--inv-2)">*</span></div>
-          <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">utilización real de un EAP tradicional</div>
+          <div style="font-family:'Fraunces',serif;font-size:1.9rem;color:var(--moss-light)">3–5%<span style="font-size:1.1rem;vertical-align:super;color:var(--moss-light)">*</span></div>
+          <div style="font-size:.76rem;color:var(--cream);margin-top:.3rem">utilización real de un EAP tradicional</div>
         </div>
       </div>
-      <p style="font-size:1rem;color:var(--cream);text-align:center;max-width:700px;margin:0 auto;line-height:1.75;background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.18);border-radius:14px;padding:1.3rem 1.6rem"><strong style="color:var(--moss-light)">*</strong> El motivo no es la falta de necesidad. Son tres barreras estructurales: estigma y miedo a que la empresa se entere, listas de espera en el sistema público, y sesiones limitadas sin continuidad real. <strong style="color:var(--cream)">Growee elimina las tres a la vez:</strong> es privado por diseño, no hay listas de espera porque está disponible 24/7, y el acceso es ilimitado sin límite de sesiones.</p>
+      <div style="background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.18);border-radius:14px;padding:1.4rem 1.8rem;max-width:700px;margin:0 auto">
+        <div style="font-size:.95rem;color:var(--cream);margin-bottom:.9rem"><strong style="color:var(--moss-light)">*</strong> El motivo no es la falta de necesidad. Son tres barreras estructurales — y así las elimina Growee:</div>
+        <div style="display:flex;flex-direction:column;gap:.7rem">
+          <div style="display:flex;gap:.7rem;font-size:.92rem;color:var(--cream);line-height:1.55"><span style="color:var(--moss-light);flex-shrink:0">→</span><span><strong>Estigma y miedo a que la empresa se entere</strong> — Growee es privado por diseño: nadie en la empresa ve el contenido de las conversaciones.</span></div>
+          <div style="display:flex;gap:.7rem;font-size:.92rem;color:var(--cream);line-height:1.55"><span style="color:var(--moss-light);flex-shrink:0">→</span><span><strong>Listas de espera en el sistema público</strong> — Growee está disponible 24/7, sin esperas ni cita previa.</span></div>
+          <div style="display:flex;gap:.7rem;font-size:.92rem;color:var(--cream);line-height:1.55"><span style="color:var(--moss-light);flex-shrink:0">→</span><span><strong>Sesiones limitadas sin continuidad real</strong> — Growee da acceso ilimitado, sin límite de sesiones.</span></div>
+        </div>
+      </div>
     </div>
 
     <!-- Comparativa -->
@@ -1323,8 +1336,8 @@ document.addEventListener('scroll', function(e){
             <tr style="border-bottom:1px solid var(--border)">
               <th style="text-align:left;padding:.8rem;color:var(--inv-2);font-weight:400"></th>
               <th style="text-align:center;padding:.8rem;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:400;border-top:2px solid var(--moss-light);border-bottom:2px solid var(--moss-light)">Growee</th>
-              <th style="text-align:center;padding:.8rem;color:var(--inv-2);font-weight:400">IA genérica</th>
-              <th style="text-align:center;padding:.8rem;color:var(--inv-2);font-weight:400">Presencial</th>
+              <th style="text-align:center;padding:.8rem;color:var(--cream);font-weight:400">IA genérica</th>
+              <th style="text-align:center;padding:.8rem;color:var(--cream);font-weight:400">Presencial</th>
             </tr>
           </thead>
           <tbody>
@@ -1347,7 +1360,7 @@ document.addEventListener('scroll', function(e){
           <div class="h-section-eye">El retorno, en cifras</div>
           <h3 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300;margin-bottom:1rem">Hasta un 98% menos coste<br>que el modelo presencial</h3>
           <p style="font-size:1rem;color:var(--cream);line-height:1.75">Empresa de 500 empleados, 10% de la plantilla usando cada servicio una vez por semana, con el mismo patrón de uso.</p>
-          <p style="font-size:.95rem;color:var(--inv);margin-top:1rem">En una empresa de 250 empleados, el coste anual estimado de bajas por salud mental es de ≈91.000 €.</p>
+          <p style="font-size:.95rem;color:var(--inv);margin-top:1rem">En una empresa de 500 empleados, el coste anual estimado de bajas por salud mental es de ≈182.000 €.</p>
         </div>
         <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
           <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
@@ -1364,7 +1377,7 @@ document.addEventListener('scroll', function(e){
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center">
             <span style="font-size:.98rem;color:var(--cream)">Growee — 2 módulos, misma plantilla</span>
-            <span class="js-countup" data-to="9600" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-light)">0 €/año</span>
+            <span class="js-countup" data-to="12000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-light)">0 €/año</span>
           </div>
         </div>
       </div>
@@ -1449,6 +1462,9 @@ document.addEventListener('scroll', function(e){
     <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg></div><div class="ben-title">Disponible 24/7</div><div class="ben-desc">Apoyo emocional y coaching cuando lo necesiten, sin depender de horarios ni disponibilidad.</div></div>
     <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="ben-title">Completamente confidencial</div><div class="ben-desc">Nadie en la empresa ve el contenido de las conversaciones. Tu equipo lo sabe con certeza.</div></div>
     <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3a3 3 0 0 0-3 3v.3A3 3 0 0 0 4 9v.5a3 3 0 0 0 1 5.6 3 3 0 0 0 3 3.4 3 3 0 0 0 3-2.3V6a3 3 0 0 0-1.5-3z"/><path d="M14.5 3a3 3 0 0 1 3 3v.3A3 3 0 0 1 20 9v.5a3 3 0 0 1-1 5.6 3 3 0 0 1-3 3.4 3 3 0 0 1-3-2.3V6a3 3 0 0 1 1.5-3z"/></svg></div><div class="ben-title">IA que te recuerda</div><div class="ben-desc">El historial persiste entre sesiones. Recuerda lo importante para acompañar el progreso de verdad.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></div><div class="ben-title">Crecimiento profesional</div><div class="ben-desc">Coaching para liderazgo, conversaciones difíciles y transiciones de carrera, siempre que lo necesites.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="ben-title">Metodologías científicas validadas</div><div class="ben-desc">Cada respuesta se apoya en técnicas con nombre y autor citado, no en consejos genéricos.</div></div>
+    <div class="ben-card moss-border"><div class="ben-icon" style="color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div><div class="ben-title">Seguimiento de tu progreso</div><div class="ben-desc">Tu perfil evoluciona con cada sesión. Ves cómo mejora tu bienestar y sigues tu propio ritmo.</div></div>
   </div>
   <div class="h-ben-panel" id="bp-empresa">
     <div class="ben-card gold-border"><div class="ben-icon" style="color:var(--gold)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 11 14 10 22 21 10 13 10 13 2"/></svg></div><div class="ben-title">Listo en 48 horas</div><div class="ben-desc">Importas la plantilla con un CSV y en 48h todo el equipo tiene acceso. Sin IT, sin instalaciones.</div></div>
@@ -1484,7 +1500,6 @@ document.addEventListener('scroll', function(e){
   <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
 </footer>
 
-</div>
 </div>
 
 <!-- ═══════ CÓMO FUNCIONA — página propia ═══════ -->
@@ -1700,24 +1715,24 @@ document.addEventListener('scroll', function(e){
     <div style="text-align:center;max-width:660px;margin:0 auto 3.5rem">
       <div class="tag-pill tag-gold" style="margin-bottom:1.2rem;display:inline-flex"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="5" y1="21" x2="5" y2="10"/><line x1="19" y1="21" x2="19" y2="10"/><polygon points="12 3 21 9 3 9"/></svg> Para aseguradoras</div>
       <h2 style="margin-bottom:1rem">Un servicio de valor añadido<br><em>dentro de tu póliza de salud</em></h2>
-      <p class="lead">Growee se integra como cobertura de apoyo emocional y coaching dentro de la póliza de salud — sin coste adicional gestionado directamente por la empresa asegurada, ni fricción para el asegurado.</p>
+      <p class="lead" style="color:var(--cream)">Growee se integra como cobertura de apoyo emocional y coaching dentro de la póliza de salud — sin coste adicional gestionado directamente por la empresa asegurada, ni fricción para el asegurado.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:3rem">
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
         <div class="js-countup" data-to="13443" data-format="es" data-suffix="M €" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--moss-light)">0M €</div>
-        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">facturación del ramo de salud en España (2025) — +11,4% interanual</div>
+        <div style="font-size:.85rem;color:var(--cream);margin-top:.4rem">facturación del ramo de salud en España (2025) — +11,4% interanual</div>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
         <div class="js-countup" data-to="12" data-suffix="M+" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--gold)">0M+</div>
-        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">españoles con seguro médico privado — mercado maduro</div>
+        <div style="font-size:.85rem;color:var(--cream);margin-top:.4rem">españoles con seguro médico privado — mercado maduro</div>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
         <div class="js-countup" data-to="900" data-prefix="≈" data-suffix=" €" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--terra)">≈0 €</div>
-        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">prima media anual por asegurado en España</div>
+        <div style="font-size:.85rem;color:var(--cream);margin-top:.4rem">prima media anual por asegurado en España</div>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.3rem;text-align:center">
         <div class="js-countup" data-to="76" data-suffix="%" style="font-family:'Fraunces',serif;font-size:1.8rem;color:var(--moss-light)">0%</div>
-        <div style="font-size:.76rem;color:var(--inv-2);margin-top:.3rem">del mercado en 5 aseguradoras: Adeslas, Sanitas, Asisa, DKV, Mapfre</div>
+        <div style="font-size:.85rem;color:var(--cream);margin-top:.4rem">del mercado en 5 aseguradoras: Adeslas, Sanitas, Asisa, DKV, Mapfre</div>
       </div>
     </div>
     <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:3rem">
@@ -1729,7 +1744,7 @@ document.addEventListener('scroll', function(e){
       </div>
     </div>
     <div style="text-align:center;padding:3rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
-      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Ya ofrecéis un seguro médico privado a vuestra plantilla?</div>
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Ya ofrecéis asistencia emocional a vuestros asegurados?</div>
       <button class="btn-primary" onclick="go('demo')">Hablar sobre el canal aseguradoras</button>
     </div>
   </div>
@@ -3413,7 +3428,10 @@ document.addEventListener('scroll', function(e){
         <div class="h-section-eye">El cálculo para tu empresa</div>
         <h3 style="font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300;margin-bottom:1rem">98% menos coste que el modelo<br>tradicional, con el mismo uso</h3>
         <p style="font-size:1rem;color:var(--cream);line-height:1.75">Empresa de 500 empleados, 10% de la plantilla usando cada servicio una vez por semana.</p>
-        <p style="font-size:.95rem;color:var(--inv);line-height:1.7;margin-top:1rem">El coste de no actuar: una baja por salud mental cuesta a la empresa ≈13.000 € de media (116 días de duración media). En una plantilla de 250 empleados, el coste anual estimado de bajas por salud mental es de ≈91.000 €.</p>
+        <div style="display:flex;flex-direction:column;gap:.6rem;margin-top:1rem">
+          <div style="display:flex;gap:.6rem;font-size:.95rem;color:var(--inv);line-height:1.6"><span style="color:var(--terra);flex-shrink:0">→</span>Una baja por salud mental cuesta a la empresa ≈13.000 € de media (116 días de duración media).</div>
+          <div style="display:flex;gap:.6rem;font-size:.95rem;color:var(--inv);line-height:1.6"><span style="color:var(--terra);flex-shrink:0">→</span>En una empresa de 500 empleados, el coste anual estimado de bajas por salud mental es de ≈182.000 €.</div>
+        </div>
       </div>
       <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
@@ -3430,8 +3448,81 @@ document.addEventListener('scroll', function(e){
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center">
           <span style="font-size:.95rem;color:var(--cream)">Growee — 2 módulos, misma plantilla</span>
-          <span class="js-countup" data-to="9600" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--moss-light)">0 €/año</span>
+          <span class="js-countup" data-to="12000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.3rem;color:var(--moss-light)">0 €/año</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calculadora de ahorro -->
+  <style>
+    .calc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start;max-width:1000px;margin:0 auto}
+    .calc-result{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem}
+    .calc-checks{display:flex;gap:1.3rem;margin-top:.4rem}
+    .calc-check-lbl{display:flex;align-items:center;gap:.5rem;font-size:.88rem;color:var(--cream);cursor:pointer}
+    .calc-lead-overlay{position:fixed;inset:0;background:rgba(13,27,42,.78);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:999;padding:1.5rem}
+    .calc-lead-box{background:var(--ink-2);border:1px solid var(--border);border-radius:20px;padding:2.2rem;max-width:400px;width:100%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+    .calc-lead-close{position:absolute;top:1rem;right:1.1rem;background:none;border:none;color:var(--inv-2);font-size:1.1rem;cursor:pointer;line-height:1}
+    .calc-lead-success{display:none;text-align:center;padding:1rem 0}
+    .calc-lead-success.show{display:block}
+  </style>
+  <div style="max-width:1000px;margin:0 auto;padding:1rem 3rem 4rem">
+    <div style="text-align:center;margin-bottom:2rem">
+      <div class="h-section-eye">Calcula tu ahorro</div>
+      <h3 style="font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300">¿Cuánto ahorraría tu empresa con Growee?</h3>
+    </div>
+    <div class="calc-wrap">
+      <div>
+        <div class="form-group">
+          <label class="form-label">Tamaño de la plantilla</label>
+          <input class="form-input" type="number" id="calc-plantilla" min="1" value="500" oninput="calcularAhorro()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">% de la plantilla usando cada servicio</label>
+          <input class="form-input" type="number" id="calc-pct" min="1" max="100" value="10" oninput="calcularAhorro()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Servicios a incluir</label>
+          <div class="calc-checks">
+            <label class="calc-check-lbl"><input type="checkbox" id="calc-bienestar" checked onchange="calcularAhorro()"> Apoyo emocional</label>
+            <label class="calc-check-lbl"><input type="checkbox" id="calc-coaching" checked onchange="calcularAhorro()"> Coaching</label>
+          </div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
+          <span style="font-size:.92rem;color:var(--cream)">Coste modelo tradicional</span>
+          <span id="calc-trad" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--terra)">— €/año</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
+          <span style="font-size:.92rem;color:var(--cream)">Coste con Growee</span>
+          <span id="calc-growee" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--moss-light)">— €/año</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:.98rem;color:var(--cream);font-weight:600">Tu ahorro estimado</span>
+          <span id="calc-ahorro" style="font-family:'Fraunces',serif;font-size:1.6rem;color:var(--moss-light)">— €/año</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup de captación tras ver el resultado -->
+  <div id="calc-lead-modal" class="calc-lead-overlay" style="display:none">
+    <div class="calc-lead-box">
+      <button class="calc-lead-close" onclick="closeCalcLeadModal()">✕</button>
+      <div id="calc-lead-fields">
+        <h3 style="font-family:'Fraunces',serif;font-size:1.35rem;font-weight:400;margin-bottom:.5rem">¿Vemos cómo aplica esto a tu equipo?</h3>
+        <p style="font-size:.85rem;color:var(--inv);margin-bottom:1.3rem">Te mostramos la propuesta exacta en una demo de 30 minutos.</p>
+        <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="calc-lead-nombre" type="text"></div>
+        <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" id="calc-lead-email" type="email" placeholder="nombre@empresa.com"></div>
+        <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="calc-lead-empresa" type="text"></div>
+        <button class="form-submit" onclick="submitCalcLead()">Solicitar demo →</button>
+        <div id="calc-lead-error" style="font-size:.72rem;color:#E5484D;margin-top:.6rem;text-align:center"></div>
+      </div>
+      <div class="calc-lead-success" id="calc-lead-success">
+        <div style="font-size:2rem;margin-bottom:.8rem">✓</div>
+        <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:400;margin-bottom:.5rem">¡Gracias!</h3>
+        <p style="font-size:.85rem;color:var(--inv)">Te contactamos en menos de 24h para confirmar la demo.</p>
       </div>
     </div>
   </div>
@@ -4454,6 +4545,10 @@ function go(id, _viaHistory) {
     setTimeout(resetRecursosState, 50);
   }
 
+  if (id === 'precios') {
+    setTimeout(calcularAhorro, 50);
+  }
+
   if (id.startsWith('guia-')) {
     setTimeout(() => applyContentGate(id), 50);
   }
@@ -4615,6 +4710,108 @@ function validateDemoForm() {
     firstInvalidEl.focus();
   }
   return allValid;
+}
+
+// ══════════════════════════════════════
+// CALCULADORA DE AHORRO (página Precios)
+// ══════════════════════════════════════
+let calcLeadTimer = null;
+let calcLeadShown = false;
+
+function calcularAhorro() {
+  const plantillaEl = document.getElementById('calc-plantilla');
+  const pctEl = document.getElementById('calc-pct');
+  if (!plantillaEl || !pctEl) return;
+
+  const plantilla = Math.max(0, parseFloat(plantillaEl.value) || 0);
+  const pct = Math.max(0, Math.min(100, parseFloat(pctEl.value) || 0));
+  const usaBienestar = document.getElementById('calc-bienestar').checked;
+  const usaCoaching = document.getElementById('calc-coaching').checked;
+
+  const tradEl = document.getElementById('calc-trad');
+  const groweeEl = document.getElementById('calc-growee');
+  const ahorroEl = document.getElementById('calc-ahorro');
+
+  if (!usaBienestar && !usaCoaching) {
+    tradEl.textContent = '— €/año';
+    groweeEl.textContent = '— €/año';
+    ahorroEl.textContent = 'Selecciona al menos un servicio';
+    return;
+  }
+
+  const nActivos = plantilla * (pct / 100);
+  const SESIONES_ANIO = 48; // 1 sesión/semana
+  const PRECIO_APOYO_SESION = 70;
+  const PRECIO_COACHING_SESION = 150;
+  const GROWEE_UN_MODULO_MES = 12;
+  const GROWEE_DOS_MODULOS_MES = 20;
+
+  let tradicional = 0;
+  if (usaBienestar) tradicional += nActivos * PRECIO_APOYO_SESION * SESIONES_ANIO;
+  if (usaCoaching) tradicional += nActivos * PRECIO_COACHING_SESION * SESIONES_ANIO;
+
+  const precioMensualGrowee = (usaBienestar && usaCoaching) ? GROWEE_DOS_MODULOS_MES : GROWEE_UN_MODULO_MES;
+  const growee = nActivos * precioMensualGrowee * 12;
+  const ahorro = tradicional - growee;
+
+  const fmt = (n) => Math.round(n).toLocaleString('es-ES') + ' €/año';
+  tradEl.textContent = fmt(tradicional);
+  groweeEl.textContent = fmt(growee);
+  ahorroEl.textContent = fmt(ahorro);
+
+  // A los 5 segundos de ver un resultado válido, se ofrece la demo (solo una vez por visita)
+  if (calcLeadTimer) clearTimeout(calcLeadTimer);
+  if (!calcLeadShown && nActivos > 0) {
+    calcLeadTimer = setTimeout(() => {
+      if (!calcLeadShown) {
+        calcLeadShown = true;
+        const modal = document.getElementById('calc-lead-modal');
+        if (modal) modal.style.display = 'flex';
+      }
+    }, 5000);
+  }
+}
+
+function closeCalcLeadModal() {
+  const modal = document.getElementById('calc-lead-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function submitCalcLead() {
+  const nombre = document.getElementById('calc-lead-nombre').value.trim();
+  const email = document.getElementById('calc-lead-email').value.trim();
+  const empresa = document.getElementById('calc-lead-empresa').value.trim();
+  const errorEl = document.getElementById('calc-lead-error');
+
+  if (!nombre || !email || !empresa) {
+    errorEl.textContent = 'Completa nombre, email y empresa para continuar.';
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errorEl.textContent = 'Escribe un email válido.';
+    return;
+  }
+  errorEl.textContent = '';
+
+  const payload = {
+    nombre,
+    email,
+    empresa,
+    reto: 'Vino desde la calculadora de ahorro de Precios: ' + (document.getElementById('calc-ahorro').textContent || ''),
+  };
+
+  try {
+    await fetch('/.netlify/functions/submit-demo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) {
+    console.error('Error enviando el lead de la calculadora:', e);
+  }
+
+  document.getElementById('calc-lead-fields').style.display = 'none';
+  document.getElementById('calc-lead-success').classList.add('show');
 }
 
 async function submitDemo() {
