@@ -1226,7 +1226,7 @@ document.addEventListener('scroll', function(e){
         <h3 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300">Metodología científica, no una capa de<br>prompt sobre un modelo genérico</h3>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-bottom:1.3rem">
-        <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem;display:flex;flex-direction:column;height:100%">
           <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;margin-bottom:.9rem;color:var(--moss-light)">Apoyo emocional</h4>
           <div style="display:flex;flex-direction:column;gap:.65rem">
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Gestión del estrés y la ansiedad laboral</div>
@@ -1236,9 +1236,9 @@ document.addEventListener('scroll', function(e){
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Técnicas de TCC, Mindfulness (MBSR) y ACT</div>
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Deriva activamente a una red de profesionales cuando la situación requiere atención clínica — no diagnostica ni sustituye a un especialista</div>
           </div>
-          <button class="btn-secondary" style="margin-top:1.3rem;width:100%;border-color:rgba(217,130,90,.35);color:var(--terra)" onclick="goDemoFor('bienestar')">Solicitar demo →</button>
+          <button class="btn-secondary" style="margin-top:auto;padding-top:1.3rem;width:100%;border-color:rgba(217,130,90,.35);color:var(--terra)" onclick="goDemoFor('bienestar')">Solicitar demo →</button>
         </div>
-        <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem">
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem;display:flex;flex-direction:column;height:100%">
           <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.15rem;margin-bottom:.9rem;color:var(--gold)">Coaching profesional</h4>
           <div style="display:flex;flex-direction:column;gap:.65rem">
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Liderazgo y gestión de equipos</div>
@@ -1247,7 +1247,7 @@ document.addEventListener('scroll', function(e){
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Transiciones de carrera y promociones</div>
             <div style="display:flex;gap:.6rem;font-size:.92rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Metodología GROW de John Whitmore, estándares ICF y modelo Co-Active</div>
           </div>
-          <button class="btn-secondary" style="margin-top:1.3rem;width:100%;border-color:rgba(201,168,76,.35);color:var(--gold)" onclick="goDemoFor('coaching')">Solicitar demo →</button>
+          <button class="btn-secondary" style="margin-top:auto;padding-top:1.3rem;width:100%;border-color:rgba(201,168,76,.35);color:var(--gold)" onclick="goDemoFor('coaching')">Solicitar demo →</button>
         </div>
         </div>
       </div>
@@ -1378,6 +1378,57 @@ document.addEventListener('scroll', function(e){
           <div style="display:flex;justify-content:space-between;align-items:center">
             <span style="font-size:.98rem;color:var(--cream)">Growee — 2 módulos, misma plantilla</span>
             <span class="js-countup" data-to="12000" data-format="es" data-suffix=" €/año" style="font-family:'Fraunces',serif;font-size:1.4rem;color:var(--moss-light)">0 €/año</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calcula tu ahorro -->
+    <div style="border-top:1px solid var(--border);padding-top:3rem;margin-bottom:3rem">
+      <div style="text-align:center;margin-bottom:2rem">
+        <div class="h-section-eye">Calcula tu ahorro</div>
+        <h3 style="font-family:'Fraunces',serif;font-size:2.2rem;font-weight:300">¿Cuánto ahorraría tu empresa con Growee?</h3>
+      </div>
+      <div class="calc-wrap">
+        <div>
+          <div class="form-group">
+            <label class="form-label">Nº total de trabajadores en la empresa</label>
+            <input class="form-input" type="number" id="calc-total-h" min="1" value="500">
+          </div>
+          <div class="calc-row2">
+            <div class="form-group">
+              <label class="form-label">Trabajadores · Apoyo Emocional</label>
+              <input class="form-input" type="number" id="calc-n-apoyo-h" min="0" value="50">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Precio €/mes · Apoyo Emocional</label>
+              <input class="form-input" type="number" id="calc-precio-apoyo-h" min="0" value="12">
+            </div>
+          </div>
+          <div class="calc-row2">
+            <div class="form-group">
+              <label class="form-label">Trabajadores · Coaching</label>
+              <input class="form-input" type="number" id="calc-n-coaching-h" min="0" value="50">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Precio €/mes · Coaching</label>
+              <input class="form-input" type="number" id="calc-precio-coaching-h" min="0" value="12">
+            </div>
+          </div>
+          <button class="btn-primary" style="width:100%;margin-top:.4rem" onclick="calcularAhorro('h')">Calcular ahorro →</button>
+        </div>
+        <div class="calc-result">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
+            <span style="font-size:.92rem;color:var(--cream)">Coste modelo tradicional</span>
+            <span id="calc-trad-h" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--terra)">— €/año</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
+            <span style="font-size:.92rem;color:var(--cream)">Coste con Growee</span>
+            <span id="calc-growee-h" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--moss-light)">— €/año</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:.98rem;color:var(--cream);font-weight:600">Tu ahorro estimado</span>
+            <span id="calc-ahorro-h" style="font-family:'Fraunces',serif;font-size:1.6rem;color:var(--moss-light)">— €/año</span>
           </div>
         </div>
       </div>
@@ -3458,8 +3509,7 @@ document.addEventListener('scroll', function(e){
   <style>
     .calc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;align-items:start;max-width:1000px;margin:0 auto}
     .calc-result{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem}
-    .calc-checks{display:flex;gap:1.3rem;margin-top:.4rem}
-    .calc-check-lbl{display:flex;align-items:center;gap:.5rem;font-size:.88rem;color:var(--cream);cursor:pointer}
+    .calc-row2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
     .calc-lead-overlay{position:fixed;inset:0;background:rgba(13,27,42,.78);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:999;padding:1.5rem}
     .calc-lead-box{background:var(--ink-2);border:1px solid var(--border);border-radius:20px;padding:2.2rem;max-width:400px;width:100%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.45)}
     .calc-lead-close{position:absolute;top:1rem;right:1.1rem;background:none;border:none;color:var(--inv-2);font-size:1.1rem;cursor:pointer;line-height:1}
@@ -3474,33 +3524,43 @@ document.addEventListener('scroll', function(e){
     <div class="calc-wrap">
       <div>
         <div class="form-group">
-          <label class="form-label">Tamaño de la plantilla</label>
-          <input class="form-input" type="number" id="calc-plantilla" min="1" value="500" oninput="calcularAhorro()">
+          <label class="form-label">Nº total de trabajadores en la empresa</label>
+          <input class="form-input" type="number" id="calc-total-p" min="1" value="500">
         </div>
-        <div class="form-group">
-          <label class="form-label">% de la plantilla usando cada servicio</label>
-          <input class="form-input" type="number" id="calc-pct" min="1" max="100" value="10" oninput="calcularAhorro()">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Servicios a incluir</label>
-          <div class="calc-checks">
-            <label class="calc-check-lbl"><input type="checkbox" id="calc-bienestar" checked onchange="calcularAhorro()"> Apoyo emocional</label>
-            <label class="calc-check-lbl"><input type="checkbox" id="calc-coaching" checked onchange="calcularAhorro()"> Coaching</label>
+        <div class="calc-row2">
+          <div class="form-group">
+            <label class="form-label">Trabajadores · Apoyo Emocional</label>
+            <input class="form-input" type="number" id="calc-n-apoyo-p" min="0" value="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Precio €/mes · Apoyo Emocional</label>
+            <input class="form-input" type="number" id="calc-precio-apoyo-p" min="0" value="12">
           </div>
         </div>
+        <div class="calc-row2">
+          <div class="form-group">
+            <label class="form-label">Trabajadores · Coaching</label>
+            <input class="form-input" type="number" id="calc-n-coaching-p" min="0" value="50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Precio €/mes · Coaching</label>
+            <input class="form-input" type="number" id="calc-precio-coaching-p" min="0" value="12">
+          </div>
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:.4rem" onclick="calcularAhorro('p')">Calcular ahorro →</button>
       </div>
       <div class="calc-result">
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
           <span style="font-size:.92rem;color:var(--cream)">Coste modelo tradicional</span>
-          <span id="calc-trad" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--terra)">— €/año</span>
+          <span id="calc-trad-p" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--terra)">— €/año</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:.8rem;border-bottom:1px solid var(--border);margin-bottom:.8rem">
           <span style="font-size:.92rem;color:var(--cream)">Coste con Growee</span>
-          <span id="calc-growee" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--moss-light)">— €/año</span>
+          <span id="calc-growee-p" style="font-family:'Fraunces',serif;font-size:1.25rem;color:var(--moss-light)">— €/año</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center">
           <span style="font-size:.98rem;color:var(--cream);font-weight:600">Tu ahorro estimado</span>
-          <span id="calc-ahorro" style="font-family:'Fraunces',serif;font-size:1.6rem;color:var(--moss-light)">— €/año</span>
+          <span id="calc-ahorro-p" style="font-family:'Fraunces',serif;font-size:1.6rem;color:var(--moss-light)">— €/año</span>
         </div>
       </div>
     </div>
@@ -4545,10 +4605,6 @@ function go(id, _viaHistory) {
     setTimeout(resetRecursosState, 50);
   }
 
-  if (id === 'precios') {
-    setTimeout(calcularAhorro, 50);
-  }
-
   if (id.startsWith('guia-')) {
     setTimeout(() => applyContentGate(id), 50);
   }
@@ -4718,40 +4774,33 @@ function validateDemoForm() {
 let calcLeadTimer = null;
 let calcLeadShown = false;
 
-function calcularAhorro() {
-  const plantillaEl = document.getElementById('calc-plantilla');
-  const pctEl = document.getElementById('calc-pct');
-  if (!plantillaEl || !pctEl) return;
+function calcularAhorro(prefix) {
+  const byId = (base) => document.getElementById(base + '-' + prefix);
+  const totalEl = byId('calc-total');
+  if (!totalEl) return;
 
-  const plantilla = Math.max(0, parseFloat(plantillaEl.value) || 0);
-  const pct = Math.max(0, Math.min(100, parseFloat(pctEl.value) || 0));
-  const usaBienestar = document.getElementById('calc-bienestar').checked;
-  const usaCoaching = document.getElementById('calc-coaching').checked;
+  const nApoyo = Math.max(0, parseFloat(byId('calc-n-apoyo').value) || 0);
+  const nCoaching = Math.max(0, parseFloat(byId('calc-n-coaching').value) || 0);
+  const precioApoyo = Math.max(0, parseFloat(byId('calc-precio-apoyo').value) || 0);
+  const precioCoaching = Math.max(0, parseFloat(byId('calc-precio-coaching').value) || 0);
 
-  const tradEl = document.getElementById('calc-trad');
-  const groweeEl = document.getElementById('calc-growee');
-  const ahorroEl = document.getElementById('calc-ahorro');
+  const tradEl = byId('calc-trad');
+  const groweeEl = byId('calc-growee');
+  const ahorroEl = byId('calc-ahorro');
 
-  if (!usaBienestar && !usaCoaching) {
+  if (nApoyo <= 0 && nCoaching <= 0) {
     tradEl.textContent = '— €/año';
     groweeEl.textContent = '— €/año';
-    ahorroEl.textContent = 'Selecciona al menos un servicio';
+    ahorroEl.textContent = 'Indica al menos un trabajador en algún servicio';
     return;
   }
 
-  const nActivos = plantilla * (pct / 100);
   const SESIONES_ANIO = 48; // 1 sesión/semana
   const PRECIO_APOYO_SESION = 70;
   const PRECIO_COACHING_SESION = 150;
-  const GROWEE_UN_MODULO_MES = 12;
-  const GROWEE_DOS_MODULOS_MES = 20;
 
-  let tradicional = 0;
-  if (usaBienestar) tradicional += nActivos * PRECIO_APOYO_SESION * SESIONES_ANIO;
-  if (usaCoaching) tradicional += nActivos * PRECIO_COACHING_SESION * SESIONES_ANIO;
-
-  const precioMensualGrowee = (usaBienestar && usaCoaching) ? GROWEE_DOS_MODULOS_MES : GROWEE_UN_MODULO_MES;
-  const growee = nActivos * precioMensualGrowee * 12;
+  const tradicional = (nApoyo * PRECIO_APOYO_SESION * SESIONES_ANIO) + (nCoaching * PRECIO_COACHING_SESION * SESIONES_ANIO);
+  const growee = (nApoyo * precioApoyo + nCoaching * precioCoaching) * 12;
   const ahorro = tradicional - growee;
 
   const fmt = (n) => Math.round(n).toLocaleString('es-ES') + ' €/año';
@@ -4759,9 +4808,9 @@ function calcularAhorro() {
   groweeEl.textContent = fmt(growee);
   ahorroEl.textContent = fmt(ahorro);
 
-  // A los 5 segundos de ver un resultado válido, se ofrece la demo (solo una vez por visita)
+  // El popup de demo se ofrece 5 segundos después de pulsar "Calcular" y ver el resultado (solo una vez por visita)
   if (calcLeadTimer) clearTimeout(calcLeadTimer);
-  if (!calcLeadShown && nActivos > 0) {
+  if (!calcLeadShown) {
     calcLeadTimer = setTimeout(() => {
       if (!calcLeadShown) {
         calcLeadShown = true;
