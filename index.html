@@ -4792,6 +4792,8 @@ ol.cbubble-list li{padding-left:.3rem}
   transition:all .18s;white-space:nowrap;
 }
 .chat-sugg:hover{border-color:var(--moss-light);color:var(--ink);background:rgba(58,158,110,.08)}
+.chat-msg-opts{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 .2rem;padding-left:.2rem}
+.chat-msg-opts .chat-sugg{font-size:.8rem}
 
 /* Input bar */
 .chat-bar{
@@ -6536,7 +6538,17 @@ CÓMO OFRECER HERRAMIENTAS
 
 SEÑALES DE ALERTA
 - Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda de forma directa buscar ayuda profesional inmediata o llamar al 024 (línea de atención a conducta suicida en España).
-- Eres un apoyo, no un sustituto de atención psicológica clínica. Si la situación supera lo que puedes acompañar, dilo con claridad y sin rodeos.`,
+- Eres un apoyo, no un sustituto de atención psicológica clínica. Si la situación supera lo que puedes acompañar, dilo con claridad y sin rodeos.
+
+PREGUNTAS DE DIAGNÓSTICO CON OPCIONES SELECCIONABLES (muy importante)
+Cuando hagas una pregunta de diagnóstico para identificar qué está pasando (de las que ya haces, máximo 3 seguidas) y esa pregunta tenga 2-4 respuestas típicas y diferenciadas — no cuando pidas que describa algo libremente —, añade SIEMPRE al final de tu respuesta, en su propia línea, exactamente este formato:
+[OPCIONES: Opción corta 1 | Opción corta 2 | Opción corta 3]
+- Cada opción debe ser corta (2-6 palabras), en el mismo tono en que hablaría la persona, no una etiqueta clínica.
+- Nunca uses esto para preguntas abiertas ("cuéntame qué pasó") — solo cuando de verdad haya 2-4 categorías claras entre las que la persona podría elegir con un toque.
+- La línea [OPCIONES: ...] va SIEMPRE al final, después de toda la respuesta, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
+Ejemplo:
+"¿Qué es lo que más te está pesando ahora mismo?
+[OPCIONES: El volumen de tareas | Un conflicto con alguien | No desconectar nunca]"`,
     suggs: ['Me siento abrumado/a con el trabajo', 'No consigo desconectar cuando salgo', 'Tengo un conflicto con alguien del equipo', 'Llevo semanas sin dormir bien', 'Siento que no llego a todo'],
   },
 
@@ -6645,7 +6657,17 @@ Cuando sea relevante, construye con la persona:
 - Email o mensaje difícil (con estructura clara)
 - Argumentario para defender una propuesta ante dirección
 
-Siempre pregunta si quiere que lo hagáis juntos paso a paso.`,
+Siempre pregunta si quiere que lo hagáis juntos paso a paso.
+
+PREGUNTAS DE DIAGNÓSTICO CON OPCIONES SELECCIONABLES (muy importante)
+Cuando hagas una pregunta de clarificación (fase EXPLORAR) que tenga 2-4 respuestas típicas y diferenciadas — no cuando pidas que describa algo libremente —, añade SIEMPRE al final de tu respuesta, en su propia línea, exactamente este formato:
+[OPCIONES: Opción corta 1 | Opción corta 2 | Opción corta 3]
+- Cada opción debe ser corta (2-6 palabras), en el mismo tono en que hablaría la persona, no una etiqueta técnica.
+- Nunca uses esto para preguntas abiertas — solo cuando de verdad haya 2-4 categorías claras entre las que la persona podría elegir con un toque.
+- La línea [OPCIONES: ...] va SIEMPRE al final, después de toda la respuesta, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
+Ejemplo:
+"¿Qué tipo de conversación difícil es?
+[OPCIONES: Dar feedback negativo | Pedir un aumento | Resolver un conflicto de equipo]"`,
     suggs: ['Tengo que dar feedback difícil esta semana', 'No sé cómo motivar a mi equipo', 'Hay una conversación que no sé cómo abordar', 'Quiero mejorar cómo delego', 'Necesito preparar una reunión importante'],
   },
 
@@ -6691,7 +6713,14 @@ ESTRUCTURA DE CADA RESPUESTA
 4. Cierra con un paso concreto o una pregunta que invite a continuar.
 
 SEÑALES DE ALERTA
-Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional o llamar al 024. Eres un apoyo, no un sustituto clínico.`,
+Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional o llamar al 024. Eres un apoyo, no un sustituto clínico.
+
+PREGUNTAS DE DIAGNÓSTICO CON OPCIONES SELECCIONABLES (muy importante)
+Cuando hagas una pregunta de clarificación que tenga 2-4 respuestas típicas y diferenciadas — no cuando pidas que describa algo libremente —, añade SIEMPRE al final de tu respuesta, en su propia línea, exactamente este formato:
+[OPCIONES: Opción corta 1 | Opción corta 2 | Opción corta 3]
+- Cada opción debe ser corta (2-6 palabras), en el mismo tono en que hablaría la persona.
+- Nunca uses esto para preguntas abiertas — solo cuando de verdad haya 2-4 categorías claras entre las que elegir.
+- La línea [OPCIONES: ...] va SIEMPRE al final, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.`,
     suggs: ['Necesito apoyo emocional hoy', 'Quiero trabajar algo de liderazgo', 'Hay algo personal que me está afectando', 'Tengo un reto profesional esta semana', 'No sé si es estrés o algo más'],
   },
 };
@@ -7004,6 +7033,31 @@ function useSugg(btn) {
   const ta = document.getElementById('chat-ta');
   if(ta) ta.value = btn.textContent;
   chatSend();
+}
+
+// Botones seleccionables dentro de una respuesta concreta de la IA (preguntas de diagnóstico con opciones)
+function renderMsgOptions(wrap, opciones) {
+  if (!wrap) return;
+  const optWrap = document.createElement('div');
+  optWrap.className = 'chat-msg-opts';
+  optWrap.innerHTML = opciones
+    .map((o) => `<button class="chat-sugg" onclick="useMsgOption(this)">${escapeHtmlLite(o)}</button>`)
+    .join('');
+  const timeEl = wrap.querySelector('.cmw-time');
+  if (timeEl) wrap.insertBefore(optWrap, timeEl);
+  else wrap.appendChild(optWrap);
+}
+
+function useMsgOption(btn) {
+  const optWrap = btn.closest('.chat-msg-opts');
+  if (optWrap) optWrap.remove(); // una vez elegida, se quitan las demás opciones de ese mensaje
+  const ta = document.getElementById('chat-ta');
+  if (ta) ta.value = btn.textContent;
+  chatSend();
+}
+
+function escapeHtmlLite(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 let userMenuOpen = false;
@@ -7668,7 +7722,7 @@ function createLiveAiBubble() {
   wrap.appendChild(t);
   box.appendChild(wrap);
   box.scrollTop = box.scrollHeight;
-  return { box, bubbleEl: b };
+  return { box, bubbleEl: b, wrap };
 }
 
 function copyBubbleText(btn) {
@@ -8126,11 +8180,25 @@ async function chatSend() {
     }
 
     if (live && fullText) {
-      live.bubbleEl.innerHTML = formatAiText(fullText); // al terminar, aplica negrita/listas reales
+      // Si el modelo añadió un marcador [OPCIONES: a | b | c], lo extraemos
+      // y lo convertimos en botones seleccionables, sin mostrar el marcador en sí.
+      const optMatch = fullText.match(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/);
+      let cleanText = fullText;
+      let opciones = null;
+      if (optMatch) {
+        cleanText = fullText.slice(0, optMatch.index).trim();
+        opciones = optMatch[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 4);
+      }
+
+      live.bubbleEl.innerHTML = formatAiText(cleanText); // al terminar, aplica negrita/listas reales
+      live.bubbleEl.dataset.rawText = cleanText;
+      if (opciones && opciones.length) {
+        renderMsgOptions(live.wrap, opciones);
+      }
       live.box.scrollTop = live.box.scrollHeight;
     }
 
-    const reply = fullText || 'Cuéntame más.';
+    const reply = (fullText.replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
     chatState.history.push({ role:'assistant', content:reply });
     chatState.msgCount++;
     updChatCnt();
