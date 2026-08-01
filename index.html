@@ -907,14 +907,20 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
           <div class="dd-icon gold">€</div>
           <div class="dd-text"><h5>Precios</h5><p>Desde 12€/empleado/mes, sin permanencia mínima</p></div>
         </div>
+        <div style="grid-column:1/-1;padding:.9rem 0 .8rem .0;border-bottom:1px solid var(--border);margin-bottom:.4rem;margin-top:.3rem">
+          <div style="font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--inv-2)">Para aseguradoras</div>
+        </div>
         <div class="dd-item" onclick="go('prod-aseguradoras');closeDD()">
           <div class="dd-icon gold" style="color:var(--gold)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="5" y1="21" x2="5" y2="10"/><line x1="19" y1="21" x2="19" y2="10"/><polygon points="12 3 21 9 3 9"/></svg></div>
-          <div class="dd-text"><h5>Para aseguradoras</h5><p>Growee como valor añadido dentro de la póliza de salud</p></div>
+          <div class="dd-text"><h5>Canal aseguradoras</h5><p>Growee como valor añadido dentro de la póliza de salud</p></div>
         </div>
 
       </div>
     </div>
     <button class="nav-link" onclick="go('como-funciona')">Cómo funciona</button>
+    <button class="nav-link" onclick="go('sectores')">Sectores</button>
+    <button class="nav-link" onclick="go('comparativa')">Comparativa</button>
+    <button class="nav-link" onclick="go('integraciones')">Integraciones</button>
     <button class="nav-link" onclick="go('recursos')">Recursos</button>
   </div>
   <div class="nav-right">
@@ -938,9 +944,13 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
     <div class="mobile-nav-section">Para empresas</div>
     <button class="mobile-nav-item" onclick="go('prod-rrhh');closeMobileMenu()">📊 Panel de RRHH</button>
     <button class="mobile-nav-item" onclick="go('precios');closeMobileMenu()">€ Precios</button>
-    <button class="mobile-nav-item" onclick="go('prod-aseguradoras');closeMobileMenu()">🏦 Para aseguradoras</button>
+    <div class="mobile-nav-section">Para aseguradoras</div>
+    <button class="mobile-nav-item" onclick="go('prod-aseguradoras');closeMobileMenu()">🏦 Canal aseguradoras</button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-item" onclick="go('como-funciona');closeMobileMenu()">⚙️ Cómo funciona</button>
+    <button class="mobile-nav-item" onclick="go('sectores');closeMobileMenu()">🏢 Sectores</button>
+    <button class="mobile-nav-item" onclick="go('comparativa');closeMobileMenu()">📊 Comparativa</button>
+    <button class="mobile-nav-item" onclick="go('integraciones');closeMobileMenu()">🔗 Integraciones</button>
     <button class="mobile-nav-item" onclick="go('recursos');closeMobileMenu()">📚 Recursos</button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-item" onclick="go('login');closeMobileMenu()">Acceder</button>
@@ -1816,7 +1826,208 @@ document.addEventListener('scroll', function(e){
 </footer>
 </div>
 
+<!-- SECTORES -->
+<div id="pg-sectores" class="pg">
+  <div style="max-width:1160px;margin:0 auto;padding:5rem 3rem">
+    <div style="text-align:center;max-width:680px;margin:0 auto 3.5rem">
+      <div class="tag-pill tag-moss" style="margin-bottom:1.2rem;display:inline-flex"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Sectores</div>
+      <h2 style="margin-bottom:1rem">Cada sector se desgasta<br><em>de una forma distinta</em></h2>
+      <p class="lead">El burnout en tech no se parece al de sanidad, ni al de un equipo de cara al público. Growee adapta sus respuestas al contexto real de cada sector, no da un mismo consejo genérico para todos.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.3rem;margin-bottom:3rem">
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+        <div style="width:42px;height:42px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;color:var(--moss-light)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.8rem">Tech</h3>
+        <div style="display:flex;flex-direction:column;gap:.55rem;flex:1">
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--moss-light);flex-shrink:0">→</span>Deadlines de sprint acumulados y guardias que rompen el descanso</div>
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--moss-light);flex-shrink:0">→</span>Cambio de contexto constante entre proyectos</div>
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--moss-light);flex-shrink:0">→</span>Ansiedad por quedarse atrás tecnológicamente</div>
+        </div>
+        <p style="font-size:.82rem;color:var(--cream);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">El desgaste aquí suele aparecer antes como cinismo hacia el producto que como cansancio físico — Growee lo reconoce y no lo confunde con desmotivación.</p>
+      </div>
+
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+        <div style="width:42px;height:42px;border-radius:50%;background:rgba(217,130,90,.12);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;color:var(--terra)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></div>
+        <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.8rem">Sanidad</h3>
+        <div style="display:flex;flex-direction:column;gap:.55rem;flex:1">
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Fatiga por compasión acumulada, turno tras turno</div>
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Turnos rotativos que desajustan el descanso</div>
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--terra);flex-shrink:0">→</span>Decisiones de alto impacto sin margen de error visible</div>
+        </div>
+        <p style="font-size:.82rem;color:var(--cream);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">La distancia emocional aquí no siempre es falta de vocación — a menudo es protección. Growee ayuda a notar cuándo esa distancia deja de proteger y empieza a desconectar.</p>
+      </div>
+
+      <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.8rem;display:flex;flex-direction:column">
+        <div style="width:42px;height:42px;border-radius:50%;background:rgba(201,168,76,.12);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;color:var(--gold)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+        <h3 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.2rem;margin-bottom:.8rem">Retail / cara al público</h3>
+        <div style="display:flex;flex-direction:column;gap:.55rem;flex:1">
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Exposición constante a clientes, sin poder elegir con quién</div>
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Horarios variables que dificultan la vida fuera del trabajo</div>
+          <div style="display:flex;gap:.5rem;font-size:.85rem;color:var(--inv);line-height:1.55"><span style="color:var(--gold);flex-shrink:0">→</span>Objetivos comerciales visibles y medidos a diario</div>
+        </div>
+        <p style="font-size:.82rem;color:var(--cream);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">Aquí el desgaste viene menos de la cantidad de tareas y más de sostener una actitud amable constante — Growee reconoce ese "trabajo emocional" como una carga real, no invisible.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Quieres ver cómo responde Growee a un caso real de tu sector?</div>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('prod-rrhh')">Panel de RRHH</a>
+    <a onclick="go('prod-aseguradoras')">Para aseguradoras</a>
+    <a onclick="go('sectores')">Sectores</a>
+    <a onclick="go('comparativa')">Comparativa</a>
+    <a onclick="go('integraciones')">Integraciones</a>
+    <a onclick="go('como-funciona')">Cómo funciona</a>
+    <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+    <a onclick="go('recursos')">Recursos</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
+</div>
+
+<!-- COMPARATIVA -->
+<div id="pg-comparativa" class="pg">
+  <div style="max-width:1000px;margin:0 auto;padding:5rem 3rem">
+    <div style="text-align:center;max-width:680px;margin:0 auto 3rem">
+      <div class="tag-pill tag-gold" style="margin-bottom:1.2rem;display:inline-flex"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg> Comparativa</div>
+      <h2 style="margin-bottom:1rem">Cómo se compara Growee<br><em>con las alternativas</em></h2>
+      <p class="lead">Ni un chat de IA genérico ni el modelo presencial tradicional cubren solos lo que necesita un equipo. Así se comparan, punto por punto.</p>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:.95rem;min-width:640px">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:.9rem;color:var(--inv-2);font-weight:400"></th>
+            <th style="text-align:center;padding:.9rem;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:400;border-top:2px solid var(--moss-light);border-bottom:2px solid var(--moss-light)">Growee</th>
+            <th style="text-align:center;padding:.9rem;color:var(--cream);font-weight:400">IA genérica<br><span style="font-size:.72rem;color:var(--inv-2);font-weight:400">ChatGPT / Claude</span></th>
+            <th style="text-align:center;padding:.9rem;color:var(--cream);font-weight:400">EAP tradicional<br><span style="font-size:.72rem;color:var(--inv-2);font-weight:400">servicio de empresa</span></th>
+            <th style="text-align:center;padding:.9rem;color:var(--cream);font-weight:400">Presencial<br><span style="font-size:.72rem;color:var(--inv-2);font-weight:400">psicólogo / coach 1:1</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.9rem;color:var(--cream)">Metodología científica citada</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td><td style="text-align:center;color:var(--inv-2)">—</td><td style="text-align:center;color:var(--moss-light)">Sí</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.9rem;color:var(--cream)">Disponible 24/7</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td><td style="text-align:center;color:#E0625C">No</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.9rem;color:var(--cream)">Confidencialidad gestionada ante RRHH</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">—</td><td style="text-align:center;color:#E0625C">Variable</td><td style="text-align:center;color:var(--inv-2)">—</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.9rem;color:var(--cream)">Acceso inmediato, sin listas de espera</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td><td style="text-align:center;color:#E0625C">No</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.9rem;color:var(--cream)">Deriva a profesional real si hace falta</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td><td style="text-align:center;color:var(--moss-light)">Sí</td><td style="text-align:center;color:var(--inv-2)">—</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:.9rem;color:var(--cream)">Memoria entre sesiones ligada a la empresa</td><td style="text-align:center;color:var(--moss-light);font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light)">Sí</td><td style="text-align:center;color:#E0625C">No</td><td style="text-align:center;color:#E0625C">Variable</td><td style="text-align:center;color:var(--moss-light)">Sí</td></tr>
+          <tr><td style="padding:.9rem;color:var(--cream)">Precio aproximado por persona</td><td style="text-align:center;color:var(--moss-light);font-family:'Fraunces',serif;font-weight:700;border-left:2px solid var(--moss-light);border-right:2px solid var(--moss-light);border-bottom:2px solid var(--moss-light)">12–20 €/mes</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">20–25 €/mes</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">incluido, poco usado</td><td style="text-align:center;color:var(--cream);font-family:'Fraunces',serif">50–300 €/sesión</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:1rem;color:var(--cream);text-align:center;max-width:640px;margin:1.5rem auto 3rem">Ningún competidor combina hoy IA y profesionales humanos ofreciendo apoyo emocional y coaching a la vez — ese es el espacio que ocupa Growee.</p>
+
+    <div style="text-align:center;padding:3rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Lo comparamos con vuestra situación actual?</div>
+      <button class="btn-primary" onclick="go('demo')">Solicitar demo</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('prod-rrhh')">Panel de RRHH</a>
+    <a onclick="go('prod-aseguradoras')">Para aseguradoras</a>
+    <a onclick="go('sectores')">Sectores</a>
+    <a onclick="go('comparativa')">Comparativa</a>
+    <a onclick="go('integraciones')">Integraciones</a>
+    <a onclick="go('como-funciona')">Cómo funciona</a>
+    <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+    <a onclick="go('recursos')">Recursos</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
+</div>
+
 <!-- INTEGRACIONES -->
+<div id="pg-integraciones" class="pg">
+  <div style="max-width:1000px;margin:0 auto;padding:5rem 3rem">
+    <div style="text-align:center;max-width:680px;margin:0 auto 3rem">
+      <div class="tag-pill tag-moss" style="margin-bottom:1.2rem;display:inline-flex"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Integraciones</div>
+      <h2 style="margin-bottom:1rem">Growee encaja en tu<br><em>stack de RRHH</em></h2>
+      <p class="lead">Somos una plataforma joven — preferimos ser claros sobre qué está disponible hoy y qué está en camino, en vez de prometer integraciones que todavía no existen.</p>
+    </div>
+
+    <div style="margin-bottom:2rem">
+      <div class="h-section-eye" style="text-align:left;margin-bottom:1rem">Disponible hoy</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Onboarding por CSV</h4><p style="font-size:.85rem;color:var(--inv);line-height:1.6">Sube un archivo con tu plantilla y en minutos cada persona tiene acceso a su cuenta. Sin integración técnica, sin esperar a nadie.</p></div>
+        </div>
+        <div style="background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(82,183,136,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--moss-light)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div><h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:1.05rem;margin-bottom:.4rem;color:var(--cream)">Acceso individual seguro</h4><p style="font-size:.85rem;color:var(--inv);line-height:1.6">Cada empleado accede con su propia cuenta, sin que RRHH vea el contenido de ninguna conversación individual.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:3rem">
+      <div class="h-section-eye" style="text-align:left;margin-bottom:1rem">En desarrollo</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem">
+        <div style="background:var(--mist);border:1px dashed var(--border);border-radius:16px;padding:1.4rem">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="color:var(--inv-2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:.98rem;color:var(--cream)">HRIS</h4>
+          </div>
+          <p style="font-size:.8rem;color:var(--inv);line-height:1.6">Sincronización automática de plantilla con Bizneo, Factorial y Personio — sin subir CSV a mano.</p>
+        </div>
+        <div style="background:var(--mist);border:1px dashed var(--border);border-radius:16px;padding:1.4rem">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="color:var(--inv-2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M8 8h5M8 16h5"/></svg></div>
+            <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:.98rem;color:var(--cream)">Slack y Microsoft Teams</h4>
+          </div>
+          <p style="font-size:.8rem;color:var(--inv);line-height:1.6">Acceso a Growee sin salir de las herramientas de comunicación que tu equipo ya usa cada día.</p>
+        </div>
+        <div style="background:var(--mist);border:1px dashed var(--border);border-radius:16px;padding:1.4rem">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="color:var(--inv-2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg></div>
+            <h4 style="font-family:'Fraunces',serif;font-weight:400;font-size:.98rem;color:var(--cream)">SSO (Google / Microsoft)</h4>
+          </div>
+          <p style="font-size:.8rem;color:var(--inv);line-height:1.6">Inicio de sesión único con la cuenta corporativa, para empresas con requisitos de seguridad más estrictos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:3rem;background:rgba(82,183,136,.06);border:1px solid rgba(82,183,136,.18);border-radius:20px">
+      <div style="font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;margin-bottom:.6rem">¿Necesitáis una integración concreta?</div>
+      <p style="color:var(--inv);font-size:.9rem;margin-bottom:1.3rem">Cuéntanos qué herramienta usáis — nos ayuda a priorizar el roadmap.</p>
+      <button class="btn-primary" onclick="go('demo')">Hablar con nosotros</button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <footer>
+  <div class="footer-logo" onclick="go('home')" style="cursor:pointer">Grow<span>ee</span></div>
+  <div class="footer-links">
+    <a onclick="go('prod-bienestar')">Apoyo Emocional</a>
+    <a onclick="go('prod-coaching')">Coaching</a>
+    <a onclick="go('prod-rrhh')">Panel de RRHH</a>
+    <a onclick="go('prod-aseguradoras')">Para aseguradoras</a>
+    <a onclick="go('sectores')">Sectores</a>
+    <a onclick="go('comparativa')">Comparativa</a>
+    <a onclick="go('integraciones')">Integraciones</a>
+    <a onclick="go('como-funciona')">Cómo funciona</a>
+    <a onclick="go('seguridad-rgpd')">Seguridad y RGPD</a>
+    <a onclick="go('recursos')">Recursos</a>
+    <a onclick="go('demo')">Demo</a>
+  </div>
+  <div class="footer-legal">© 2025 Growee · RGPD · Datos en EU 🇪🇺</div>
+</footer>
+</div>
 <!-- ════════════════════════════════════════
      PRECIOS PAGE — rediseñado para convertir
 ════════════════════════════════════════ -->
@@ -5274,7 +5485,7 @@ function closeMobileMenu() {
 }
 
 // ── Routing ──
-const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','prod-aseguradoras','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','guia-delegacion','guia-conflicto-equipo','guia-motivacion','guia-equipo-remoto','guia-evaluacion-justa','guia-rumiacion','guia-limites-culpa','guia-senales-tempranas','guia-acompanar-companero','guia-dormir-mal','guia-ansiedad-presentacion','guia-sindrome-impostor','guia-pedir-ayuda','guia-recuperar-mal-dia','guia-culpa-persistente','guia-cambio-no-elegido','guia-nombrar-emociones','guia-conversacion-no-promocion','guia-preguntas-1-1','guia-liderar-vs-gestionar','guia-equipo-sin-confianza','guia-negociar-sin-guerra','guia-heredar-equipo-dificil','guia-cultura-feedback-continuo','guia-perfeccionismo-autoexigencia','guia-ansiedad-anticipatoria','guia-motivacion-baja-activacion','guia-autoeficacia-nuevo-rol','guia-perdida-reestructuracion','guia-gratitud-antidoto-cinismo','guia-flow-trabajo-profundo','guia-optimismo-explicativo','guia-grounding-ansiedad-aguda','guia-fortalezas-caracter','guia-feedforward-vs-feedback','guia-scarf-cambio-equipo','guia-delegar-mono-de-vuelta','guia-contrato-psicologico-roto','guia-negociacion-sin-ceder','guia-decision-cuanto-involucrar','guia-primeras-victorias-liderazgo','guia-porque-antes-que-que','guia-conversacion-identidad','guia-adaptar-estilo-liderazgo','precios','demo','login','app','rrhh-panel'];
+const PAGES = ['home','prod-bienestar','prod-coaching','prod-rrhh','prod-aseguradoras','sectores','comparativa','integraciones','como-funciona','casos','seguridad-rgpd','recursos','guia-feedback-sbi','guia-burnout','guia-1-1s','guia-salud-mental','guia-grow','guia-agotamiento-equipo','guia-delegacion','guia-conflicto-equipo','guia-motivacion','guia-equipo-remoto','guia-evaluacion-justa','guia-rumiacion','guia-limites-culpa','guia-senales-tempranas','guia-acompanar-companero','guia-dormir-mal','guia-ansiedad-presentacion','guia-sindrome-impostor','guia-pedir-ayuda','guia-recuperar-mal-dia','guia-culpa-persistente','guia-cambio-no-elegido','guia-nombrar-emociones','guia-conversacion-no-promocion','guia-preguntas-1-1','guia-liderar-vs-gestionar','guia-equipo-sin-confianza','guia-negociar-sin-guerra','guia-heredar-equipo-dificil','guia-cultura-feedback-continuo','guia-perfeccionismo-autoexigencia','guia-ansiedad-anticipatoria','guia-motivacion-baja-activacion','guia-autoeficacia-nuevo-rol','guia-perdida-reestructuracion','guia-gratitud-antidoto-cinismo','guia-flow-trabajo-profundo','guia-optimismo-explicativo','guia-grounding-ansiedad-aguda','guia-fortalezas-caracter','guia-feedforward-vs-feedback','guia-scarf-cambio-equipo','guia-delegar-mono-de-vuelta','guia-contrato-psicologico-roto','guia-negociacion-sin-ceder','guia-decision-cuanto-involucrar','guia-primeras-victorias-liderazgo','guia-porque-antes-que-que','guia-conversacion-identidad','guia-adaptar-estilo-liderazgo','precios','demo','login','app','rrhh-panel'];
 const APP_PAGES = ['login','onboarding','app','rrhh-panel'];
 let currentPage = 'home';
 let pageHistory = ['home'];
@@ -5550,7 +5761,7 @@ function calcularAhorro(prefix) {
   groweeEl.textContent = fmt(growee);
   ahorroEl.textContent = fmt(ahorro);
 
-  // El popup de demo se ofrece 5 segundos después de pulsar "Calcular" y ver el resultado (solo una vez por visita)
+  // El popup de demo se ofrece 3 segundos después de pulsar "Calcular" y ver el resultado (solo una vez por visita)
   if (calcLeadTimer) clearTimeout(calcLeadTimer);
   if (!calcLeadShown) {
     calcLeadTimer = setTimeout(() => {
@@ -5559,7 +5770,7 @@ function calcularAhorro(prefix) {
         const modal = document.getElementById('calc-lead-modal');
         if (modal) modal.style.display = 'flex';
       }
-    }, 5000);
+    }, 3000);
   }
 }
 
