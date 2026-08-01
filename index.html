@@ -872,6 +872,27 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
   <button class="cookie-banner-btn" onclick="dismissCookieBanner()">Entendido</button>
 </div>
 
+<!-- Popup de captación de la calculadora de ahorro — global, fuera de cualquier página, para que funcione tanto desde Home como desde Precios -->
+<div id="calc-lead-modal" class="calc-lead-overlay" style="display:none">
+  <div class="calc-lead-box">
+    <button class="calc-lead-close" onclick="closeCalcLeadModal()">✕</button>
+    <div id="calc-lead-fields">
+      <h3 style="font-family:'Fraunces',serif;font-size:1.35rem;font-weight:400;margin-bottom:.5rem">¿Vemos cómo aplica esto a tu equipo?</h3>
+      <p style="font-size:.85rem;color:var(--inv);margin-bottom:1.3rem">Te mostramos la propuesta exacta en una demo de 30 minutos.</p>
+      <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="calc-lead-nombre" type="text"></div>
+      <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" id="calc-lead-email" type="email" placeholder="nombre@empresa.com"></div>
+      <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="calc-lead-empresa" type="text"></div>
+      <button class="form-submit" onclick="submitCalcLead()">Solicitar demo →</button>
+      <div id="calc-lead-error" style="font-size:.72rem;color:#E5484D;margin-top:.6rem;text-align:center"></div>
+    </div>
+    <div class="calc-lead-success" id="calc-lead-success">
+      <div style="font-size:2rem;margin-bottom:.8rem">✓</div>
+      <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:400;margin-bottom:.5rem">¡Gracias!</h3>
+      <p style="font-size:.85rem;color:var(--inv)">Te contactamos en menos de 24h para confirmar la demo.</p>
+    </div>
+  </div>
+</div>
+
 <!-- ════ NAV ════ -->
 <nav id="main-nav">
   <button class="hamburger" id="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Menú">
@@ -4514,27 +4535,6 @@ document.addEventListener('scroll', function(e){
           <span style="font-size:.98rem;color:var(--cream);font-weight:600">Tu ahorro estimado</span>
           <span id="calc-ahorro-p" style="font-family:'Fraunces',serif;font-size:1.6rem;color:var(--moss-light)">— €/año</span>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Popup de captación tras ver el resultado -->
-  <div id="calc-lead-modal" class="calc-lead-overlay" style="display:none">
-    <div class="calc-lead-box">
-      <button class="calc-lead-close" onclick="closeCalcLeadModal()">✕</button>
-      <div id="calc-lead-fields">
-        <h3 style="font-family:'Fraunces',serif;font-size:1.35rem;font-weight:400;margin-bottom:.5rem">¿Vemos cómo aplica esto a tu equipo?</h3>
-        <p style="font-size:.85rem;color:var(--inv);margin-bottom:1.3rem">Te mostramos la propuesta exacta en una demo de 30 minutos.</p>
-        <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" id="calc-lead-nombre" type="text"></div>
-        <div class="form-group"><label class="form-label">Email corporativo</label><input class="form-input" id="calc-lead-email" type="email" placeholder="nombre@empresa.com"></div>
-        <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="calc-lead-empresa" type="text"></div>
-        <button class="form-submit" onclick="submitCalcLead()">Solicitar demo →</button>
-        <div id="calc-lead-error" style="font-size:.72rem;color:#E5484D;margin-top:.6rem;text-align:center"></div>
-      </div>
-      <div class="calc-lead-success" id="calc-lead-success">
-        <div style="font-size:2rem;margin-bottom:.8rem">✓</div>
-        <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:400;margin-bottom:.5rem">¡Gracias!</h3>
-        <p style="font-size:.85rem;color:var(--inv)">Te contactamos en menos de 24h para confirmar la demo.</p>
       </div>
     </div>
   </div>
