@@ -1240,7 +1240,26 @@ document.addEventListener('scroll', function(e){
 .dc-platform-feats{display:flex;flex-direction:column;gap:.4rem;margin-top:.7rem}
 .dc-pfeat{display:flex;align-items:flex-start;gap:.55rem;font-size:.76rem;color:rgba(248,246,241,.62);line-height:1.45}
 .dc-pfeat-arrow{flex-shrink:0;margin-top:.05rem;font-size:.7rem}
+.h-video-section{border-top:1px solid var(--border);background:rgba(248,246,241,.015)}
+.h-video-inner{max-width:900px;margin:0 auto;padding:4rem 3rem;text-align:center}
+.h-video-label{margin-bottom:1.2rem}
+.h-video-embed{position:relative;padding-bottom:56.25%;height:0;border-radius:16px;overflow:hidden;margin-top:2rem;border:1px solid var(--border);box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.h-video-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+@media (max-width:768px){.h-video-inner{padding:2.5rem 1.2rem!important}}
 </style>
+
+<!-- ═══════ VÍDEO DEMO — debajo del hero ═══════ -->
+<div class="h-video-section">
+  <div class="h-video-inner">
+    <div class="h-video-label">
+      <div class="h-section-eye">Míralo en acción</div>
+      <h3 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:300;margin-top:.6rem">2 minutos que explican<br>mejor que cualquier texto <em style="font-style:italic;color:var(--moss-light)">qué es Growee</em></h3>
+    </div>
+    <div class="h-video-embed">
+      <iframe src="https://www.loom.com/embed/cc6cdc7719604055b8b45e5026d5ac71" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
 
 <!-- ═══════ DEMO CARDS + INFO PLATAFORMA — debajo del hero ═══════ -->
 <!-- ═══════ PLATAFORMA — dos módulos + demos + steps ═══════ -->
