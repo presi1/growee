@@ -5262,6 +5262,7 @@ ol.cbubble-list li{padding-left:.3rem}
         <button class="chat-history-link" onclick="openPlanesModal()">📋 Mi plan guiado</button>
         <button class="chat-history-link" onclick="iniciarPractica()">🎭 Practicar una conversación</button>
         <button class="chat-history-link" id="btn-resumen-pdf" onclick="generarResumenPDF()">📄 Resumen de esta sesión en PDF</button>
+        <button class="chat-history-link" id="btn-ayuda-inmediata" onclick="openSosModal()" style="color:#E0625C;font-weight:600">🆘 Ayuda inmediata</button>
       </div>
     </div>
   </div>
@@ -5293,6 +5294,43 @@ ol.cbubble-list li{padding-left:.3rem}
     </div>
   </div>
 
+  <!-- Modal de ayuda inmediata / crisis -->
+  <div id="sos-modal" class="history-modal" style="display:none">
+    <div class="history-modal-backdrop" onclick="closeSosModal()"></div>
+    <div class="history-modal-panel" style="max-width:460px">
+      <div class="history-modal-header">
+        <span>Ayuda inmediata</span>
+        <button class="history-modal-close" onclick="closeSosModal()">✕</button>
+      </div>
+
+      <!-- Paso 1: confirmación, para evitar disparos accidentales -->
+      <div id="sos-step-confirm" class="history-modal-body" style="padding:1.4rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:.8rem">🆘</div>
+        <p style="font-size:.95rem;color:var(--cream);line-height:1.6;margin-bottom:1.6rem">¿Necesitas hablar con alguien ahora mismo? Te mostramos líneas de ayuda atendidas por personas, disponibles 24/7.</p>
+        <button class="btn-primary" style="width:100%;margin-bottom:.7rem" onclick="showSosResources()">Sí, mostrar recursos de ayuda</button>
+        <button class="chat-history-link" onclick="closeSosModal()">No, cerrar</button>
+      </div>
+
+      <!-- Paso 2: recursos -->
+      <div id="sos-step-resources" class="history-modal-body" style="padding:1.4rem;display:none">
+        <p style="font-size:.92rem;color:var(--cream);line-height:1.6;margin-bottom:1.4rem">Si estás en una crisis emocional o pensando en hacerte daño, no estás solo/a. Estas líneas están atendidas por personas, disponibles ahora mismo:</p>
+        <a href="tel:024" style="display:flex;align-items:center;gap:.9rem;background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;margin-bottom:.8rem;text-decoration:none;color:inherit">
+          <div style="font-size:1.6rem">📞</div>
+          <div><div style="font-weight:700;color:var(--cream);font-size:1.05rem">024</div><div style="font-size:.8rem;color:var(--inv)">Línea de atención a la conducta suicida — gratuita, confidencial, 24/7</div></div>
+        </a>
+        <a href="tel:112" style="display:flex;align-items:center;gap:.9rem;background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;margin-bottom:.8rem;text-decoration:none;color:inherit">
+          <div style="font-size:1.6rem">🚨</div>
+          <div><div style="font-weight:700;color:var(--cream);font-size:1.05rem">112</div><div style="font-size:.8rem;color:var(--inv)">Emergencias — si hay un riesgo inmediato para tu vida</div></div>
+        </a>
+        <a href="tel:717003717" style="display:flex;align-items:center;gap:.9rem;background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;text-decoration:none;color:inherit">
+          <div style="font-size:1.6rem">💬</div>
+          <div><div style="font-weight:700;color:var(--cream);font-size:1.05rem">717 003 717</div><div style="font-size:.8rem;color:var(--inv)">Teléfono de la Esperanza — escucha y apoyo emocional, 24/7</div></div>
+        </a>
+        <p style="font-size:.78rem;color:var(--inv-2);margin-top:1.2rem;line-height:1.55">Growee es un apoyo entre sesiones, no un servicio de emergencias ni un sustituto de atención médica o psicológica urgente.</p>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /app-root -->
 </div><!-- /pg-app -->
 
@@ -5314,7 +5352,11 @@ ol.cbubble-list li{padding-left:.3rem}
     <div id="rrhh-panel-content" style="display:none">
 
       <!-- Tarjetas de estadísticas principales -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.5rem">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:1.5rem">
+        <div class="rrhh-stat-card">
+          <div class="rrhh-stat-big" id="stat-wellbeing-index" style="color:var(--moss-light)">—</div>
+          <div class="rrhh-stat-label">Índice de participación <span id="stat-wellbeing-note" style="display:none;color:var(--inv-2);font-size:.72rem">(sin datos aún)</span></div>
+        </div>
         <div class="rrhh-stat-card">
           <div class="rrhh-stat-big" id="stat-active-week">—</div>
           <div class="rrhh-stat-label">Empleados activos esta semana</div>
@@ -5328,6 +5370,7 @@ ol.cbubble-list li{padding-left:.3rem}
           <div class="rrhh-stat-label">Mensajes esta semana</div>
         </div>
       </div>
+      <div style="font-size:.72rem;color:var(--inv-2);margin:-.8rem 0 1.5rem">El índice de participación combina el % de la plantilla activo esta semana y la constancia de uso en 14 días — mide uso, no es un diagnóstico clínico de bienestar.</div>
 
       <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:1.2rem;margin-bottom:1.2rem">
 
@@ -5353,8 +5396,15 @@ ol.cbubble-list li{padding-left:.3rem}
         </div>
       </div>
 
-      <!-- Temas más consultados -->
+      <!-- Temas más trabajados (categorías) -->
       <div class="rrhh-panel-box">
+        <div class="rrhh-box-title">Temas más trabajados (30 días)</div>
+        <div id="rrhh-categories-list" style="margin-top:1rem"></div>
+        <div style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">Categorías amplias y anónimas — nunca el contenido de una conversación.</div>
+      </div>
+
+      <!-- Temas más consultados -->
+      <div class="rrhh-panel-box" style="margin-top:1.2rem">
         <div class="rrhh-box-title">Metodologías más consultadas (30 días)</div>
         <div id="rrhh-topics-list" style="margin-top:1rem"></div>
         <div style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">Esto muestra qué metodologías ha usado la IA en sus respuestas, nunca el contenido de las conversaciones.</div>
@@ -6437,6 +6487,17 @@ async function loadRrhhPanel() {
     document.getElementById('stat-active-month').textContent = stats.active_month ?? 0;
     document.getElementById('stat-messages-week').textContent = stats.messages_week ?? 0;
 
+    // Índice de participación (0-100, basado en uso — ver nota bajo las tarjetas)
+    const wbEl = document.getElementById('stat-wellbeing-index');
+    const wbNoteEl = document.getElementById('stat-wellbeing-note');
+    if (typeof stats.wellbeing_index === 'number') {
+      wbEl.textContent = stats.wellbeing_index;
+      wbNoteEl.style.display = 'none';
+    } else {
+      wbEl.textContent = '—';
+      wbNoteEl.style.display = 'inline';
+    }
+
     // Reparto por módulo
     const b = stats.messages_bienestar_30d ?? 0;
     const c = stats.messages_coaching_30d ?? 0;
@@ -6466,6 +6527,27 @@ async function loadRrhhPanel() {
       bar.style.height = Math.max(2, (count / maxCount) * 100) + '%';
       bar.title = `${key}: ${count} mensajes`;
       trendEl.appendChild(bar);
+    }
+
+    // Temas más trabajados (categorías amplias)
+    const categoriesEl = document.getElementById('rrhh-categories-list');
+    categoriesEl.innerHTML = '';
+    const categories = stats.topic_categories || [];
+    if (categories.length === 0) {
+      categoriesEl.innerHTML = '<div style="font-size:.85rem;color:var(--inv-2)">Todavía no hay datos suficientes.</div>';
+    } else {
+      const maxCatCount = Math.max(...categories.map(c => c.count));
+      categories.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'rrhh-topic-row';
+        const pct = Math.round((c.count / maxCatCount) * 100);
+        row.innerHTML = `
+          <span style="width:220px;flex-shrink:0;color:var(--cream)">${c.categoria}</span>
+          <div class="rrhh-bar-track"><div class="rrhh-bar-fill" style="background:var(--terra);width:${pct}%"></div></div>
+          <span style="width:30px;text-align:right;color:var(--inv-2);flex-shrink:0">${c.count}</span>
+        `;
+        categoriesEl.appendChild(row);
+      });
     }
 
     // Temas más consultados
@@ -6735,7 +6817,7 @@ CÓMO OFRECER HERRAMIENTAS
 - Pregunta siempre si quiere profundizar o prefiere otra dirección.
 
 SEÑALES DE ALERTA
-- Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda de forma directa buscar ayuda profesional inmediata o llamar al 024 (línea de atención a conducta suicida en España).
+- Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda de forma directa buscar ayuda profesional inmediata. Dile explícitamente que puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar directamente al 024 (línea de atención a conducta suicida en España, gratuita y 24/7) o al 112 si el riesgo es inminente.
 - Eres un apoyo, no un sustituto de atención psicológica clínica. Si la situación supera lo que puedes acompañar, dilo con claridad y sin rodeos.
 
 RECOMENDAR UNA GUÍA DE RECURSOS (muy importante)
@@ -6991,7 +7073,7 @@ ESTRUCTURA DE CADA RESPUESTA
 4. Cierra con un paso concreto o una pregunta que invite a continuar.
 
 SEÑALES DE ALERTA
-Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional o llamar al 024. Eres un apoyo, no un sustituto clínico.
+Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional. Dile explícitamente que puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar al 024 (gratuita y 24/7) o al 112 si el riesgo es inminente. Eres un apoyo, no un sustituto clínico.
 
 RECOMENDAR UNA GUÍA DE RECURSOS (muy importante)
 Cuando la conversación encaje claramente con una de las guías de la biblioteca de Recursos de abajo — no en cada mensaje, solo cuando de verdad aporte profundizar por escrito en algo ya hablado —, añade al final de tu respuesta, en su propia línea, exactamente este formato (usa el id tal cual aparece en la lista, nunca inventes uno):
@@ -7456,6 +7538,21 @@ function getPlanProgress(planId) {
     const raw = localStorage.getItem('growee_plan_' + planId);
     return raw ? JSON.parse(raw) : [];
   } catch (e) { return []; }
+}
+
+function openSosModal() {
+  document.getElementById('sos-step-confirm').style.display = 'block';
+  document.getElementById('sos-step-resources').style.display = 'none';
+  document.getElementById('sos-modal').style.display = 'flex';
+}
+
+function showSosResources() {
+  document.getElementById('sos-step-confirm').style.display = 'none';
+  document.getElementById('sos-step-resources').style.display = 'block';
+}
+
+function closeSosModal() {
+  document.getElementById('sos-modal').style.display = 'none';
 }
 
 function setPlanProgress(planId, arr) {
