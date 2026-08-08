@@ -4777,6 +4777,13 @@ document.addEventListener('scroll', function(e){
 .user-dd-sep{height:1px;background:var(--border);margin:.2rem 0}
 .user-dd-danger{color:#E5828A}
 .user-dd-danger:hover{background:rgba(229,72,77,.08)}
+.app-top-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:none;border:1px solid var(--border);color:var(--inv);
+  font-size:.75rem;padding:.35rem .8rem;border-radius:50px;
+  cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;
+}
+.app-top-btn:hover{color:var(--cream);border-color:rgba(248,246,241,.3);background:var(--mist)}
 .app-exit{
   background:none;border:1px solid var(--border);color:var(--inv-2);
   padding:.3rem .8rem;border-radius:50px;font-size:.75rem;
@@ -5106,6 +5113,7 @@ ol.cbubble-list li{padding-left:.3rem}
     <div class="app-nav-logo" onclick="go('home')">Grow<span>ee</span></div>
     <div class="app-nav-right">
       <div class="app-mod-pill" id="app-mod-pill">🧡 Módulo Bienestar</div>
+      <button class="app-top-btn" onclick="openPlanesModal()">📋 Mi plan</button>
       <div class="app-user-wrap" style="position:relative">
         <div class="app-user-chip" id="app-user-chip" onclick="toggleUserMenu(event)" style="cursor:pointer">
           <div class="app-av" id="app-av">CG</div>
@@ -5258,8 +5266,6 @@ ol.cbubble-list li{padding-left:.3rem}
       <div class="chat-meta">
         <span class="chat-disc">🔒 Confidencial · nadie en tu empresa puede leer esto</span>
         <span class="chat-disc">📎 Adjunta documentos o imágenes · 🎤 o graba tu mensaje por voz</span>
-        <button class="chat-history-link" onclick="showFullHistory()">Ver historial completo</button>
-        <button class="chat-history-link" onclick="openPlanesModal()">📋 Mi plan guiado</button>
         <button class="chat-history-link" onclick="iniciarPractica()">🎭 Practicar una conversación</button>
         <button class="chat-history-link" id="btn-resumen-pdf" onclick="generarResumenPDF()">📄 Resumen de esta sesión en PDF</button>
         <button class="chat-history-link" id="btn-ayuda-inmediata" onclick="openSosModal()" style="color:#E0625C;font-weight:600">🆘 Ayuda inmediata</button>
