@@ -1097,6 +1097,9 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
 .h-photo-strip img{width:100%;height:220px;object-fit:cover;border-radius:16px;border:1px solid var(--border)}
 .h-section-head{text-align:center;margin-bottom:3.5rem}
 .h-section-eye{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.6rem}
+.reveal-on-scroll{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.reveal-on-scroll.in-view{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal-on-scroll{opacity:1;transform:none;transition:none}}
 .h-section-h2{font-family:'Fraunces',serif;font-size:2.4rem;font-weight:300;line-height:1.18;letter-spacing:-.025em}
 .h-section-h2 em{font-style:italic;color:var(--moss-light)}
 .h-ben-tabs{display:flex;justify-content:center;gap:.4rem;margin-bottom:2.5rem}
@@ -1215,7 +1218,7 @@ function initCountUps(root) {
   }, { threshold: 0.4 });
   els.forEach((el) => obs.observe(el));
 }
-document.addEventListener('DOMContentLoaded', () => initCountUps());
+document.addEventListener('DOMContentLoaded', () => { initCountUps(); initScrollReveal(); if (typeof setReplyLang === 'function') setReplyLang(chatState.lang); });
 
 document.addEventListener('scroll', function(e){
   const btn = document.getElementById('scroll-top-btn');
@@ -1601,7 +1604,6 @@ document.addEventListener('scroll', function(e){
 
 </div>
 
-<!-- ═══════ CÓMO FUNCIONA — página propia ═══════ -->
 <div id="pg-como-funciona" class="pg">
   <div style="max-width:900px;margin:0 auto;padding:5rem 3rem 3rem;text-align:center">
     <div class="h-section-eye">El proceso</div>
@@ -4784,6 +4786,9 @@ document.addEventListener('scroll', function(e){
   cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;
 }
 .app-top-btn:hover{color:var(--cream);border-color:rgba(248,246,241,.3);background:var(--mist)}
+.lang-pill{background:none;border:none;color:var(--inv-2);font-size:.7rem;font-weight:600;padding:.3rem .6rem;border-radius:50px;cursor:pointer;transition:all .15s}
+.lang-pill:hover{color:var(--cream)}
+.lang-pill.active{background:rgba(82,183,136,.18);color:var(--moss-light)}
 .app-exit{
   background:none;border:1px solid var(--border);color:var(--inv-2);
   padding:.3rem .8rem;border-radius:50px;font-size:.75rem;
@@ -4926,6 +4931,10 @@ ol.cbubble-list li{padding-left:.3rem}
 .cmw-action-btn svg{width:14px;height:14px}
 .cmw-action-btn:hover{color:var(--ink);background:rgba(13,27,42,.06)}
 .cmw-action-btn.speaking{color:var(--moss-light)}
+.cmw-fb-btn[data-rating="up"].active{color:var(--moss-light);background:rgba(82,183,136,.14)}
+.cmw-fb-btn[data-rating="down"].active{color:#C25B52;background:rgba(194,91,82,.12)}
+.cmw-fb-btn:not(.active){opacity:.55}
+.cmw-fb-btn.active{opacity:1}
 
 /* Typing indicator */
 .chat-typing{
@@ -5114,6 +5123,11 @@ ol.cbubble-list li{padding-left:.3rem}
     <div class="app-nav-right">
       <div class="app-mod-pill" id="app-mod-pill">🧡 Módulo Bienestar</div>
       <button class="app-top-btn" onclick="openPlanesModal()">📋 Mi plan</button>
+      <div class="lang-pills" style="display:flex;gap:.25rem;background:rgba(248,246,241,.04);border:1px solid var(--border);border-radius:50px;padding:.2rem">
+        <button class="lang-pill" data-lang="es" onclick="setReplyLang('es')" title="Responder en español">ES</button>
+        <button class="lang-pill" data-lang="ca" onclick="setReplyLang('ca')" title="Respondre en català">CA</button>
+        <button class="lang-pill" data-lang="en" onclick="setReplyLang('en')" title="Reply in English">EN</button>
+      </div>
       <div class="app-user-wrap" style="position:relative">
         <div class="app-user-chip" id="app-user-chip" onclick="toggleUserMenu(event)" style="cursor:pointer">
           <div class="app-av" id="app-av">CG</div>
@@ -5537,6 +5551,25 @@ let navDirection = null; // 'back' | 'forward' | null — para el efecto de desl
 
 let lastScrollByPage = {};
 
+let scrollRevealDone = false;
+function initScrollReveal() {
+  if (scrollRevealDone) return;
+  scrollRevealDone = true;
+  const home = document.getElementById('pg-home');
+  if (!home) return;
+  const sections = home.querySelectorAll('div[style*="border-top:1px solid var(--border)"]');
+  sections.forEach(el => el.classList.add('reveal-on-scroll'));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  sections.forEach(el => observer.observe(el));
+}
+
 function go(id, _viaHistory) {
   closeMobileMenu();
   const prevId = currentPage;
@@ -5551,6 +5584,8 @@ function go(id, _viaHistory) {
   window.scrollTo(0, _viaHistory ? (lastScrollByPage[id] || 0) : 0);
 
   trackPageView(id);
+
+  if (id === 'home') initScrollReveal();
 
   // Efecto de deslizar (solo en móvil, solo cuando se navega por gesto o por los botones atrás/adelante)
   if (navDirection && window.innerWidth <= 800) {
@@ -5926,6 +5961,27 @@ function trackPageView(page) {
       is_mobile: window.innerWidth <= 800,
     }).then(() => {}).catch(() => {}); // silencioso: si falla, no debe afectar a la navegación
   } catch (e) { /* nunca debe romper la navegación por esto */ }
+}
+
+function sendMessageFeedback(btn, rating) {
+  const actions = btn.closest('.cmw-actions');
+  const bubble = actions?.previousElementSibling;
+  if (!bubble || bubble.dataset.fbSent === '1') return; // un voto por mensaje
+
+  // Feedback visual inmediato, antes de esperar a la red
+  actions.querySelectorAll('.cmw-fb-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  bubble.dataset.fbSent = '1';
+
+  try {
+    supabaseClient.from('message_feedback').insert({
+      user_email: appState.user.email || null,
+      company: appState.user.company || null,
+      modulo: chatState.mode,
+      rating,
+      message_excerpt: (bubble.dataset.rawText || '').slice(0, 300),
+    }).then(() => {}).catch(() => {}); // silencioso, igual que trackPageView
+  } catch (e) { /* nunca debe romper el chat por esto */ }
 }
 
 function togglePasswordLogin() {
@@ -6519,6 +6575,14 @@ async function loadRrhhPanel() {
     const trendEl = document.getElementById('rrhh-trend-chart');
     trendEl.innerHTML = '';
     const trend = stats.daily_trend || [];
+    const hasTrendData = trend.some(d => d.count > 0);
+    if (!hasTrendData) {
+      trendEl.style.alignItems = 'center';
+      trendEl.style.justifyContent = 'center';
+      trendEl.innerHTML = '<div style="font-size:.8rem;color:var(--inv-2);text-align:center;width:100%">Sin actividad todavía en los últimos 14 días</div>';
+    } else {
+      trendEl.style.alignItems = 'flex-end';
+      trendEl.style.justifyContent = 'flex-start';
     const maxCount = Math.max(1, ...trend.map(d => d.count));
     // Rellenar los 14 días aunque algún día no tenga datos, para que el eje sea continuo
     const dayMap = {};
@@ -6534,13 +6598,18 @@ async function loadRrhhPanel() {
       bar.title = `${key}: ${count} mensajes`;
       trendEl.appendChild(bar);
     }
+    }
 
     // Temas más trabajados (categorías amplias)
     const categoriesEl = document.getElementById('rrhh-categories-list');
     categoriesEl.innerHTML = '';
     const categories = stats.topic_categories || [];
     if (categories.length === 0) {
-      categoriesEl.innerHTML = '<div style="font-size:.85rem;color:var(--inv-2)">Todavía no hay datos suficientes.</div>';
+      categoriesEl.innerHTML = `<div style="text-align:center;padding:1.8rem 1rem">
+        <div style="font-size:1.6rem;margin-bottom:.6rem">🌱</div>
+        <div style="font-size:.88rem;color:var(--cream);margin-bottom:.3rem">Aún no hay suficiente actividad</div>
+        <div style="font-size:.8rem;color:var(--inv-2);line-height:1.5;max-width:320px;margin:0 auto">En cuanto vuestro equipo empiece a usar el chat, aquí verás qué temas trabajan más — sin nombres ni contenido de conversaciones.</div>
+      </div>`;
     } else {
       const maxCatCount = Math.max(...categories.map(c => c.count));
       categories.forEach(c => {
@@ -6561,7 +6630,11 @@ async function loadRrhhPanel() {
     topicsEl.innerHTML = '';
     const topics = stats.top_topics || [];
     if (topics.length === 0) {
-      topicsEl.innerHTML = '<div style="font-size:.85rem;color:var(--inv-2)">Todavía no hay datos suficientes.</div>';
+      topicsEl.innerHTML = `<div style="text-align:center;padding:1.8rem 1rem">
+        <div style="font-size:1.6rem;margin-bottom:.6rem">📚</div>
+        <div style="font-size:.88rem;color:var(--cream);margin-bottom:.3rem">Sin datos todavía</div>
+        <div style="font-size:.8rem;color:var(--inv-2);line-height:1.5;max-width:320px;margin:0 auto">Este listado se llena con las metodologías que la IA cita en sus respuestas — vuelve cuando el equipo lleve unos días usando el chat.</div>
+      </div>`;
     } else {
       const maxTopicCount = Math.max(...topics.map(t => t.count));
       topics.forEach(t => {
@@ -7161,6 +7234,18 @@ let chatState = {
   msgCount: 0,
   mode: 'bienestar',
   sending: false,
+  lang: localStorage.getItem('growee_reply_lang') || 'es',
+};
+
+function setReplyLang(lang) {
+  chatState.lang = lang;
+  localStorage.setItem('growee_reply_lang', lang);
+  document.querySelectorAll('.lang-pill').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+}
+
+const LANG_INSTRUCTIONS = {
+  ca: '\n\nIMPORTANTE: a partir de ahora, responde siempre en catalán — mismo tono y estilo que usarías en español — salvo que la persona te escriba en otro idioma y te parezca mejor seguirle la corriente.',
+  en: '\n\nIMPORTANT: from now on, always reply in English — same tone and style you would use in Spanish — unless the person writes to you in another language and you judge it is better to follow their lead.',
 };
 
 async function initApp() {
@@ -7375,7 +7460,11 @@ function showWelcomeAndSuggestions() {
   const name = appState.user.name || '';
 
   const mCfg = MOD_CFG[mode] || MOD_CFG[mod];
-  const welcome = mCfg.welcome(name);
+  const WELCOME_FALLBACK = {
+    ca: `Hola${name ? ' ' + name : ''}, sóc Growee. Escriu-me el que vulguis, en el que et pugui ajudar avui.`,
+    en: `Hi${name ? ' ' + name : ''}, I'm Growee. Tell me what's on your mind, or what I can help with today.`,
+  };
+  const welcome = WELCOME_FALLBACK[chatState.lang] || mCfg.welcome(name);
   addBubble('ai', welcome);
 
   const suggEl = document.getElementById('chat-suggs');
@@ -8227,6 +8316,12 @@ function addBubble(role, text, animate, imageSrc) {
       ${role === 'ai' ? `
       <button class="cmw-action-btn" onclick="toggleSpeakBubble(this)" title="Escuchar mensaje">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+      </button>
+      <button class="cmw-action-btn cmw-fb-btn" data-rating="up" onclick="sendMessageFeedback(this,'up')" title="Respuesta útil">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+      </button>
+      <button class="cmw-action-btn cmw-fb-btn" data-rating="down" onclick="sendMessageFeedback(this,'down')" title="Respuesta poco útil">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg>
       </button>` : ''}
     `;
     wrap.appendChild(actions);
@@ -8702,9 +8797,9 @@ async function chatSend() {
   const mode   = chatState.mode;
   const sysKey = (appState.module === 'ambos') ? mode : appState.module;
   const sysRaw = MOD_CFG[sysKey]?.system || MOD_CFG.bienestar.system;
-  const system = typeof sysRaw === 'function'
+  const system = (typeof sysRaw === 'function'
     ? sysRaw({ role: appState.user.role, company: appState.user.company })
-    : sysRaw;
+    : sysRaw) + (LANG_INSTRUCTIONS[chatState.lang] || '');
 
   try {
     const res = await fetch('/.netlify/functions/chat', {
