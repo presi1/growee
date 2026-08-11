@@ -1578,12 +1578,34 @@ document.addEventListener('scroll', function(e){
   </div>
 </div>
 
+<!-- ═══════ FAQ RÁPIDA ═══════ -->
+<div style="max-width:760px;margin:0 auto;padding:1rem 3rem 4rem">
+  <div style="border-top:1px solid var(--border);padding-top:3rem">
+    <div style="text-align:center;margin-bottom:2rem">
+      <div class="h-section-eye">Antes de que preguntes</div>
+      <h3 style="font-family:'Fraunces',serif;font-size:2rem;font-weight:300">Las 3 dudas que más nos hacen</h3>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">¿Esto sustituye a un psicólogo o a un coach real?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">No. Growee es apoyo emocional y coaching con IA, basado en metodologías reales — pero cuando una situación requiere atención clínica, deriva activamente a la red de profesionales. No diagnostica ni sustituye a un especialista.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">¿RRHH puede ver lo que habla cada empleado?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">No. RRHH accede únicamente al panel agregado y anonimizado — índices de participación, temas más trabajados a nivel de equipo — nunca al contenido de una conversación individual.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">¿Cuánto tarda en implementarse?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><div class="faq-a">De contratación a plataforma activa, menos de 48h. Un CSV de empleados y un onboarding de unos minutos por persona — sin IT, sin instalaciones.</div></div>
+    </div>
+    <div style="text-align:center;margin-top:1.8rem">
+      <a onclick="go('faq')" style="color:var(--moss-light);cursor:pointer;text-decoration:underline;font-size:.9rem">Ver todas las preguntas frecuentes →</a>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════ MÉTRICAS ═══════ -->
 <!-- ═══════ CTA FINAL ═══════ -->
 <div class="h-cta-final">
   <h2>Hablemos sobre<br><em>el bienestar de tu equipo</em></h2>
   <div class="h-cta-btns">
     <button class="h-cta" onclick="go('demo')">Solicitar demo</button>
+  </div>
+  <div style="display:inline-flex;align-items:center;gap:.5rem;margin-top:1.3rem;font-size:.8rem;color:var(--inv-2)">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--moss-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+    De la firma al equipo activo, en menos de <strong style="color:var(--moss-light)">48 horas</strong>
   </div>
 </div>
 
@@ -5122,6 +5144,7 @@ ol.cbubble-list li{padding-left:.3rem}
     <div class="app-nav-logo" onclick="go('home')">Grow<span>ee</span></div>
     <div class="app-nav-right">
       <div class="app-mod-pill" id="app-mod-pill">🧡 Módulo Bienestar</div>
+      <div id="monthly-badge" style="display:none;align-items:center;font-size:.75rem;color:var(--inv-2);white-space:nowrap"></div>
       <button class="app-top-btn" onclick="openPlanesModal()">📋 Mi plan</button>
       <div class="lang-pills" style="display:flex;gap:.25rem;background:rgba(248,246,241,.04);border:1px solid var(--border);border-radius:50px;padding:.2rem">
         <button class="lang-pill" data-lang="es" onclick="setReplyLang('es')" title="Responder en español">ES</button>
@@ -7482,9 +7505,14 @@ function newChatSession() {
   chatState.history  = [];
   chatState.msgCount = 0;
   updChatCnt();
+  reflectionShown = false;
+  if (reflectionTimer) clearTimeout(reflectionTimer);
+  const badge = document.getElementById('monthly-badge');
+  if (badge) badge.style.display = 'none';
   const msgs = document.getElementById('chat-msgs');
   if(msgs) msgs.innerHTML = '';
   showWelcomeAndSuggestions();
+  restoreDraft();
 }
 
 async function openChatSession() {
@@ -7492,6 +7520,8 @@ async function openChatSession() {
   chatState.history  = [];
   chatState.msgCount = 0;
   updChatCnt();
+  reflectionShown = false;
+  if (reflectionTimer) clearTimeout(reflectionTimer);
   const msgs = document.getElementById('chat-msgs');
   if(msgs) msgs.innerHTML = '';
 
@@ -7519,6 +7549,7 @@ async function openChatSession() {
           updChatCnt();
           restored = true;
         }
+        updMonthlyBadge(Array.isArray(rows) ? rows : []);
       }
     } catch (e) {
       console.error('No se pudo recuperar el historial de conversación:', e);
@@ -7546,6 +7577,7 @@ async function openChatSession() {
       console.error('No se pudo generar el mensaje de continuidad:', e);
     }
   }
+  restoreDraft();
 }
 
 function useSugg(btn) {
@@ -8355,12 +8387,62 @@ function updChatCnt() {
   if(el) el.textContent = n + (n===1?' mensaje':' mensajes');
 }
 
+function updMonthlyBadge(rows) {
+  const badge = document.getElementById('monthly-badge');
+  if (!badge) return;
+  const withDates = rows.filter(r => r.role === 'user' && r.created_at);
+  if (withDates.length === 0) { badge.style.display = 'none'; return; }
+  const now = new Date();
+  const thisMonthCount = withDates.filter(r => {
+    const d = new Date(r.created_at);
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+  }).length;
+  if (thisMonthCount < 2) { badge.style.display = 'none'; return; } // no merece la pena mostrarlo para 0-1
+  badge.textContent = `💬 ${thisMonthCount} conversaciones este mes`;
+  badge.style.display = 'inline-flex';
+}
+
 function chatEnter(e) {
   if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); chatSend(); }
 }
 function chatResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+  saveDraft(el.value);
+}
+
+function draftKey() {
+  return 'growee_draft_' + chatState.mode;
+}
+
+function saveDraft(text) {
+  try {
+    if (text && text.trim()) {
+      localStorage.setItem(draftKey(), text);
+    } else {
+      localStorage.removeItem(draftKey());
+    }
+  } catch (e) { /* si falla, no debe romper el chat */ }
+}
+
+function restoreDraft() {
+  try {
+    const draft = localStorage.getItem(draftKey());
+    const ta = document.getElementById('chat-ta');
+    if (draft && ta) {
+      ta.value = draft;
+      chatResizeNoSave(ta);
+    }
+  } catch (e) { /* si falla, simplemente no se restaura */ }
+}
+
+function chatResizeNoSave(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(draftKey()); } catch (e) {}
 }
 
 function createLiveAiBubble() {
@@ -8763,6 +8845,7 @@ async function chatSend() {
 
   ta.value = '';
   ta.style.height = 'auto';
+  clearDraft();
   const suggs = document.getElementById('chat-suggs');
   if(suggs) suggs.style.display = 'none';
 
@@ -8881,6 +8964,24 @@ async function chatSend() {
 
   chatState.sending = false;
   if(ta) ta.focus();
+  scheduleReflectionCheck();
+}
+
+// Pregunta de cierre por inactividad: si pasan varios minutos sin que la
+// conversación continúe, ofrecemos un cierre reflexivo en vez de dejar que
+// la persona simplemente cierre la pestaña sin más.
+let reflectionTimer = null;
+let reflectionShown = false;
+const REFLECTION_IDLE_MS = 4 * 60 * 1000; // 4 minutos
+
+function scheduleReflectionCheck() {
+  if (reflectionTimer) clearTimeout(reflectionTimer);
+  if (reflectionShown || chatState.msgCount < 2) return; // solo si ya hubo una conversación real
+  reflectionTimer = setTimeout(() => {
+    if (reflectionShown || currentPage !== 'app') return;
+    reflectionShown = true;
+    addBubble('ai', '¿Te llevas algo concreto de esto antes de dejarlo aquí? A veces ayuda nombrarlo, aunque sea en una frase.', true);
+  }, REFLECTION_IDLE_MS);
 }
 function doLogout() {
   try { sessionStorage.removeItem('growee_name'); sessionStorage.removeItem('growee_role'); sessionStorage.removeItem('growee_email'); } catch(e) {}
