@@ -234,6 +234,18 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
   .cookie-banner{padding:1rem}
   .cookie-banner-text{font-size:.76rem}
 }
+.mood-toast{
+  position:fixed;bottom:1.4rem;right:1.4rem;z-index:500;
+  background:var(--ink-2);border:1px solid var(--border);border-radius:16px;
+  padding:1.1rem 1.3rem;box-shadow:0 10px 40px rgba(0,0,0,.35);
+  animation:moodToastIn .35s ease;max-width:260px;
+}
+@keyframes moodToastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.mood-toast-close{position:absolute;top:.5rem;right:.6rem;background:none;border:none;color:var(--inv-2);cursor:pointer;font-size:.8rem;padding:.2rem}
+.mood-toast-close:hover{color:var(--cream)}
+.mood-toast-btn{background:none;border:1px solid var(--border);border-radius:10px;font-size:1.3rem;padding:.4rem .55rem;cursor:pointer;transition:all .15s}
+.mood-toast-btn:hover{border-color:var(--moss-light);background:rgba(82,183,136,.1);transform:translateY(-2px)}
+@media(max-width:600px){.mood-toast{right:.8rem;left:.8rem;max-width:none;bottom:1rem}}
 .tag-terra{background:rgba(217,130,90,.12);border:1px solid rgba(217,130,90,.25);color:var(--terra)}
 .tag-gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.18);color:var(--gold)}
 
@@ -890,6 +902,18 @@ select.form-input option{background:var(--ink-2);color:var(--cream)}
       <h3 style="font-family:'Fraunces',serif;font-size:1.2rem;font-weight:400;margin-bottom:.5rem">¡Gracias!</h3>
       <p style="font-size:.85rem;color:var(--inv)">Te contactamos en menos de 24h para confirmar la demo.</p>
     </div>
+  </div>
+</div>
+
+<!-- Toast de estado de ánimo al salir de una conversación real — global, se puede mostrar sobre cualquier página -->
+<div id="mood-toast" class="mood-toast" style="display:none">
+  <button class="mood-toast-close" onclick="dismissMoodToast()">✕</button>
+  <div style="font-size:.85rem;color:var(--cream);margin-bottom:.8rem">¿Cómo sales de esta conversación?</div>
+  <div style="display:flex;gap:.5rem">
+    <button class="mood-toast-btn" onclick="sendMoodCheckin(4)" title="Ligero/a">😊</button>
+    <button class="mood-toast-btn" onclick="sendMoodCheckin(3)" title="Bien">🙂</button>
+    <button class="mood-toast-btn" onclick="sendMoodCheckin(2)" title="Pesado/a">😔</button>
+    <button class="mood-toast-btn" onclick="sendMoodCheckin(1)" title="Muy difícil">😢</button>
   </div>
 </div>
 
@@ -5191,6 +5215,10 @@ ol.cbubble-list li{padding-left:.3rem}
         <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="profile-empresa" type="text"></div>
         <div class="form-group" id="profile-rol-wrap" style="display:none"><label class="form-label">Rol</label><input class="form-input" id="profile-rol" type="text"></div>
         <div style="font-size:.72rem;color:var(--inv-2);margin-bottom:1rem">El email no se puede cambiar aquí — es el identificador de tu cuenta.</div>
+        <label style="display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--cream);margin-bottom:1.2rem;cursor:pointer">
+          <input type="checkbox" id="profile-reminders-optin" onchange="toggleReminderOptIn(this.checked)" style="width:16px;height:16px;accent-color:var(--moss-light);cursor:pointer">
+          Avisarme por email si llevo unos días sin entrar
+        </label>
         <button class="form-submit" onclick="saveProfile()">Guardar cambios</button>
         <div style="font-size:.78rem;text-align:center;margin-top:.6rem;display:none" id="profile-saved-msg">✓ Guardado</div>
       </div>
@@ -5609,6 +5637,7 @@ function go(id, _viaHistory) {
   trackPageView(id);
 
   if (id === 'home') initScrollReveal();
+  if (prevId === 'app' && id !== 'app') maybeShowMoodCheckout();
 
   // Efecto de deslizar (solo en móvil, solo cuando se navega por gesto o por los botones atrás/adelante)
   if (navDirection && window.innerWidth <= 800) {
@@ -5984,6 +6013,37 @@ function trackPageView(page) {
       is_mobile: window.innerWidth <= 800,
     }).then(() => {}).catch(() => {}); // silencioso: si falla, no debe afectar a la navegación
   } catch (e) { /* nunca debe romper la navegación por esto */ }
+}
+
+let moodAskedThisSession = false;
+let moodToastTimer = null;
+
+function maybeShowMoodCheckout() {
+  if (moodAskedThisSession || chatState.msgCount < 2) return;
+  moodAskedThisSession = true;
+  const toast = document.getElementById('mood-toast');
+  if (!toast) return;
+  toast.style.display = 'block';
+  if (moodToastTimer) clearTimeout(moodToastTimer);
+  moodToastTimer = setTimeout(dismissMoodToast, 15000); // se retira sola si nadie interactúa
+}
+
+function dismissMoodToast() {
+  const toast = document.getElementById('mood-toast');
+  if (toast) toast.style.display = 'none';
+  if (moodToastTimer) { clearTimeout(moodToastTimer); moodToastTimer = null; }
+}
+
+function sendMoodCheckin(score) {
+  try {
+    supabaseClient.from('mood_checkins').insert({
+      user_email: appState.user.email || null,
+      company: appState.user.company || null,
+      modulo: chatState.mode,
+      mood_score: score,
+    }).then(() => {}).catch(() => {}); // silencioso, mismo patrón que el resto
+  } catch (e) { /* nunca debe romper la navegación por esto */ }
+  dismissMoodToast();
 }
 
 function sendMessageFeedback(btn, rating) {
@@ -7502,11 +7562,14 @@ function showWelcomeAndSuggestions() {
 
 function newChatSession() {
   // Arranque en frío, sin recuperar historial — lo usa el botón "+ Nueva sesión"
+  maybeShowMoodCheckout();
+  moodAskedThisSession = false;
   chatState.history  = [];
   chatState.msgCount = 0;
   updChatCnt();
   reflectionShown = false;
   if (reflectionTimer) clearTimeout(reflectionTimer);
+  moodAskedThisSession = false;
   const badge = document.getElementById('monthly-badge');
   if (badge) badge.style.display = 'none';
   const msgs = document.getElementById('chat-msgs');
@@ -7767,11 +7830,31 @@ function showProfileModal() {
   closeUserMenu();
   const modal = document.getElementById('profile-modal');
   if (modal) modal.style.display = 'flex';
+
+  const optinEl = document.getElementById('profile-reminders-optin');
+  if (optinEl && appState.user.email) {
+    supabaseClient.from('email_reminder_prefs').select('opt_in').eq('user_email', appState.user.email).maybeSingle()
+      .then(({ data }) => { optinEl.checked = !!(data && data.opt_in); })
+      .catch(() => {}); // si falla, se queda desmarcado por defecto, no bloquea el modal
+  }
 }
 function closeProfileModal() {
   const modal = document.getElementById('profile-modal');
   if (modal) modal.style.display = 'none';
 }
+
+function toggleReminderOptIn(checked) {
+  if (!appState.user.email) return;
+  try {
+    supabaseClient.from('email_reminder_prefs').upsert({
+      user_email: appState.user.email,
+      company: appState.user.company || null,
+      opt_in: checked,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'user_email' }).then(() => {}).catch(() => {});
+  } catch (e) { /* si falla, no debe romper el modal de perfil */ }
+}
+
 
 function showSupportModal() {
   closeUserMenu();
