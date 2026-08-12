@@ -5191,6 +5191,8 @@ ol.cbubble-list li{padding-left:.3rem}
           <button class="user-dd-item" id="rrhh-panel-menu-item" style="display:none" onclick="closeUserMenu();go('rrhh-panel')">📊 Panel de RRHH</button>
           <button class="user-dd-item" onclick="showSupportModal()">💬 Ayuda y soporte</button>
           <div class="user-dd-sep"></div>
+          <button class="user-dd-item user-dd-danger" onclick="closeUserMenu();openDeleteDataModal()">🗑️ Borrar mis conversaciones</button>
+          <div class="user-dd-sep"></div>
           <button class="user-dd-item user-dd-danger" onclick="doLogout()">Cerrar sesión</button>
         </div>
       </div>
@@ -5221,6 +5223,39 @@ ol.cbubble-list li{padding-left:.3rem}
         </label>
         <button class="form-submit" onclick="saveProfile()">Guardar cambios</button>
         <div style="font-size:.78rem;text-align:center;margin-top:.6rem;display:none" id="profile-saved-msg">✓ Guardado</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de borrado de datos (derecho de supresión, RGPD art. 17) -->
+  <div id="delete-data-modal" class="history-modal" style="display:none">
+    <div class="history-modal-backdrop" onclick="closeDeleteDataModal()"></div>
+    <div class="history-modal-panel" style="max-width:420px">
+      <div class="history-modal-header">
+        <span>Borrar mis conversaciones</span>
+        <button class="history-modal-close" onclick="closeDeleteDataModal()">✕</button>
+      </div>
+
+      <!-- Paso 1: aviso -->
+      <div id="delete-step-1" style="padding:1.4rem">
+        <p style="font-size:.9rem;color:var(--cream);line-height:1.65;margin-bottom:1rem">Esto borra permanentemente:</p>
+        <ul style="font-size:.85rem;color:var(--inv);line-height:1.9;margin:0 0 1.3rem 1.2rem;padding:0">
+          <li>Todo tu historial de conversaciones</li>
+          <li>La memoria de continuidad entre sesiones</li>
+          <li>Tus reacciones 👍/👎 y check-ins de ánimo</li>
+        </ul>
+        <p style="font-size:.8rem;color:#E5828A;margin-bottom:1.3rem">Esta acción no se puede deshacer.</p>
+        <button class="btn-primary" style="width:100%;margin-bottom:.7rem;background:#E5828A" onclick="showDeleteStep2()">Entiendo, continuar</button>
+        <button class="chat-history-link" onclick="closeDeleteDataModal()">Cancelar</button>
+      </div>
+
+      <!-- Paso 2: confirmación final -->
+      <div id="delete-step-2" style="padding:1.4rem;display:none">
+        <p style="font-size:.9rem;color:var(--cream);line-height:1.65;margin-bottom:1.3rem">Escribe <strong>BORRAR</strong> para confirmar que quieres eliminar todos tus datos de conversación de forma permanente.</p>
+        <input class="form-input" id="delete-confirm-input" type="text" placeholder="BORRAR" style="margin-bottom:1rem" oninput="document.getElementById('delete-confirm-btn').disabled = this.value.trim().toUpperCase() !== 'BORRAR'">
+        <button class="btn-primary" id="delete-confirm-btn" style="width:100%;margin-bottom:.7rem;background:#E5828A" disabled onclick="confirmDeleteMyData()">Borrar permanentemente</button>
+        <button class="chat-history-link" onclick="closeDeleteDataModal()">Cancelar</button>
+        <div id="delete-error-msg" style="font-size:.8rem;color:#E5828A;margin-top:.8rem;display:none"></div>
       </div>
     </div>
   </div>
@@ -7841,6 +7876,56 @@ function showProfileModal() {
 function closeProfileModal() {
   const modal = document.getElementById('profile-modal');
   if (modal) modal.style.display = 'none';
+}
+
+function openDeleteDataModal() {
+  document.getElementById('delete-step-1').style.display = 'block';
+  document.getElementById('delete-step-2').style.display = 'none';
+  document.getElementById('delete-confirm-input').value = '';
+  document.getElementById('delete-confirm-btn').disabled = true;
+  document.getElementById('delete-error-msg').style.display = 'none';
+  document.getElementById('delete-data-modal').style.display = 'flex';
+}
+
+function closeDeleteDataModal() {
+  document.getElementById('delete-data-modal').style.display = 'none';
+}
+
+function showDeleteStep2() {
+  document.getElementById('delete-step-1').style.display = 'none';
+  document.getElementById('delete-step-2').style.display = 'block';
+}
+
+async function confirmDeleteMyData() {
+  const btn = document.getElementById('delete-confirm-btn');
+  const errEl = document.getElementById('delete-error-msg');
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Borrando…';
+
+  try {
+    const { error } = await supabaseClient.rpc('delete_my_chat_data');
+    if (error) throw error;
+
+    // Limpieza local — borradores, progreso de planes, historial en memoria
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith('growee_draft_') || k.startsWith('growee_plan_')) localStorage.removeItem(k);
+    });
+    chatState.history = [];
+    chatState.msgCount = 0;
+
+    closeDeleteDataModal();
+    const msgs = document.getElementById('chat-msgs');
+    if (msgs) msgs.innerHTML = '';
+    if (currentPage === 'app') { showWelcomeAndSuggestions(); }
+  } catch (e) {
+    console.error('Error borrando datos:', e);
+    errEl.textContent = 'No se pudo completar el borrado. Inténtalo de nuevo o escríbenos a soporte.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+  } finally {
+    btn.textContent = 'Borrar permanentemente';
+  }
 }
 
 function toggleReminderOptIn(checked) {
