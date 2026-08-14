@@ -7088,6 +7088,7 @@ CÓMO OFRECER HERRAMIENTAS
 
 SEÑALES DE ALERTA
 - Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda de forma directa buscar ayuda profesional inmediata. Dile explícitamente que puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar directamente al 024 (línea de atención a conducta suicida en España, gratuita y 24/7) o al 112 si el riesgo es inminente.
+- Además, en ese mismo caso, añade el marcador [CRISIS] al final de tu respuesta (en su propia línea, después de todo lo demás). Es invisible para la persona — el sistema lo usa para abrir automáticamente la pantalla de ayuda. Úsalo solo ante una señal real de riesgo para la vida, nunca ante malestar general, estrés o un mal día.
 - Eres un apoyo, no un sustituto de atención psicológica clínica. Si la situación supera lo que puedes acompañar, dilo con claridad y sin rodeos.
 
 RECOMENDAR UNA GUÍA DE RECURSOS (muy importante)
@@ -7344,6 +7345,7 @@ ESTRUCTURA DE CADA RESPUESTA
 
 SEÑALES DE ALERTA
 Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional. Dile explícitamente que puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar al 024 (gratuita y 24/7) o al 112 si el riesgo es inminente. Eres un apoyo, no un sustituto clínico.
+Además, en ese mismo caso, añade el marcador [CRISIS] al final de tu respuesta (en su propia línea). Es invisible para la persona — abre automáticamente la pantalla de ayuda. Úsalo solo ante una señal real de riesgo para la vida, nunca ante estrés laboral normal o frustración con el trabajo.
 
 RECOMENDAR UNA GUÍA DE RECURSOS (muy importante)
 Cuando la conversación encaje claramente con una de las guías de la biblioteca de Recursos de abajo — no en cada mensaje, solo cuando de verdad aporte profundizar por escrito en algo ya hablado —, añade al final de tu respuesta, en su propia línea, exactamente este formato (usa el id tal cual aparece en la lista, nunca inventes uno):
@@ -7678,6 +7680,7 @@ function newChatSession() {
   reflectionShown = false;
   if (reflectionTimer) clearTimeout(reflectionTimer);
   moodAskedThisSession = false;
+  autoSosTriggeredThisSession = false;
   const badge = document.getElementById('monthly-badge');
   if (badge) badge.style.display = 'none';
   const msgs = document.getElementById('chat-msgs');
@@ -7693,6 +7696,7 @@ async function openChatSession() {
   updChatCnt();
   reflectionShown = false;
   if (reflectionTimer) clearTimeout(reflectionTimer);
+  autoSosTriggeredThisSession = false;
   const msgs = document.getElementById('chat-msgs');
   if(msgs) msgs.innerHTML = '';
 
@@ -7851,6 +7855,39 @@ function showSosResources() {
 
 function closeSosModal() {
   document.getElementById('sos-modal').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════
+// Detección automática de crisis — dos capas, deliberadamente independientes:
+//   1) La propia IA, vía el marcador [CRISIS] en el system prompt (entiende
+//      contexto y negación mucho mejor que cualquier lista de palabras).
+//   2) Esta lista de palabras clave, local y solo sobre lo que la persona
+//      ACABA de escribir — salta al instante, sin esperar respuesta de la
+//      IA, por si la conexión falla o tarda.
+// Lista deliberadamente corta y de alta confianza para minimizar falsos
+// positivos — no sustituye una validación clínica real de las frases.
+// ══════════════════════════════════════════════
+const CRISIS_KEYWORDS = [
+  'quiero suicidarme', 'quiero matarme', 'me quiero suicidar', 'me quiero matar',
+  'quitarme la vida', 'acabar con mi vida', 'terminar con mi vida',
+  'no quiero seguir viviendo', 'no quiero vivir más', 'ya no quiero vivir',
+  'quiero morirme', 'quiero desaparecer para siempre',
+];
+
+function containsCrisisSignal(text) {
+  const normalized = text.toLowerCase();
+  return CRISIS_KEYWORDS.some(k => normalized.includes(k));
+}
+
+let autoSosTriggeredThisSession = false;
+
+function triggerAutoSos(source) {
+  if (autoSosTriggeredThisSession) return; // no interrumpir varias veces en la misma sesión
+  autoSosTriggeredThisSession = true;
+  console.log('SOS automático activado por:', source); // útil para revisar más adelante si conviene ajustar la lista
+  document.getElementById('sos-step-confirm').style.display = 'none';
+  document.getElementById('sos-step-resources').style.display = 'block';
+  document.getElementById('sos-modal').style.display = 'flex';
 }
 
 function setPlanProgress(planId, arr) {
@@ -9153,6 +9190,8 @@ async function chatSend() {
   if((!typed && !pendingAttachment) || chatState.sending) return;
   chatState.sending = true;
 
+  if (typed && containsCrisisSignal(typed)) triggerAutoSos('palabras-clave');
+
   ta.value = '';
   ta.style.height = 'auto';
   clearDraft();
@@ -9234,11 +9273,16 @@ async function chatSend() {
     }
 
     if (live && fullText) {
-      // El modelo puede añadir, en este orden, [OPCIONES: a | b | c] y/o [GUIA: id-de-guia]
-      // al final de su respuesta. Los extraemos y no se muestran como texto.
+      // El modelo puede añadir, en este orden, [OPCIONES: a | b | c], [GUIA: id-de-guia]
+      // y/o [CRISIS] al final de su respuesta. Los extraemos y no se muestran como texto.
       let cleanText = fullText;
       let opciones = null;
       let guiaId = null;
+
+      const crisisMatch = cleanText.match(/\n?\[CRISIS\]\s*$/);
+      if (crisisMatch) {
+        cleanText = cleanText.slice(0, crisisMatch.index).trim();
+      }
 
       const guiaMatch = cleanText.match(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/);
       if (guiaMatch) {
@@ -9261,9 +9305,10 @@ async function chatSend() {
         renderMsgOptions(live.wrap, opciones);
       }
       live.box.scrollTop = live.box.scrollHeight;
+      if (crisisMatch) triggerAutoSos('ia');
     }
 
-    const reply = (fullText.replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '').replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
+    const reply = (fullText.replace(/\n?\[CRISIS\]\s*$/, '').replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '').replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
     chatState.history.push({ role:'assistant', content:reply });
     chatState.msgCount++;
     updChatCnt();
