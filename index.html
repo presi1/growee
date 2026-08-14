@@ -246,6 +246,19 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
 .mood-toast-btn{background:none;border:1px solid var(--border);border-radius:10px;font-size:1.3rem;padding:.4rem .55rem;cursor:pointer;transition:all .15s}
 .mood-toast-btn:hover{border-color:var(--moss-light);background:rgba(82,183,136,.1);transform:translateY(-2px)}
 @media(max-width:600px){.mood-toast{right:.8rem;left:.8rem;max-width:none;bottom:1rem}}
+
+.voice-mode-orb{
+  width:120px;height:120px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle,rgba(82,183,136,.18),rgba(82,183,136,.02));
+  border:1px solid rgba(82,183,136,.25);
+}
+.voice-mode-dot{width:22px;height:22px;border-radius:50%;background:var(--inv-2);display:block;transition:background .3s}
+.voice-mode-dot-idle{background:var(--inv-2)}
+.voice-mode-dot-listening{background:var(--moss-light);animation:voicePulse 1.1s ease-in-out infinite}
+.voice-mode-dot-thinking{background:var(--gold);animation:voicePulse .6s ease-in-out infinite}
+.voice-mode-dot-speaking{background:var(--terra);animation:voicePulse 1.4s ease-in-out infinite}
+@keyframes voicePulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.5}}
 .tag-terra{background:rgba(217,130,90,.12);border:1px solid rgba(217,130,90,.25);color:var(--terra)}
 .tag-gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.18);color:var(--gold)}
 
@@ -5351,6 +5364,9 @@ ol.cbubble-list li{padding-left:.3rem}
         <button class="chat-attach-btn" id="mic-btn" onclick="toggleVoiceRecording()" title="Grabar un mensaje de voz">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </button>
+        <button class="chat-attach-btn" onclick="toggleVoiceMode()" title="Modo voz — habla sin tocar la pantalla">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="10" x2="4" y2="14"/><line x1="8" y1="6" x2="8" y2="18"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="16" y1="6" x2="16" y2="18"/><line x1="20" y1="10" x2="20" y2="14"/></svg>
+        </button>
         <textarea class="chat-ta" id="chat-ta" rows="1"
           placeholder="Escríbeme lo que necesitas..."
           onkeydown="chatEnter(event)"
@@ -5437,6 +5453,15 @@ ol.cbubble-list li{padding-left:.3rem}
     </div>
   </div>
 
+  <!-- Overlay de Modo Voz — pantalla completa, deja las manos libres -->
+  <div id="voice-mode-overlay" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(13,27,42,.97);backdrop-filter:blur(8px);flex-direction:column;align-items:center;justify-content:center;gap:2rem">
+    <div class="voice-mode-orb" id="voice-mode-orb">
+      <span id="voice-mode-dot" class="voice-mode-dot voice-mode-dot-idle"></span>
+    </div>
+    <div id="voice-mode-status" style="font-size:1rem;color:var(--cream);text-align:center;max-width:320px;padding:0 1.5rem">Modo voz activo — di algo cuando quieras</div>
+    <button onclick="exitVoiceMode()" style="background:none;border:1px solid var(--border);color:var(--inv);padding:.7rem 1.6rem;border-radius:50px;font-size:.85rem;cursor:pointer;font-family:'Inter',sans-serif">Salir del modo voz</button>
+  </div>
+
 </div><!-- /app-root -->
 </div><!-- /pg-app -->
 
@@ -5462,6 +5487,7 @@ ol.cbubble-list li{padding-left:.3rem}
         <div class="rrhh-stat-card">
           <div class="rrhh-stat-big" id="stat-wellbeing-index" style="color:var(--moss-light)">—</div>
           <div class="rrhh-stat-label">Índice de participación <span id="stat-wellbeing-note" style="display:none;color:var(--inv-2);font-size:.72rem">(sin datos aún)</span></div>
+          <div id="stat-benchmark-note" style="display:none;font-size:.7rem;color:var(--inv-2);margin-top:.3rem"></div>
         </div>
         <div class="rrhh-stat-card">
           <div class="rrhh-stat-big" id="stat-active-week">—</div>
@@ -5514,6 +5540,13 @@ ol.cbubble-list li{padding-left:.3rem}
         <div class="rrhh-box-title">Metodologías más consultadas (30 días)</div>
         <div id="rrhh-topics-list" style="margin-top:1rem"></div>
         <div style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">Esto muestra qué metodologías ha usado la IA en sus respuestas, nunca el contenido de las conversaciones.</div>
+      </div>
+
+      <!-- Exportar datos para BI -->
+      <div class="rrhh-panel-box" style="margin-top:1.2rem">
+        <div class="rrhh-box-title">Exportar datos</div>
+        <p style="font-size:.8rem;color:var(--inv);margin:.5rem 0 1rem;line-height:1.6">Descarga la actividad diaria agregada (mensajes y usuarios activos por día y módulo) para conectarla a tu propia herramienta de BI.</p>
+        <button class="chat-history-link" onclick="exportRrhhDataCsv()" style="border:1px solid var(--border);padding:.5rem 1rem;border-radius:8px">⬇️ Descargar CSV (últimos 90 días)</button>
       </div>
 
       <!-- Alta de empleados por CSV -->
@@ -5672,7 +5705,7 @@ function go(id, _viaHistory) {
   trackPageView(id);
 
   if (id === 'home') initScrollReveal();
-  if (prevId === 'app' && id !== 'app') maybeShowMoodCheckout();
+  if (prevId === 'app' && id !== 'app') { maybeShowMoodCheckout(); if (voiceModeActive) exitVoiceMode(); }
 
   // Efecto de deslizar (solo en móvil, solo cuando se navega por gesto o por los botones atrás/adelante)
   if (navDirection && window.innerWidth <= 800) {
@@ -6633,6 +6666,30 @@ async function submitGateForm() {
   document.querySelectorAll('.guia-related-oculto').forEach(c => c.classList.remove('guia-related-oculto'));
 }
 
+async function exportRrhhDataCsv() {
+  if (!appState.user.email) return;
+  try {
+    const res = await fetch('/.netlify/functions/export-company-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: appState.user.email, format: 'csv', days: 90 }),
+    });
+    if (!res.ok) throw new Error('export failed');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'growee-export.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    console.error('Error exportando datos:', e);
+    alert('No se pudo generar la exportación. Inténtalo de nuevo en un momento.');
+  }
+}
+
 async function loadRrhhPanel() {
   const loadingEl = document.getElementById('rrhh-panel-loading');
   const errorEl   = document.getElementById('rrhh-panel-error');
@@ -6676,6 +6733,22 @@ async function loadRrhhPanel() {
     } else {
       wbEl.textContent = '—';
       wbNoteEl.style.display = 'inline';
+    }
+
+    // Benchmark anónimo frente a otras empresas — solo se muestra si hay
+    // suficientes empresas comparables (mínimo 3, para que nunca se pueda
+    // deducir el dato de una empresa concreta) y ambos índices existen.
+    const benchEl = document.getElementById('stat-benchmark-note');
+    if (typeof stats.wellbeing_index === 'number'
+        && typeof stats.benchmark_avg_participation_index === 'number'
+        && (stats.benchmark_companies_count || 0) >= 3) {
+      const diff = stats.wellbeing_index - stats.benchmark_avg_participation_index;
+      const arrow = diff > 0 ? '▲' : (diff < 0 ? '▼' : '=');
+      const color = diff > 0 ? 'var(--moss-light)' : (diff < 0 ? '#E5828A' : 'var(--inv-2)');
+      benchEl.innerHTML = `<span style="color:${color}">${arrow} ${Math.abs(diff)} pts</span> vs. media de ${stats.benchmark_companies_count} empresas similares`;
+      benchEl.style.display = 'block';
+    } else {
+      benchEl.style.display = 'none';
     }
 
     // Reparto por módulo
@@ -8678,6 +8751,21 @@ function getMejorVozEspanola() {
   return local || candidatas[0];
 }
 
+function speakTextAloud(text, onEnd) {
+  if (!window.speechSynthesis || !text) { if (onEnd) onEnd(); return; }
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  const voz = getMejorVozEspanola();
+  if (voz) { utt.voice = voz; utt.lang = voz.lang; } else { utt.lang = 'es-ES'; }
+  utt.rate = 0.97;
+  utt.pitch = 1;
+  utt.onend = () => { if (onEnd) onEnd(); };
+  utt.onerror = () => { if (onEnd) onEnd(); };
+  currentUtterance = utt;
+  window.speechSynthesis.speak(utt);
+  return utt;
+}
+
 function toggleSpeakBubble(btn) {
   if (!window.speechSynthesis) {
     alert('Tu navegador no soporta lectura en voz alta.');
@@ -8694,21 +8782,8 @@ function toggleSpeakBubble(btn) {
   const text = bubble ? bubble.dataset.rawText : '';
   if (!text) return;
 
-  currentUtterance = new SpeechSynthesisUtterance(text);
-  const voz = getMejorVozEspanola();
-  if (voz) {
-    currentUtterance.voice = voz;
-    currentUtterance.lang = voz.lang;
-  } else {
-    currentUtterance.lang = 'es-ES'; // si el navegador no tiene ninguna voz española instalada, al menos lo intenta con este idioma
-  }
-  currentUtterance.rate = 0.97;  // ligeramente más lento que el default, suena algo más natural
-  currentUtterance.pitch = 1;
-  currentUtterance.onend = () => btn.classList.remove('speaking');
-  currentUtterance.onerror = () => btn.classList.remove('speaking');
-
   btn.classList.add('speaking');
-  window.speechSynthesis.speak(currentUtterance);
+  const utt = speakTextAloud(text, () => btn.classList.remove('speaking'));
 }
 
 function handlePasteEvent(event) {
@@ -8734,6 +8809,9 @@ let pendingAttachment = null; // { name, text }
 // ══════════════════════════════════════════════
 let voiceRecognition = null;
 let isRecording = false;
+let voiceModeActive = false;
+let voiceSilenceTimer = null;
+const VOICE_SILENCE_MS = 1600; // pausa que se interpreta como "he terminado de hablar"
 
 function getSpeechRecognitionClass() {
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
@@ -8796,6 +8874,50 @@ async function enviarPreguntaWidget() {
   }
 }
 
+function updVoiceModeStatus(state) {
+  // state: 'idle' | 'listening' | 'thinking' | 'speaking'
+  const el = document.getElementById('voice-mode-status');
+  const dot = document.getElementById('voice-mode-dot');
+  if (!el) return;
+  const labels = {
+    idle: 'Modo voz activo — di algo cuando quieras',
+    listening: '🎙️ Escuchando…',
+    thinking: '⏳ Pensando…',
+    speaking: '🔊 Growee está hablando…',
+  };
+  el.textContent = labels[state] || labels.idle;
+  if (dot) dot.className = 'voice-mode-dot voice-mode-dot-' + state;
+}
+
+function toggleVoiceMode() {
+  if (voiceModeActive) { exitVoiceMode(); return; }
+
+  const SR = getSpeechRecognitionClass();
+  if (!SR) {
+    alert('El modo voz necesita reconocimiento de voz del navegador. Funciona en Chrome y Edge — prueba desde ahí.');
+    return;
+  }
+  if (!window.speechSynthesis) {
+    alert('Tu navegador no soporta lectura en voz alta, necesaria para el modo voz.');
+    return;
+  }
+
+  voiceModeActive = true;
+  const overlay = document.getElementById('voice-mode-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  updVoiceModeStatus('idle');
+  if (!isRecording) toggleVoiceRecording();
+}
+
+function exitVoiceMode() {
+  voiceModeActive = false;
+  if (voiceSilenceTimer) { clearTimeout(voiceSilenceTimer); voiceSilenceTimer = null; }
+  if (isRecording && voiceRecognition) voiceRecognition.stop();
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  const overlay = document.getElementById('voice-mode-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
 function toggleVoiceRecording() {
   const SR = getSpeechRecognitionClass();
   if (!SR) {
@@ -8820,6 +8942,7 @@ function toggleVoiceRecording() {
   voiceRecognition.onstart = () => {
     isRecording = true;
     if (micBtn) { micBtn.classList.add('recording'); micBtn.title = 'Grabando... clica para parar'; }
+    if (voiceModeActive) updVoiceModeStatus('listening');
   };
 
   voiceRecognition.onresult = (event) => {
@@ -8828,19 +8951,38 @@ function toggleVoiceRecording() {
       transcript += event.results[i][0].transcript;
     }
     ta.value = baseText + transcript;
-    chatResize(ta);
+    chatResizeNoSave(ta);
+
+    if (voiceModeActive) {
+      if (voiceSilenceTimer) clearTimeout(voiceSilenceTimer);
+      voiceSilenceTimer = setTimeout(() => {
+        if (voiceRecognition) voiceRecognition.stop(); // dispara onend, que auto-envía si hay texto
+      }, VOICE_SILENCE_MS);
+    }
   };
 
   voiceRecognition.onerror = (event) => {
     console.error('Error de reconocimiento de voz:', event.error);
     if (event.error === 'not-allowed' || event.error === 'permission-denied') {
       alert('No se pudo acceder al micrófono. Comprueba los permisos de tu navegador para este sitio.');
+      if (voiceModeActive) exitVoiceMode();
     }
   };
 
   voiceRecognition.onend = () => {
     isRecording = false;
     if (micBtn) { micBtn.classList.remove('recording'); micBtn.title = 'Grabar un mensaje de voz'; }
+    if (voiceSilenceTimer) { clearTimeout(voiceSilenceTimer); voiceSilenceTimer = null; }
+
+    if (voiceModeActive) {
+      const text = ta.value.trim();
+      if (text) {
+        updVoiceModeStatus('thinking');
+        chatSend(); // el propio chatSend limpia el textarea y encadena la respuesta hablada
+      } else {
+        updVoiceModeStatus('idle');
+      }
+    }
   };
 
   voiceRecognition.start();
@@ -9125,6 +9267,7 @@ async function chatSend() {
     chatState.history.push({ role:'assistant', content:reply });
     chatState.msgCount++;
     updChatCnt();
+    var voiceReplyText = reply; // solo se rellena si la respuesta llegó bien
   } catch(err) {
     if(ty) ty.remove();
     addBubble('ai', 'Ha habido un problema de conexión. Inténtalo de nuevo en un momento.');
@@ -9133,6 +9276,18 @@ async function chatSend() {
   chatState.sending = false;
   if(ta) ta.focus();
   scheduleReflectionCheck();
+
+  if (voiceModeActive) {
+    if (voiceReplyText) {
+      updVoiceModeStatus('speaking');
+      speakTextAloud(voiceReplyText, () => {
+        if (voiceModeActive) toggleVoiceRecording(); // retoma la escucha sola, sin tocar la pantalla
+      });
+    } else {
+      // hubo un error de conexión: no repetimos nada, solo retomamos la escucha
+      toggleVoiceRecording();
+    }
+  }
 }
 
 // Pregunta de cierre por inactividad: si pasan varios minutos sin que la
