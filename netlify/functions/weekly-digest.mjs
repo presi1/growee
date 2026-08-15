@@ -1,45 +1,55 @@
 /**
  * Growee — Netlify Scheduled Function: weekly-digest
  * ══════════════════════════════════════════════════════════
- * Cada lunes envía a cada admin de RRHH un resumen por email de la semana
- * de su empresa — sin depender de que entren al panel para verlo.
+ * Cada lunes hace dos cosas:
+ *   1. Envía a cada admin de RRHH un resumen por email de la semana de su
+ *      empresa — sin depender de que entren al panel para verlo.
+ *   2. Guarda una foto del índice de participación de cada empresa y, si
+ *      alguna ha caído mucho frente a hace ~4 semanas, os manda a
+ *      VOSOTROS (nunca a la empresa cliente) un aviso interno para poder
+ *      contactar de forma proactiva antes de una renovación en riesgo.
  *
- * Toda la lógica de "quién recibe qué" vive en la función SQL
- * get_weekly_digest_recipients (ya creada en Supabase), que a su vez
- * reutiliza get_company_stats — así el digest siempre muestra exactamente
- * los mismos números que el panel, nunca datos calculados por separado.
+ * Toda la lógica de "quién recibe qué" y "quién está en riesgo" vive en
+ * funciones SQL ya creadas en Supabase (get_weekly_digest_recipients,
+ * record_company_index_snapshots, get_at_risk_companies) — este archivo
+ * solo las llama y envía los emails correspondientes vía Resend.
  *
  * DÓNDE COLOCAR ESTE ARCHIVO: mismo directorio que remind-inactive.mjs y
  * el resto de funciones. Al hacer push, Netlify programa sola la función
- * según el "schedule" del final del archivo.
+ * según el "schedule" del final del archivo. Si ya habías añadido una
+ * versión anterior de weekly-digest.mjs, sustitúyela por esta.
  *
  * Variables de entorno necesarias (ya existen, no hay que añadir ninguna):
  *   SUPABASE_URL
  *   SUPABASE_SERVICE_ROLE_KEY
  *   RESEND_API_KEY
+ *   NOTIFICATION_EMAIL   (tu propio email, para el aviso interno de riesgo)
  */
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL;
 const FROM_EMAIL = 'Growee <notificaciones@growee.es>'; // ajusta al remitente verificado en Resend
 
-async function getRecipients() {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_weekly_digest_recipients`, {
+async function callRpc(fnName, params = {}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fnName}`, {
     method: 'POST',
     headers: {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
       Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify(params),
   });
   if (!res.ok) {
-    console.error('Error obteniendo destinatarios del digest:', await res.text());
-    return [];
+    console.error(`Error llamando a ${fnName}:`, await res.text());
+    return null;
   }
   return res.json();
 }
+
+// ── Digest a cada admin de RRHH ──────────────────────────────
 
 function statRow(label, value) {
   return `<tr><td style="padding:6px 0;color:#555;font-size:14px">${label}</td><td style="padding:6px 0;text-align:right;font-weight:700;color:#0D1B2A;font-size:14px">${value}</td></tr>`;
@@ -75,25 +85,73 @@ function buildDigestHtml(company, stats) {
   `;
 }
 
-async function sendDigestEmail(adminEmail, company, stats) {
+async function sendDigestEmails() {
+  const recipients = await callRpc('get_weekly_digest_recipients') || [];
+  let sent = 0;
+
+  for (const r of recipients) {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: FROM_EMAIL,
+        to: r.admin_email,
+        subject: `Resumen semanal de Growee — ${r.company}`,
+        html: buildDigestHtml(r.company, r.stats || {}),
+      }),
+    });
+    if (res.ok) sent++;
+    else console.error(`Error enviando digest a ${r.admin_email}:`, await res.text());
+  }
+
+  return { candidates: recipients.length, sent };
+}
+
+// ── Alerta interna de empresas en riesgo ─────────────────────
+
+function buildRiskAlertHtml(atRiskCompanies) {
+  const rows = atRiskCompanies.map(c => `
+    <tr>
+      <td style="padding:8px 0;font-weight:700;color:#0D1B2A">${c.company}</td>
+      <td style="padding:8px 0;text-align:right;color:#666">${c.index_then} → ${c.index_now}</td>
+      <td style="padding:8px 0;text-align:right;color:#C25B52;font-weight:700">-${c.drop} pts</td>
+    </tr>
+  `).join('');
+
+  return `
+    <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px;color:#1a1a1a">
+      <p style="font-size:13px;color:#C25B52;text-transform:uppercase;letter-spacing:.05em;font-weight:700">Alerta interna — solo para ti</p>
+      <h2 style="font-family:Georgia,serif;font-weight:400;margin:8px 0 20px">Empresas con caída notable de participación</h2>
+      <table style="width:100%;border-collapse:collapse">${rows}</table>
+      <p style="font-size:13px;color:#666;margin-top:20px">Comparado con hace ~4 semanas. Puede valer la pena contactarlas de forma proactiva antes de la renovación.</p>
+    </div>
+  `;
+}
+
+async function checkAtRiskCompanies() {
+  await callRpc('record_company_index_snapshots'); // primero, siempre guarda la foto de hoy
+
+  if (!NOTIFICATION_EMAIL) {
+    console.log('NOTIFICATION_EMAIL no configurado — se omite la comprobación de riesgo.');
+    return { checked: false };
+  }
+
+  const atRisk = await callRpc('get_at_risk_companies', { p_threshold: 15, p_weeks_back: 4 }) || [];
+  if (atRisk.length === 0) return { checked: true, atRisk: 0 };
+
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
+    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: FROM_EMAIL,
-      to: adminEmail,
-      subject: `Resumen semanal de Growee — ${company}`,
-      html: buildDigestHtml(company, stats),
+      to: NOTIFICATION_EMAIL,
+      subject: `⚠️ ${atRisk.length} empresa(s) con caída de participación`,
+      html: buildRiskAlertHtml(atRisk),
     }),
   });
-  if (!res.ok) {
-    console.error(`Error enviando digest a ${adminEmail}:`, await res.text());
-    return false;
-  }
-  return true;
+  if (!res.ok) console.error('Error enviando alerta interna de riesgo:', await res.text());
+
+  return { checked: true, atRisk: atRisk.length };
 }
 
 export default async () => {
@@ -102,16 +160,11 @@ export default async () => {
     return new Response('Faltan variables de entorno', { status: 500 });
   }
 
-  const recipients = await getRecipients();
-  let sent = 0;
+  const digestResult = await sendDigestEmails();
+  const riskResult = await checkAtRiskCompanies();
 
-  for (const r of recipients) {
-    const ok = await sendDigestEmail(r.admin_email, r.company, r.stats || {});
-    if (ok) sent++;
-  }
-
-  console.log(`weekly-digest: ${sent}/${recipients.length} digests enviados`);
-  return new Response(JSON.stringify({ candidates: recipients.length, sent }), {
+  console.log(`weekly-digest: ${digestResult.sent}/${digestResult.candidates} digests enviados. Riesgo: ${JSON.stringify(riskResult)}`);
+  return new Response(JSON.stringify({ digest: digestResult, risk: riskResult }), {
     headers: { 'Content-Type': 'application/json' },
   });
 };
