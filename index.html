@@ -4931,6 +4931,7 @@ document.addEventListener('scroll', function(e){
 }
 .chat-mode-tab.on.terra{background:rgba(217,130,90,.2);color:var(--terra);font-weight:600}
 .chat-mode-tab.on.gold{background:rgba(201,168,76,.15);color:var(--gold);font-weight:600}
+.chat-mode-tab.on.moss{background:rgba(82,183,136,.18);color:var(--moss-light);font-weight:600}
 .chat-new-btn{
   margin-left:auto;background:none;border:1px solid var(--border);
   color:var(--inv);padding:.35rem .85rem;border-radius:50px;
@@ -4946,6 +4947,11 @@ document.addEventListener('scroll', function(e){
 .chat-msgs::-webkit-scrollbar{width:4px}
 .chat-msgs::-webkit-scrollbar-thumb{background:rgba(13,27,42,.15);border-radius:4px}
 .cmw{display:flex;flex-direction:column;gap:.18rem;animation:fadeIn .22s ease}
+.chat-system-notice{
+  align-self:center;font-size:.72rem;color:var(--inv-2);background:var(--mist);
+  border:1px solid var(--border);padding:.35rem .9rem;border-radius:20px;
+  margin:.3rem 0;animation:fadeIn .22s ease;text-align:center;
+}
 .cmw.ai{align-items:flex-start}
 .cmw.user{align-items:flex-end}
 .cmw-sender{font-size:.67rem;color:rgba(13,27,42,.45);padding:0 .2rem;margin-bottom:.05rem}
@@ -7475,6 +7481,19 @@ function toggleVentMode() {
   const btn = document.getElementById('vent-mode-btn');
   if (btn) btn.classList.toggle('on', chatState.ventMode);
   if (btn) btn.classList.toggle('moss', chatState.ventMode);
+  addSystemNotice(chatState.ventMode
+    ? '🎧 Modo "Solo desahogarme" activado — sin consejos ni técnicas, solo escucha'
+    : 'Modo "Solo desahogarme" desactivado');
+}
+
+function addSystemNotice(text) {
+  const box = document.getElementById('chat-msgs');
+  if (!box) return;
+  const el = document.createElement('div');
+  el.className = 'chat-system-notice';
+  el.textContent = text;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
 }
 
 function toggleVentInfo(e) {
