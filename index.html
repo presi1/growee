@@ -4918,7 +4918,7 @@ document.addEventListener('scroll', function(e){
 .chat-mode-bar{
   display:flex;align-items:center;gap:.75rem;
   padding:.75rem 1.5rem;border-bottom:1px solid var(--border);
-  background:rgba(13,27,42,.5);flex-shrink:0;
+  background:rgba(13,27,42,.5);flex-shrink:0;position:relative;
 }
 .chat-mode-tabs{
   display:flex;background:var(--mist);border:1px solid var(--border);
@@ -5117,6 +5117,15 @@ ol.cbubble-list li{padding-left:.3rem}
   text-decoration:underline;cursor:pointer;font-family:'Inter',sans-serif;padding:0;
 }
 .chat-history-link:hover{color:#5fcf96}
+.vent-info-btn{background:none;border:none;color:var(--inv-2);cursor:pointer;font-size:.95rem;padding:0 .3rem;line-height:1}
+.vent-info-btn:hover{color:var(--moss-light)}
+.vent-info-box{
+  position:absolute;top:100%;margin-top:.5rem;left:0;z-index:50;
+  background:var(--ink-2);border:1px solid var(--border);border-radius:12px;
+  padding:1rem 1.1rem;width:280px;font-size:.78rem;line-height:1.55;color:var(--inv);
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+.vent-info-box strong{display:block;color:var(--cream);margin-bottom:.4rem;font-size:.8rem}
 
 .history-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center}
 .history-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.55)}
@@ -5158,6 +5167,16 @@ ol.cbubble-list li{padding-left:.3rem}
 .history-modal-loading{color:var(--inv-2);font-size:.85rem;text-align:center;padding:2rem 0}
 .history-date-sep{font-size:.7rem;color:var(--inv-2);text-align:center;margin:.6rem 0 .2rem;text-transform:uppercase;letter-spacing:.04em}
 .history-msg{font-size:.82rem;line-height:1.55;padding:.6rem .8rem;border-radius:10px;max-width:88%}
+.history-thread-bar{display:flex;align-items:center;justify-content:space-between;text-transform:none;letter-spacing:0;padding:.3rem 0}
+.history-thread-controls{display:flex;align-items:center;gap:.5rem}
+.history-thread-star{background:none;border:none;cursor:pointer;font-size:.9rem;color:var(--border);padding:0}
+.history-thread-star.on{color:var(--gold)}
+.history-thread-star:hover{color:var(--gold)}
+.history-thread-label{font-size:.72rem;color:var(--moss-light);cursor:pointer;background:rgba(82,183,136,.1);padding:.15rem .5rem;border-radius:20px}
+.history-thread-add-label{background:none;border:1px dashed var(--border);color:var(--inv-2);font-size:.68rem;padding:.1rem .5rem;border-radius:20px;cursor:pointer}
+.history-thread-add-label:hover{color:var(--cream);border-color:var(--inv)}
+.history-starred-filter-btn{background:none;border:1px solid var(--border);border-radius:8px;color:var(--inv-2);cursor:pointer;padding:.3rem .6rem;margin-left:auto;font-size:.85rem}
+.history-starred-filter-btn.on{color:var(--gold);border-color:var(--gold)}
 .history-topic-list{display:flex;flex-direction:column;gap:.6rem}
 .history-topic-group{border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .history-topic-header{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--mist);border:none;padding:.9rem 1.1rem;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--cream);text-align:left}
@@ -5353,9 +5372,17 @@ ol.cbubble-list li{padding-left:.3rem}
       <div class="drop-hint-text">Suelta aquí tu documento</div>
       <div class="drop-hint-sub">.txt, .pdf, .docx, .png, .jpg</div>
     </div>
-    <!-- Mode bar (only shown when ambos) -->
-    <div class="chat-mode-bar" id="chat-mode-bar" style="display:none">
+    <!-- Mode bar: las pestañas de módulo solo aparecen si hay "ambos"; el
+         toggle de "Solo desahogarme" y "+ Nueva sesión" están siempre -->
+    <div class="chat-mode-bar" id="chat-mode-bar" style="display:flex">
       <div class="chat-mode-tabs" id="chat-mode-tabs"></div>
+      <button class="chat-mode-tab" id="vent-mode-btn" onclick="toggleVentMode()">🎧 Solo desahogarme</button>
+      <button class="vent-info-btn" onclick="toggleVentInfo(event)" title="¿Qué es esto?">ⓘ</button>
+      <div class="vent-info-box" id="vent-info-box" style="display:none">
+        <strong>¿Qué es "Solo desahogarme"?</strong>
+        Cuando lo activas, la IA deja de proponer consejos, técnicas o preguntas para resolver algo. Solo escucha y valida lo que cuentas — para cuando lo que necesitas es ser oído/a, no que te den soluciones.
+        <span style="display:block;margin-top:.5rem;color:var(--inv-2)">No afecta a la detección de crisis: si hay una señal real de riesgo, la ayuda sigue activándose igual.</span>
+      </div>
       <button class="chat-new-btn" onclick="newChatSession()">+ Nueva sesión</button>
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
@@ -5420,6 +5447,7 @@ ol.cbubble-list li{padding-left:.3rem}
         <button class="history-tab on" id="history-tab-hoy" onclick="setHistoryTab('hoy')">Hoy</button>
         <button class="history-tab" id="history-tab-todo" onclick="setHistoryTab('todo')">Historial completo</button>
         <button class="history-tab" id="history-tab-tema" onclick="setHistoryTab('tema')">Por tema</button>
+        <button class="history-starred-filter-btn" id="history-starred-filter" onclick="toggleStarredFilter()" title="Solo días destacados">⭐</button>
       </div>
       <div class="history-modal-body" id="history-modal-body">
         <div class="history-modal-loading">Cargando...</div>
@@ -7439,7 +7467,27 @@ let chatState = {
   mode: 'bienestar',
   sending: false,
   lang: localStorage.getItem('growee_reply_lang') || 'es',
+  ventMode: false,
 };
+
+function toggleVentMode() {
+  chatState.ventMode = !chatState.ventMode;
+  const btn = document.getElementById('vent-mode-btn');
+  if (btn) btn.classList.toggle('on', chatState.ventMode);
+  if (btn) btn.classList.toggle('moss', chatState.ventMode);
+}
+
+function toggleVentInfo(e) {
+  if (e) e.stopPropagation();
+  const box = document.getElementById('vent-info-box');
+  if (box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+document.addEventListener('click', function(e) {
+  const box = document.getElementById('vent-info-box');
+  if (box && box.style.display !== 'none' && !e.target.closest('#vent-info-box') && !e.target.closest('.vent-info-btn')) {
+    box.style.display = 'none';
+  }
+});
 
 function setReplyLang(lang) {
   chatState.lang = lang;
@@ -7451,6 +7499,8 @@ const LANG_INSTRUCTIONS = {
   ca: '\n\nIMPORTANTE: a partir de ahora, responde siempre en catalán — mismo tono y estilo que usarías en español — salvo que la persona te escriba en otro idioma y te parezca mejor seguirle la corriente.',
   en: '\n\nIMPORTANT: from now on, always reply in English — same tone and style you would use in Spanish — unless the person writes to you in another language and you judge it is better to follow their lead.',
 };
+
+const VENT_MODE_INSTRUCTION = '\n\nMODO "SOLO DESAHOGARME" ACTIVADO: la persona ha pedido explícitamente NO recibir consejos, técnicas ni preguntas orientadas a resolver en este momento. Tu única función ahora es escuchar y validar: refleja lo que dice, nombra la emoción, haz como mucho una pregunta abierta para que siga contando si quiere. No propongas ninguna técnica, ejercicio ni "podrías probar...", aunque tengas una relevante — literalmente no toca ahora. Esto NO cambia nada de las instrucciones de SEÑALES DE ALERTA: si detectas riesgo real, actúa exactamente igual que siempre.';
 
 async function initApp() {
   // Si hay un perfil guardado en Supabase para este email, lo aplicamos antes de pintar nada
@@ -7556,15 +7606,13 @@ async function initApp() {
     // Init chat modes
     const cfg2 = MOD_CFG[mod];
     chatState.mode = cfg2.modes[0].id;
-    const modeBar2 = document.getElementById('chat-mode-bar');
+    const tabsEl2 = document.getElementById('chat-mode-tabs');
     if(mod === 'ambos') {
-      modeBar2.style.display = 'flex';
-      const tabsEl2 = document.getElementById('chat-mode-tabs');
       tabsEl2.innerHTML = cfg2.modes.map(m =>
         `<button class="chat-mode-tab ${m.id===chatState.mode?'on '+m.cls:''}" id="cmt-${m.id}" onclick="switchMode('${m.id}')">${m.label}</button>`
       ).join('');
     } else {
-      modeBar2.style.display = 'none';
+      tabsEl2.innerHTML = '';
     }
     openChatSession();
   } else {
@@ -7631,16 +7679,14 @@ function startChat() {
   const cfg = MOD_CFG[mod];
   chatState.mode = cfg.modes[0].id;
 
-  // Mode bar (only if ambos)
-  const modeBar = document.getElementById('chat-mode-bar');
+  // Pestañas de módulo (solo si hay "ambos"); el resto de la barra siempre está
+  const tabsEl = document.getElementById('chat-mode-tabs');
   if(mod === 'ambos') {
-    modeBar.style.display = 'flex';
-    const tabsEl = document.getElementById('chat-mode-tabs');
     tabsEl.innerHTML = cfg.modes.map(m =>
       `<button class="chat-mode-tab ${m.id===chatState.mode?'on '+m.cls:''}" id="cmt-${m.id}" onclick="switchMode('${m.id}')">${m.label}</button>`
     ).join('');
   } else {
-    modeBar.style.display = 'none';
+    tabsEl.innerHTML = '';
   }
 
   // Start session
@@ -7692,6 +7738,9 @@ function newChatSession() {
   if (reflectionTimer) clearTimeout(reflectionTimer);
   moodAskedThisSession = false;
   autoSosTriggeredThisSession = false;
+  chatState.ventMode = false;
+  const btnV = document.getElementById('vent-mode-btn');
+  if (btnV) btnV.classList.remove('on', 'moss');
   const badge = document.getElementById('monthly-badge');
   if (badge) badge.style.display = 'none';
   const msgs = document.getElementById('chat-msgs');
@@ -7708,6 +7757,9 @@ async function openChatSession() {
   reflectionShown = false;
   if (reflectionTimer) clearTimeout(reflectionTimer);
   autoSosTriggeredThisSession = false;
+  chatState.ventMode = false;
+  const btnV2 = document.getElementById('vent-mode-btn');
+  if (btnV2) btnV2.classList.remove('on', 'moss');
   const msgs = document.getElementById('chat-msgs');
   if(msgs) msgs.innerHTML = '';
 
@@ -8247,6 +8299,8 @@ function closeFullHistory() {
 
 let historyRows = [];
 let historyTab  = 'hoy';
+let threadTagsMap = {}; // thread_key ('YYYY-MM-DD') -> {label, starred}
+let onlyStarredFilter = false;
 
 async function showFullHistory() {
   const modal = document.getElementById('history-modal');
@@ -8265,18 +8319,30 @@ async function showFullHistory() {
   }
 
   try {
-    const { data, error } = await supabaseClient
-      .from('chat_messages')
-      .select('role, content, created_at, rag_topics')
-      .eq('user_email', appState.user.email)
-      .eq('modulo', chatState.mode)
-      .order('created_at', { ascending: true });
-    if (error) throw error;
-    historyRows = data || [];
+    const [msgsRes, tagsRes] = await Promise.all([
+      supabaseClient
+        .from('chat_messages')
+        .select('role, content, created_at, rag_topics')
+        .eq('user_email', appState.user.email)
+        .eq('modulo', chatState.mode)
+        .order('created_at', { ascending: true }),
+      supabaseClient
+        .from('chat_thread_tags')
+        .select('thread_key, label, starred')
+        .eq('user_email', appState.user.email)
+        .eq('modulo', chatState.mode),
+    ]);
+    if (msgsRes.error) throw msgsRes.error;
+    historyRows = msgsRes.data || [];
+
+    threadTagsMap = {};
+    (tagsRes.data || []).forEach(t => { threadTagsMap[t.thread_key] = { label: t.label, starred: t.starred }; });
   } catch (e) {
     console.error('Error cargando historial:', e);
     historyRows = [];
+    threadTagsMap = {};
   }
+  onlyStarredFilter = false;
   renderHistoryBody();
 }
 
@@ -8325,23 +8391,28 @@ function renderHistoryBody() {
     return;
   }
 
-  const rows = getFilteredHistoryRows();
+  let rows = getFilteredHistoryRows();
+  if (onlyStarredFilter) {
+    rows = rows.filter(r => threadTagsMap[toThreadKey(r.created_at)]?.starred);
+  }
 
   if (rows.length === 0) {
-    body.innerHTML = historyTab === 'hoy'
-      ? '<div class="history-modal-loading">Todavía no has hablado hoy en este módulo.</div>'
-      : '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
+    body.innerHTML = onlyStarredFilter
+      ? '<div class="history-modal-loading">No tienes ningún día destacado con ⭐ todavía.</div>'
+      : historyTab === 'hoy'
+        ? '<div class="history-modal-loading">Todavía no has hablado hoy en este módulo.</div>'
+        : '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
     return;
   }
 
   let html = '';
-  let lastDate = '';
+  let lastKey = '';
   rows.forEach((r) => {
     const d = new Date(r.created_at);
-    const dateLabel = d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
-    if (dateLabel !== lastDate) {
-      html += `<div class="history-date-sep">${dateLabel}</div>`;
-      lastDate = dateLabel;
+    const threadKey = toThreadKey(r.created_at);
+    if (threadKey !== lastKey) {
+      html += renderThreadTagBar(threadKey, d);
+      lastKey = threadKey;
     }
     const time = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
     const safe = r.content
@@ -8350,6 +8421,75 @@ function renderHistoryBody() {
   });
   body.innerHTML = html;
   body.scrollTop = body.scrollHeight;
+}
+
+function toThreadKey(isoDate) {
+  return new Date(isoDate).toISOString().slice(0, 10); // 'YYYY-MM-DD'
+}
+
+function renderThreadTagBar(threadKey, dateObj) {
+  const dateLabel = dateObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  const tag = threadTagsMap[threadKey] || {};
+  return `
+    <div class="history-date-sep history-thread-bar">
+      <span>${dateLabel}</span>
+      <span class="history-thread-controls">
+        <button class="history-thread-star ${tag.starred ? 'on' : ''}" onclick="toggleThreadStar('${threadKey}')" title="Destacar este día">★</button>
+        ${tag.label
+          ? `<span class="history-thread-label" onclick="editThreadLabel('${threadKey}')">${escHtml(tag.label)}</span>`
+          : `<button class="history-thread-add-label" onclick="editThreadLabel('${threadKey}')">+ etiqueta</button>`}
+      </span>
+    </div>`;
+}
+
+async function toggleThreadStar(threadKey) {
+  const current = threadTagsMap[threadKey] || {};
+  const newStarred = !current.starred;
+  threadTagsMap[threadKey] = { ...current, starred: newStarred };
+  renderHistoryBody(); // respuesta visual inmediata, sin esperar a la red
+  await saveThreadTag(threadKey, { starred: newStarred, label: current.label || null });
+}
+
+function editThreadLabel(threadKey) {
+  const current = threadTagsMap[threadKey] || {};
+  const val = window.prompt('Ponle un nombre corto a este día (ej. "Conversación con mi jefe")', current.label || '');
+  if (val === null) return; // canceló
+  const label = val.trim().slice(0, 60) || null;
+  threadTagsMap[threadKey] = { ...current, label };
+  renderHistoryBody();
+  saveThreadTag(threadKey, { starred: !!current.starred, label });
+}
+
+async function saveThreadTag(threadKey, { starred, label }) {
+  if (!appState.user.email) return;
+  try {
+    if (!starred && !label) {
+      // no queda nada que guardar para este día — se borra la fila entera
+      await supabaseClient.from('chat_thread_tags')
+        .delete()
+        .eq('user_email', appState.user.email)
+        .eq('modulo', chatState.mode)
+        .eq('thread_key', threadKey);
+      return;
+    }
+    await supabaseClient.from('chat_thread_tags').upsert({
+      user_email: appState.user.email,
+      modulo: chatState.mode,
+      thread_key: threadKey,
+      label,
+      starred,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'user_email,modulo,thread_key' });
+  } catch (e) {
+    console.error('Error guardando etiqueta:', e);
+  }
+}
+
+function toggleStarredFilter() {
+  onlyStarredFilter = !onlyStarredFilter;
+  const btn = document.getElementById('history-starred-filter');
+  if (btn) btn.classList.toggle('on', onlyStarredFilter);
+  renderHistoryBody();
 }
 
 async function renderHistoryByTopic(body) {
@@ -9419,7 +9559,7 @@ async function chatSend() {
   const sysRaw = MOD_CFG[sysKey]?.system || MOD_CFG.bienestar.system;
   const system = (typeof sysRaw === 'function'
     ? sysRaw({ role: appState.user.role, company: appState.user.company })
-    : sysRaw) + (LANG_INSTRUCTIONS[chatState.lang] || '');
+    : sysRaw) + (LANG_INSTRUCTIONS[chatState.lang] || '') + (chatState.ventMode ? VENT_MODE_INSTRUCTION : '');
 
   try {
     const res = await fetch('/.netlify/functions/chat', {
