@@ -5039,6 +5039,12 @@ ol.cbubble-list li{padding-left:.3rem}
 .chat-msg-guia-label{font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--moss-light)}
 .chat-msg-guia-title{font-size:.82rem;color:var(--ink);line-height:1.35;margin-top:.1rem}
 .chat-msg-guia-arrow{color:var(--moss-light);flex-shrink:0;font-size:.9rem}
+.chat-msg-practica{
+  margin:.6rem 0 .2rem;padding:.8rem .9rem;max-width:340px;
+  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.28);border-radius:12px;
+}
+.chat-msg-practica-header{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.chat-msg-practica-text{font-size:.85rem;color:var(--ink);line-height:1.5}
 .plan-card{border:1px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:1rem}
 .plan-card:last-child{margin-bottom:0}
 .plan-card-header{display:flex;align-items:center;gap:.8rem;margin-bottom:.9rem}
@@ -5183,6 +5189,9 @@ ol.cbubble-list li{padding-left:.3rem}
 .history-thread-add-label:hover{color:var(--cream);border-color:var(--inv)}
 .history-starred-filter-btn{background:none;border:1px solid var(--border);border-radius:8px;color:var(--inv-2);cursor:pointer;padding:.3rem .6rem;margin-left:auto;font-size:.85rem}
 .history-starred-filter-btn.on{color:var(--gold);border-color:var(--gold)}
+.history-pin-btn{position:absolute;top:.4rem;right:.5rem;background:none;border:none;cursor:pointer;font-size:.72rem;opacity:.35;filter:grayscale(1);transition:all .15s}
+.history-pin-btn:hover{opacity:.8}
+.history-pin-btn.on{opacity:1;filter:none}
 .history-topic-list{display:flex;flex-direction:column;gap:.6rem}
 .history-topic-group{border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .history-topic-header{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--mist);border:none;padding:.9rem 1.1rem;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--cream);text-align:left}
@@ -5454,6 +5463,7 @@ ol.cbubble-list li{padding-left:.3rem}
         <button class="history-tab" id="history-tab-todo" onclick="setHistoryTab('todo')">Historial completo</button>
         <button class="history-tab" id="history-tab-tema" onclick="setHistoryTab('tema')">Por tema</button>
         <button class="history-starred-filter-btn" id="history-starred-filter" onclick="toggleStarredFilter()" title="Solo días destacados">⭐</button>
+        <button class="history-starred-filter-btn" id="history-pinned-filter" onclick="togglePinnedFilter()" title="Solo mensajes fijados" style="margin-left:.35rem">📌</button>
       </div>
       <div class="history-modal-body" id="history-modal-body">
         <div class="history-modal-loading">Cargando...</div>
@@ -7175,6 +7185,7 @@ Si la persona pide explícitamente practicar o ensayar una conversación difíci
 - Mientras dura la simulación, responde SIEMPRE en primera persona en el papel de esa otra persona, con reacciones realistas (a veces defensivas, a veces receptivas) — no como tú mismo dando consejos.
 - Si la persona pide parar o salir del ejercicio, sal inmediatamente del papel y vuelve a tu rol normal.
 - Al terminar, sal explícitamente del papel y da un feedback breve y constructivo sobre cómo fue, sin sonar como una evaluación fría.
+- Justo después de ese feedback, en su propia línea al final de la respuesta, añade el marcador [PRACTICA_FIN: resumen de una frase de lo mejor que hizo y una frase de qué podría ajustar]. Es invisible para la persona — el sistema lo usa para mostrar el cierre de la práctica de forma visual y clara. Solo úsalo la vez que de verdad sales del papel al terminar, nunca mientras la simulación sigue activa.
 
 PREGUNTAS DE DIAGNÓSTICO CON OPCIONES SELECCIONABLES (muy importante)
 Cuando hagas una pregunta de diagnóstico para identificar qué está pasando (de las que ya haces, máximo 3 seguidas) y esa pregunta tenga 2-4 respuestas típicas y diferenciadas — no cuando pidas que describa algo libremente —, añade SIEMPRE al final de tu respuesta, en su propia línea, exactamente este formato:
@@ -7334,6 +7345,7 @@ Si la persona pide explícitamente practicar o ensayar una conversación difíci
 - Mientras dura la simulación, responde SIEMPRE en primera persona en el papel de esa otra persona, con reacciones realistas (a veces defensivas, a veces receptivas) — no como tú mismo dando consejos.
 - Si la persona pide parar o salir del ejercicio, sal inmediatamente del papel y vuelve a tu rol normal.
 - Al terminar, sal explícitamente del papel y da un feedback breve y constructivo sobre cómo fue, sin sonar como una evaluación fría.
+- Justo después de ese feedback, en su propia línea al final de la respuesta, añade el marcador [PRACTICA_FIN: resumen de una frase de lo mejor que hizo y una frase de qué podría ajustar]. Es invisible para la persona — el sistema lo usa para mostrar el cierre de la práctica de forma visual y clara. Solo úsalo la vez que de verdad sales del papel al terminar, nunca mientras la simulación sigue activa.
 
 PREGUNTAS DE DIAGNÓSTICO CON OPCIONES SELECCIONABLES (muy importante)
 Cuando hagas una pregunta de clarificación (fase EXPLORAR) que tenga 2-4 respuestas típicas y diferenciadas — no cuando pidas que describa algo libremente —, añade SIEMPRE al final de tu respuesta, en su propia línea, exactamente este formato:
@@ -7456,6 +7468,7 @@ Si la persona pide explícitamente practicar o ensayar una conversación difíci
 - Mientras dura la simulación, responde SIEMPRE en primera persona en el papel de esa otra persona, con reacciones realistas (a veces defensivas, a veces receptivas) — no como tú mismo dando consejos.
 - Si la persona pide parar o salir del ejercicio, sal inmediatamente del papel y vuelve a tu rol normal.
 - Al terminar, sal explícitamente del papel y da un feedback breve y constructivo sobre cómo fue, sin sonar como una evaluación fría.
+- Justo después de ese feedback, en su propia línea al final de la respuesta, añade el marcador [PRACTICA_FIN: resumen de una frase de lo mejor que hizo y una frase de qué podría ajustar]. Es invisible para la persona — el sistema lo usa para mostrar el cierre de la práctica de forma visual y clara. Solo úsalo la vez que de verdad sales del papel al terminar, nunca mientras la simulación sigue activa.
 
 PREGUNTAS DE DIAGNÓSTICO CON OPCIONES SELECCIONABLES (muy importante)
 Cuando hagas una pregunta de clarificación que tenga 2-4 respuestas típicas y diferenciadas — no cuando pidas que describa algo libremente —, añade SIEMPRE al final de tu respuesta, en su propia línea, exactamente este formato:
@@ -7508,10 +7521,40 @@ document.addEventListener('click', function(e) {
   }
 });
 
-function setReplyLang(lang) {
+function setReplyLang(lang, isManual = true) {
   chatState.lang = lang;
   localStorage.setItem('growee_reply_lang', lang);
+  if (isManual) {
+    try { localStorage.setItem('growee_reply_lang_manual', '1'); } catch (e) {}
+  }
   document.querySelectorAll('.lang-pill').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+}
+
+// Detección ligera de idioma a partir del primer mensaje real de la persona.
+// Solo se usa mientras nadie haya tocado el selector manualmente — en cuanto
+// alguien elige un idioma a mano, se respeta esa elección para siempre y esto
+// deja de intervenir.
+const LANG_MARKERS = {
+  ca: [' què ', ' això ', ' però ', ' amb ', ' molt ', ' vull ', ' necessito ', ' tinc ', ' aquest ', ' aquesta ', 'gràcies', 'sisplau', ' és ', ' perquè ', ' meva ', ' meu ', ' del ', ' fer '],
+  en: [' the ', ' this ', ' but ', ' with ', ' want ', ' need ', ' have ', ' thanks ', ' please ', ' because ', ' about ', ' feel ', ' work '],
+};
+
+function detectLanguageFromText(text) {
+  const t = ' ' + text.toLowerCase() + ' ';
+  let scores = { ca: 0, en: 0 };
+  for (const marker of LANG_MARKERS.ca) if (t.includes(marker)) scores.ca++;
+  for (const marker of LANG_MARKERS.en) if (t.includes(marker)) scores.en++;
+  if (scores.ca === 0 && scores.en === 0) return null; // sin señales claras, se asume español por defecto
+  return scores.ca >= scores.en ? 'ca' : 'en';
+}
+
+function maybeAutoDetectLang(text) {
+  try {
+    if (localStorage.getItem('growee_reply_lang_manual') === '1') return; // ya eligió a mano, no se toca más
+  } catch (e) { /* si falla, no autodetecta por precaución */ return; }
+  if (!text || text.trim().split(/\s+/).length < 4) return; // mensajes muy cortos no dan señal fiable
+  const detected = detectLanguageFromText(text);
+  if (detected && detected !== chatState.lang) setReplyLang(detected, false);
 }
 
 const LANG_INSTRUCTIONS = {
@@ -7888,6 +7931,20 @@ function renderMsgGuia(wrap, guiaId) {
 function abrirGuiaDesdeChat(guiaId) {
   if (typeof registrarAperturaGuia === 'function') registrarAperturaGuia(guiaId);
   go(guiaId);
+}
+
+// Tarjeta de cierre visual al terminar una práctica de role-play
+function renderPracticaResumen(wrap, resumen) {
+  if (!wrap) return;
+  const card = document.createElement('div');
+  card.className = 'chat-msg-practica';
+  card.innerHTML = `
+    <div class="chat-msg-practica-header">🎭 Resumen de la práctica</div>
+    <div class="chat-msg-practica-text">${escapeHtmlLite(resumen)}</div>
+  `;
+  const timeEl = wrap.querySelector('.cmw-time');
+  if (timeEl) wrap.insertBefore(card, timeEl);
+  else wrap.appendChild(card);
 }
 
 // ══════════════════════════════════════
@@ -8320,6 +8377,7 @@ let historyRows = [];
 let historyTab  = 'hoy';
 let threadTagsMap = {}; // thread_key ('YYYY-MM-DD') -> {label, starred}
 let onlyStarredFilter = false;
+let onlyPinnedFilter = false;
 
 async function showFullHistory() {
   const modal = document.getElementById('history-modal');
@@ -8341,7 +8399,7 @@ async function showFullHistory() {
     const [msgsRes, tagsRes] = await Promise.all([
       supabaseClient
         .from('chat_messages')
-        .select('role, content, created_at, rag_topics')
+        .select('id, role, content, created_at, rag_topics, pinned')
         .eq('user_email', appState.user.email)
         .eq('modulo', chatState.mode)
         .order('created_at', { ascending: true }),
@@ -8414,13 +8472,18 @@ function renderHistoryBody() {
   if (onlyStarredFilter) {
     rows = rows.filter(r => threadTagsMap[toThreadKey(r.created_at)]?.starred);
   }
+  if (onlyPinnedFilter) {
+    rows = rows.filter(r => r.pinned);
+  }
 
   if (rows.length === 0) {
-    body.innerHTML = onlyStarredFilter
-      ? '<div class="history-modal-loading">No tienes ningún día destacado con ⭐ todavía.</div>'
-      : historyTab === 'hoy'
-        ? '<div class="history-modal-loading">Todavía no has hablado hoy en este módulo.</div>'
-        : '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
+    body.innerHTML = onlyPinnedFilter
+      ? '<div class="history-modal-loading">No tienes ningún mensaje fijado con 📌 todavía.</div>'
+      : onlyStarredFilter
+        ? '<div class="history-modal-loading">No tienes ningún día destacado con ⭐ todavía.</div>'
+        : historyTab === 'hoy'
+          ? '<div class="history-modal-loading">Todavía no has hablado hoy en este módulo.</div>'
+          : '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
     return;
   }
 
@@ -8429,14 +8492,17 @@ function renderHistoryBody() {
   rows.forEach((r) => {
     const d = new Date(r.created_at);
     const threadKey = toThreadKey(r.created_at);
-    if (threadKey !== lastKey) {
+    if (threadKey !== lastKey && !onlyPinnedFilter) {
       html += renderThreadTagBar(threadKey, d);
       lastKey = threadKey;
     }
     const time = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
     const safe = r.content
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    html += `<div class="history-msg ${r.role}">${safe}<div class="history-msg-time">${time}</div></div>`;
+    const pinBtn = (r.role === 'ai' && r.id)
+      ? `<button class="history-pin-btn ${r.pinned ? 'on' : ''}" onclick="toggleMessagePin('${r.id}', this)" title="${r.pinned ? 'Quitar de fijados' : 'Fijar este mensaje'}">📌</button>`
+      : '';
+    html += `<div class="history-msg ${r.role}" style="position:relative">${pinBtn}${safe}<div class="history-msg-time">${time}</div></div>`;
   });
   body.innerHTML = html;
   body.scrollTop = body.scrollHeight;
@@ -8509,6 +8575,36 @@ function toggleStarredFilter() {
   const btn = document.getElementById('history-starred-filter');
   if (btn) btn.classList.toggle('on', onlyStarredFilter);
   renderHistoryBody();
+}
+
+function togglePinnedFilter() {
+  onlyPinnedFilter = !onlyPinnedFilter;
+  const btn = document.getElementById('history-pinned-filter');
+  if (btn) btn.classList.toggle('on', onlyPinnedFilter);
+  renderHistoryBody();
+}
+
+async function toggleMessagePin(messageId, btn) {
+  // Respuesta visual inmediata, sin esperar a la red
+  const wasOn = btn.classList.contains('on');
+  btn.classList.toggle('on', !wasOn);
+  btn.title = !wasOn ? 'Quitar de fijados' : 'Fijar este mensaje';
+  const row = historyRows.find(r => r.id === messageId);
+  if (row) row.pinned = !wasOn;
+
+  try {
+    const { data, error } = await supabaseClient.rpc('toggle_message_pin', { p_message_id: messageId });
+    if (error) throw error;
+    // por si el servidor devuelve un estado distinto al optimista, se corrige
+    if (row) row.pinned = data;
+    btn.classList.toggle('on', data);
+  } catch (e) {
+    console.error('Error fijando mensaje:', e);
+    // revertir el cambio optimista si falló de verdad
+    btn.classList.toggle('on', wasOn);
+    if (row) row.pinned = wasOn;
+  }
+  if (onlyPinnedFilter) renderHistoryBody(); // si estamos filtrando por fijados, desaparece al momento
 }
 
 async function renderHistoryByTopic(body) {
@@ -8912,6 +9008,62 @@ function typeOutText(el, fullText, formattedHTML, scrollBox) {
   step();
 }
 
+// El backend guarda el mensaje en Supabase DESPUÉS de cerrar el streaming
+// (la persona ya no espera por eso), así que su id real no existe todavía
+// en el instante en que termina de verse el texto. Se busca aparte, con
+// unos pocos reintentos cortos, y en cuanto aparece se añade el botón de
+// fijar a ESE mensaje concreto — sin tocar chat.mjs para conseguirlo.
+async function attachPinToLiveBubble(wrap, expectedText, attempt = 0) {
+  if (!appState.user.email || !expectedText || attempt > 5) return;
+  try {
+    const { data, error } = await supabaseClient
+      .from('chat_messages')
+      .select('id, content, pinned')
+      .eq('user_email', appState.user.email)
+      .eq('modulo', chatState.mode)
+      .eq('role', 'assistant')
+      .order('created_at', { ascending: false })
+      .limit(1);
+    if (error) throw error;
+    const row = data && data[0];
+    if (row && row.id && row.content === expectedText) {
+      const actions = wrap.querySelector('.cmw-actions');
+      if (actions && !actions.querySelector('.history-pin-btn')) {
+        const pinBtn = document.createElement('button');
+        pinBtn.className = 'cmw-action-btn history-pin-btn' + (row.pinned ? ' on' : '');
+        pinBtn.title = row.pinned ? 'Quitar de fijados' : 'Fijar este mensaje';
+        pinBtn.style.cssText = 'position:static;font-size:.85rem;opacity:.55;filter:none';
+        pinBtn.textContent = '📌';
+        pinBtn.onclick = () => toggleMessagePin(row.id, pinBtn);
+        actions.appendChild(pinBtn);
+      }
+      return;
+    }
+  } catch (e) { /* se reintenta igualmente */ }
+  setTimeout(() => attachPinToLiveBubble(wrap, expectedText, attempt + 1), 400);
+}
+
+function buildAiActionsBar(role) {
+  const actions = document.createElement('div');
+  actions.className = 'cmw-actions';
+  actions.innerHTML = `
+    <button class="cmw-action-btn" onclick="copyBubbleText(this)" title="Copiar mensaje">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+    </button>
+    ${role === 'ai' ? `
+    <button class="cmw-action-btn" onclick="toggleSpeakBubble(this)" title="Escuchar mensaje">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
+    </button>
+    <button class="cmw-action-btn cmw-fb-btn" data-rating="up" onclick="sendMessageFeedback(this,'up')" title="Respuesta útil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+    </button>
+    <button class="cmw-action-btn cmw-fb-btn" data-rating="down" onclick="sendMessageFeedback(this,'down')" title="Respuesta poco útil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg>
+    </button>` : ''}
+  `;
+  return actions;
+}
+
 function addBubble(role, text, animate, imageSrc) {
   const box  = document.getElementById('chat-msgs');
   if(!box) return;
@@ -8951,24 +9103,7 @@ function addBubble(role, text, animate, imageSrc) {
   wrap.appendChild(b);
 
   if (text) {
-    const actions = document.createElement('div');
-    actions.className = 'cmw-actions';
-    actions.innerHTML = `
-      <button class="cmw-action-btn" onclick="copyBubbleText(this)" title="Copiar mensaje">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-      </button>
-      ${role === 'ai' ? `
-      <button class="cmw-action-btn" onclick="toggleSpeakBubble(this)" title="Escuchar mensaje">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"/></svg>
-      </button>
-      <button class="cmw-action-btn cmw-fb-btn" data-rating="up" onclick="sendMessageFeedback(this,'up')" title="Respuesta útil">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-      </button>
-      <button class="cmw-action-btn cmw-fb-btn" data-rating="down" onclick="sendMessageFeedback(this,'down')" title="Respuesta poco útil">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg>
-      </button>` : ''}
-    `;
-    wrap.appendChild(actions);
+    wrap.appendChild(buildAiActionsBar(role));
   }
 
   const t = document.createElement('div');
@@ -9538,6 +9673,7 @@ async function chatSend() {
   chatState.sending = true;
 
   if (typed && containsCrisisSignal(typed)) triggerAutoSos('palabras-clave');
+  if (typed) maybeAutoDetectLang(typed);
 
   ta.value = '';
   ta.style.height = 'auto';
@@ -9620,15 +9756,23 @@ async function chatSend() {
     }
 
     if (live && fullText) {
-      // El modelo puede añadir, en este orden, [OPCIONES: a | b | c], [GUIA: id-de-guia]
-      // y/o [CRISIS] al final de su respuesta. Los extraemos y no se muestran como texto.
+      // El modelo puede añadir, en este orden, [OPCIONES: a | b | c], [GUIA: id-de-guia],
+      // [PRACTICA_FIN: resumen] y/o [CRISIS] al final de su respuesta. Los extraemos y no
+      // se muestran como texto plano.
       let cleanText = fullText;
       let opciones = null;
       let guiaId = null;
+      let practicaResumen = null;
 
       const crisisMatch = cleanText.match(/\n?\[CRISIS\]\s*$/);
       if (crisisMatch) {
         cleanText = cleanText.slice(0, crisisMatch.index).trim();
+      }
+
+      const practicaMatch = cleanText.match(/\n?\[PRACTICA_FIN:\s*([^\]]+)\]\s*$/);
+      if (practicaMatch) {
+        practicaResumen = practicaMatch[1].trim();
+        cleanText = cleanText.slice(0, practicaMatch.index).trim();
       }
 
       const guiaMatch = cleanText.match(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/);
@@ -9651,11 +9795,22 @@ async function chatSend() {
       if (opciones && opciones.length) {
         renderMsgOptions(live.wrap, opciones);
       }
+      if (practicaResumen) {
+        renderPracticaResumen(live.wrap, practicaResumen);
+      }
+      // La barra de copiar/escuchar/valorar solo se añadía en los mensajes
+      // restaurados de una sesión anterior, nunca en el propio streaming en
+      // directo — se añade aquí también, una vez el texto ya está fijado.
+      const timeEl = live.wrap.querySelector('.cmw-time');
+      const actionsBar = buildAiActionsBar('ai');
+      if (timeEl) live.wrap.insertBefore(actionsBar, timeEl);
+      else live.wrap.appendChild(actionsBar);
+      attachPinToLiveBubble(live.wrap, fullText); // añade el 📌 en cuanto el mensaje tenga id real en Supabase (compara contra el texto crudo, tal cual lo guarda el backend)
       live.box.scrollTop = live.box.scrollHeight;
       if (crisisMatch) triggerAutoSos('ia');
     }
 
-    const reply = (fullText.replace(/\n?\[CRISIS\]\s*$/, '').replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '').replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
+    const reply = (fullText.replace(/\n?\[CRISIS\]\s*$/, '').replace(/\n?\[PRACTICA_FIN:\s*([^\]]+)\]\s*$/, '').replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '').replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
     chatState.history.push({ role:'assistant', content:reply });
     chatState.msgCount++;
     updChatCnt();
