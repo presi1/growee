@@ -6,6 +6,14 @@
  * en vez de esperar a tenerla completa. El navegador ve el texto aparecer
  * palabra a palabra de verdad, no una simulación.
  *
+ * OPTIMIZACIÓN DE VELOCIDAD (esta versión): la lectura de la memoria de
+ * fondo y la resolución del RAG (embedding + búsqueda) NO dependen una de
+ * la otra, así que ahora se lanzan en paralelo con Promise.allSettled en
+ * vez de esperarse en cadena. Antes: memoria → embedding → búsqueda, tres
+ * saltos de red seguidos antes de llamar a Claude. Ahora: memoria en
+ * paralelo con (embedding → búsqueda), un salto de red menos en el camino
+ * crítico antes del primer token visible para la persona.
+ *
  * NUEVO en esta versión: soporte para mensajes con imagen (capturas de
  * pantalla, fotos). El contenido puede llegar como texto plano (string) o
  * como array multimodal [{type:'image',...}, {type:'text', text:'...'}] —
@@ -29,6 +37,11 @@
  * eso aquí limitamos max_tokens a un valor conservador (700). La
  * actualización de memoria añade un poco de tiempo tras el streaming —
  * si ves respuestas cortadas con más frecuencia, avisa para ajustarlo.
+ * OJO: el guardado en Supabase y la actualización de memoria ocurren
+ * DESPUÉS de cerrar el stream al navegador (la persona ya no espera por
+ * ellos), pero siguen contando contra el mismo límite de ejecución de la
+ * función — si una conversación va muy justa de tiempo, es ese trabajo de
+ * cierre el que se arriesga a cortarse, no lo que ve la persona.
  *
  * Variables de entorno necesarias (las mismas de siempre):
  *   ANTHROPIC_API_KEY
@@ -89,6 +102,20 @@ function buildKnowledgeBlock(chunks) {
     .map((c) => `[${c.metodologia}${c.origen ? ` — ${c.origen}` : ''}]\n${c.content}`)
     .join('\n\n---\n\n');
   return `\n\nCONOCIMIENTO RELEVANTE PARA ESTE MENSAJE (úsalo si aplica, cita la metodología y el autor cuando lo uses; no lo menciones si no aporta nada a este mensaje concreto):\n\n${formatted}`;
+}
+
+// Resuelve embedding + búsqueda de conocimiento en un único paso encadenado,
+// para poder lanzarlo junto a la lectura de memoria con Promise.allSettled.
+async function resolveRag(modulo, lastUserMsg) {
+  if (!modulo || !lastUserMsg || !VOYAGE_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    return { block: '', topics: [] };
+  }
+  const embedding = await embedQuery(getTextFromContent(lastUserMsg.content));
+  const chunks = await retrieveKnowledge(embedding, modulo);
+  return {
+    block: buildKnowledgeBlock(chunks),
+    topics: (chunks || []).map((c) => c.metodologia).filter(Boolean),
+  };
 }
 
 async function saveMessage(userEmail, modulo, role, content, company, ragTopics) {
@@ -226,29 +253,33 @@ export default async (req) => {
 
   let finalSystem = system;
   let ragTopicsList = [];
-
-  // Memoria de fondo: resumen acumulado de conversaciones anteriores (distinto del historial en crudo)
   let previousMemory = null;
-  if (modulo && userEmail && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
-    try {
-      previousMemory = await getMemorySummary(userEmail, modulo);
-      finalSystem += buildMemoryBlock(previousMemory);
-    } catch (memReadError) {
-      console.error('Error leyendo memoria de fondo, continuando sin ella:', memReadError);
-    }
+
+  const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
+  const canReadMemory = Boolean(modulo && userEmail && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY);
+
+  // ── Memoria de fondo y RAG en PARALELO ──
+  // Antes: memoria → embedding → búsqueda, en cadena (3 saltos de red seguidos).
+  // No hay dependencia real entre leer la memoria y resolver el RAG, así que
+  // se lanzan a la vez y se espera lo que tarde el más lento de los dos —
+  // no la suma de ambos. allSettled para que un fallo en uno no tumbe al otro.
+  const [memoryResult, ragResult] = await Promise.allSettled([
+    canReadMemory ? getMemorySummary(userEmail, modulo) : Promise.resolve(null),
+    resolveRag(modulo, lastUserMsg),
+  ]);
+
+  if (memoryResult.status === 'fulfilled') {
+    previousMemory = memoryResult.value;
+    finalSystem += buildMemoryBlock(previousMemory);
+  } else {
+    console.error('Error leyendo memoria de fondo, continuando sin ella:', memoryResult.reason);
   }
 
-  // RAG: igual que antes, se resuelve ANTES de llamar a Claude (rápido: embedding + búsqueda vectorial)
-  const lastUserMsg = [...messages].reverse().find((m) => m.role === 'user');
-  if (modulo && lastUserMsg && VOYAGE_API_KEY && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
-    try {
-      const embedding = await embedQuery(getTextFromContent(lastUserMsg.content));
-      const chunks = await retrieveKnowledge(embedding, modulo);
-      finalSystem += buildKnowledgeBlock(chunks);
-      ragTopicsList = (chunks || []).map((c) => c.metodologia).filter(Boolean);
-    } catch (ragError) {
-      console.error('RAG error, continuando sin contexto adicional:', ragError);
-    }
+  if (ragResult.status === 'fulfilled') {
+    finalSystem += ragResult.value.block;
+    ragTopicsList = ragResult.value.topics;
+  } else {
+    console.error('RAG error, continuando sin contexto adicional:', ragResult.reason);
   }
 
   let anthropicRes;
