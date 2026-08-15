@@ -8861,11 +8861,23 @@ function chatEnter(e) {
 function chatResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 140) + 'px';
-  saveDraft(el.value);
+  scheduleDraftSave(el.value); // el redimensionado es instantáneo, el guardado se difiere (ver más abajo)
 }
 
 function draftKey() {
   return 'growee_draft_' + chatState.mode;
+}
+
+let draftSaveTimer = null;
+
+function scheduleDraftSave(text) {
+  // Escribir en localStorage en cada pulsación de tecla es innecesario y
+  // se nota (especialmente en móviles de gama baja): es una operación
+  // síncrona que bloquea el hilo principal un instante. Con 500ms de
+  // debounce, solo se escribe cuando la persona hace una pausa real al
+  // escribir, no en cada letra.
+  if (draftSaveTimer) clearTimeout(draftSaveTimer);
+  draftSaveTimer = setTimeout(() => saveDraft(text), 500);
 }
 
 function saveDraft(text) {
@@ -8895,6 +8907,7 @@ function chatResizeNoSave(el) {
 }
 
 function clearDraft() {
+  if (draftSaveTimer) { clearTimeout(draftSaveTimer); draftSaveTimer = null; } // si no, un guardado diferido podría reescribirlo justo después
   try { localStorage.removeItem(draftKey()); } catch (e) {}
 }
 
