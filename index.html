@@ -5052,6 +5052,11 @@ ol.cbubble-list li{padding-left:.3rem}
 .plan-fase-nombre{font-size:.83rem;font-weight:600;color:var(--cream)}
 .plan-fase.done .plan-fase-nombre{color:var(--inv-2);text-decoration:line-through}
 .plan-fase-desc{font-size:.76rem;color:var(--inv);line-height:1.45;margin-top:.15rem}
+.plan-fase-reflection{font-size:.78rem;color:var(--moss-light);font-style:italic;margin-top:.5rem;line-height:1.5}
+.plan-reflect-ta{width:100%;background:var(--mist);border:1px solid var(--border);border-radius:8px;padding:.5rem .7rem;font-size:.8rem;color:var(--cream);font-family:'Inter',sans-serif;resize:vertical}
+.plan-compare-card{border:1px solid var(--border);border-radius:12px;padding:1.1rem;background:var(--mist)}
+.plan-compare-label{font-size:.75rem;color:var(--inv-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+.plan-compare-text{font-size:.9rem;color:var(--cream);line-height:1.6;font-style:italic}
 .chat-msg-opts .chat-sugg{font-size:.8rem}
 
 /* Input bar */
@@ -5153,6 +5158,11 @@ ol.cbubble-list li{padding-left:.3rem}
 .history-modal-loading{color:var(--inv-2);font-size:.85rem;text-align:center;padding:2rem 0}
 .history-date-sep{font-size:.7rem;color:var(--inv-2);text-align:center;margin:.6rem 0 .2rem;text-transform:uppercase;letter-spacing:.04em}
 .history-msg{font-size:.82rem;line-height:1.55;padding:.6rem .8rem;border-radius:10px;max-width:88%}
+.history-topic-list{display:flex;flex-direction:column;gap:.6rem}
+.history-topic-group{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.history-topic-header{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--mist);border:none;padding:.9rem 1.1rem;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--cream);text-align:left}
+.history-topic-header:hover{background:rgba(82,183,136,.06)}
+.history-topic-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.6rem}
 .history-msg.user{align-self:flex-end;background:var(--cream);color:var(--ink)}
 .history-msg.assistant{align-self:flex-start;background:rgba(248,246,241,.08);border:1px solid var(--border);color:var(--cream)}
 .history-msg-time{font-size:.62rem;color:var(--inv-2);margin-top:.25rem}
@@ -5409,6 +5419,7 @@ ol.cbubble-list li{padding-left:.3rem}
       <div class="history-modal-tabs">
         <button class="history-tab on" id="history-tab-hoy" onclick="setHistoryTab('hoy')">Hoy</button>
         <button class="history-tab" id="history-tab-todo" onclick="setHistoryTab('todo')">Historial completo</button>
+        <button class="history-tab" id="history-tab-tema" onclick="setHistoryTab('tema')">Por tema</button>
       </div>
       <div class="history-modal-body" id="history-modal-body">
         <div class="history-modal-loading">Cargando...</div>
@@ -7838,8 +7849,11 @@ const PLANES_GUIADOS = {
 function getPlanProgress(planId) {
   try {
     const raw = localStorage.getItem('growee_plan_' + planId);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) { return []; }
+    if (!raw) return { done: [], reflections: {} };
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return { done: parsed, reflections: {} }; // formato antiguo, sin reflexiones
+    return { done: parsed.done || [], reflections: parsed.reflections || {} };
+  } catch (e) { return { done: [], reflections: {} }; }
 }
 
 function openSosModal() {
@@ -7890,16 +7904,72 @@ function triggerAutoSos(source) {
   document.getElementById('sos-modal').style.display = 'flex';
 }
 
-function setPlanProgress(planId, arr) {
-  try { localStorage.setItem('growee_plan_' + planId, JSON.stringify(arr)); } catch (e) {}
+function setPlanProgress(planId, state) {
+  try { localStorage.setItem('growee_plan_' + planId, JSON.stringify(state)); } catch (e) {}
 }
 
 function togglePlanFase(planId, idx) {
-  const done = getPlanProgress(planId);
-  const i = done.indexOf(idx);
-  if (i === -1) done.push(idx); else done.splice(i, 1);
-  setPlanProgress(planId, done);
+  const state = getPlanProgress(planId);
+  const i = state.done.indexOf(idx);
+  if (i === -1) {
+    state.done.push(idx);
+    openPlanReflection(planId, idx); // al completar una fase, ofrece anotar cómo se está ahora
+  } else {
+    state.done.splice(i, 1);
+  }
+  setPlanProgress(planId, state);
   renderPlanesModal();
+}
+
+function openPlanReflection(planId, idx) {
+  const wrap = document.getElementById(`plan-reflect-${planId}-${idx}`);
+  if (wrap) wrap.style.display = 'block';
+}
+
+function savePlanReflection(planId, idx) {
+  const ta = document.getElementById(`plan-reflect-ta-${planId}-${idx}`);
+  const text = ta ? ta.value.trim() : '';
+  const state = getPlanProgress(planId);
+  if (text) {
+    state.reflections[idx] = { text, date: new Date().toISOString() };
+  }
+  setPlanProgress(planId, state);
+  renderPlanesModal();
+}
+
+function skipPlanReflection(planId, idx) {
+  renderPlanesModal(); // simplemente cierra el campo sin guardar nada
+}
+
+function comparePlanProgress(planId) {
+  const state = getPlanProgress(planId);
+  const plan = PLANES_GUIADOS[planId];
+  const entries = Object.entries(state.reflections)
+    .map(([idx, r]) => ({ idx: Number(idx), ...r }))
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  if (entries.length < 2) return;
+
+  const first = entries[0];
+  const last = entries[entries.length - 1];
+  const body = document.getElementById('planes-modal-body');
+  if (!body) return;
+
+  const fmt = (d) => new Date(d).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+
+  body.innerHTML = `
+    <button class="chat-history-link" onclick="renderPlanesModal()" style="margin-bottom:1.2rem">← Volver al plan</button>
+    <div style="font-size:.85rem;color:var(--inv-2);margin-bottom:1rem">${escapeHtmlLite(plan.titulo)} — en tus propias palabras</div>
+    <div class="plan-compare-card">
+      <div class="plan-compare-label">${escapeHtmlLite(plan.fases[first.idx].nombre)} · ${fmt(first.date)}</div>
+      <div class="plan-compare-text">${escapeHtmlLite(first.text)}</div>
+    </div>
+    <div style="text-align:center;color:var(--inv-2);font-size:1.1rem;margin:.6rem 0">↓</div>
+    <div class="plan-compare-card" style="border-color:rgba(82,183,136,.3)">
+      <div class="plan-compare-label">${escapeHtmlLite(plan.fases[last.idx].nombre)} · ${fmt(last.date)}</div>
+      <div class="plan-compare-text">${escapeHtmlLite(last.text)}</div>
+    </div>
+  `;
 }
 
 function openPlanesModal() {
@@ -7917,16 +7987,29 @@ function renderPlanesModal() {
   const body = document.getElementById('planes-modal-body');
   if (!body) return;
   body.innerHTML = Object.entries(PLANES_GUIADOS).map(([planId, plan]) => {
-    const done = getPlanProgress(planId);
+    const state = getPlanProgress(planId);
+    const done = state.done;
     const pct = Math.round((done.length / plan.fases.length) * 100);
+    const reflectionCount = Object.keys(state.reflections).length;
     const fasesHtml = plan.fases.map((f, idx) => {
       const checked = done.includes(idx);
+      const reflection = state.reflections[idx];
       return `
-        <div class="plan-fase ${checked ? 'done' : ''}" onclick="togglePlanFase('${planId}', ${idx})">
-          <div class="plan-fase-check">${checked ? '✓' : ''}</div>
-          <div class="plan-fase-text">
-            <div class="plan-fase-nombre">${escapeHtmlLite(f.nombre)}</div>
-            <div class="plan-fase-desc">${escapeHtmlLite(f.desc)}</div>
+        <div class="plan-fase ${checked ? 'done' : ''}">
+          <div style="display:flex;gap:.7rem;align-items:flex-start;cursor:pointer" onclick="togglePlanFase('${planId}', ${idx})">
+            <div class="plan-fase-check">${checked ? '✓' : ''}</div>
+            <div class="plan-fase-text">
+              <div class="plan-fase-nombre">${escapeHtmlLite(f.nombre)}</div>
+              <div class="plan-fase-desc">${escapeHtmlLite(f.desc)}</div>
+              ${reflection ? `<div class="plan-fase-reflection">"${escapeHtmlLite(reflection.text)}"</div>` : ''}
+            </div>
+          </div>
+          <div id="plan-reflect-${planId}-${idx}" style="display:none;margin-top:.6rem;padding-left:2.1rem">
+            <textarea id="plan-reflect-ta-${planId}-${idx}" class="plan-reflect-ta" rows="2" placeholder="¿Cómo estás con esto ahora? (opcional, en tus propias palabras)"></textarea>
+            <div style="display:flex;gap:.5rem;margin-top:.4rem">
+              <button class="chat-history-link" style="border:1px solid var(--moss-light);color:var(--moss-light);padding:.3rem .8rem;border-radius:8px" onclick="savePlanReflection('${planId}', ${idx})">Guardar</button>
+              <button class="chat-history-link" onclick="skipPlanReflection('${planId}', ${idx})">Ahora no</button>
+            </div>
           </div>
         </div>`;
     }).join('');
@@ -7941,6 +8024,7 @@ function renderPlanesModal() {
           <div class="plan-card-pct">${pct}%</div>
         </div>
         ${fasesHtml}
+        ${reflectionCount >= 2 ? `<button class="chat-history-link" style="margin-top:.8rem;border:1px solid var(--border);padding:.4rem .9rem;border-radius:8px" onclick="comparePlanProgress('${planId}')">🔍 Comparar cómo estabas al principio vs. ahora</button>` : ''}
       </div>`;
   }).join('');
 }
@@ -8181,14 +8265,16 @@ async function showFullHistory() {
   }
 
   try {
-    const res = await fetch('/.netlify/functions/history', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userEmail: appState.user.email, modulo: chatState.mode }),
-    });
-    historyRows = res.ok ? await res.json() : [];
-    if (!Array.isArray(historyRows)) historyRows = [];
+    const { data, error } = await supabaseClient
+      .from('chat_messages')
+      .select('role, content, created_at, rag_topics')
+      .eq('user_email', appState.user.email)
+      .eq('modulo', chatState.mode)
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    historyRows = data || [];
   } catch (e) {
+    console.error('Error cargando historial:', e);
     historyRows = [];
   }
   renderHistoryBody();
@@ -8203,8 +8289,10 @@ function setHistoryTab(tab) {
 function setHistoryTabButtons() {
   const hoy  = document.getElementById('history-tab-hoy');
   const todo = document.getElementById('history-tab-todo');
+  const tema = document.getElementById('history-tab-tema');
   if (hoy)  hoy.classList.toggle('on', historyTab === 'hoy');
   if (todo) todo.classList.toggle('on', historyTab === 'todo');
+  if (tema) tema.classList.toggle('on', historyTab === 'tema');
 }
 
 function getFilteredHistoryRows() {
@@ -8213,9 +8301,29 @@ function getFilteredHistoryRows() {
   return historyRows.filter(r => new Date(r.created_at).toDateString() === todayStr);
 }
 
+let methodologyCategoryMap = null;
+
+async function getMethodologyCategoryMap() {
+  if (methodologyCategoryMap) return methodologyCategoryMap;
+  methodologyCategoryMap = {};
+  try {
+    const { data, error } = await supabaseClient.rpc('get_methodology_categories');
+    if (error) throw error;
+    (data || []).forEach(row => { methodologyCategoryMap[row.metodologia] = row.categoria; });
+  } catch (e) {
+    console.error('No se pudo cargar el mapeo de categorías:', e);
+  }
+  return methodologyCategoryMap;
+}
+
 function renderHistoryBody() {
   const body = document.getElementById('history-modal-body');
   if (!body) return;
+
+  if (historyTab === 'tema') {
+    renderHistoryByTopic(body);
+    return;
+  }
 
   const rows = getFilteredHistoryRows();
 
@@ -8243,6 +8351,73 @@ function renderHistoryBody() {
   body.innerHTML = html;
   body.scrollTop = body.scrollHeight;
 }
+
+async function renderHistoryByTopic(body) {
+  body.innerHTML = '<div class="history-modal-loading">Agrupando por tema...</div>';
+
+  if (historyRows.length === 0) {
+    body.innerHTML = '<div class="history-modal-loading">Todavía no tienes conversaciones guardadas en este módulo.</div>';
+    return;
+  }
+
+  const catMap = await getMethodologyCategoryMap();
+
+  // Empareja cada respuesta de la IA con el mensaje de la persona justo anterior,
+  // y la asigna a la categoría de su primer tema citado (tema dominante de esa respuesta).
+  const groups = {}; // categoria -> [{userText, aiText, date}]
+  for (let i = 0; i < historyRows.length; i++) {
+    const r = historyRows[i];
+    if (r.role !== 'assistant' || !r.rag_topics) continue;
+    const firstTopic = r.rag_topics.split(',')[0]?.trim();
+    const categoria = (firstTopic && catMap[firstTopic]) || 'Otros temas';
+    const prevUser = historyRows[i - 1] && historyRows[i - 1].role === 'user' ? historyRows[i - 1] : null;
+    if (!groups[categoria]) groups[categoria] = [];
+    groups[categoria].push({
+      userText: prevUser ? prevUser.content : null,
+      aiText: r.content,
+      date: r.created_at,
+    });
+  }
+
+  const categories = Object.keys(groups).sort((a, b) => groups[b].length - groups[a].length);
+
+  if (categories.length === 0) {
+    body.innerHTML = '<div class="history-modal-loading">Todavía no hay suficientes respuestas con tema identificado para agrupar. Prueba en "Historial completo".</div>';
+    return;
+  }
+
+  let html = '<div class="history-topic-list">';
+  categories.forEach((cat, idx) => {
+    const items = groups[cat];
+    const lastDate = new Date(items[items.length - 1].date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+    html += `
+      <div class="history-topic-group">
+        <button class="history-topic-header" onclick="toggleHistoryTopic(${idx})">
+          <span>${cat}</span>
+          <span style="color:var(--inv-2);font-weight:400;font-size:.78rem">${items.length} · última vez ${lastDate}</span>
+        </button>
+        <div class="history-topic-body" id="history-topic-body-${idx}" style="display:none">
+          ${items.map(it => `
+            ${it.userText ? `<div class="history-msg user">${escHtml(it.userText)}</div>` : ''}
+            <div class="history-msg ai">${escHtml(it.aiText)}<div class="history-msg-time">${new Date(it.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div></div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function toggleHistoryTopic(idx) {
+  const el = document.getElementById('history-topic-body-' + idx);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function escHtml(text) {
+  return (text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 
 let downloadMenuOpen = false;
 function toggleDownloadMenu(e) {
