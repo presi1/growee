@@ -55,10 +55,15 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Recalibrado en agosto 2026, con 339 metodologías en catálogo (el valor de 6 venía
-// de cuando había ~100). Se recuperan 10 fragmentos vía match_knowledge_v2, que
-// además aplica suelo de similitud y descarta candidatos casi idénticos entre sí.
-const RETRIEVAL_COUNT = 10;
+// Bajado de 10 a 7 en agosto 2026, con 500 metodologías en catálogo, para acortar
+// el tiempo de respuesta: cada fragmento son ~3.200 caracteres de media, así que
+// cada mensaje cargaba a Claude con ~32.000 caracteres (~8.000 tokens) solo de
+// catálogo antes de escribir la primera letra. Medido contra la batería de 60
+// pruebas de recuperación (retrieval_tests): 7 da exactamente el mismo % de
+// aciertos que 10 (51/60) — los dos casos que se pierden al bajar a 6 están
+// justo en la posición 7. Por debajo de 7 sí se pierde recall real; no bajar más
+// sin volver a medir.
+const RETRIEVAL_COUNT = 7;
 // Suelo ABSOLUTO, solo red de seguridad: si una consulta no se parece a nada del
 // catálogo (un "¿qué tiempo hace?"), no se inyecta nada. Medido con consultas reales:
 // la similitud consulta→documento vive entre 0,15 y 0,35, así que 0,20 es el punto
@@ -135,10 +140,48 @@ async function retrieveKnowledge(embedding, modulo, esApertura = false) {
   return res.json();
 }
 
+// Quita, SOLO para lo que se envía a Claude en este mensaje (nunca toca lo
+// guardado en knowledge_chunks), dos secciones que no aportan a la conversación:
+//   - "Autor y origen": ya viaja como cabecera "[metodologia — origen]", así que
+//     el desarrollo largo del autor es redundante aquí.
+//   - Las notas de mantenimiento del catálogo, bajo tres títulos distintos según
+//     cuándo se escribió la entrada ("Notas para quien mantenga/mantiene este
+//     contenido", "Notas de mantenimiento") — están escritas para quien mantiene
+//     el catálogo, no para responder a la persona.
+// Entre las dos quitan ~18% del texto de una entrada media, medido sobre las
+// 500 reales (1.605.115 → 1.317.682 caracteres). Las cabeceras del catálogo
+// son ## en unas entradas y ### en otras (428 con ## y 72 con ###), así que
+// el patrón acepta ambas.
+// Si el formato de una entrada cambiara y el título de una sección dejara de
+// coincidir, esa sección simplemente no se recorta — no rompe nada.
+const SECCIONES_A_RECORTAR = [
+  /^#{2,3}\s*Autor y origen\s*$/im,
+  /^#{2,3}\s*Notas para quien mantenga este contenido\s*$/im,
+  /^#{2,3}\s*Notas para quien mantiene este contenido\s*$/im,
+  /^#{2,3}\s*Notas de mantenimiento\s*$/im,
+];
+function recortarParaInyeccion(content) {
+  if (typeof content !== 'string') return content;
+  let out = content;
+  for (const encabezado of SECCIONES_A_RECORTAR) {
+    // Ojo con el flag 'm': con él, "$" significa "antes de CUALQUIER salto de
+    // línea", no "fin de la cadena". Como justo después de una cabecera suele
+    // venir una línea en blanco, un "$" normal se cumplía ahí mismo y el
+    // recorte no comía nada del cuerpo — solo la línea del título. "(?![\s\S])"
+    // exige que no quede NINGÚN carácter después, así que sí es fin real de
+    // cadena, funcione con 'm' o sin él.
+    out = out.replace(
+      new RegExp(encabezado.source + '[\\s\\S]*?(?=\\n#{2,3}\\s|(?![\\s\\S]))', 'im'),
+      ''
+    );
+  }
+  return out.replace(/\n{3,}/g, '\n\n').trim();
+}
+
 function buildKnowledgeBlock(chunks) {
   if (!chunks || chunks.length === 0) return '';
   const formatted = chunks
-    .map((c) => `[${c.metodologia}${c.origen ? ` — ${c.origen}` : ''}]\n${c.content}`)
+    .map((c) => `[${c.metodologia}${c.origen ? ` — ${c.origen}` : ''}]\n${recortarParaInyeccion(c.content)}`)
     .join('\n\n---\n\n');
   return `\n\nCONOCIMIENTO RELEVANTE PARA ESTE MENSAJE (úsalo si aplica, cita la metodología y el autor cuando lo uses; no lo menciones si no aporta nada a este mensaje concreto):\n\n${formatted}`;
 }
