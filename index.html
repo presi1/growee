@@ -7821,6 +7821,9 @@ function showWelcomeAndSuggestions() {
 
 function newChatSession() {
   // Arranque en frío, sin recuperar historial — lo usa el botón "+ Nueva sesión"
+  // Sube el contador antes de nada: así cualquier openChatSession() que siga
+  // esperando a la red se retira al volver, en vez de pintar su saludo encima.
+  chatSessionGen++;
   maybeShowMoodCheckout();
   moodAskedThisSession = false;
   chatState.history  = [];
@@ -7841,8 +7844,18 @@ function newChatSession() {
   restoreDraft();
 }
 
+// Contador de sesiones de chat abiertas. openChatSession() limpia la pantalla
+// al empezar pero pinta DESPUÉS de esperar a la red, así que sin esto cualquier
+// llamada que se solape (initApp y startChat al entrar, switchMode al cambiar de
+// pestaña, onAuthStateChange que vuelve a entrar en la app, o el botón "+ Nueva
+// sesión") pintaba su saludo encima del de las anteriores: cuatro clics, cuatro
+// saludos. Cada arranque se lleva un número; al volver de un await, si el número
+// ya no es el actual, esa ejecución es vieja y se retira sin tocar la pantalla.
+let chatSessionGen = 0;
+
 async function openChatSession() {
   // Igual que newChatSession, pero primero intenta recuperar la conversación anterior
+  const gen = ++chatSessionGen;
   chatState.history  = [];
   chatState.msgCount = 0;
   updChatCnt();
@@ -7867,6 +7880,7 @@ async function openChatSession() {
       });
       if (res.ok) {
         const rows = await res.json();
+        if (gen !== chatSessionGen) return; // ya se abrió otra sesión mientras esperábamos
         if (Array.isArray(rows) && rows.length > 0) {
           const MAX_RESTORE = 40; // cap para no disparar el tamaño del contexto en cada mensaje nuevo
           const recent = rows.slice(-MAX_RESTORE);
@@ -7887,6 +7901,8 @@ async function openChatSession() {
     }
   }
 
+  if (gen !== chatSessionGen) return; // idem: si hubo un fallo de red, el await del catch también pudo dejarnos atrás
+
   if (!restored) {
     showWelcomeAndSuggestions();
   } else if (appState.user.email) {
@@ -7900,6 +7916,7 @@ async function openChatSession() {
       });
       if (res.ok) {
         const data = await res.json();
+        if (gen !== chatSessionGen) return; // el mensaje de continuidad tampoco debe caer en una sesión que ya no existe
         if (data.welcome) {
           addBubble('ai', data.welcome, true);
         }
