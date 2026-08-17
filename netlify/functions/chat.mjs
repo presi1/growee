@@ -74,6 +74,22 @@ const RETRIEVAL_RELATIVE_FLOOR = 0.8;
 // medido en el catálogo actual), así que hoy casi nunca dispara: es un seguro para
 // cuando el catálogo crezca, no un parche para el estado actual.
 const RETRIEVAL_DIVERSITY_THRESHOLD = 0.92;
+// En el PRIMER mensaje de una sesión no hay hilo al que anclarse y el mensaje suele
+// ser corto y vago ("estoy agotado"), así que todo el catálogo parece igual de tibio.
+// Ahí no interesa traer MÁS material —medido: la posición 20 está a 0,27 y la 40 a
+// 0,25, igual de flojas— sino repartir los mismos 10 entre áreas distintas, para que
+// el asistente vea por dónde puede ir la conversación en vez de diez variaciones de
+// la misma suposición. 0,60 es el valor medido: mantiene los 10 fragmentos y sube la
+// cobertura de áreas; por debajo empieza a perder fragmentos sin ganar variedad.
+const RETRIEVAL_DIVERSITY_THRESHOLD_APERTURA = 0.6;
+// Cuántos mensajes del usuario se juntan para construir la consulta de búsqueda.
+// Antes se embebía solo el último, así que un "sí, exacto" en el turno 5 tiraba a la
+// basura todo lo que la persona había contado antes. Con 3 el "sí, exacto" viaja
+// acompañado del contexto que le da sentido.
+const RETRIEVAL_HISTORY_TURNS = 3;
+// Los mensajes anteriores al último se recortan: aportan contexto, pero el mensaje
+// actual debe seguir dominando la consulta.
+const RETRIEVAL_HISTORY_CHARS = 400;
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
@@ -93,7 +109,7 @@ async function embedQuery(text) {
   return data.data[0].embedding;
 }
 
-async function retrieveKnowledge(embedding, modulo) {
+async function retrieveKnowledge(embedding, modulo, esApertura = false) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/match_knowledge_v2`, {
     method: 'POST',
     headers: {
@@ -106,7 +122,9 @@ async function retrieveKnowledge(embedding, modulo) {
       match_modulo: modulo,
       match_count: RETRIEVAL_COUNT,
       min_similarity: RETRIEVAL_MIN_SIMILARITY,
-      diversity_threshold: RETRIEVAL_DIVERSITY_THRESHOLD,
+      diversity_threshold: esApertura
+        ? RETRIEVAL_DIVERSITY_THRESHOLD_APERTURA
+        : RETRIEVAL_DIVERSITY_THRESHOLD,
       relative_floor: RETRIEVAL_RELATIVE_FLOOR,
     }),
   });
@@ -125,14 +143,42 @@ function buildKnowledgeBlock(chunks) {
   return `\n\nCONOCIMIENTO RELEVANTE PARA ESTE MENSAJE (úsalo si aplica, cita la metodología y el autor cuando lo uses; no lo menciones si no aporta nada a este mensaje concreto):\n\n${formatted}`;
 }
 
+// Construye el texto que se embebe para buscar en el catálogo.
+//
+// El último mensaje va SIEMPRE al final y completo, porque es el que debe pesar más.
+// Los anteriores se añaden delante, recortados, solo para dar contexto: así un
+// "sí, exacto" o un "no sé" hereda de qué se estaba hablando en lugar de buscar a
+// ciegas. Devuelve además si estamos en el primer mensaje de la sesión, que se trata
+// distinto (ver RETRIEVAL_DIVERSITY_THRESHOLD_APERTURA).
+function buildRetrievalQuery(messages) {
+  const userMsgs = (messages || []).filter((m) => m && m.role === 'user');
+  if (userMsgs.length === 0) return null;
+
+  const recientes = userMsgs.slice(-RETRIEVAL_HISTORY_TURNS);
+  const ultimoIdx = recientes.length - 1;
+
+  const partes = recientes
+    .map((m, i) => {
+      const texto = (getTextFromContent(m.content) || '').trim();
+      if (!texto) return '';
+      // el actual entero; los de contexto, recortados
+      return i === ultimoIdx ? texto : texto.slice(0, RETRIEVAL_HISTORY_CHARS);
+    })
+    .filter(Boolean);
+
+  if (partes.length === 0) return null;
+
+  return { text: partes.join('\n'), esApertura: userMsgs.length === 1 };
+}
+
 // Resuelve embedding + búsqueda de conocimiento en un único paso encadenado,
 // para poder lanzarlo junto a la lectura de memoria con Promise.allSettled.
-async function resolveRag(modulo, lastUserMsg) {
-  if (!modulo || !lastUserMsg || !VOYAGE_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+async function resolveRag(modulo, retrieval) {
+  if (!modulo || !retrieval || !VOYAGE_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return { block: '', topics: [] };
   }
-  const embedding = await embedQuery(getTextFromContent(lastUserMsg.content));
-  const chunks = await retrieveKnowledge(embedding, modulo);
+  const embedding = await embedQuery(retrieval.text);
+  const chunks = await retrieveKnowledge(embedding, modulo, retrieval.esApertura);
   return {
     block: buildKnowledgeBlock(chunks),
     topics: (chunks || []).map((c) => c.metodologia).filter(Boolean),
@@ -286,7 +332,7 @@ export default async (req) => {
   // no la suma de ambos. allSettled para que un fallo en uno no tumbe al otro.
   const [memoryResult, ragResult] = await Promise.allSettled([
     canReadMemory ? getMemorySummary(userEmail, modulo) : Promise.resolve(null),
-    resolveRag(modulo, lastUserMsg),
+    resolveRag(modulo, buildRetrievalQuery(messages)),
   ]);
 
   if (memoryResult.status === 'fulfilled') {
