@@ -196,10 +196,19 @@ async function resolveRag(modulo, retrieval) {
 // El texto se sigue guardando crudo, con los marcadores dentro: el frontend los
 // limpia al pintar, y la lógica de fijar mensajes en directo compara contra el
 // texto crudo, así que cambiarlo aquí la rompería.
+// No se ancla a fin de texto a propósito. El prompt le pide a este marcador que
+// vaya "después de cualquier otro marcador", pero compite con otros cuatro que
+// también dicen ir "al final" ([OPCIONES:], [GUIA:], [PRACTICA_FIN:], [CRISIS]),
+// así que el orden real no está garantizado. Anclando a $ se perdía el registro
+// en silencio cada vez que el modelo dejaba otro marcador detrás.
+// Si hubiera más de uno, nos quedamos con el último.
 function extraerMetodologiaAplicada(texto) {
   if (typeof texto !== 'string') return null;
-  const m = texto.match(/\[METODOLOGIA:\s*([^\]]+)\]\s*$/);
-  return m ? m[1].trim().slice(0, 200) : null;
+  const encontrados = texto.match(/\[METODOLOGIA:\s*[^\]]+\]/g);
+  if (!encontrados || encontrados.length === 0) return null;
+  const ultimo = encontrados[encontrados.length - 1];
+  const nombre = ultimo.replace(/^\[METODOLOGIA:\s*/, '').replace(/\]$/, '').trim();
+  return nombre ? nombre.slice(0, 200) : null;
 }
 
 async function saveMessage(userEmail, modulo, role, content, company, ragTopics, metodologiaAplicada) {
