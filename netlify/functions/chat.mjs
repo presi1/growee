@@ -55,7 +55,17 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-const RETRIEVAL_COUNT = 6; // con 100 fragmentos en catálogo, 4 se quedaba corto
+// Recalibrado en agosto 2026, con 339 metodologías en catálogo (el valor de 6 venía
+// de cuando había ~100). Se recuperan 10 fragmentos vía match_knowledge_v2, que
+// además aplica suelo de similitud y descarta candidatos casi idénticos entre sí.
+const RETRIEVAL_COUNT = 10;
+// Por debajo de esto, el fragmento no aporta: mejor no inyectar ruido en el prompt.
+const RETRIEVAL_MIN_SIMILARITY = 0.3;
+// Si dos fragmentos se parecen más que esto entre ellos, solo entra el mejor de los dos.
+// Ajustado por encima de la banda de los pares legítimamente distintos (máx. 0,889
+// medido en el catálogo actual), así que hoy casi nunca dispara: es un seguro para
+// cuando el catálogo crezca, no un parche para el estado actual.
+const RETRIEVAL_DIVERSITY_THRESHOLD = 0.92;
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
@@ -76,7 +86,7 @@ async function embedQuery(text) {
 }
 
 async function retrieveKnowledge(embedding, modulo) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/match_knowledge`, {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/match_knowledge_v2`, {
     method: 'POST',
     headers: {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
@@ -87,6 +97,8 @@ async function retrieveKnowledge(embedding, modulo) {
       query_embedding: embedding,
       match_modulo: modulo,
       match_count: RETRIEVAL_COUNT,
+      min_similarity: RETRIEVAL_MIN_SIMILARITY,
+      diversity_threshold: RETRIEVAL_DIVERSITY_THRESHOLD,
     }),
   });
   if (!res.ok) {
