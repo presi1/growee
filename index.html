@@ -9883,12 +9883,13 @@ async function chatSend() {
       let guiaId = null;
       let practicaResumen = null;
 
-      // Va el primero: el modelo lo emite al final del todo, después de los demás,
-      // así que hay que quitarlo antes de que los otros puedan anclar a fin de texto.
-      const metodMatch = cleanText.match(/\n?\[METODOLOGIA:\s*([^\]]+)\]\s*$/);
-      if (metodMatch) {
-        cleanText = cleanText.slice(0, metodMatch.index).trim();
-      }
+      // Va el primero, y sin anclar a fin de texto: el prompt le pide que vaya
+      // después de todos los demás, pero compite con otros cuatro marcadores que
+      // también dicen ir "al final", así que el orden no está garantizado. Si se
+      // anclaba a $ y el modelo dejaba otro marcador detrás, este se quedaba sin
+      // quitar y acababa viéndose en crudo en el mensaje. Lo quitamos esté donde
+      // esté, antes de que los demás anclen a fin de texto.
+      cleanText = cleanText.replace(/\n?\[METODOLOGIA:\s*[^\]]*\]/g, '').trim();
 
       const crisisMatch = cleanText.match(/\n?\[CRISIS\]\s*$/);
       if (crisisMatch) {
@@ -9912,6 +9913,12 @@ async function chatSend() {
         cleanText = cleanText.slice(0, optMatch.index).trim();
         opciones = optMatch[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 4);
       }
+
+      // Red de seguridad: si el modelo colocó los marcadores en un orden que la
+      // extracción secuencial de arriba no previó, esto los quita igualmente antes
+      // de pintar. Sin esto, un marcador mal colocado se le muestra en crudo a la
+      // persona. Cuando no hay nada que quitar es una operación vacía.
+      cleanText = stripMarkers(cleanText);
 
       live.bubbleEl.innerHTML = formatAiText(cleanText); // al terminar, aplica negrita/listas reales
       live.bubbleEl.dataset.rawText = cleanText;
