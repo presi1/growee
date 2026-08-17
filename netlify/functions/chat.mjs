@@ -185,10 +185,28 @@ async function resolveRag(modulo, retrieval) {
   };
 }
 
-async function saveMessage(userEmail, modulo, role, content, company, ragTopics) {
+// Extrae el marcador [METODOLOGIA: nombre] que el modelo añade al final cuando
+// de verdad APLICA una metodología del catálogo.
+//
+// Por qué existe: rag_topics guarda lo que se le ENSEÑÓ al modelo (10 fragmentos),
+// que no es lo mismo que lo que acabó USANDO. Sin esto no hay forma de saber qué
+// proporción de respuestas se apoya en el catálogo — ni de que el "Temas más
+// trabajados" del panel de RRHH refleje lo aplicado en vez de lo recuperado.
+//
+// El texto se sigue guardando crudo, con los marcadores dentro: el frontend los
+// limpia al pintar, y la lógica de fijar mensajes en directo compara contra el
+// texto crudo, así que cambiarlo aquí la rompería.
+function extraerMetodologiaAplicada(texto) {
+  if (typeof texto !== 'string') return null;
+  const m = texto.match(/\[METODOLOGIA:\s*([^\]]+)\]\s*$/);
+  return m ? m[1].trim().slice(0, 200) : null;
+}
+
+async function saveMessage(userEmail, modulo, role, content, company, ragTopics, metodologiaAplicada) {
   const payload = { user_email: userEmail, modulo, role, content };
   if (company) payload.company = company;
   if (ragTopics) payload.rag_topics = ragTopics;
+  if (metodologiaAplicada) payload.metodologia_aplicada = metodologiaAplicada;
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/chat_messages`, {
     method: 'POST',
@@ -412,7 +430,7 @@ export default async (req) => {
           try {
             await Promise.all([
               lastUserMsg ? saveMessage(userEmail, modulo, 'user', getTextFromContent(lastUserMsg.content), company) : null,
-              fullText ? saveMessage(userEmail, modulo, 'assistant', fullText, company, ragTopicsList.join(', ')) : null,
+              fullText ? saveMessage(userEmail, modulo, 'assistant', fullText, company, ragTopicsList.join(', '), extraerMetodologiaAplicada(fullText)) : null,
             ]);
           } catch (saveError) {
             console.error('Error guardando historial (la respuesta al usuario no se ve afectada):', saveError);
