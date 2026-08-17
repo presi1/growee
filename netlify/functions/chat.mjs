@@ -55,14 +55,9 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Bajado de 10 a 7 en agosto 2026, con 500 metodologías en catálogo, para acortar
-// el tiempo de respuesta: cada fragmento son ~3.200 caracteres de media, así que
-// cada mensaje cargaba a Claude con ~32.000 caracteres (~8.000 tokens) solo de
-// catálogo antes de escribir la primera letra. Medido contra la batería de 60
-// pruebas de recuperación (retrieval_tests): 7 da exactamente el mismo % de
-// aciertos que 10 (51/60) — los dos casos que se pierden al bajar a 6 están
-// justo en la posición 7. Por debajo de 7 sí se pierde recall real; no bajar más
-// sin volver a medir.
+// Recalibrado en agosto 2026, con 310 metodologías en catálogo. Se recuperan 7
+// fragmentos vía match_knowledge_v2 (reducido de 10, sin pérdida de recall en tests).
+// Además aplica suelo de similitud y descarta candidatos casi idénticos entre sí.
 const RETRIEVAL_COUNT = 7;
 // Suelo ABSOLUTO, solo red de seguridad: si una consulta no se parece a nada del
 // catálogo (un "¿qué tiempo hace?"), no se inyecta nada. Medido con consultas reales:
@@ -79,22 +74,6 @@ const RETRIEVAL_RELATIVE_FLOOR = 0.8;
 // medido en el catálogo actual), así que hoy casi nunca dispara: es un seguro para
 // cuando el catálogo crezca, no un parche para el estado actual.
 const RETRIEVAL_DIVERSITY_THRESHOLD = 0.92;
-// En el PRIMER mensaje de una sesión no hay hilo al que anclarse y el mensaje suele
-// ser corto y vago ("estoy agotado"), así que todo el catálogo parece igual de tibio.
-// Ahí no interesa traer MÁS material —medido: la posición 20 está a 0,27 y la 40 a
-// 0,25, igual de flojas— sino repartir los mismos 10 entre áreas distintas, para que
-// el asistente vea por dónde puede ir la conversación en vez de diez variaciones de
-// la misma suposición. 0,60 es el valor medido: mantiene los 10 fragmentos y sube la
-// cobertura de áreas; por debajo empieza a perder fragmentos sin ganar variedad.
-const RETRIEVAL_DIVERSITY_THRESHOLD_APERTURA = 0.6;
-// Cuántos mensajes del usuario se juntan para construir la consulta de búsqueda.
-// Antes se embebía solo el último, así que un "sí, exacto" en el turno 5 tiraba a la
-// basura todo lo que la persona había contado antes. Con 3 el "sí, exacto" viaja
-// acompañado del contexto que le da sentido.
-const RETRIEVAL_HISTORY_TURNS = 3;
-// Los mensajes anteriores al último se recortan: aportan contexto, pero el mensaje
-// actual debe seguir dominando la consulta.
-const RETRIEVAL_HISTORY_CHARS = 400;
 
 async function embedQuery(text) {
   const res = await fetch('https://api.voyageai.com/v1/embeddings', {
@@ -114,7 +93,7 @@ async function embedQuery(text) {
   return data.data[0].embedding;
 }
 
-async function retrieveKnowledge(embedding, modulo, esApertura = false) {
+async function retrieveKnowledge(embedding, modulo) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/match_knowledge_v2`, {
     method: 'POST',
     headers: {
@@ -127,9 +106,7 @@ async function retrieveKnowledge(embedding, modulo, esApertura = false) {
       match_modulo: modulo,
       match_count: RETRIEVAL_COUNT,
       min_similarity: RETRIEVAL_MIN_SIMILARITY,
-      diversity_threshold: esApertura
-        ? RETRIEVAL_DIVERSITY_THRESHOLD_APERTURA
-        : RETRIEVAL_DIVERSITY_THRESHOLD,
+      diversity_threshold: RETRIEVAL_DIVERSITY_THRESHOLD,
       relative_floor: RETRIEVAL_RELATIVE_FLOOR,
     }),
   });
@@ -140,125 +117,32 @@ async function retrieveKnowledge(embedding, modulo, esApertura = false) {
   return res.json();
 }
 
-// Quita, SOLO para lo que se envía a Claude en este mensaje (nunca toca lo
-// guardado en knowledge_chunks), dos secciones que no aportan a la conversación:
-//   - "Autor y origen": ya viaja como cabecera "[metodologia — origen]", así que
-//     el desarrollo largo del autor es redundante aquí.
-//   - Las notas de mantenimiento del catálogo, bajo tres títulos distintos según
-//     cuándo se escribió la entrada ("Notas para quien mantenga/mantiene este
-//     contenido", "Notas de mantenimiento") — están escritas para quien mantiene
-//     el catálogo, no para responder a la persona.
-// Entre las dos quitan ~18% del texto de una entrada media, medido sobre las
-// 500 reales (1.605.115 → 1.317.682 caracteres). Las cabeceras del catálogo
-// son ## en unas entradas y ### en otras (428 con ## y 72 con ###), así que
-// el patrón acepta ambas.
-// Si el formato de una entrada cambiara y el título de una sección dejara de
-// coincidir, esa sección simplemente no se recorta — no rompe nada.
-const SECCIONES_A_RECORTAR = [
-  /^#{2,3}\s*Autor y origen\s*$/im,
-  /^#{2,3}\s*Notas para quien mantenga este contenido\s*$/im,
-  /^#{2,3}\s*Notas para quien mantiene este contenido\s*$/im,
-  /^#{2,3}\s*Notas de mantenimiento\s*$/im,
-];
-function recortarParaInyeccion(content) {
-  if (typeof content !== 'string') return content;
-  let out = content;
-  for (const encabezado of SECCIONES_A_RECORTAR) {
-    // Ojo con el flag 'm': con él, "$" significa "antes de CUALQUIER salto de
-    // línea", no "fin de la cadena". Como justo después de una cabecera suele
-    // venir una línea en blanco, un "$" normal se cumplía ahí mismo y el
-    // recorte no comía nada del cuerpo — solo la línea del título. "(?![\s\S])"
-    // exige que no quede NINGÚN carácter después, así que sí es fin real de
-    // cadena, funcione con 'm' o sin él.
-    out = out.replace(
-      new RegExp(encabezado.source + '[\\s\\S]*?(?=\\n#{2,3}\\s|(?![\\s\\S]))', 'im'),
-      ''
-    );
-  }
-  return out.replace(/\n{3,}/g, '\n\n').trim();
-}
-
 function buildKnowledgeBlock(chunks) {
   if (!chunks || chunks.length === 0) return '';
   const formatted = chunks
-    .map((c) => `[${c.metodologia}${c.origen ? ` — ${c.origen}` : ''}]\n${recortarParaInyeccion(c.content)}`)
+    .map((c) => `[${c.metodologia}${c.origen ? ` — ${c.origen}` : ''}]\n${c.content}`)
     .join('\n\n---\n\n');
   return `\n\nCONOCIMIENTO RELEVANTE PARA ESTE MENSAJE (úsalo si aplica, cita la metodología y el autor cuando lo uses; no lo menciones si no aporta nada a este mensaje concreto):\n\n${formatted}`;
 }
 
-// Construye el texto que se embebe para buscar en el catálogo.
-//
-// El último mensaje va SIEMPRE al final y completo, porque es el que debe pesar más.
-// Los anteriores se añaden delante, recortados, solo para dar contexto: así un
-// "sí, exacto" o un "no sé" hereda de qué se estaba hablando en lugar de buscar a
-// ciegas. Devuelve además si estamos en el primer mensaje de la sesión, que se trata
-// distinto (ver RETRIEVAL_DIVERSITY_THRESHOLD_APERTURA).
-function buildRetrievalQuery(messages) {
-  const userMsgs = (messages || []).filter((m) => m && m.role === 'user');
-  if (userMsgs.length === 0) return null;
-
-  const recientes = userMsgs.slice(-RETRIEVAL_HISTORY_TURNS);
-  const ultimoIdx = recientes.length - 1;
-
-  const partes = recientes
-    .map((m, i) => {
-      const texto = (getTextFromContent(m.content) || '').trim();
-      if (!texto) return '';
-      // el actual entero; los de contexto, recortados
-      return i === ultimoIdx ? texto : texto.slice(0, RETRIEVAL_HISTORY_CHARS);
-    })
-    .filter(Boolean);
-
-  if (partes.length === 0) return null;
-
-  return { text: partes.join('\n'), esApertura: userMsgs.length === 1 };
-}
-
 // Resuelve embedding + búsqueda de conocimiento en un único paso encadenado,
 // para poder lanzarlo junto a la lectura de memoria con Promise.allSettled.
-async function resolveRag(modulo, retrieval) {
-  if (!modulo || !retrieval || !VOYAGE_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+async function resolveRag(modulo, lastUserMsg) {
+  if (!modulo || !lastUserMsg || !VOYAGE_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return { block: '', topics: [] };
   }
-  const embedding = await embedQuery(retrieval.text);
-  const chunks = await retrieveKnowledge(embedding, modulo, retrieval.esApertura);
+  const embedding = await embedQuery(getTextFromContent(lastUserMsg.content));
+  const chunks = await retrieveKnowledge(embedding, modulo);
   return {
     block: buildKnowledgeBlock(chunks),
     topics: (chunks || []).map((c) => c.metodologia).filter(Boolean),
   };
 }
 
-// Extrae el marcador [METODOLOGIA: nombre] que el modelo añade al final cuando
-// de verdad APLICA una metodología del catálogo.
-//
-// Por qué existe: rag_topics guarda lo que se le ENSEÑÓ al modelo (10 fragmentos),
-// que no es lo mismo que lo que acabó USANDO. Sin esto no hay forma de saber qué
-// proporción de respuestas se apoya en el catálogo — ni de que el "Temas más
-// trabajados" del panel de RRHH refleje lo aplicado en vez de lo recuperado.
-//
-// El texto se sigue guardando crudo, con los marcadores dentro: el frontend los
-// limpia al pintar, y la lógica de fijar mensajes en directo compara contra el
-// texto crudo, así que cambiarlo aquí la rompería.
-// No se ancla a fin de texto a propósito. El prompt le pide a este marcador que
-// vaya "después de cualquier otro marcador", pero compite con otros cuatro que
-// también dicen ir "al final" ([OPCIONES:], [GUIA:], [PRACTICA_FIN:], [CRISIS]),
-// así que el orden real no está garantizado. Anclando a $ se perdía el registro
-// en silencio cada vez que el modelo dejaba otro marcador detrás.
-// Si hubiera más de uno, nos quedamos con el último.
-function extraerMetodologiaAplicada(texto) {
-  if (typeof texto !== 'string') return null;
-  const encontrados = texto.match(/\[METODOLOGIA:\s*[^\]]+\]/g);
-  if (!encontrados || encontrados.length === 0) return null;
-  const ultimo = encontrados[encontrados.length - 1];
-  const nombre = ultimo.replace(/^\[METODOLOGIA:\s*/, '').replace(/\]$/, '').trim();
-  return nombre ? nombre.slice(0, 200) : null;
-}
-
-async function saveMessage(userEmail, modulo, role, content, company, ragTopics, metodologiaAplicada) {
+async function saveMessage(userEmail, modulo, role, content, company, ragTopics) {
   const payload = { user_email: userEmail, modulo, role, content };
   if (company) payload.company = company;
   if (ragTopics) payload.rag_topics = ragTopics;
-  if (metodologiaAplicada) payload.metodologia_aplicada = metodologiaAplicada;
 
   const res = await fetch(`${SUPABASE_URL}/rest/v1/chat_messages`, {
     method: 'POST',
@@ -402,7 +286,7 @@ export default async (req) => {
   // no la suma de ambos. allSettled para que un fallo en uno no tumbe al otro.
   const [memoryResult, ragResult] = await Promise.allSettled([
     canReadMemory ? getMemorySummary(userEmail, modulo) : Promise.resolve(null),
-    resolveRag(modulo, buildRetrievalQuery(messages)),
+    resolveRag(modulo, lastUserMsg),
   ]);
 
   if (memoryResult.status === 'fulfilled') {
@@ -482,7 +366,7 @@ export default async (req) => {
           try {
             await Promise.all([
               lastUserMsg ? saveMessage(userEmail, modulo, 'user', getTextFromContent(lastUserMsg.content), company) : null,
-              fullText ? saveMessage(userEmail, modulo, 'assistant', fullText, company, ragTopicsList.join(', '), extraerMetodologiaAplicada(fullText)) : null,
+              fullText ? saveMessage(userEmail, modulo, 'assistant', fullText, company, ragTopicsList.join(', ')) : null,
             ]);
           } catch (saveError) {
             console.error('Error guardando historial (la respuesta al usuario no se ve afectada):', saveError);
