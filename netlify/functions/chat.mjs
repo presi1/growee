@@ -59,8 +59,16 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 // de cuando había ~100). Se recuperan 10 fragmentos vía match_knowledge_v2, que
 // además aplica suelo de similitud y descarta candidatos casi idénticos entre sí.
 const RETRIEVAL_COUNT = 10;
-// Por debajo de esto, el fragmento no aporta: mejor no inyectar ruido en el prompt.
-const RETRIEVAL_MIN_SIMILARITY = 0.3;
+// Suelo ABSOLUTO, solo red de seguridad: si una consulta no se parece a nada del
+// catálogo (un "¿qué tiempo hace?"), no se inyecta nada. Medido con consultas reales:
+// la similitud consulta→documento vive entre 0,15 y 0,35, así que 0,20 es el punto
+// por debajo del cual no hay señal. Ojo: un valor más alto corta en mitad del rango
+// útil, porque la curva de similitud baja suave y no tiene acantilado natural.
+const RETRIEVAL_MIN_SIMILARITY = 0.2;
+// Suelo RELATIVO: se queda todo lo que esté dentro del 80% del mejor match de esa
+// consulta concreta. Es lo que de verdad decide el corte, y se adapta a cada consulta
+// en vez de imponer un número fijo sobre una escala que varía.
+const RETRIEVAL_RELATIVE_FLOOR = 0.8;
 // Si dos fragmentos se parecen más que esto entre ellos, solo entra el mejor de los dos.
 // Ajustado por encima de la banda de los pares legítimamente distintos (máx. 0,889
 // medido en el catálogo actual), así que hoy casi nunca dispara: es un seguro para
@@ -99,6 +107,7 @@ async function retrieveKnowledge(embedding, modulo) {
       match_count: RETRIEVAL_COUNT,
       min_similarity: RETRIEVAL_MIN_SIMILARITY,
       diversity_threshold: RETRIEVAL_DIVERSITY_THRESHOLD,
+      relative_floor: RETRIEVAL_RELATIVE_FLOOR,
     }),
   });
   if (!res.ok) {
