@@ -4996,6 +4996,11 @@ ol.cbubble-list li{padding-left:.3rem}
 .cmw-action-btn svg{width:14px;height:14px}
 .cmw-action-btn:hover{color:var(--ink);background:rgba(13,27,42,.06)}
 .cmw-action-btn.speaking{color:var(--moss-light)}
+.msg-undo-bar{display:flex;align-items:center;gap:.6rem;margin:.3rem .2rem 0;align-self:flex-end}
+.msg-undo-track{width:60px;height:3px;border-radius:2px;background:rgba(82,183,136,.2);overflow:hidden}
+.msg-undo-fill{display:block;height:100%;width:100%;background:var(--moss-light);transition-timing-function:linear;transition-property:width}
+.msg-undo-btn{background:none;border:none;color:var(--moss-light);font-size:.72rem;font-weight:600;cursor:pointer;text-decoration:underline;padding:0;font-family:'Inter',sans-serif}
+.msg-undo-btn:hover{color:#5fcf96}
 .cmw-fb-btn[data-rating="up"].active{color:var(--moss-light);background:rgba(82,183,136,.14)}
 .cmw-fb-btn[data-rating="down"].active{color:#C25B52;background:rgba(194,91,82,.12)}
 .cmw-fb-btn:not(.active){opacity:.55}
@@ -7195,15 +7200,7 @@ Cuando hagas una pregunta de diagnóstico para identificar qué está pasando (d
 - La línea [OPCIONES: ...] va SIEMPRE al final, después de toda la respuesta, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
 Ejemplo:
 "¿Qué es lo que más te está pesando ahora mismo?
-[OPCIONES: El volumen de tareas | Un conflicto con alguien | No desconectar nunca]"
-
-REGISTRO INTERNO DE METODOLOGÍA
-Cuando ofrezcas o apliques una metodología del bloque CONOCIMIENTO RELEVANTE, añade al final del todo, en su propia línea y DESPUÉS de cualquier otro marcador, exactamente este formato:
-[METODOLOGIA: nombre exacto tal como aparece en el bloque]
-- Solo cuando de verdad apliques una. Si en este mensaje únicamente estás preguntando o acompañando, no lo pongas.
-- Una sola por respuesta: la que realmente has usado, no todas las que has leído.
-- Copia el nombre literal del bloque, sin reformularlo ni abreviarlo.
-- Es invisible para la persona. NO sustituye a nombrar la metodología dentro de tu redacción, que sigues haciendo con naturalidad como hasta ahora.`,
+[OPCIONES: El volumen de tareas | Un conflicto con alguien | No desconectar nunca]"`,
     suggs: ['Me siento abrumado/a con el trabajo', 'No consigo desconectar cuando salgo', 'Tengo un conflicto con alguien del equipo', 'Llevo semanas sin dormir bien', 'Siento que no llego a todo'],
   },
 
@@ -7296,7 +7293,7 @@ Técnica de preguntas poderosas (ICF):
 - "¿Qué te impide hacerlo ya?", "¿Qué harías si supieras que no puedes fallar?", "¿Qué necesitas creer para que esto sea posible?", "¿Qué le dirías a un amigo en tu situación?"
 
 CÓMO TRABAJAR EN CADA SESIÓN
-1. EXPLORAR primero: entiende bien la situación antes de proponer nada. Haz hasta 3 preguntas de clarificación — nunca más, según la regla de máximo 3 de arriba.
+1. EXPLORAR primero: entiende bien la situación antes de proponer nada. Haz 1-2 preguntas de clarificación.
 2. ENFOCAR: ayuda a la persona a definir qué quiere conseguir exactamente en esta conversación.
 3. PROPONER: cuando tengas contexto suficiente, ofrece el framework o herramienta más adecuada para esta situación específica. Explica en una frase por qué esa herramienta y no otra.
 4. CONSTRUIR JUNTOS: aplica la herramienta al caso concreto — no la expliques en abstracto, úsala con los datos reales de la persona.
@@ -7363,15 +7360,7 @@ Cuando hagas una pregunta de clarificación (fase EXPLORAR) que tenga 2-4 respue
 - La línea [OPCIONES: ...] va SIEMPRE al final, después de toda la respuesta, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
 Ejemplo:
 "¿Qué tipo de conversación difícil es?
-[OPCIONES: Dar feedback negativo | Pedir un aumento | Resolver un conflicto de equipo]"
-
-REGISTRO INTERNO DE METODOLOGÍA
-Cuando ofrezcas o apliques una metodología del bloque CONOCIMIENTO RELEVANTE, añade al final del todo, en su propia línea y DESPUÉS de cualquier otro marcador, exactamente este formato:
-[METODOLOGIA: nombre exacto tal como aparece en el bloque]
-- Solo cuando de verdad apliques una. Si en este mensaje únicamente estás preguntando o acompañando, no lo pongas.
-- Una sola por respuesta: la que realmente has usado, no todas las que has leído.
-- Copia el nombre literal del bloque, sin reformularlo ni abreviarlo.
-- Es invisible para la persona. NO sustituye a nombrar la metodología dentro de tu redacción, que sigues haciendo con naturalidad como hasta ahora.`,
+[OPCIONES: Dar feedback negativo | Pedir un aumento | Resolver un conflicto de equipo]"`,
     suggs: ['Tengo que dar feedback difícil esta semana', 'No sé cómo motivar a mi equipo', 'Hay una conversación que no sé cómo abordar', 'Quiero mejorar cómo delego', 'Necesito preparar una reunión importante'],
   },
 
@@ -7415,7 +7404,6 @@ ESTRUCTURA DE CADA RESPUESTA
 2. Haz una pregunta de clarificación o propón una herramienta concreta (1-3 oraciones).
 3. Si ofreces una herramienta, explica en una frase por qué esa y no otra, y aplícala al caso real.
 4. Cierra con un paso concreto o una pregunta que invite a continuar.
-- Máximo 3 preguntas de diagnóstico seguidas antes de ofrecer algo concreto. Si tras 3 preguntas todavía falta claridad, ofrece de todos modos lo que mejor encaje con lo que ya sabes, dejando claro que es un punto de partida ajustable. Nunca encadenes una cuarta pregunta sin haber ofrecido antes algo concreto.
 
 SEÑALES DE ALERTA
 Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional. Dile explícitamente que puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar al 024 (gratuita y 24/7) o al 112 si el riesgo es inminente. Eres un apoyo, no un sustituto clínico.
@@ -7492,15 +7480,7 @@ Cuando hagas una pregunta de clarificación que tenga 2-4 respuestas típicas y 
 [OPCIONES: Opción corta 1 | Opción corta 2 | Opción corta 3]
 - Cada opción debe ser corta (2-6 palabras), en el mismo tono en que hablaría la persona.
 - Nunca uses esto para preguntas abiertas — solo cuando de verdad haya 2-4 categorías claras entre las que elegir.
-- La línea [OPCIONES: ...] va SIEMPRE al final, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
-
-REGISTRO INTERNO DE METODOLOGÍA
-Cuando ofrezcas o apliques una metodología del bloque CONOCIMIENTO RELEVANTE, añade al final del todo, en su propia línea y DESPUÉS de cualquier otro marcador, exactamente este formato:
-[METODOLOGIA: nombre exacto tal como aparece en el bloque]
-- Solo cuando de verdad apliques una. Si en este mensaje únicamente estás preguntando o acompañando, no lo pongas.
-- Una sola por respuesta: la que realmente has usado, no todas las que has leído.
-- Copia el nombre literal del bloque, sin reformularlo ni abreviarlo.
-- Es invisible para la persona. NO sustituye a nombrar la metodología dentro de tu redacción, que sigues haciendo con naturalidad como hasta ahora.`,
+- La línea [OPCIONES: ...] va SIEMPRE al final, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.`,
     suggs: ['Necesito apoyo emocional hoy', 'Quiero trabajar algo de liderazgo', 'Hay algo personal que me está afectando', 'Tengo un reto profesional esta semana', 'No sé si es estrés o algo más'],
   },
 };
@@ -7816,9 +7796,6 @@ function showWelcomeAndSuggestions() {
 
 function newChatSession() {
   // Arranque en frío, sin recuperar historial — lo usa el botón "+ Nueva sesión"
-  // Sube el contador antes de nada: así cualquier openChatSession() que siga
-  // esperando a la red se retira al volver, en vez de pintar su saludo encima.
-  chatSessionGen++;
   maybeShowMoodCheckout();
   moodAskedThisSession = false;
   chatState.history  = [];
@@ -7839,18 +7816,8 @@ function newChatSession() {
   restoreDraft();
 }
 
-// Contador de sesiones de chat abiertas. openChatSession() limpia la pantalla
-// al empezar pero pinta DESPUÉS de esperar a la red, así que sin esto cualquier
-// llamada que se solape (initApp y startChat al entrar, switchMode al cambiar de
-// pestaña, onAuthStateChange que vuelve a entrar en la app, o el botón "+ Nueva
-// sesión") pintaba su saludo encima del de las anteriores: cuatro clics, cuatro
-// saludos. Cada arranque se lleva un número; al volver de un await, si el número
-// ya no es el actual, esa ejecución es vieja y se retira sin tocar la pantalla.
-let chatSessionGen = 0;
-
 async function openChatSession() {
   // Igual que newChatSession, pero primero intenta recuperar la conversación anterior
-  const gen = ++chatSessionGen;
   chatState.history  = [];
   chatState.msgCount = 0;
   updChatCnt();
@@ -7862,12 +7829,6 @@ async function openChatSession() {
   if (btnV2) btnV2.classList.remove('on', 'moss');
   const msgs = document.getElementById('chat-msgs');
   if(msgs) msgs.innerHTML = '';
-
-  // Saluda YA, sin esperar a la red. Antes el saludo se pintaba solo después
-  // de que volviera el historial, así que con la red lenta el chat se quedaba
-  // en blanco varios segundos al abrirlo. Si resulta que sí había conversación
-  // anterior, este saludo se retira y se pinta el historial en su lugar.
-  showWelcomeAndSuggestions();
 
   const mode = chatState.mode;
   let restored = false;
@@ -7881,20 +7842,13 @@ async function openChatSession() {
       });
       if (res.ok) {
         const rows = await res.json();
-        if (gen !== chatSessionGen) return; // ya se abrió otra sesión mientras esperábamos
         if (Array.isArray(rows) && rows.length > 0) {
-          // Sí había conversación anterior: quitamos el saludo provisional y
-          // las sugerencias de arranque, y pintamos el historial en su lugar.
-          if (msgs) msgs.innerHTML = '';
-          const suggEl0 = document.getElementById('chat-suggs');
-          if (suggEl0) suggEl0.style.display = 'none';
           const MAX_RESTORE = 40; // cap para no disparar el tamaño del contexto en cada mensaje nuevo
           const recent = rows.slice(-MAX_RESTORE);
           recent.forEach(r => {
             const role = r.role === 'assistant' ? 'ai' : 'user';
-            const contenidoLimpio = r.role === 'assistant' ? stripMarkers(r.content) : r.content;
-            addBubble(role, contenidoLimpio);
-            chatState.history.push({ role: r.role === 'assistant' ? 'assistant' : 'user', content: contenidoLimpio });
+            addBubble(role, r.content);
+            chatState.history.push({ role: r.role === 'assistant' ? 'assistant' : 'user', content: r.content });
           });
           chatState.msgCount = chatState.history.filter(m => m.role === 'user').length;
           updChatCnt();
@@ -7907,10 +7861,8 @@ async function openChatSession() {
     }
   }
 
-  if (gen !== chatSessionGen) return; // idem: si hubo un fallo de red, el await del catch también pudo dejarnos atrás
-
   if (!restored) {
-    // El saludo ya está pintado desde el principio: no hay nada que hacer aquí.
+    showWelcomeAndSuggestions();
   } else if (appState.user.email) {
     // Hay historial restaurado: intentamos añadir un mensaje de continuidad
     // basado en la memoria de fondo (si existe), aparte del historial en crudo.
@@ -7922,7 +7874,6 @@ async function openChatSession() {
       });
       if (res.ok) {
         const data = await res.json();
-        if (gen !== chatSessionGen) return; // el mensaje de continuidad tampoco debe caer en una sesión que ya no existe
         if (data.welcome) {
           addBubble('ai', data.welcome, true);
         }
@@ -8916,7 +8867,7 @@ function downloadHistoryAsPDF() {
     y += 15;
 
     doc.setFont('helvetica', 'normal');
-    const lines = doc.splitTextToSize(r.role === 'assistant' ? stripMarkers(r.content) : r.content, maxWidth);
+    const lines = doc.splitTextToSize(r.content, maxWidth);
     lines.forEach((line) => {
       if (y > pageHeight - 50) { doc.addPage(); y = 55; }
       doc.text(line, marginX, y);
@@ -8971,7 +8922,7 @@ async function downloadHistoryAsDocx() {
       spacing: { after: 200 },
       children: [
         new TextRun({ text: `[${time}] ${quien}: `, bold: true }),
-        new TextRun({ text: r.role === 'assistant' ? stripMarkers(r.content) : r.content }),
+        new TextRun({ text: r.content }),
       ],
     }));
   });
@@ -9118,38 +9069,39 @@ function buildAiActionsBar(role) {
   return actions;
 }
 
+// Ventana de "deshacer envío": muestra una barra bajo el mensaje que se va
+// vaciando durante `ms` milisegundos; si se pulsa "Deshacer" antes de que
+// termine, resuelve 'undo' (y quien llama revierte todo). Si no, resuelve
+// 'proceed' y el mensaje sigue su curso normal hacia el servidor.
+function showUndoWindow(wrap, ms) {
+  return new Promise((resolve) => {
+    const bar = document.createElement('div');
+    bar.className = 'msg-undo-bar';
+    bar.innerHTML = `
+      <span class="msg-undo-track"><span class="msg-undo-fill"></span></span>
+      <button class="msg-undo-btn">Deshacer</button>
+    `;
+    wrap.appendChild(bar);
+    const fill = bar.querySelector('.msg-undo-fill');
+    fill.style.transitionDuration = ms + 'ms';
+    requestAnimationFrame(() => { fill.style.width = '0%'; }); // dispara la animación de vaciado
 
-// ── Marcadores internos del modelo ──────────────────────────────────────────
-// El modelo cierra algunas respuestas con marcadores técnicos ([OPCIONES:],
-// [GUIA:], [PRACTICA_FIN:], [CRISIS], [METODOLOGIA:]) que la interfaz convierte
-// en botones, tarjetas o registro interno. Nunca deben verse como texto.
-//
-// En Supabase se guarda el texto CRUDO, con los marcadores dentro, así que hay
-// que limpiarlos en todos los sitios que pintan mensajes guardados: el historial
-// al reabrir la conversación, el resumen en PDF y la exportación a Word. Hasta
-// ahora solo se limpiaban en el mensaje en directo, y por eso al reabrir una
-// conversación se veían en crudo (afectaba a ~1 de cada 3 mensajes).
-//
-// El bucle hace la limpieza independiente del orden: da igual en qué secuencia
-// los encadene el modelo.
-function stripMarkers(text) {
-  if (typeof text !== 'string') return text;
-  var patterns = [
-    /\n?\[METODOLOGIA:\s*[^\]]*\]\s*$/,
-    /\n?\[CRISIS\]\s*$/,
-    /\n?\[PRACTICA_FIN:\s*[^\]]*\]\s*$/,
-    /\n?\[GUIA:\s*[a-z0-9-]+\]\s*$/,
-    /\n?\[OPCIONES:\s*[^\]]*\]\s*$/
-  ];
-  var out = text, changed = true;
-  while (changed) {
-    changed = false;
-    for (var i = 0; i < patterns.length; i++) {
-      var next = out.replace(patterns[i], '');
-      if (next !== out) { out = next; changed = true; }
-    }
-  }
-  return out.trim();
+    let settled = false;
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      bar.remove();
+      resolve('proceed');
+    }, ms);
+
+    bar.querySelector('.msg-undo-btn').onclick = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      bar.remove();
+      resolve('undo');
+    };
+  });
 }
 
 function addBubble(role, text, animate, imageSrc) {
@@ -9795,6 +9747,25 @@ async function chatSend() {
   updChatCnt();
   chatState.history.push({ role:'user', content: apiContent });
 
+  // Ventana de "deshacer envío": el mensaje ya se ve en pantalla, pero no
+  // se contacta con el servidor hasta que pasa este margen — así deshacer
+  // es un deshacer de verdad (nunca llegó a enviarse), no solo un borrado
+  // visual. Se salta en modo voz, donde no tiene sentido (nadie va a tocar
+  // la pantalla para deshacer en un flujo manos libres).
+  if (!voiceModeActive) {
+    const undoResult = await showUndoWindow(userWrap, 3200);
+    if (undoResult === 'undo') {
+      userWrap.remove();
+      chatState.history.pop();
+      chatState.msgCount--;
+      updChatCnt();
+      chatState.sending = false;
+      if (ta) { ta.value = typed; chatResizeNoSave(ta); ta.focus(); }
+      saveDraft(typed); // para que el mensaje deshecho no se pierda como borrador
+      return;
+    }
+  }
+
   const ty = addTyping();
 
   // Pick system prompt for current mode
@@ -9853,14 +9824,6 @@ async function chatSend() {
       let guiaId = null;
       let practicaResumen = null;
 
-      // Va el primero, y sin anclar a fin de texto: el prompt le pide que vaya
-      // después de todos los demás, pero compite con otros cuatro marcadores que
-      // también dicen ir "al final", así que el orden no está garantizado. Si se
-      // anclaba a $ y el modelo dejaba otro marcador detrás, este se quedaba sin
-      // quitar y acababa viéndose en crudo en el mensaje. Lo quitamos esté donde
-      // esté, antes de que los demás anclen a fin de texto.
-      cleanText = cleanText.replace(/\n?\[METODOLOGIA:\s*[^\]]*\]/g, '').trim();
-
       const crisisMatch = cleanText.match(/\n?\[CRISIS\]\s*$/);
       if (crisisMatch) {
         cleanText = cleanText.slice(0, crisisMatch.index).trim();
@@ -9883,12 +9846,6 @@ async function chatSend() {
         cleanText = cleanText.slice(0, optMatch.index).trim();
         opciones = optMatch[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 4);
       }
-
-      // Red de seguridad: si el modelo colocó los marcadores en un orden que la
-      // extracción secuencial de arriba no previó, esto los quita igualmente antes
-      // de pintar. Sin esto, un marcador mal colocado se le muestra en crudo a la
-      // persona. Cuando no hay nada que quitar es una operación vacía.
-      cleanText = stripMarkers(cleanText);
 
       live.bubbleEl.innerHTML = formatAiText(cleanText); // al terminar, aplica negrita/listas reales
       live.bubbleEl.dataset.rawText = cleanText;
@@ -9922,7 +9879,7 @@ async function chatSend() {
       attachPinToLiveBubble(userWrap, apiContent, 'user');
     }
 
-    const reply = stripMarkers(fullText) || 'Cuéntame más.';
+    const reply = (fullText.replace(/\n?\[CRISIS\]\s*$/, '').replace(/\n?\[PRACTICA_FIN:\s*([^\]]+)\]\s*$/, '').replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '').replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
     chatState.history.push({ role:'assistant', content:reply });
     chatState.msgCount++;
     updChatCnt();
