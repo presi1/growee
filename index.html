@@ -4996,11 +4996,6 @@ ol.cbubble-list li{padding-left:.3rem}
 .cmw-action-btn svg{width:14px;height:14px}
 .cmw-action-btn:hover{color:var(--ink);background:rgba(13,27,42,.06)}
 .cmw-action-btn.speaking{color:var(--moss-light)}
-.msg-undo-bar{display:flex;align-items:center;gap:.6rem;margin:.3rem .2rem 0;align-self:flex-end}
-.msg-undo-track{width:60px;height:3px;border-radius:2px;background:rgba(82,183,136,.2);overflow:hidden}
-.msg-undo-fill{display:block;height:100%;width:100%;background:var(--moss-light);transition-timing-function:linear;transition-property:width}
-.msg-undo-btn{background:none;border:none;color:var(--moss-light);font-size:.72rem;font-weight:600;cursor:pointer;text-decoration:underline;padding:0;font-family:'Inter',sans-serif}
-.msg-undo-btn:hover{color:#5fcf96}
 .cmw-fb-btn[data-rating="up"].active{color:var(--moss-light);background:rgba(82,183,136,.14)}
 .cmw-fb-btn[data-rating="down"].active{color:#C25B52;background:rgba(194,91,82,.12)}
 .cmw-fb-btn:not(.active){opacity:.55}
@@ -7868,6 +7863,12 @@ async function openChatSession() {
   const msgs = document.getElementById('chat-msgs');
   if(msgs) msgs.innerHTML = '';
 
+  // Saluda YA, sin esperar a la red. Antes el saludo se pintaba solo después
+  // de que volviera el historial, así que con la red lenta el chat se quedaba
+  // en blanco varios segundos al abrirlo. Si resulta que sí había conversación
+  // anterior, este saludo se retira y se pinta el historial en su lugar.
+  showWelcomeAndSuggestions();
+
   const mode = chatState.mode;
   let restored = false;
 
@@ -7882,6 +7883,11 @@ async function openChatSession() {
         const rows = await res.json();
         if (gen !== chatSessionGen) return; // ya se abrió otra sesión mientras esperábamos
         if (Array.isArray(rows) && rows.length > 0) {
+          // Sí había conversación anterior: quitamos el saludo provisional y
+          // las sugerencias de arranque, y pintamos el historial en su lugar.
+          if (msgs) msgs.innerHTML = '';
+          const suggEl0 = document.getElementById('chat-suggs');
+          if (suggEl0) suggEl0.style.display = 'none';
           const MAX_RESTORE = 40; // cap para no disparar el tamaño del contexto en cada mensaje nuevo
           const recent = rows.slice(-MAX_RESTORE);
           recent.forEach(r => {
@@ -7904,7 +7910,7 @@ async function openChatSession() {
   if (gen !== chatSessionGen) return; // idem: si hubo un fallo de red, el await del catch también pudo dejarnos atrás
 
   if (!restored) {
-    showWelcomeAndSuggestions();
+    // El saludo ya está pintado desde el principio: no hay nada que hacer aquí.
   } else if (appState.user.email) {
     // Hay historial restaurado: intentamos añadir un mensaje de continuidad
     // basado en la memoria de fondo (si existe), aparte del historial en crudo.
@@ -9112,40 +9118,6 @@ function buildAiActionsBar(role) {
   return actions;
 }
 
-// Ventana de "deshacer envío": muestra una barra bajo el mensaje que se va
-// vaciando durante `ms` milisegundos; si se pulsa "Deshacer" antes de que
-// termine, resuelve 'undo' (y quien llama revierte todo). Si no, resuelve
-// 'proceed' y el mensaje sigue su curso normal hacia el servidor.
-function showUndoWindow(wrap, ms) {
-  return new Promise((resolve) => {
-    const bar = document.createElement('div');
-    bar.className = 'msg-undo-bar';
-    bar.innerHTML = `
-      <span class="msg-undo-track"><span class="msg-undo-fill"></span></span>
-      <button class="msg-undo-btn">Deshacer</button>
-    `;
-    wrap.appendChild(bar);
-    const fill = bar.querySelector('.msg-undo-fill');
-    fill.style.transitionDuration = ms + 'ms';
-    requestAnimationFrame(() => { fill.style.width = '0%'; }); // dispara la animación de vaciado
-
-    let settled = false;
-    const timer = setTimeout(() => {
-      if (settled) return;
-      settled = true;
-      bar.remove();
-      resolve('proceed');
-    }, ms);
-
-    bar.querySelector('.msg-undo-btn').onclick = () => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      bar.remove();
-      resolve('undo');
-    };
-  });
-}
 
 // ── Marcadores internos del modelo ──────────────────────────────────────────
 // El modelo cierra algunas respuestas con marcadores técnicos ([OPCIONES:],
@@ -9822,25 +9794,6 @@ async function chatSend() {
   chatState.msgCount++;
   updChatCnt();
   chatState.history.push({ role:'user', content: apiContent });
-
-  // Ventana de "deshacer envío": el mensaje ya se ve en pantalla, pero no
-  // se contacta con el servidor hasta que pasa este margen — así deshacer
-  // es un deshacer de verdad (nunca llegó a enviarse), no solo un borrado
-  // visual. Se salta en modo voz, donde no tiene sentido (nadie va a tocar
-  // la pantalla para deshacer en un flujo manos libres).
-  if (!voiceModeActive) {
-    const undoResult = await showUndoWindow(userWrap, 3200);
-    if (undoResult === 'undo') {
-      userWrap.remove();
-      chatState.history.pop();
-      chatState.msgCount--;
-      updChatCnt();
-      chatState.sending = false;
-      if (ta) { ta.value = typed; chatResizeNoSave(ta); ta.focus(); }
-      saveDraft(typed); // para que el mensaje deshecho no se pierda como borrador
-      return;
-    }
-  }
 
   const ty = addTyping();
 
