@@ -55,10 +55,10 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-// Recalibrado en agosto 2026, con 310 metodologías en catálogo. Se recuperan 7
-// fragmentos vía match_knowledge_v2 (reducido de 10, sin pérdida de recall en tests).
-// Además aplica suelo de similitud y descarta candidatos casi idénticos entre sí.
-const RETRIEVAL_COUNT = 7;
+// Recalibrado en agosto 2026, con 339 metodologías en catálogo (el valor de 6 venía
+// de cuando había ~100). Se recuperan 10 fragmentos vía match_knowledge_v2, que
+// además aplica suelo de similitud y descarta candidatos casi idénticos entre sí.
+const RETRIEVAL_COUNT = 10;
 // Suelo ABSOLUTO, solo red de seguridad: si una consulta no se parece a nada del
 // catálogo (un "¿qué tiempo hace?"), no se inyecta nada. Medido con consultas reales:
 // la similitud consulta→documento vive entre 0,15 y 0,35, así que 0,20 es el punto
@@ -125,13 +125,36 @@ function buildKnowledgeBlock(chunks) {
   return `\n\nCONOCIMIENTO RELEVANTE PARA ESTE MENSAJE (úsalo si aplica, cita la metodología y el autor cuando lo uses; no lo menciones si no aporta nada a este mensaje concreto):\n\n${formatted}`;
 }
 
+// Cuántos mensajes de usuario recientes se usan para construir la consulta del RAG.
+const RETRIEVAL_HISTORY_TURNS = 3;
+// Los mensajes que no son el más reciente se recortan a esta longitud: solo aportan
+// contexto de tema, no hace falta el texto completo (y así no infla la búsqueda).
+const RETRIEVAL_HISTORY_CHARS = 400;
+
+// Antes solo se embebía el último mensaje del usuario. Si ese mensaje es corto o
+// ambiguo ("sí", "cuéntame más"), la búsqueda se queda casi sin señal aunque el
+// tema real ya se dijo en el mensaje anterior. Ahora se anclan los últimos
+// RETRIEVAL_HISTORY_TURNS mensajes de usuario (el más reciente entero, los
+// anteriores recortados) para que la búsqueda no pierda el hilo de la conversación.
+function buildRetrievalQuery(messages) {
+  const userMsgs = messages.filter((m) => m.role === 'user').slice(-RETRIEVAL_HISTORY_TURNS);
+  return userMsgs
+    .map((m, i) => {
+      const text = getTextFromContent(m.content);
+      const isLast = i === userMsgs.length - 1;
+      return isLast ? text : text.slice(0, RETRIEVAL_HISTORY_CHARS);
+    })
+    .filter(Boolean)
+    .join('\n');
+}
+
 // Resuelve embedding + búsqueda de conocimiento en un único paso encadenado,
 // para poder lanzarlo junto a la lectura de memoria con Promise.allSettled.
-async function resolveRag(modulo, lastUserMsg) {
-  if (!modulo || !lastUserMsg || !VOYAGE_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+async function resolveRag(modulo, queryText) {
+  if (!modulo || !queryText || !VOYAGE_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     return { block: '', topics: [] };
   }
-  const embedding = await embedQuery(getTextFromContent(lastUserMsg.content));
+  const embedding = await embedQuery(queryText);
   const chunks = await retrieveKnowledge(embedding, modulo);
   return {
     block: buildKnowledgeBlock(chunks),
@@ -286,7 +309,7 @@ export default async (req) => {
   // no la suma de ambos. allSettled para que un fallo en uno no tumbe al otro.
   const [memoryResult, ragResult] = await Promise.allSettled([
     canReadMemory ? getMemorySummary(userEmail, modulo) : Promise.resolve(null),
-    resolveRag(modulo, lastUserMsg),
+    resolveRag(modulo, buildRetrievalQuery(messages)),
   ]);
 
   if (memoryResult.status === 'fulfilled') {
