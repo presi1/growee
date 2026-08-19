@@ -111,11 +111,13 @@ h3{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.2
 .tag-pill{display:inline-flex;align-items:center;gap:.4rem;padding:.32rem .85rem;border-radius:50px;font-size:.73rem;font-weight:600;letter-spacing:.04em}
 .tag-moss{background:rgba(82,183,136,.12);border:1px solid rgba(82,183,136,.2);color:var(--moss-light)}
 
-.rrhh-stat-card{background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem}
-.rrhh-stat-big{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:400;color:var(--moss-light)}
-.rrhh-stat-label{font-size:.8rem;color:var(--inv-2);margin-top:.3rem}
-.rrhh-panel-box{background:var(--mist);border:1px solid var(--border);border-radius:14px;padding:1.4rem}
-.rrhh-box-title{font-size:.85rem;font-weight:600;color:var(--cream)}
+.rrhh-stat-card{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem;box-shadow:0 2px 20px rgba(13,27,42,.06);transition:border-color .2s}
+.rrhh-stat-card:hover{border-color:rgba(82,183,136,.25)}
+.rrhh-stat-big{font-family:'Fraunces',serif;font-size:2.4rem;font-weight:300;color:var(--moss-light);line-height:1}
+.rrhh-stat-label{font-size:.8rem;color:var(--inv-2);margin-top:.5rem;line-height:1.4}
+.rrhh-panel-box{background:var(--mist);border:1px solid var(--border);border-radius:16px;padding:1.6rem;box-shadow:0 2px 20px rgba(13,27,42,.06)}
+.rrhh-box-title{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:400;color:var(--cream)}
+.rrhh-eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--moss-light);margin-bottom:.5rem}
 .rrhh-bar-track{width:100%;height:8px;border-radius:4px;background:rgba(248,246,241,.08);overflow:hidden}
 .rrhh-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
 .rrhh-trend-bar{flex:1;background:var(--moss-light);border-radius:3px 3px 0 0;min-height:2px;position:relative}
@@ -6300,11 +6302,12 @@ ol.cbubble-list li{padding-left:.3rem}
 <!-- ═══════ PANEL DE RRHH — datos agregados, sin conversaciones individuales ═══════ -->
 <div id="pg-rrhh-panel" class="pg">
   <div style="max-width:1100px;margin:0 auto;padding:2.5rem 3rem 4rem">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.5rem">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2.8rem">
       <div>
         <button class="btn-ghost" style="margin-bottom:1rem" onclick="go('app')">← Volver al chat</button>
-        <h1 style="font-family:'Fraunces',serif;font-size:1.9rem;font-weight:300;margin:0">Panel de RRHH</h1>
-        <p style="color:var(--inv-2);font-size:.85rem;margin-top:.3rem" id="rrhh-panel-company"></p>
+        <div class="rrhh-eyebrow">Panel de empresa</div>
+        <h1 style="font-family:'Fraunces',serif;font-size:2.1rem;font-weight:300;margin:0;letter-spacing:-.02em">Panel de RRHH</h1>
+        <p style="color:var(--inv-2);font-size:.85rem;margin-top:.4rem" id="rrhh-panel-company"></p>
       </div>
       <div class="tag-pill tag-moss">🔒 Datos agregados y anonimizados — sin acceso a conversaciones</div>
     </div>
@@ -6315,7 +6318,7 @@ ol.cbubble-list li{padding-left:.3rem}
     <div id="rrhh-panel-content" style="display:none">
 
       <!-- Tarjetas de estadísticas principales -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:1.5rem">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;margin-bottom:1.7rem">
         <div class="rrhh-stat-card">
           <div class="rrhh-stat-big" id="stat-wellbeing-index" style="color:var(--moss-light)">—</div>
           <div class="rrhh-stat-label">Índice de participación <span id="stat-wellbeing-note" style="display:none;color:var(--inv-2);font-size:.72rem">(sin datos aún)</span></div>
@@ -6334,9 +6337,9 @@ ol.cbubble-list li{padding-left:.3rem}
           <div class="rrhh-stat-label">Mensajes esta semana</div>
         </div>
       </div>
-      <div style="font-size:.72rem;color:var(--inv-2);margin:-.8rem 0 1.5rem">El índice de participación combina el % de la plantilla activo esta semana y la constancia de uso en 14 días — mide uso, no es un diagnóstico clínico de bienestar.</div>
+      <div style="font-size:.72rem;color:var(--inv-2);margin:-1rem 0 1.7rem">El índice de participación combina el % de la plantilla activo esta semana y la constancia de uso en 14 días — mide uso, no es un diagnóstico clínico de bienestar.</div>
 
-      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:1.2rem;margin-bottom:1.2rem">
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:1.3rem;margin-bottom:1.3rem">
 
         <!-- Tendencia de actividad (14 días) -->
         <div class="rrhh-panel-box">
@@ -6368,21 +6371,21 @@ ol.cbubble-list li{padding-left:.3rem}
       </div>
 
       <!-- Temas más consultados -->
-      <div class="rrhh-panel-box" style="margin-top:1.2rem">
+      <div class="rrhh-panel-box" style="margin-top:1.3rem">
         <div class="rrhh-box-title">Metodologías más consultadas (30 días)</div>
         <div id="rrhh-topics-list" style="margin-top:1rem"></div>
         <div style="font-size:.72rem;color:var(--inv-2);margin-top:1rem">Esto muestra qué metodologías ha usado la IA en sus respuestas, nunca el contenido de las conversaciones.</div>
       </div>
 
       <!-- Exportar datos para BI -->
-      <div class="rrhh-panel-box" style="margin-top:1.2rem">
+      <div class="rrhh-panel-box" style="margin-top:1.3rem">
         <div class="rrhh-box-title">Exportar datos</div>
         <p style="font-size:.8rem;color:var(--inv);margin:.5rem 0 1rem;line-height:1.6">Descarga la actividad diaria agregada (mensajes y usuarios activos por día y módulo) para conectarla a tu propia herramienta de BI.</p>
         <button class="chat-history-link" onclick="exportRrhhDataCsv()" style="border:1px solid var(--border);padding:.5rem 1rem;border-radius:8px">⬇️ Descargar CSV (últimos 90 días)</button>
       </div>
 
       <!-- Alta de empleados por CSV -->
-      <div class="rrhh-panel-box" style="margin-top:1.2rem">
+      <div class="rrhh-panel-box" style="margin-top:1.3rem">
         <div class="rrhh-box-title">Dar de alta empleados</div>
         <p style="font-size:.8rem;color:var(--inv);margin-top:.5rem;line-height:1.6">
           Sube un CSV con dos columnas: <strong style="color:var(--cream)">nombre</strong> y <strong style="color:var(--cream)">email</strong> (con esos nombres exactos en la primera fila).
