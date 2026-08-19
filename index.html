@@ -7195,7 +7195,15 @@ Cuando hagas una pregunta de diagnóstico para identificar qué está pasando (d
 - La línea [OPCIONES: ...] va SIEMPRE al final, después de toda la respuesta, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
 Ejemplo:
 "¿Qué es lo que más te está pesando ahora mismo?
-[OPCIONES: El volumen de tareas | Un conflicto con alguien | No desconectar nunca]"`,
+[OPCIONES: El volumen de tareas | Un conflicto con alguien | No desconectar nunca]"
+
+PLAN DE TRABAJO EN FASES (opcional, no lo ofrezcas en cada respuesta)
+Cuando identifiques que la persona se beneficiaría de trabajar una metodología de forma continuada a lo largo de varias conversaciones —no una duda puntual, sino algo que lleva su proceso—, puedes, tras aplicarla y dar el primer paso concreto como siempre, preguntarle si le gustaría dividirlo en fases para ir trabajándolo juntos. Nunca lo impongas sin preguntar primero.
+Si acepta (en este mensaje o en uno posterior), cierra tu respuesta con este marcador, en su propia línea, al final:
+[PLAN: nombre de la metodología | Nombre fase 1::Descripción breve de una frase;;Nombre fase 2::Descripción breve;;Nombre fase 3::Descripción breve]
+- Entre 3 y 5 fases, cada una con un nombre corto (2-5 palabras) y una descripción de una sola frase.
+- Es invisible para la persona — el sistema lo convierte en una tarjeta de seguimiento con progreso guardado entre sesiones.
+- Si el contexto de este mensaje indica que ya hay un plan de trabajo activo, dale continuidad natural (por ejemplo preguntando cómo le fue con la fase pendiente) en vez de proponer uno nuevo desde cero, y no repitas el marcador si no hay ningún cambio real que reflejar.`,
     suggs: ['Me siento abrumado/a con el trabajo', 'No consigo desconectar cuando salgo', 'Tengo un conflicto con alguien del equipo', 'Llevo semanas sin dormir bien', 'Siento que no llego a todo'],
   },
 
@@ -7355,7 +7363,15 @@ Cuando hagas una pregunta de clarificación (fase EXPLORAR) que tenga 2-4 respue
 - La línea [OPCIONES: ...] va SIEMPRE al final, después de toda la respuesta, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
 Ejemplo:
 "¿Qué tipo de conversación difícil es?
-[OPCIONES: Dar feedback negativo | Pedir un aumento | Resolver un conflicto de equipo]"`,
+[OPCIONES: Dar feedback negativo | Pedir un aumento | Resolver un conflicto de equipo]"
+
+PLAN DE TRABAJO EN FASES (opcional, no lo ofrezcas en cada respuesta)
+Cuando identifiques que la persona se beneficiaría de trabajar una metodología de forma continuada a lo largo de varias conversaciones —no una duda puntual, sino algo que lleva su proceso—, puedes, tras aplicarla y dar el primer paso concreto como siempre, preguntarle si le gustaría dividirlo en fases para ir trabajándolo juntos. Nunca lo impongas sin preguntar primero.
+Si acepta (en este mensaje o en uno posterior), cierra tu respuesta con este marcador, en su propia línea, al final:
+[PLAN: nombre de la metodología | Nombre fase 1::Descripción breve de una frase;;Nombre fase 2::Descripción breve;;Nombre fase 3::Descripción breve]
+- Entre 3 y 5 fases, cada una con un nombre corto (2-5 palabras) y una descripción de una sola frase.
+- Es invisible para la persona — el sistema lo convierte en una tarjeta de seguimiento con progreso guardado entre sesiones.
+- Si el contexto de este mensaje indica que ya hay un plan de trabajo activo, dale continuidad natural (por ejemplo preguntando cómo le fue con la fase pendiente) en vez de proponer uno nuevo desde cero, y no repitas el marcador si no hay ningún cambio real que reflejar.`,
     suggs: ['Tengo que dar feedback difícil esta semana', 'No sé cómo motivar a mi equipo', 'Hay una conversación que no sé cómo abordar', 'Quiero mejorar cómo delego', 'Necesito preparar una reunión importante'],
   },
 
@@ -7475,7 +7491,15 @@ Cuando hagas una pregunta de clarificación que tenga 2-4 respuestas típicas y 
 [OPCIONES: Opción corta 1 | Opción corta 2 | Opción corta 3]
 - Cada opción debe ser corta (2-6 palabras), en el mismo tono en que hablaría la persona.
 - Nunca uses esto para preguntas abiertas — solo cuando de verdad haya 2-4 categorías claras entre las que elegir.
-- La línea [OPCIONES: ...] va SIEMPRE al final, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.`,
+- La línea [OPCIONES: ...] va SIEMPRE al final, en su propia línea, y no la menciones ni la expliques — es una instrucción técnica para la interfaz, invisible en tu redacción.
+
+PLAN DE TRABAJO EN FASES (opcional, no lo ofrezcas en cada respuesta)
+Cuando identifiques que la persona se beneficiaría de trabajar una metodología de forma continuada a lo largo de varias conversaciones —no una duda puntual, sino algo que lleva su proceso—, puedes, tras aplicarla y dar el primer paso concreto como siempre, preguntarle si le gustaría dividirlo en fases para ir trabajándolo juntos. Nunca lo impongas sin preguntar primero.
+Si acepta (en este mensaje o en uno posterior), cierra tu respuesta con este marcador, en su propia línea, al final:
+[PLAN: nombre de la metodología | Nombre fase 1::Descripción breve de una frase;;Nombre fase 2::Descripción breve;;Nombre fase 3::Descripción breve]
+- Entre 3 y 5 fases, cada una con un nombre corto (2-5 palabras) y una descripción de una sola frase.
+- Es invisible para la persona — el sistema lo convierte en una tarjeta de seguimiento con progreso guardado entre sesiones.
+- Si el contexto de este mensaje indica que ya hay un plan de trabajo activo, dale continuidad natural (por ejemplo preguntando cómo le fue con la fase pendiente) en vez de proponer uno nuevo desde cero, y no repitas el marcador si no hay ningún cambio real que reflejar.`,
     suggs: ['Necesito apoyo emocional hoy', 'Quiero trabajar algo de liderazgo', 'Hay algo personal que me está afectando', 'Tengo un reto profesional esta semana', 'No sé si es estrés o algo más'],
   },
 };
@@ -7842,7 +7866,7 @@ async function openChatSession() {
           const recent = rows.slice(-MAX_RESTORE);
           recent.forEach(r => {
             const role = r.role === 'assistant' ? 'ai' : 'user';
-            addBubble(role, r.content);
+            addBubble(role, stripMarkers(r.content));
             chatState.history.push({ role: r.role === 'assistant' ? 'assistant' : 'user', content: r.content });
           });
           chatState.msgCount = chatState.history.filter(m => m.role === 'user').length;
@@ -7878,6 +7902,37 @@ async function openChatSession() {
     }
   }
   restoreDraft();
+}
+
+// ── Marcadores internos del modelo ──────────────────────────────────────────
+// El modelo cierra algunas respuestas con marcadores técnicos ([OPCIONES:],
+// [GUIA:], [PRACTICA_FIN:], [CRISIS], [PLAN:]) que la interfaz convierte en
+// botones, tarjetas o registro interno. Nunca deben verse como texto.
+//
+// En Supabase se guarda el texto CRUDO, con los marcadores dentro (así el
+// backend puede seguir extrayéndolos si hiciera falta), así que hay que
+// limpiarlos en todos los sitios que pintan mensajes ya guardados: el
+// historial al reabrir la conversación, el modal de historial, el PDF y el
+// Word. En el mensaje que se acaba de recibir en directo esto ya no hace
+// falta, porque ese texto se limpia aparte según llega el streaming.
+//
+// El bucle hace la limpieza independiente del orden en que el modelo haya
+// encadenado los marcadores.
+function stripMarkers(text) {
+  if (typeof text !== 'string') return text;
+  let out = text;
+  let prevLength;
+  do {
+    prevLength = out.length;
+    out = out
+      .replace(/\n?\[CRISIS\]\s*$/, '')
+      .replace(/\n?\[PRACTICA_FIN:\s*([^\]]+)\]\s*$/, '')
+      .replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '')
+      .replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '')
+      .replace(/\n?\[PLAN:\s*([^\]]+)\]\s*$/, '')
+      .trim();
+  } while (out.length !== prevLength);
+  return out;
 }
 
 function useSugg(btn) {
@@ -7917,10 +7972,10 @@ function renderMsgGuia(wrap, guiaId) {
   card.innerHTML = `
     <div class="chat-msg-guia-icon">📖</div>
     <div class="chat-msg-guia-text">
-      <div class="chat-msg-guia-label">Guía relacionada</div>
+      <div class="chat-msg-guia-label">Guía relacionada · descargar en PDF</div>
       <div class="chat-msg-guia-title">${escapeHtmlLite(meta.titulo)}</div>
     </div>
-    <div class="chat-msg-guia-arrow">→</div>
+    <div class="chat-msg-guia-arrow">⬇</div>
   `;
   card.onclick = () => abrirGuiaDesdeChat(guiaId);
   const timeEl = wrap.querySelector('.cmw-time');
@@ -7928,9 +7983,131 @@ function renderMsgGuia(wrap, guiaId) {
   else wrap.appendChild(card);
 }
 
+// Antes esto navegaba a la página de la guía dentro de la web (go(guiaId)), lo que
+// sacaba a la persona de su conversación en curso. Ahora genera y descarga un PDF
+// de la guía al momento, sin moverse del chat. El contenido se extrae del propio
+// DOM de la página de la guía (existe siempre, aunque esté oculta), así que no hay
+// que mantener el texto duplicado en dos sitios.
 function abrirGuiaDesdeChat(guiaId) {
   if (typeof registrarAperturaGuia === 'function') registrarAperturaGuia(guiaId);
-  go(guiaId);
+  descargarGuiaPDF(guiaId);
+}
+
+function descargarGuiaPDF(guiaId) {
+  const meta = GUIAS_META[guiaId];
+  if (!meta) return;
+  if (typeof window.jspdf === 'undefined') {
+    alert('No se pudo cargar el generador de PDF. Comprueba tu conexión y vuelve a intentarlo en unos segundos.');
+    console.error('jsPDF no se ha cargado todavía.');
+    return;
+  }
+
+  const pageEl = document.getElementById('pg-' + guiaId);
+  if (!pageEl) { console.error('No se encontró el contenido de la guía:', guiaId); return; }
+  const subtituloEl = pageEl.querySelector('p[style*="color:var(--inv-2)"]');
+  const subtitulo = subtituloEl ? subtituloEl.textContent.trim() : '';
+  const bodyEl = pageEl.querySelector('.guia-article-body');
+  const bloques = bodyEl
+    ? Array.from(bodyEl.children).map((el) => ({
+        tipo: el.tagName === 'H2' ? 'h2' : 'p',
+        texto: el.textContent.trim(),
+      })).filter((b) => b.texto)
+    : [];
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  const marginX = 50;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const maxWidth = pageWidth - marginX * 2;
+  const accentColor = meta.modulo === 'coaching' ? [201, 168, 76] : [217, 130, 90];
+  let y = 0;
+
+  // Cabecera con marca (mismo estilo que el resumen de sesión)
+  doc.setFillColor(13, 27, 42);
+  doc.rect(0, 0, pageWidth, 90, 'F');
+  doc.setFont('times', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(248, 246, 241);
+  doc.text('Growee', marginX, 45);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(200, 200, 200);
+  doc.text('Guía · ' + (meta.modulo === 'coaching' ? 'Coaching Profesional' : 'Apoyo Emocional'), marginX, 65);
+
+  y = 130;
+  doc.setTextColor(20, 20, 20);
+  doc.setFont('times', 'bold');
+  doc.setFontSize(17);
+  const tituloLines = doc.splitTextToSize(meta.titulo, maxWidth);
+  tituloLines.forEach((line) => { doc.text(line, marginX, y); y += 22; });
+
+  if (subtitulo) {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.setTextColor(120, 120, 120);
+    const subLines = doc.splitTextToSize(subtitulo, maxWidth);
+    subLines.forEach((line) => { doc.text(line, marginX, y + 6); y += 13; });
+  }
+  y += 24;
+
+  bloques.forEach((b) => {
+    if (b.tipo === 'h2') {
+      if (y > pageHeight - 90) { doc.addPage(); y = 50; }
+      y += 8;
+      doc.setFillColor(...accentColor);
+      doc.rect(marginX, y - 12, 3, 16, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12.5);
+      doc.setTextColor(20, 20, 20);
+      doc.text(b.texto, marginX + 12, y);
+      y += 22;
+    } else {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10.5);
+      doc.setTextColor(50, 50, 50);
+      const lines = doc.splitTextToSize(b.texto, maxWidth);
+      lines.forEach((line) => {
+        if (y > pageHeight - 50) { doc.addPage(); y = 50; }
+        doc.text(line, marginX, y);
+        y += 15;
+      });
+      y += 10;
+    }
+  });
+
+  const totalPages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text('Growee · growee.io', marginX, pageHeight - 25);
+  }
+
+  doc.save(`growee-${guiaId}.pdf`);
+}
+
+// Tarjeta de plan de trabajo en fases sugerida dentro de una respuesta del chat.
+// Reutiliza el mismo estilo visual que la tarjeta de guía, y al clicarla abre el
+// modal de Planes ya existente (con el progreso y las reflexiones ya montados).
+function renderMsgPlan(wrap, planId) {
+  if (!wrap || !PLANES_GUIADOS[planId]) return;
+  const plan = PLANES_GUIADOS[planId];
+  const card = document.createElement('div');
+  card.className = 'chat-msg-guia';
+  card.innerHTML = `
+    <div class="chat-msg-guia-icon">${plan.icono}</div>
+    <div class="chat-msg-guia-text">
+      <div class="chat-msg-guia-label">Plan de trabajo · ${plan.fases.length} fases</div>
+      <div class="chat-msg-guia-title">${escapeHtmlLite(plan.titulo)}</div>
+    </div>
+    <div class="chat-msg-guia-arrow">🗺️</div>
+  `;
+  card.onclick = () => openPlanesModal();
+  const timeEl = wrap.querySelector('.cmw-time');
+  if (timeEl) wrap.insertBefore(card, timeEl);
+  else wrap.appendChild(card);
 }
 
 // Tarjeta de cierre visual al terminar una práctica de role-play
@@ -7950,7 +8127,7 @@ function renderPracticaResumen(wrap, resumen) {
 // ══════════════════════════════════════
 // PLANES GUIADOS — progreso persistente en el navegador
 // ══════════════════════════════════════
-const PLANES_GUIADOS = {
+let PLANES_GUIADOS = {
   'manager-90-dias': {
     titulo: 'Plan de 90 días para manager nuevo',
     modulo: 'coaching',
@@ -7973,6 +8150,85 @@ const PLANES_GUIADOS = {
     ],
   },
 };
+
+// ══════════════════════════════════════
+// PLANES DINÁMICOS — generados por el chat a partir de cualquiera de las 310
+// metodologías del catálogo (marcador [PLAN: ...]), no solo los 2 fijos de arriba.
+// Se guardan en localStorage para que persistan entre sesiones, y se fusionan con
+// PLANES_GUIADOS al cargar la página — así toda la infraestructura que ya existía
+// (getPlanProgress, togglePlanFase, renderPlanesModal, comparePlanProgress) funciona
+// igual para ambos tipos de plan, sin tener que tocarla ni duplicarla.
+// ══════════════════════════════════════
+function cargarPlanesDinamicos() {
+  try {
+    const raw = localStorage.getItem('growee_planes_dinamicos');
+    const dinamicos = raw ? JSON.parse(raw) : {};
+    Object.assign(PLANES_GUIADOS, dinamicos);
+  } catch (e) { /* si falla, simplemente no se recuperan planes dinámicos previos */ }
+}
+cargarPlanesDinamicos();
+
+function guardarPlanDinamico(planId, plan) {
+  try {
+    const raw = localStorage.getItem('growee_planes_dinamicos');
+    const dinamicos = raw ? JSON.parse(raw) : {};
+    dinamicos[planId] = plan;
+    localStorage.setItem('growee_planes_dinamicos', JSON.stringify(dinamicos));
+  } catch (e) { /* si falla, el plan sigue existiendo en memoria para esta sesión */ }
+}
+
+function slugify(text) {
+  return (text || '').toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '')
+    .slice(0, 60) || 'plan';
+}
+
+// Convierte el marcador [PLAN: metodología | Fase 1::descripción;;Fase 2::descripción]
+// en un plan guiado. Si ya existe un plan para esa misma metodología (mismo slug), no
+// crea uno nuevo — reutiliza el existente para no perder el progreso ya hecho, y así
+// la próxima vez que el modelo proponga esa misma metodología no se duplica.
+function upsertPlanDesdeMarcador(rawPlan, modulo) {
+  const sepIdx = rawPlan.indexOf('|');
+  if (sepIdx === -1) return null;
+  const metodologia = rawPlan.slice(0, sepIdx).trim();
+  const fasesPart = rawPlan.slice(sepIdx + 1);
+  if (!metodologia || !fasesPart) return null;
+
+  const fases = fasesPart.split(';;').map((f) => {
+    const dd = f.indexOf('::');
+    if (dd === -1) return { nombre: f.trim(), desc: '' };
+    return { nombre: f.slice(0, dd).trim(), desc: f.slice(dd + 2).trim() };
+  }).filter((f) => f.nombre);
+  if (fases.length === 0) return null;
+
+  const planId = 'auto-' + slugify(metodologia);
+  if (!PLANES_GUIADOS[planId]) {
+    const plan = { titulo: metodologia, modulo: modulo || 'bienestar', icono: '🗺️', fases };
+    PLANES_GUIADOS[planId] = plan;
+    guardarPlanDinamico(planId, plan);
+  }
+  return planId;
+}
+
+// Nota breve de continuidad que se envía junto al mensaje (no se muestra a la
+// persona) para que el modelo sepa si ya hay un plan en marcha en este módulo y no
+// proponga uno nuevo de cero — de la misma forma que ya se hace con la memoria de
+// fondo, pero para planes de trabajo en fases concretamente.
+function buildActivePlanNote(modulo) {
+  const entries = Object.entries(PLANES_GUIADOS).filter(([, p]) => p.modulo === modulo);
+  if (!entries.length) return '';
+  const pendientes = entries
+    .map(([planId, plan]) => ({ planId, plan, doneCount: getPlanProgress(planId).done.length, total: plan.fases.length }))
+    .filter((e) => e.doneCount < e.total);
+  if (!pendientes.length) return '';
+  pendientes.sort((a, b) => b.doneCount - a.doneCount); // el que tiene más avance, primero
+  const e = pendientes[0];
+  const siguiente = e.plan.fases[e.doneCount];
+  return `Plan de trabajo activo: "${e.plan.titulo}" (${e.doneCount}/${e.total} fases completadas).`
+    + (siguiente ? ` Próxima fase pendiente: "${siguiente.nombre}" — ${siguiente.desc}.` : '')
+    + ` Si la conversación retoma este tema, da continuidad natural a este plan (por ejemplo preguntando cómo le fue con la fase pendiente) en vez de proponer un plan nuevo desde cero.`;
+}
 
 function getPlanProgress(planId) {
   try {
@@ -8497,7 +8753,7 @@ function renderHistoryBody() {
       lastKey = threadKey;
     }
     const time = d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-    const safe = r.content
+    const safe = stripMarkers(r.content)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const pinBtn = r.id
       ? `<button class="history-pin-btn ${r.pinned ? 'on' : ''}" onclick="toggleMessagePin('${r.id}', this)" title="${r.pinned ? 'Quitar de fijados' : 'Fijar este mensaje'}">📌</button>`
@@ -8629,7 +8885,7 @@ async function renderHistoryByTopic(body) {
     if (!groups[categoria]) groups[categoria] = [];
     groups[categoria].push({
       userText: prevUser ? prevUser.content : null,
-      aiText: r.content,
+      aiText: stripMarkers(r.content),
       date: r.created_at,
     });
   }
@@ -8862,7 +9118,7 @@ function downloadHistoryAsPDF() {
     y += 15;
 
     doc.setFont('helvetica', 'normal');
-    const lines = doc.splitTextToSize(r.content, maxWidth);
+    const lines = doc.splitTextToSize(stripMarkers(r.content), maxWidth);
     lines.forEach((line) => {
       if (y > pageHeight - 50) { doc.addPage(); y = 55; }
       doc.text(line, marginX, y);
@@ -8917,7 +9173,7 @@ async function downloadHistoryAsDocx() {
       spacing: { after: 200 },
       children: [
         new TextRun({ text: `[${time}] ${quien}: `, bold: true }),
-        new TextRun({ text: r.content }),
+        new TextRun({ text: stripMarkers(r.content) }),
       ],
     }));
   });
@@ -9722,7 +9978,7 @@ async function chatSend() {
     const res = await fetch('/.netlify/functions/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey, userEmail: appState.user.email, company: appState.user.companyId || appState.user.company }),
+      body: JSON.stringify({ messages: chatState.history, system, modulo: sysKey, userEmail: appState.user.email, company: appState.user.companyId || appState.user.company, activePlanNote: buildActivePlanNote(sysKey) }),
     });
 
     if (!res.ok || !res.body) throw new Error('Respuesta no válida del servidor');
@@ -9765,6 +10021,7 @@ async function chatSend() {
       let opciones = null;
       let guiaId = null;
       let practicaResumen = null;
+      let planId = null;
 
       const crisisMatch = cleanText.match(/\n?\[CRISIS\]\s*$/);
       if (crisisMatch) {
@@ -9775,6 +10032,12 @@ async function chatSend() {
       if (practicaMatch) {
         practicaResumen = practicaMatch[1].trim();
         cleanText = cleanText.slice(0, practicaMatch.index).trim();
+      }
+
+      const planMatch = cleanText.match(/\n?\[PLAN:\s*([^\]]+)\]\s*$/);
+      if (planMatch) {
+        planId = upsertPlanDesdeMarcador(planMatch[1].trim(), sysKey);
+        cleanText = cleanText.slice(0, planMatch.index).trim();
       }
 
       const guiaMatch = cleanText.match(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/);
@@ -9793,6 +10056,9 @@ async function chatSend() {
       live.bubbleEl.dataset.rawText = cleanText;
       if (guiaId && typeof GUIAS_META !== 'undefined' && GUIAS_META[guiaId]) {
         renderMsgGuia(live.wrap, guiaId);
+      }
+      if (planId) {
+        renderMsgPlan(live.wrap, planId);
       }
       if (opciones && opciones.length) {
         renderMsgOptions(live.wrap, opciones);
@@ -9821,7 +10087,7 @@ async function chatSend() {
       attachPinToLiveBubble(userWrap, apiContent, 'user');
     }
 
-    const reply = (fullText.replace(/\n?\[CRISIS\]\s*$/, '').replace(/\n?\[PRACTICA_FIN:\s*([^\]]+)\]\s*$/, '').replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '').replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
+    const reply = (fullText.replace(/\n?\[CRISIS\]\s*$/, '').replace(/\n?\[PRACTICA_FIN:\s*([^\]]+)\]\s*$/, '').replace(/\n?\[PLAN:\s*([^\]]+)\]\s*$/, '').replace(/\n?\[GUIA:\s*([a-z0-9-]+)\]\s*$/, '').replace(/\n?\[OPCIONES:\s*([^\]]+)\]\s*$/, '').trim()) || 'Cuéntame más.';
     chatState.history.push({ role:'assistant', content:reply });
     chatState.msgCount++;
     updChatCnt();
