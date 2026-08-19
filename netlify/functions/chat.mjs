@@ -308,12 +308,16 @@ export default async (req) => {
     return new Response(JSON.stringify({ error: 'JSON inválido en el body' }), { status: 400 });
   }
 
-  const { messages, system, modulo, userEmail, company } = body;
+  const { messages, system, modulo, userEmail, company, activePlanNote } = body;
   if (!messages || !system) {
     return new Response(JSON.stringify({ error: 'Faltan messages o system en el body' }), { status: 400 });
   }
 
-  let finalSystem = system;
+  // El plan de trabajo en fases (si hay uno activo para este módulo) lo calcula y
+  // guarda el propio navegador (localStorage), no este backend — aquí solo se
+  // añade como una nota de contexto más al system prompt, igual que la memoria de
+  // fondo, para que el modelo le dé continuidad en vez de proponer uno nuevo.
+  let finalSystem = system + (activePlanNote ? `\n\n${activePlanNote}` : '');
   let ragTopicsList = [];
   let previousMemory = null;
 
