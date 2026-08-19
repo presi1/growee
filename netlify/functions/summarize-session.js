@@ -43,16 +43,21 @@ exports.handler = async (event) => {
 
 ${transcript}
 
-Sintetiza esta conversación en un resumen estructurado, pensado para que la persona se lo lleve como documento de referencia. Responde SOLO con JSON válido, sin texto antes ni después, sin bloques de código, con este formato exacto:
+Sintetiza esta conversación en un resumen estructurado y con nivel profesional, pensado para que la persona se lo lleve como documento de referencia serio, no como una lista de titulares. Responde SOLO con JSON válido, sin texto antes ni después, sin bloques de código, con este formato exacto:
 
 {
   "titulo": "un título breve de 4-8 palabras que resuma el tema central de la conversación",
-  "metodologias": ["Nombre de la metodología — Autor: una frase de qué se aplicó y por qué", "..."],
-  "estrategias": ["Un consejo o estrategia concreta mencionada, en una frase clara", "..."],
-  "proximos_pasos": ["Un paso concreto que quedó pendiente o acordado, en una frase clara", "..."]
+  "metodologias": ["Nombre de la metodología — Autor u origen: un desarrollo de 2-4 frases explicando en qué consiste la metodología, por qué se eligió para esta situación concreta y cómo se aplicó exactamente en la conversación", "..."],
+  "estrategias": ["Un consejo o estrategia concreta, desarrollado en 2-3 frases: qué es exactamente, por qué funciona y cómo aplicarlo en la práctica — no una frase suelta sin contexto", "..."],
+  "proximos_pasos": ["Un paso concreto que quedó pendiente o acordado, en 1-2 frases con detalle suficiente para saber exactamente qué hacer y por qué", "..."]
 }
 
-Si alguna de las tres listas no tiene contenido real en la conversación, devuélvela como array vacío — no inventes nada que no se haya dicho. Máximo 5 elementos por lista, los más relevantes.`;
+Reglas importantes:
+- No inventes contenido que no se haya dicho en la conversación — si la conversación fue breve, es preferible tener menos elementos pero bien desarrollados, que muchos elementos vacíos o forzados.
+- Cada elemento debe aportar valor real por sí solo, como si la persona lo leyera semanas después sin recordar la conversación: dale el contexto suficiente para que se entienda sin necesidad de haber estado presente.
+- Evita frases telegráficas de una sola línea sin explicación — desarrolla cada punto con la profundidad de un documento profesional, no de una lista de la compra.
+- Si alguna de las tres listas no tiene contenido real en la conversación, devuélvela como array vacío.
+- Máximo 5 elementos por lista, los más relevantes y mejor fundamentados.`;
 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -63,7 +68,7 @@ Si alguna de las tres listas no tiene contenido real en la conversación, devué
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 1200,
+        max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
