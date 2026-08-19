@@ -28,19 +28,23 @@ exports.handler = async (event) => {
 
     const esCoaching = modulo === 'coaching';
 
-    const prompt = `Genera una ficha explicativa breve y genérica de la siguiente metodología o modelo, usado en el contexto de ${esCoaching ? 'coaching profesional' : 'bienestar y apoyo emocional'} laboral: "${nombreMetodo}"
+    const prompt = `Genera una ficha explicativa completa y con nivel profesional de la siguiente metodología o modelo, usado en el contexto de ${esCoaching ? 'coaching profesional' : 'bienestar y apoyo emocional'} laboral: "${nombreMetodo}"
 
-Responde SOLO con JSON válido, sin texto antes ni después, sin bloques de código, con este formato exacto:
+Esta ficha debe funcionar como un documento de referencia serio que alguien pueda guardar y consultar, no como un resumen superficial. Responde SOLO con JSON válido, sin texto antes ni después, sin bloques de código, con este formato exacto:
 
 {
   "titulo": "nombre de la metodología, tal cual se conoce",
-  "autor": "autor(es) o corriente de origen, en una frase breve (deja vacío si no se conoce con certeza)",
-  "que_es": "explicación de qué es la metodología, en 2-3 frases claras",
-  "cuando_se_aplica": "en qué situaciones tiene sentido usarla, en 2-3 frases",
-  "pasos": ["paso o principio clave 1, en una frase", "paso o principio clave 2", "..."]
+  "autor": "autor(es) o corriente de origen, con un poco de contexto sobre cuándo y por qué se desarrolló, en 1-2 frases (deja vacío si no se conoce con certeza)",
+  "que_es": "explicación completa de qué es la metodología y la idea central en la que se basa, en 4-6 frases con profundidad real, no una definición de diccionario",
+  "cuando_se_aplica": "en qué situaciones concretas del trabajo tiene sentido usarla, con 2-3 ejemplos de contextos reales donde encaja bien, en 4-6 frases",
+  "pasos": ["paso o principio clave 1, desarrollado en 2-3 frases explicando qué implica en la práctica y por qué importa", "paso o principio clave 2, con el mismo nivel de desarrollo", "..."]
 }
 
-Máximo 6 elementos en "pasos". No inventes datos que no conozcas con razonable certeza — si no conoces el autor exacto, deja "autor" como cadena vacía en vez de inventarlo.`;
+Reglas importantes:
+- Cada paso o principio debe estar desarrollado con suficiente profundidad para que alguien lo entienda y lo pueda aplicar sin necesitar más contexto, no una frase suelta de titular.
+- Entre 4 y 6 elementos en "pasos", cada uno sustancioso.
+- No inventes datos que no conozcas con razonable certeza — si no conoces el autor exacto, deja "autor" como cadena vacía en vez de inventarlo.
+- El conjunto de la ficha debe sentirse como un documento completo de una o dos páginas, no como una tarjeta resumen.`;
 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -51,7 +55,7 @@ Máximo 6 elementos en "pasos". No inventes datos que no conozcas con razonable 
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
-        max_tokens: 800,
+        max_tokens: 1800,
         messages: [{ role: 'user', content: prompt }],
       }),
     });
