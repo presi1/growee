@@ -7732,10 +7732,20 @@ async function checkExistingSession() {
   }
 }
 
+// Supabase emite 'SIGNED_IN' no solo al hacer login la primera vez, sino también
+// al refrescar el token o al recuperar el foco de la pestaña — con solo mirar
+// currentPage aquí, un evento redundante que llega durante el propio await de
+// checkExistingSession() (mientras currentPage aún no ha cambiado a 'app')
+// vuelve a disparar toda la inicialización del chat, incluida una nueva
+// petición del mensaje de bienvenida. Por eso, además de currentPage, se
+// recuerda qué email ya se procesó para ignorar reconfirmaciones de la misma sesión.
+let lastAuthProcessedEmail = null;
 supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_IN' && session && session.user && session.user.email && currentPage !== 'app') {
-    checkExistingSession();
-  }
+  if (event !== 'SIGNED_IN' || !session || !session.user || !session.user.email) return;
+  const email = session.user.email.toLowerCase();
+  if (currentPage === 'app' && lastAuthProcessedEmail === email) return; // ya procesada, es solo un refresco de token
+  lastAuthProcessedEmail = email;
+  checkExistingSession();
 });
 
 const DEMO_USERS = {
@@ -8639,7 +8649,23 @@ function newChatSession() {
   restoreDraft();
 }
 
+let openChatSessionInFlight = false;
 async function openChatSession() {
+  // Guard contra llamadas solapadas o redundantes (p.ej. un 'SIGNED_IN' repetido
+  // de Supabase, o initApp() disparándose dos veces seguidas): sin esto, cada
+  // llamada extra vuelve a pedir un mensaje de bienvenida nuevo a get-welcome,
+  // que al generarse con IA sale con redacción distinta cada vez y se acumulan
+  // varios saludos casi idénticos en el chat.
+  if (openChatSessionInFlight) return;
+  openChatSessionInFlight = true;
+  try {
+    await openChatSessionImpl();
+  } finally {
+    openChatSessionInFlight = false;
+  }
+}
+
+async function openChatSessionImpl() {
   // Igual que newChatSession, pero primero intenta recuperar la conversación anterior
   chatState.history  = [];
   chatState.msgCount = 0;
