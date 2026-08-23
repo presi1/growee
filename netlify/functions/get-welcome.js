@@ -18,6 +18,8 @@
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const { checkRateLimit, rateLimitKeyFor } = require('./_rate-limit.js');
+const WELCOME_RATE_LIMIT = { max: 15, windowMs: 60000 };
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -28,6 +30,11 @@ exports.handler = async (event) => {
     const { userEmail, modulo, userName } = JSON.parse(event.body);
     if (!userEmail || !modulo) {
       return { statusCode: 400, body: JSON.stringify({ welcome: null }) };
+    }
+
+    const rl = checkRateLimit('get-welcome:' + rateLimitKeyFor(event, userEmail), WELCOME_RATE_LIMIT);
+    if (!rl.allowed) {
+      return { statusCode: 200, body: JSON.stringify({ welcome: null }) }; // fallo silencioso, como el resto de errores de esta función
     }
 
     const url = `${SUPABASE_URL}/rest/v1/user_memory_summary`
