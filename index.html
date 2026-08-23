@@ -9277,18 +9277,38 @@ function closeSosModal() {
 //   2) Esta lista de palabras clave, local y solo sobre lo que la persona
 //      ACABA de escribir — salta al instante, sin esperar respuesta de la
 //      IA, por si la conexión falla o tarda.
-// Lista deliberadamente corta y de alta confianza para minimizar falsos
-// positivos — no sustituye una validación clínica real de las frases.
+// Lista ampliada en agosto 2026 para cubrir más formas reales de expresar
+// ideación suicida o de autolesión (no solo la fórmula directa "quiero
+// suicidarme"), incluyendo variantes indirectas y sin acentos — el texto
+// se normaliza (minúsculas + sin tildes) antes de comparar, así que las
+// entradas de la lista no necesitan escribirse con y sin acento. Sigue
+// siendo una lista de alta confianza pensada para minimizar falsos
+// positivos frente al estrés o el malestar normales — no sustituye una
+// validación clínica real de las frases, y sigue siendo solo la red de
+// seguridad inmediata mientras responde también la capa 1 (la IA).
 // ══════════════════════════════════════════════
 const CRISIS_KEYWORDS = [
+  // Ideación suicida directa
   'quiero suicidarme', 'quiero matarme', 'me quiero suicidar', 'me quiero matar',
+  'voy a suicidarme', 'voy a matarme', 'me voy a suicidar', 'me voy a matar',
+  'pensando en suicidarme', 'pienso en suicidarme', 'pienso en matarme',
   'quitarme la vida', 'acabar con mi vida', 'terminar con mi vida',
-  'no quiero seguir viviendo', 'no quiero vivir más', 'ya no quiero vivir',
-  'quiero morirme', 'quiero desaparecer para siempre',
+  'poner fin a mi vida', 'quiero acabar con todo', 'acabar con todo esto',
+  // Desesperanza / deseo de morir, expresado de forma indirecta
+  'no quiero seguir viviendo', 'no quiero vivir mas', 'ya no quiero vivir',
+  'no quiero seguir aqui', 'no quiero estar aqui', 'prefiero no estar aqui',
+  'quiero morirme', 'quiero morir', 'ojala me muriera', 'ojala no despertar',
+  'quiero desaparecer para siempre', 'quiero desaparecer del todo',
+  'no le veo sentido a seguir', 'no tiene sentido seguir viviendo',
+  'mejor estarian sin mi', 'estarian mejor sin mi', 'seria mejor no estar',
+  'no aguanto mas la vida', 'no quiero existir mas',
+  // Autolesión
+  'quiero hacerme dano', 'quiero autolesionarme', 'me quiero cortar',
+  'ganas de hacerme dano', 'ganas de cortarme',
 ];
 
 function containsCrisisSignal(text) {
-  const normalized = text.toLowerCase();
+  const normalized = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   return CRISIS_KEYWORDS.some(k => normalized.includes(k));
 }
 
