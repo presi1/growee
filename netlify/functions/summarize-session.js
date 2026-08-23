@@ -13,10 +13,23 @@
  */
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const { checkRateLimit, rateLimitKeyFor } = require('./_rate-limit.js');
+// Resumir una sesión completa con Claude no es algo que se haga muchas
+// veces seguidas en uso normal — límite más ajustado que el del chat.
+const SUMMARY_RATE_LIMIT = { max: 10, windowMs: 60000 };
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
+  const rl = checkRateLimit('summarize-session:' + rateLimitKeyFor(event), SUMMARY_RATE_LIMIT);
+  if (!rl.allowed) {
+    return {
+      statusCode: 429,
+      headers: { 'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)) },
+      body: JSON.stringify({ error: 'Demasiadas peticiones — espera un momento antes de volver a intentarlo.' }),
+    };
   }
 
   try {
