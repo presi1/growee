@@ -55,6 +55,13 @@ const VOYAGE_API_KEY = process.env.VOYAGE_API_KEY;
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+import { checkRateLimit, rateLimitKeyFor } from './_rate-limit.mjs';
+// Límite pensado para uso real de chat (varios mensajes seguidos en una
+// conversación viva) sin dejar hueco a un bucle o abuso automatizado, que
+// aquí es especialmente caro: cada llamada dispara Voyage (embedding) +
+// Claude (streaming). Ver _rate-limit.mjs para el porqué y sus límites.
+const CHAT_RATE_LIMIT = { max: 20, windowMs: 60_000 };
+
 // Recalibrado en agosto 2026, con 339 metodologías en catálogo (el valor de 6 venía
 // de cuando había ~100). Se recuperan 10 fragmentos vía match_knowledge_v2, que
 // además aplica suelo de similitud y descarta candidatos casi idénticos entre sí.
@@ -311,6 +318,14 @@ export default async (req) => {
   const { messages, system, modulo, userEmail, company, activePlanNote } = body;
   if (!messages || !system) {
     return new Response(JSON.stringify({ error: 'Faltan messages o system en el body' }), { status: 400 });
+  }
+
+  const rl = checkRateLimit('chat:' + rateLimitKeyFor(req, userEmail), CHAT_RATE_LIMIT);
+  if (!rl.allowed) {
+    return new Response(
+      JSON.stringify({ error: 'Estás enviando mensajes muy seguido — espera un momento antes de continuar.' }),
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(rl.retryAfterMs / 1000)) } }
+    );
   }
 
   // El plan de trabajo en fases (si hay uno activo para este módulo) lo calcula y
