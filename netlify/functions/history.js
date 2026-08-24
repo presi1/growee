@@ -4,6 +4,10 @@
  * Devuelve el historial de mensajes guardado de un usuario para un módulo
  * concreto (bienestar o coaching), ordenado cronológicamente.
  *
+ * Requiere sesión verificada (header Authorization: Bearer <token>) —
+ * el email se toma SIEMPRE del token, nunca del body, para que nadie
+ * pueda pedir el historial de otra persona conociendo su email.
+ *
  * Variables de entorno necesarias (las mismas que ya usa chat.js):
  *   SUPABASE_URL
  *   SUPABASE_SERVICE_ROLE_KEY
@@ -11,17 +15,24 @@
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const { verifyAuth } = require('./_verify-auth.js');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  try {
-    const { userEmail, modulo } = JSON.parse(event.body);
+  const auth = await verifyAuth(event);
+  if (!auth.ok) {
+    return { statusCode: auth.statusCode, body: JSON.stringify({ error: auth.error }) };
+  }
 
-    if (!userEmail || !modulo) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Faltan userEmail o modulo' }) };
+  try {
+    const { modulo } = JSON.parse(event.body);
+    const userEmail = auth.email; // verificado por el token — nunca confiar en el body para esto
+
+    if (!modulo) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Falta modulo' }) };
     }
 
     const url = `${SUPABASE_URL}/rest/v1/chat_messages`
