@@ -8,9 +8,13 @@
  * Verifica el acceso exactamente igual que get-rrhh-stats.js — mismo
  * patrón, mismo nivel de seguridad, solo cambia el formato de salida.
  *
+ * Requiere sesión verificada (header Authorization: Bearer <token>) —
+ * el email se toma del token, nunca del body.
+ *
  * USO:
  *   POST /.netlify/functions/export-company-data
- *   body: { "email": "admin@empresa.com", "format": "csv", "days": 90 }
+ *   headers: { Authorization: "Bearer <access_token de la sesión>" }
+ *   body: { "format": "csv", "days": 90 }
  *
  *   "format": "json" (por defecto) o "csv"
  *   "days": cuántos días hacia atrás exportar (por defecto 90)
@@ -21,6 +25,8 @@
  *   SUPABASE_URL
  *   SUPABASE_SERVICE_ROLE_KEY
  */
+import { verifyAuth } from './_verify-auth.mjs';
+
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -35,20 +41,23 @@ export default async (req) => {
     return new Response('Method Not Allowed', { status: 405 });
   }
 
+  const auth = await verifyAuth(req);
+  if (!auth.ok) {
+    return new Response(JSON.stringify({ error: auth.error }), { status: auth.statusCode });
+  }
+  const email = auth.email; // verificado por el token — nunca confiar en el body para esto
+
   let body;
   try {
     body = await req.json();
   } catch (e) {
-    return new Response(JSON.stringify({ error: 'JSON inválido en el body' }), { status: 400 });
+    body = {};
   }
 
-  const { email, format = 'json', days = 90 } = body;
-  if (!email) {
-    return new Response(JSON.stringify({ error: 'Falta email' }), { status: 400 });
-  }
+  const { format = 'json', days = 90 } = body;
 
   // 1. Comprobar que este email es admin de verdad, y de qué empresa — igual que get-rrhh-stats.js
-  const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email.toLowerCase())}&select=company`;
+  const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email)}&select=company`;
   const adminRes = await fetch(adminUrl, {
     headers: {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
