@@ -6,8 +6,11 @@
  * consultados. NUNCA devuelve contenido de conversaciones individuales —
  * todo el cálculo se hace dentro de la función SQL get_company_stats.
  *
- * Antes de devolver nada, comprueba en company_admins que el email que
- * pide los datos es realmente administrador de esa empresa.
+ * Requiere sesión verificada (header Authorization: Bearer <token>) —
+ * el email se toma del token, nunca del body, y solo entonces se
+ * comprueba en company_admins que esa persona es realmente admin.
+ * Antes, cualquiera con el email de un admin (sin necesitar su
+ * contraseña) podía pedir estas estadísticas directamente.
  *
  * Variables de entorno necesarias (las mismas de siempre):
  *   SUPABASE_URL
@@ -16,20 +19,23 @@
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const { verifyAuth } = require('./_verify-auth.js');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
+  const auth = await verifyAuth(event);
+  if (!auth.ok) {
+    return { statusCode: auth.statusCode, body: JSON.stringify({ error: auth.error }) };
+  }
+
   try {
-    const { email } = JSON.parse(event.body);
-    if (!email) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Falta email' }) };
-    }
+    const email = auth.email; // verificado por el token — nunca confiar en el body para esto
 
     // 1. Comprobar que este email es admin de verdad, y de qué empresa
-    const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email.toLowerCase())}&select=company`;
+    const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email)}&select=company`;
     const adminRes = await fetch(adminUrl, {
       headers: {
         apikey: SUPABASE_SERVICE_ROLE_KEY,
