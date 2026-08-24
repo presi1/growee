@@ -7129,6 +7129,20 @@ const SUPABASE_URL = 'https://piacsqzhfmgtcervmmps.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpYWNzcXpoZm1ndGNlcnZtbXBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMyMzk4ODcsImV4cCI6MjA5ODgxNTg4N30.AUXn6R2XjUd8kvit9fVtdKt4CJ-Hsmt0E8ETEOEHxAc';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Cabecera de autenticación real para las funciones que devuelven datos sensibles
+// (historial de conversaciones, estadísticas de RRHH). Supabase cachea la sesión
+// en el propio cliente y la refresca sola, así que llamar a getSession() en cada
+// petición es barato — no hace falta guardar el token a mano en ningún sitio.
+async function authHeaders() {
+  try {
+    const { data } = await supabaseClient.auth.getSession();
+    const token = data?.session?.access_token;
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  } catch (e) {
+    return {};
+  }
+}
+
 var lastTrackedPage = null;
 function trackPageView(page) {
   if (page === lastTrackedPage) return; // evita duplicar si go() se llama dos veces seguidas a la misma página
@@ -7730,8 +7744,8 @@ async function exportRrhhDataCsv() {
   try {
     const res = await fetch('/.netlify/functions/export-company-data', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: appState.user.email, format: 'csv', days: 90 }),
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+      body: JSON.stringify({ format: 'csv', days: 90 }),
     });
     if (!res.ok) throw new Error('export failed');
     const blob = await res.blob();
@@ -7762,8 +7776,8 @@ async function loadRrhhPanel() {
   try {
     const res = await fetch('/.netlify/functions/get-rrhh-stats', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: appState.user.email }),
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+      body: JSON.stringify({}),
     });
 
     if (!res.ok) {
@@ -7917,8 +7931,8 @@ async function checkAdminStatus() {
   try {
     const res = await fetch('/.netlify/functions/check-admin', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: appState.user.email }),
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+      body: JSON.stringify({}),
     });
     if (res.ok) {
       const data = await res.json();
@@ -8005,9 +8019,19 @@ async function doLogin() {
   if(!email) { shakeField(emailEl); emailEl.focus(); return; }
   if(!pass)  { shakeField(passEl);  passEl.focus();  return; }
 
-  // Solo cuentas de demo del propio equipo de Growee — el resto entra por enlace mágico
+  // Solo cuentas de demo del propio equipo de Growee — el resto entra por enlace mágico.
+  // Pasan por Supabase Auth de verdad (signInWithPassword), igual que cualquier
+  // usuario real, para que tengan una sesión con token válido: las funciones que
+  // devuelven historial de conversaciones o estadísticas de RRHH exigen esa sesión
+  // y ya no aceptan el email a pelo, así que sin esto las cuentas demo se quedarían
+  // sin poder ver su propio historial ni el panel de RRHH.
   const user = DEMO_USERS[email];
-  if(user && pass === user.pass) {
+  if (user) {
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
+    if (error) {
+      shakeField(passEl);
+      return;
+    }
     appState.user = { name: user.name, surname: user.surname, email, company: user.company };
     appState.user.companyId = getCompanyIdentifier(email);
     appState.module = user.module;
@@ -8022,54 +8046,13 @@ async function doLogin() {
 // ══════════════════════════════════════
 // APP
 // ══════════════════════════════════════
-const MOD_CONFIG = {
-  bienestar: {
-    label: 'Módulo Bienestar',
-    icon: '💚',
-    banner: 'Tu empresa ha activado el apoyo emocional para todo el equipo. Es completamente confidencial.',
-    bannerClass: '',
-    sbClass: '',
-    modes: [{ id:'bienestar', label:'● Apoyo Emocional', cls:'moss' }],
-    starts: [
-      { icon:'💚', iconClass:'icon-moss', title:'Apoyo emocional', desc:'Gestión del estrés, burnout, relaciones o conciliación', mode:'bienestar', cls:'' },
-    ],
-    suggs: ['Me siento abrumado/a con el trabajo','No consigo desconectar','Tengo un conflicto con alguien del equipo','Necesito hablar sobre cómo me siento'],
-    system: `Eres Growee en modo Apoyo Emocional. Eres un asistente de bienestar emocional empático y profesional, entrenado en psicología cognitivo-conductual (TCC), mindfulness y ACT. Respondes SIEMPRE en español, con calidez y sin juzgar. Tus respuestas son concisas (3-4 oraciones), validas antes de orientar. Si detectas crisis, recomiendas ayuda profesional. Eres un apoyo, no un sustituto clínico.`,
-    welcome: `Hola 👋 Este es tu espacio, completamente confidencial. Nadie más puede ver lo que escribas aquí. ¿Qué está pasando?`,
-  },
-  coaching: {
-    label: 'Módulo Coaching',
-    icon: '◆',
-    banner: 'Tu empresa ha activado el coaching profesional. Disponible siempre que lo necesites.',
-    bannerClass: 'gold-banner',
-    sbClass: 'gold-item',
-    modes: [{ id:'coaching', label:'◆ Coaching Profesional', cls:'gold' }],
-    starts: [
-      { icon:'◆', iconClass:'icon-gold', title:'Coaching profesional', desc:'Liderazgo, comunicación, feedback y desarrollo', mode:'coaching', cls:'gold-start' },
-    ],
-    suggs: ['Tengo que dar feedback difícil','No sé cómo motivar a mi equipo','Hay una conversación importante que no sé cómo abordar','Quiero mejorar como líder'],
-    system: `Eres Growee en modo Coaching Profesional. Eres un coach ejecutivo certificado (ICF, GROW, Co-Active). Respondes SIEMPRE en español, de forma directa y orientada a la acción. Usas preguntas poderosas, ayudas a definir objetivos y propones pasos concretos. Tus respuestas son concisas (3-5 oraciones).`,
-    welcome: `Hola 👋 Listo para trabajar contigo. ¿Qué tienes entre manos hoy — un reto de liderazgo, una conversación difícil, una decisión importante?`,
-  },
-  ambos: {
-    label: '● Bienestar + ◆ Coaching',
-    icon: '✦',
-    banner: 'Tu empresa ha activado los dos módulos. Elige el tipo de conversación que necesitas.',
-    bannerClass: 'both-banner',
-    sbClass: '',
-    modes: [
-      { id:'bienestar', label:'● Apoyo Emocional', cls:'moss' },
-      { id:'coaching',  label:'◆ Coaching', cls:'gold' },
-    ],
-    starts: [
-      { icon:'💚', iconClass:'icon-moss', title:'Apoyo emocional', desc:'Estrés, burnout, relaciones o conciliación', mode:'bienestar', cls:'' },
-      { icon:'◆', iconClass:'icon-gold', title:'Coaching profesional', desc:'Liderazgo, comunicación y desarrollo', mode:'coaching', cls:'gold-start' },
-    ],
-    suggs: ['Necesito apoyo emocional hoy','Quiero trabajar una situación de liderazgo','Hay algo personal que me está afectando','Tengo un reto profesional esta semana'],
-    system: `Eres Growee, un asistente especializado en bienestar emocional y coaching profesional. Respondes SIEMPRE en español, con calidez y orientación práctica. Adapta tu tono al contexto: empático para temas emocionales, directo y estructurado para coaching. Respuestas concisas (3-4 oraciones).`,
-    welcome: `Hola 👋 Tienes acceso a los dos módulos — apoyo emocional y coaching. ¿Por dónde quieres empezar hoy?`,
-  }
-};
+// (Nota: aquí existió durante un tiempo un objeto MOD_CONFIG con una versión
+// antigua y más corta de estos mismos prompts, sin manejo de crisis completo
+// en ninguno de sus 3 módulos. Se eliminó en la auditoría de detección de
+// crisis de agosto 2026 al confirmar que no se usaba en ningún sitio del
+// código — el chat real siempre ha usado MOD_CFG, más abajo. Se quita del
+// todo para que nadie lo reactive por error pensando que es una versión
+// válida: no tiene el bloque SEÑALES DE ALERTA actualizado.)
 
 // ══════════════════════════════════════
 // APP — Setup + Chat
@@ -8156,9 +8139,11 @@ CÓMO OFRECER HERRAMIENTAS
 - Pregunta siempre si quiere profundizar o prefiere otra dirección.
 
 SEÑALES DE ALERTA
-- Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda de forma directa buscar ayuda profesional inmediata. Dile explícitamente que puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar directamente al 024 (línea de atención a conducta suicida en España, gratuita y 24/7) o al 112 si el riesgo es inminente.
+- Si detectas riesgo para la vida o crisis severa, en cualquier punto de la conversación: para la conversación normal, no continúes con la técnica que estuvieras aplicando.
+- Antes de nada, valida con una frase genuina y humana lo que la persona acaba de compartir — nunca abras con la derivación en frío, como si fuera un mensaje automático. Después, con esa misma calidez, dile con claridad que esto pide ayuda profesional ahora mismo: puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar directamente al 024 (línea de atención a conducta suicida en España, gratuita, confidencial y 24/7) o al 112 si el riesgo es inminente.
+- Recuerda explícitamente, en esa misma respuesta, que eres un apoyo y no un sustituto de atención psicológica clínica — no lo des por sobreentendido del resto de la conversación, dilo en ese momento y con claridad, sin rodeos.
+- No es necesario que la persona use una frase explícita para que actúes: valora también la escalada a lo largo de varios mensajes (agotamiento → desesperanza → sensación de que no hay salida) aunque ningún mensaje suelto sea alarmante por sí solo.
 - Además, en ese mismo caso, añade el marcador [CRISIS] al final de tu respuesta (en su propia línea, después de todo lo demás). Es invisible para la persona — el sistema lo usa para abrir automáticamente la pantalla de ayuda. Úsalo solo ante una señal real de riesgo para la vida, nunca ante malestar general, estrés o un mal día.
-- Eres un apoyo, no un sustituto de atención psicológica clínica. Si la situación supera lo que puedes acompañar, dilo con claridad y sin rodeos.
 
 RECOMENDAR UNA GUÍA DE RECURSOS (muy importante)
 Cuando la conversación encaje claramente con una de las guías de la biblioteca de Recursos de abajo — no en cada mensaje, solo cuando de verdad aporte profundizar por escrito en algo ya hablado —, añade al final de tu respuesta, en su propia línea, exactamente este formato (usa el id tal cual aparece en la lista, nunca inventes uno):
@@ -8336,6 +8321,13 @@ Cuando sea relevante, construye con la persona:
 
 Siempre pregunta si quiere que lo hagáis juntos paso a paso.
 
+SEÑALES DE ALERTA (aplica también en modo Coaching, no solo en Apoyo Emocional — a veces una conversación que empieza como un reto profesional destapa algo mucho más serio)
+- Si detectas riesgo para la vida o crisis severa, en cualquier punto de la conversación, deja el coaching inmediatamente — no termines el framework ni cierres con un paso de acción como harías normalmente.
+- Antes de nada, valida lo que la persona acaba de compartir con una frase genuina y humana — nunca abras con la derivación en frío, como si fuera un mensaje automático. Después, con la misma calidez, dile con claridad que esto pide ayuda profesional ahora mismo: puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar directamente al 024 (línea de atención a conducta suicida en España, gratuita, confidencial y 24/7) o al 112 si el riesgo es inminente.
+- Recuerda explícitamente, en esa misma respuesta, que eres un apoyo y no un sustituto de ayuda profesional — no lo des por sobreentendido del resto de la conversación, dilo en ese momento.
+- No es necesario que la persona use una frase explícita para que actúes: valora también la escalada a lo largo de varios mensajes (agotamiento → desesperanza → sensación de que no hay salida) aunque ningún mensaje suelto sea alarmante por sí solo.
+- Además, en ese mismo caso, añade el marcador [CRISIS] al final de tu respuesta (en su propia línea, después de todo lo demás). Es invisible para la persona — el sistema lo usa para abrir automáticamente la pantalla de ayuda. Úsalo solo ante una señal real de riesgo para la vida, nunca ante estrés laboral normal o frustración con el trabajo.
+
 RECOMENDAR UNA GUÍA DE RECURSOS (muy importante)
 Cuando la conversación encaje claramente con una de las guías de la biblioteca de Recursos de abajo — no en cada mensaje, solo cuando de verdad aporte profundizar por escrito en algo ya hablado —, añade al final de tu respuesta, en su propia línea, exactamente este formato (usa el id tal cual aparece en la lista, nunca inventes uno):
 [GUIA: id-de-la-guia]
@@ -8446,9 +8438,12 @@ ESTRUCTURA DE CADA RESPUESTA
 3. Si ofreces una herramienta, explica en una frase por qué esa y no otra, y aplícala al caso real.
 4. Cierra con un paso concreto o una pregunta que invite a continuar.
 
-SEÑALES DE ALERTA
-Si detectas riesgo para la vida o crisis severa: para la conversación y recomienda directamente buscar ayuda profesional. Dile explícitamente que puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar al 024 (gratuita y 24/7) o al 112 si el riesgo es inminente. Eres un apoyo, no un sustituto clínico.
-Además, en ese mismo caso, añade el marcador [CRISIS] al final de tu respuesta (en su propia línea). Es invisible para la persona — abre automáticamente la pantalla de ayuda. Úsalo solo ante una señal real de riesgo para la vida, nunca ante estrés laboral normal o frustración con el trabajo.
+SEÑALES DE ALERTA (aplica sea cual sea el modo activo en ese momento, bienestar o coaching)
+- Si detectas riesgo para la vida o crisis severa, en cualquier punto de la conversación: para lo que estuvieras haciendo, no continúes con la técnica o el framework en curso.
+- Antes de nada, valida con una frase genuina y humana lo que la persona acaba de compartir — nunca abras con la derivación en frío, como si fuera un mensaje automático. Después, con esa misma calidez, dile con claridad que esto pide ayuda profesional ahora mismo: puede pulsar el botón "🆘 Ayuda inmediata" que tiene siempre visible en la parte inferior del chat, o llamar al 024 (línea de atención a conducta suicida en España, gratuita, confidencial y 24/7) o al 112 si el riesgo es inminente.
+- Recuerda explícitamente, en esa misma respuesta, que eres un apoyo y no un sustituto clínico — no lo des por sobreentendido, dilo en ese momento.
+- No es necesario que la persona use una frase explícita para que actúes: valora también la escalada a lo largo de varios mensajes (agotamiento → desesperanza → sensación de que no hay salida) aunque ningún mensaje suelto sea alarmante por sí solo.
+- Además, en ese mismo caso, añade el marcador [CRISIS] al final de tu respuesta (en su propia línea). Es invisible para la persona — abre automáticamente la pantalla de ayuda. Úsalo solo ante una señal real de riesgo para la vida, nunca ante estrés laboral normal o frustración con el trabajo.
 
 RECOMENDAR UNA GUÍA DE RECURSOS (muy importante)
 Cuando la conversación encaje claramente con una de las guías de la biblioteca de Recursos de abajo — no en cada mensaje, solo cuando de verdad aporte profundizar por escrito en algo ya hablado —, añade al final de tu respuesta, en su propia línea, exactamente este formato (usa el id tal cual aparece en la lista, nunca inventes uno):
@@ -8910,8 +8905,8 @@ async function openChatSessionImpl() {
     try {
       const res = await fetch('/.netlify/functions/history', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userEmail: appState.user.email, modulo: mode }),
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+        body: JSON.stringify({ modulo: mode }),
       });
       if (res.ok) {
         const rows = await res.json();
@@ -9533,6 +9528,47 @@ const CRISIS_KEYWORDS = [
 function containsCrisisSignal(text) {
   const normalized = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   return CRISIS_KEYWORDS.some(k => normalized.includes(k));
+}
+
+// ══════════════════════════════════════════════
+// Detección de escalada acumulada — complementa a CRISIS_KEYWORDS.
+// CRISIS_KEYWORDS es deliberadamente de alta confianza: una sola frase
+// clara ya es suficiente para saltar. Pero alguien puede ir escalando a lo
+// largo de varios mensajes (agotamiento → desesperanza → sensación de que
+// no hay salida) sin que ningún mensaje suelto contenga una frase de esa
+// lista — cada uno por separado suena a "un mal día", pero el patrón junto
+// no. Esta lista es intencionadamente más amplia y "blanda" que
+// CRISIS_KEYWORDS, así que NUNCA dispara con un solo mensaje — solo si
+// aparece en varios de los últimos mensajes de la persona, para no saltar
+// ante una queja normal de estrés o cansancio puntual.
+// ══════════════════════════════════════════════
+const ESCALATION_SIGNALS = [
+  'no puedo mas', 'ya no puedo mas', 'no doy mas', 'estoy agotado de todo',
+  'no le veo salida', 'no veo salida', 'no hay salida', 'no tiene solucion',
+  'esto no tiene sentido', 'nada tiene sentido', 'para que sigo', 'para que seguir',
+  'estoy roto', 'estoy rota', 'no me queda nada', 'no puedo seguir asi',
+  'esto es insoportable', 'ya no aguanto', 'no aguanto esto', 'estoy hundido',
+  'estoy hundida', 'no encuentro salida', 'todo me da igual', 'nada me importa ya',
+];
+
+const ESCALATION_WINDOW = 4;  // cuántos últimos mensajes del usuario se revisan
+const ESCALATION_MIN_HITS = 2; // cuántos de esos mensajes deben tener una señal para saltar
+
+function containsEscalationSignal(text) {
+  const normalized = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  return ESCALATION_SIGNALS.some(k => normalized.includes(k));
+}
+
+// history: chatState.history — se le añade el mensaje actual antes de llamar a esto,
+// así que ya incluye lo que la persona acaba de escribir.
+function hasEscalationPattern(history) {
+  if (!Array.isArray(history)) return false;
+  const recentUserMsgs = history
+    .filter(m => m.role === 'user')
+    .slice(-ESCALATION_WINDOW)
+    .map(m => Array.isArray(m.content) ? (m.content.find(b => b.type === 'text')?.text || '') : (m.content || ''));
+  const hits = recentUserMsgs.filter(containsEscalationSignal).length;
+  return hits >= ESCALATION_MIN_HITS;
 }
 
 let autoSosTriggeredThisSession = false;
@@ -11302,6 +11338,14 @@ async function chatSend() {
   chatState.msgCount++;
   updChatCnt();
   chatState.history.push({ role:'user', content: apiContent });
+
+  // Segunda red, complementaria a la de palabras clave de alta confianza de más
+  // arriba: si no saltó por una frase directa pero el patrón de los últimos
+  // mensajes muestra escalada (agotamiento → desesperanza → sensación de que no
+  // hay salida), salta igual — aunque ningún mensaje suelto sea alarmante por sí solo.
+  if (!autoSosTriggeredThisSession && hasEscalationPattern(chatState.history)) {
+    triggerAutoSos('escalada-acumulada');
+  }
 
   const ty = addTyping();
 
