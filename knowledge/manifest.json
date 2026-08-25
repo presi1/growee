@@ -42,6 +42,16 @@
       "fecha_revision": "2026-07-05"
     },
     {
+      "file": "bienestar/adaptacion-hedonica.md",
+      "modulo": "bienestar",
+      "metodologia": "Adaptación Hedónica (Hedonic Treadmill)",
+      "origen": "Philip Brickman y Donald Campbell",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/afrontamiento-proactivo.md",
       "modulo": "bienestar",
       "metodologia": "Afrontamiento Proactivo",
@@ -50,6 +60,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "bienestar/agilidad-emocional.md",
+      "modulo": "bienestar",
+      "metodologia": "Agilidad Emocional",
+      "origen": "Susan David, Harvard Medical School",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/alexitimia.md",
@@ -130,6 +150,16 @@
       "origen": "Christina Maslach",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/carga-alostatica.md",
+      "modulo": "bienestar",
+      "metodologia": "Carga Alostática",
+      "origen": "Bruce McEwen, Universidad Rockefeller",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/clarificacion-de-valores-componente-de-act.md",
@@ -376,6 +406,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-16"
+    },
+    {
+      "file": "bienestar/etapas-psicosociales-erikson.md",
+      "modulo": "bienestar",
+      "metodologia": "Etapas Psicosociales de Erikson (adultez)",
+      "origen": "Erik Erikson",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/exposicion-gradual.md",
@@ -1538,6 +1578,16 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
     },
     {
+      "file": "coaching/dimensiones-culturales-hofstede.md",
+      "modulo": "coaching",
+      "metodologia": "Dimensiones Culturales de Hofstede",
+      "origen": "Geert Hofstede",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "coaching/disena-tu-vida-design-thinking-aplicado-a-la-carrera.md",
       "modulo": "coaching",
       "metodologia": "Diseña tu vida (Design Thinking aplicado a la carrera)",
@@ -1640,6 +1690,16 @@
       "origen": "Práctica extendida; Erin Meyer",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/escalera-de-inferencia.md",
+      "modulo": "coaching",
+      "metodologia": "Escalera de Inferencia",
+      "origen": "Chris Argyris; popularizada por Peter Senge",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/escucha-activa.md",
@@ -1948,6 +2008,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "coaching/matriz-raci.md",
+      "modulo": "coaching",
+      "metodologia": "Matriz RACI",
+      "origen": "Práctica extendida de gestión de proyectos",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/matriz-stakeholders.md",
@@ -2387,6 +2457,16 @@
       "estado": "verificado",
       "revisado_por": null,
       "fecha_revision": null
+    },
+    {
+      "file": "coaching/teoria-del-nudge.md",
+      "modulo": "coaching",
+      "metodologia": "Teoría del Nudge (arquitectura de decisiones)",
+      "origen": "Richard Thaler y Cass Sunstein",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/teoria-dos-factores-herzberg.md",
