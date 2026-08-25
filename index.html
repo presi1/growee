@@ -6208,6 +6208,7 @@ ol.cbubble-list li{padding-left:.3rem}
         <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="profile-email" type="text" disabled></div>
         <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" id="profile-empresa" type="text"></div>
         <div class="form-group" id="profile-rol-wrap" style="display:none"><label class="form-label">Rol</label><input class="form-input" id="profile-rol" type="text"></div>
+        <div class="form-group"><label class="form-label">Equipo / departamento <span style="font-weight:400;color:var(--inv-2)">(opcional)</span></label><input class="form-input" id="profile-equipo" type="text" placeholder="p. ej. Ventas, Producto..."></div>
         <div style="font-size:.72rem;color:var(--inv-2);margin-bottom:1rem">El email no se puede cambiar aquí — es el identificador de tu cuenta.</div>
         <label style="display:flex;align-items:center;gap:.6rem;font-size:.85rem;color:var(--cream);margin-bottom:1.2rem;cursor:pointer">
           <input type="checkbox" id="profile-reminders-optin" onchange="toggleReminderOptIn(this.checked)" style="width:16px;height:16px;accent-color:var(--moss-light);cursor:pointer">
@@ -7243,6 +7244,28 @@ async function sendMagicLink() {
   const originalLabel = btn ? btn.textContent : '';
   if (btn) { btn.textContent = 'Enviando...'; btn.disabled = true; }
 
+  // SSO/SAML (backlog punto 6): si la empresa de este dominio tiene un proveedor
+  // SSO dado de alta en Supabase Auth (vía `supabase sso add`, ver documentación
+  // interna), se redirige directamente a su login corporativo en vez de mandar
+  // un enlace mágico. Si el dominio no tiene SSO configurado — el caso normal
+  // hoy, ya que activarlo es un proceso manual por cliente — Supabase Auth no
+  // devuelve una URL y seguimos con el flujo de enlace mágico de siempre, sin
+  // mostrar ningún error (no tener SSO no es un fallo, es lo esperado).
+  const domain = email.split('@')[1];
+  if (domain) {
+    try {
+      const { data: ssoData } = await supabaseClient.auth.signInWithSSO({ domain });
+      if (ssoData && ssoData.url) {
+        window.location.href = ssoData.url;
+        return; // se sale de la página — no hace falta restaurar el botón
+      }
+    } catch (e) {
+      // Sin proveedor SSO para este dominio, o error de red comprobándolo:
+      // no bloquea nada, simplemente seguimos con el enlace mágico normal.
+      console.error('SSO no disponible para este dominio, se usa enlace mágico:', e);
+    }
+  }
+
   try {
     const { error } = await supabaseClient.auth.signInWithOtp({
       email,
@@ -7790,8 +7813,8 @@ async function loadRrhhPanel() {
       return;
     }
 
-    const { company, stats } = await res.json();
-    companyEl.textContent = company;
+    const { company, adminLevel, team, stats } = await res.json();
+    companyEl.textContent = (adminLevel === 'team' && team) ? `${company} — equipo: ${team}` : company;
 
     document.getElementById('stat-active-week').textContent = stats.active_week ?? 0;
     document.getElementById('stat-active-month').textContent = stats.active_month ?? 0;
@@ -7927,6 +7950,8 @@ async function loadRrhhPanel() {
 async function checkAdminStatus() {
   appState.isRrhhAdmin = false;
   appState.rrhhCompany = null;
+  appState.rrhhAdminLevel = 'company';
+  appState.rrhhTeam = null;
   if (!appState.user.email) return;
   try {
     const res = await fetch('/.netlify/functions/check-admin', {
@@ -7938,6 +7963,8 @@ async function checkAdminStatus() {
       const data = await res.json();
       appState.isRrhhAdmin = !!data.isAdmin;
       appState.rrhhCompany = data.company || null;
+      appState.rrhhAdminLevel = data.adminLevel || 'company';
+      appState.rrhhTeam = data.team || null;
     }
   } catch (e) {
     console.error('No se pudo comprobar el estado de administrador:', e);
@@ -8628,8 +8655,8 @@ async function initApp() {
     try {
       const profRes = await fetch('/.netlify/functions/get-profile', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: appState.user.email }),
+        headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+        body: JSON.stringify({}),
       });
       if (profRes.ok) {
         savedProfile = await profRes.json();
@@ -8638,6 +8665,7 @@ async function initApp() {
           if (savedProfile.surname) appState.user.surname = savedProfile.surname;
           if (savedProfile.company) appState.user.company = savedProfile.company;
           if (savedProfile.role)    appState.user.role     = savedProfile.role;
+          if (savedProfile.team)    appState.user.team     = savedProfile.team;
         }
       }
     } catch (e) {
@@ -8673,6 +8701,8 @@ async function initApp() {
   if(pEmail) pEmail.value = appState.user.email || '';
   const pEmpresa = document.getElementById('profile-empresa');
   if(pEmpresa) pEmpresa.value = appState.user.company || '';
+  const pEquipo = document.getElementById('profile-equipo');
+  if(pEquipo) pEquipo.value = appState.user.team || '';
   const pRolWrap = document.getElementById('profile-rol-wrap');
   const pRol = document.getElementById('profile-rol');
   if (appState.user.role) {
@@ -8770,17 +8800,16 @@ function startChat() {
   // Guardar también en Supabase (no solo en sessionStorage), para no repetir esta
   // pantalla la próxima vez que se acceda desde un navegador o sesión distinta.
   if (appState.user.email) {
-    fetch('/.netlify/functions/save-profile', {
+    authHeaders().then(hdrs => fetch('/.netlify/functions/save-profile', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...hdrs },
       body: JSON.stringify({
-        email: appState.user.email,
         name: nameVal,
         surname: appState.user.surname || '',
         company: appState.user.company || '',
         role: roleVal,
       }),
-    }).catch(e => console.error('No se pudo guardar el perfil inicial en Supabase:', e));
+    })).catch(e => console.error('No se pudo guardar el perfil inicial en Supabase:', e));
   }
 
   // Update nav
@@ -9884,18 +9913,21 @@ async function saveProfile() {
   const company  = document.getElementById('profile-empresa').value.trim();
   const roleEl   = document.getElementById('profile-rol');
   const role     = roleEl ? roleEl.value.trim() : '';
+  const teamEl   = document.getElementById('profile-equipo');
+  const team     = teamEl ? teamEl.value.trim() : '';
 
   try {
     const res = await fetch('/.netlify/functions/save-profile', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: appState.user.email, name, surname, company, role }),
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+      body: JSON.stringify({ name, surname, company, role, team }),
     });
     if (res.ok) {
       appState.user.name = name;
       appState.user.surname = surname;
       appState.user.company = company;
       if (role) appState.user.role = role;
+      appState.user.team = team || null;
 
       // Refrescar lo que se ve en la nav sin esperar a la próxima carga
       const uname = document.getElementById('app-uname');
