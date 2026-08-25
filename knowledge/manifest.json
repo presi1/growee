@@ -228,6 +228,16 @@
       "fecha_revision": "2026-07-05"
     },
     {
+      "file": "bienestar/contagio-emocional.md",
+      "modulo": "bienestar",
+      "metodologia": "Contagio Emocional",
+      "origen": "Elaine Hatfield",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/cronotipos-roenneberg.md",
       "modulo": "bienestar",
       "metodologia": "Ritmo circadiano y cronotipos",
@@ -250,6 +260,16 @@
       "origen": "Brené Brown",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/curva-de-transicion-fisher.md",
+      "modulo": "bienestar",
+      "metodologia": "Curva de Transición Personal de Fisher",
+      "origen": "John Fisher",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/dbt-tolerancia-al-malestar.md",
@@ -280,6 +300,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/efecto-ikea.md",
+      "modulo": "bienestar",
+      "metodologia": "Efecto IKEA",
+      "origen": "Michael Norton, Daniel Mochon y Dan Ariely",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/efecto-zeigarnik.md",
@@ -1101,6 +1131,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "bienestar/teoria-de-la-carga-cognitiva.md",
+      "modulo": "bienestar",
+      "metodologia": "Teoría de la Carga Cognitiva",
+      "origen": "John Sweller",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/teoria-de-la-conservacion-de-recursos-cor.md",
       "modulo": "bienestar",
       "metodologia": "Teoría de la Conservación de Recursos (COR)",
@@ -1608,6 +1648,16 @@
       "fecha_revision": null
     },
     {
+      "file": "coaching/efecto-ben-franklin.md",
+      "modulo": "coaching",
+      "metodologia": "Efecto Ben Franklin",
+      "origen": "Atribuido a Benjamin Franklin; estudiado empíricamente por Jon Jecker y David Landy",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "coaching/efecto-dunning-kruger.md",
       "modulo": "coaching",
       "metodologia": "Efecto Dunning-Kruger",
@@ -1646,6 +1696,16 @@
       "estado": "verificado",
       "revisado_por": null,
       "fecha_revision": null
+    },
+    {
+      "file": "coaching/efecto-pratfall.md",
+      "modulo": "coaching",
+      "metodologia": "Efecto Pratfall",
+      "origen": "Elliot Aronson",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/eisenhower-rapid.md",
@@ -2162,6 +2222,16 @@
       "fecha_revision": null
     },
     {
+      "file": "coaching/modelo-drexler-sibbet.md",
+      "modulo": "coaching",
+      "metodologia": "Modelo de Madurez de Equipos de Drexler-Sibbet",
+      "origen": "Allan Drexler y David Sibbet",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "coaching/modelo-oscar-de-coaching.md",
       "modulo": "coaching",
       "metodologia": "Modelo OSCAR de coaching",
@@ -2427,6 +2497,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "coaching/teoria-de-la-senalizacion.md",
+      "modulo": "coaching",
+      "metodologia": "Teoría de la Señalización",
+      "origen": "Michael Spence",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/teoria-de-las-necesidades-de-mcclelland.md",
