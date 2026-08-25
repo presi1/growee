@@ -100,6 +100,16 @@
       "fecha_revision": "2026-07-05"
     },
     {
+      "file": "bienestar/autocompasion-fiera.md",
+      "modulo": "bienestar",
+      "metodologia": "Autocompasión Fiera (Fierce Self-Compassion)",
+      "origen": "Kristin Neff",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/autocompasion.md",
       "modulo": "bienestar",
       "metodologia": "Autocompasión",
@@ -208,6 +218,16 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
     },
     {
+      "file": "bienestar/compartir-social-de-emociones.md",
+      "modulo": "bienestar",
+      "metodologia": "Compartir Social de Emociones",
+      "origen": "Bernard Rimé",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/compasion-organizacional.md",
       "modulo": "bienestar",
       "metodologia": "Compasión Organizacional",
@@ -300,6 +320,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/efecto-de-mera-exposicion.md",
+      "modulo": "bienestar",
+      "metodologia": "Efecto de Mera Exposición",
+      "origen": "Robert Zajonc",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/efecto-ikea.md",
@@ -406,6 +436,16 @@
       "origen": "James Pennebaker",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/espiral-estres-recuperacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Espiral Estrés-Recuperación",
+      "origen": "Michiel Kompier y Theo Meijman",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/estilo-explicativo-optimismo-aprendido.md",
@@ -1131,6 +1171,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "bienestar/teoria-de-la-autoverificacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Teoría de la Autoverificación",
+      "origen": "William Swann",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/teoria-de-la-carga-cognitiva.md",
       "modulo": "bienestar",
       "metodologia": "Teoría de la Carga Cognitiva",
@@ -1481,6 +1531,16 @@
       "fecha_revision": "2026-08-16"
     },
     {
+      "file": "coaching/cinco-disciplinas-senge.md",
+      "modulo": "coaching",
+      "metodologia": "Las Cinco Disciplinas del Aprendizaje Organizacional",
+      "origen": "Peter Senge",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "coaching/cinco-disfunciones-lencioni.md",
       "modulo": "coaching",
       "metodologia": "Las 5 disfunciones de un equipo",
@@ -1646,6 +1706,16 @@
       "estado": "verificado",
       "revisado_por": null,
       "fecha_revision": null
+    },
+    {
+      "file": "coaching/efecto-anclaje-en-negociacion.md",
+      "modulo": "coaching",
+      "metodologia": "Efecto de Anclaje en Negociación",
+      "origen": "Daniel Kahneman y Amos Tversky",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/efecto-ben-franklin.md",
@@ -2232,6 +2302,16 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "coaching/modelo-lmx.md",
+      "modulo": "coaching",
+      "metodologia": "Modelo de Intercambio Líder-Miembro (LMX)",
+      "origen": "George Graen y Mary Uhl-Bien",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "coaching/modelo-oscar-de-coaching.md",
       "modulo": "coaching",
       "metodologia": "Modelo OSCAR de coaching",
@@ -2278,6 +2358,16 @@
       "origen": "Roger Fisher y William Ury, Harvard Negotiation Project",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/negociacion-integrativa-vs-distributiva.md",
+      "modulo": "coaching",
+      "metodologia": "Negociación Integrativa vs. Distributiva",
+      "origen": "Richard Walton y Robert McKersie",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/networking-estrategico.md",
@@ -2368,6 +2458,16 @@
       "origen": "Michael Watkins",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/principio-de-reciprocidad.md",
+      "modulo": "coaching",
+      "metodologia": "Principio de Reciprocidad",
+      "origen": "Robert Cialdini",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/q12-gallup.md",
