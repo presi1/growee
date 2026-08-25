@@ -56,8 +56,8 @@ export default async (req) => {
 
   const { format = 'json', days = 90 } = body;
 
-  // 1. Comprobar que este email es admin de verdad, y de qué empresa — igual que get-rrhh-stats.js
-  const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email)}&select=company`;
+  // 1. Comprobar que este email es admin de verdad, de qué empresa y con qué nivel — igual que get-rrhh-stats.js
+  const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email)}&select=company,admin_level,team`;
   const adminRes = await fetch(adminUrl, {
     headers: {
       apikey: SUPABASE_SERVICE_ROLE_KEY,
@@ -72,8 +72,14 @@ export default async (req) => {
     return new Response(JSON.stringify({ error: 'No tienes acceso a ningún panel de RRHH' }), { status: 403 });
   }
   const company = adminRows[0].company;
+  const adminLevel = adminRows[0].admin_level || 'company';
+  const team = adminRows[0].team || null;
 
-  // 2. Pedir la exportación diaria a la función SQL
+  // 2. Pedir la exportación diaria a la función SQL (solo del equipo si adminLevel='team',
+  // igual que get-rrhh-stats.js — RBAC granular, backlog punto 7)
+  const exportRpcBody = { p_company: company, p_days: days };
+  if (adminLevel === 'team' && team) exportRpcBody.p_team = team;
+
   const exportRes = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_company_daily_export`, {
     method: 'POST',
     headers: {
@@ -81,7 +87,7 @@ export default async (req) => {
       Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ p_company: company, p_days: days }),
+    body: JSON.stringify(exportRpcBody),
   });
   if (!exportRes.ok) {
     console.error('Error obteniendo exportación:', await exportRes.text());
@@ -89,16 +95,18 @@ export default async (req) => {
   }
   const rows = await exportRes.json();
 
+  const fileLabel = (adminLevel === 'team' && team) ? `${company}-${team}` : company;
+
   if (format === 'csv') {
     return new Response(toCsv(rows), {
       headers: {
         'Content-Type': 'text/csv',
-        'Content-Disposition': `attachment; filename="growee-export-${company}.csv"`,
+        'Content-Disposition': `attachment; filename="growee-export-${fileLabel}.csv"`,
       },
     });
   }
 
-  return new Response(JSON.stringify({ company, rows }), {
+  return new Response(JSON.stringify({ company, adminLevel, team, rows }), {
     headers: { 'Content-Type': 'application/json' },
   });
 };
