@@ -12,6 +12,12 @@
  * Antes, cualquiera con el email de un admin (sin necesitar su
  * contraseña) podía pedir estas estadísticas directamente.
  *
+ * RBAC granular (backlog punto 7): si el admin tiene admin_level='team',
+ * las estadísticas se filtran a solo su equipo (se pasa p_team a la
+ * función SQL) — nunca ve el resto de la empresa. Un admin_level='company'
+ * (o cualquier admin dado de alta antes de este cambio, que por defecto
+ * quedó en 'company') sigue viendo todo, sin cambios de comportamiento.
+ *
  * Variables de entorno necesarias (las mismas de siempre):
  *   SUPABASE_URL
  *   SUPABASE_SERVICE_ROLE_KEY
@@ -34,8 +40,8 @@ exports.handler = async (event) => {
   try {
     const email = auth.email; // verificado por el token — nunca confiar en el body para esto
 
-    // 1. Comprobar que este email es admin de verdad, y de qué empresa
-    const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email)}&select=company`;
+    // 1. Comprobar que este email es admin de verdad, de qué empresa y con qué nivel
+    const adminUrl = `${SUPABASE_URL}/rest/v1/company_admins?email=eq.${encodeURIComponent(email)}&select=company,admin_level,team`;
     const adminRes = await fetch(adminUrl, {
       headers: {
         apikey: SUPABASE_SERVICE_ROLE_KEY,
@@ -53,8 +59,13 @@ exports.handler = async (event) => {
     }
 
     const company = adminRows[0].company;
+    const adminLevel = adminRows[0].admin_level || 'company';
+    const team = adminRows[0].team || null;
 
-    // 2. Pedir los agregados de esa empresa a la función SQL
+    // 2. Pedir los agregados de esa empresa (o solo del equipo, si adminLevel='team') a la función SQL
+    const rpcBody = { p_company: company };
+    if (adminLevel === 'team' && team) rpcBody.p_team = team;
+
     const statsRes = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_company_stats`, {
       method: 'POST',
       headers: {
@@ -62,7 +73,7 @@ exports.handler = async (event) => {
         Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ p_company: company }),
+      body: JSON.stringify(rpcBody),
     });
 
     if (!statsRes.ok) {
@@ -76,7 +87,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ company, stats }),
+      body: JSON.stringify({ company, adminLevel, team, stats }),
     };
   } catch (err) {
     console.error('get-rrhh-stats.js error:', err);
