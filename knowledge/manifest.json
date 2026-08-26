@@ -258,12 +258,32 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "bienestar/crecimiento-postraumatico.md",
+      "modulo": "bienestar",
+      "metodologia": "Crecimiento Postraumático",
+      "origen": "Richard Tedeschi y Lawrence Calhoun",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/cronotipos-roenneberg.md",
       "modulo": "bienestar",
       "metodologia": "Ritmo circadiano y cronotipos",
       "origen": "Till Roenneberg",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/crossover-de-estres.md",
+      "modulo": "bienestar",
+      "metodologia": "Crossover de Estrés",
+      "origen": "Mina Westman",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/cuatro-jinetes-gottman.md",
@@ -652,6 +672,16 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
     },
     {
+      "file": "bienestar/mentalidad-ante-el-estres.md",
+      "modulo": "bienestar",
+      "metodologia": "Mentalidad ante el Estrés",
+      "origen": "Alia Crum",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "bienestar/mindfulness-kabat-zinn.md",
       "modulo": "bienestar",
       "metodologia": "Mindfulness / Atención plena (MBSR)",
@@ -668,6 +698,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "bienestar/modelo-cognitivo-del-insomnio.md",
+      "modulo": "bienestar",
+      "metodologia": "Modelo Cognitivo del Insomnio",
+      "origen": "Allison Harvey",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/modelo-continuo-salud-mental-keyes.md",
@@ -933,6 +973,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-16"
+    },
+    {
+      "file": "bienestar/reactancia-psicologica.md",
+      "modulo": "bienestar",
+      "metodologia": "Reactancia Psicológica",
+      "origen": "Jack Brehm",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "bienestar/reevaluacion-cognitiva-cognitive-reappraisal.md",
@@ -1728,6 +1778,26 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "coaching/efecto-de-encuadre.md",
+      "modulo": "coaching",
+      "metodologia": "Efecto de Encuadre (Framing Effect)",
+      "origen": "Daniel Kahneman y Amos Tversky",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
+      "file": "coaching/efecto-de-posicion-serial.md",
+      "modulo": "coaching",
+      "metodologia": "Efecto de Posición Serial (Recencia y Primacía)",
+      "origen": "Hermann Ebbinghaus",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "coaching/efecto-dunning-kruger.md",
       "modulo": "coaching",
       "metodologia": "Efecto Dunning-Kruger",
@@ -2406,6 +2476,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "coaching/paradoja-de-la-eleccion.md",
+      "modulo": "coaching",
+      "metodologia": "Paradoja de la Elección",
+      "origen": "Barry Schwartz",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
+    },
+    {
       "file": "coaching/pensamiento-de-grupo-groupthink.md",
       "modulo": "coaching",
       "metodologia": "Pensamiento de Grupo (Groupthink)",
@@ -2458,6 +2538,16 @@
       "origen": "Michael Watkins",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/principio-de-escasez.md",
+      "modulo": "coaching",
+      "metodologia": "Principio de Escasez",
+      "origen": "Robert Cialdini",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/principio-de-reciprocidad.md",
@@ -2723,6 +2813,16 @@
       "origen": "Joseph Luft y Harrington Ingham",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/vista-previa-realista-del-puesto.md",
+      "modulo": "coaching",
+      "metodologia": "Vista Previa Realista del Puesto",
+      "origen": "John Wanous",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-25"
     },
     {
       "file": "coaching/zona-de-desarrollo-proximo-aplicada-al-aprendizaje-adulto.md",
