@@ -736,16 +736,6 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
     },
     {
-      "file": "bienestar/grounding-5-4-3-2-1.md",
-      "modulo": "bienestar",
-      "metodologia": "Grounding / anclaje sensorial",
-      "origen": "Técnica común en terapias de trauma y ansiedad",
-      "tipo": "regulacion_en_crisis",
-      "estado": "verificado",
-      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
-      "fecha_revision": "2026-07-05"
-    },
-    {
       "file": "bienestar/higiene-del-sueno.md",
       "modulo": "bienestar",
       "metodologia": "Higiene del sueño",
