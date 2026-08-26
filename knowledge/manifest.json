@@ -52,6 +52,16 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "bienestar/afrontamiento-centrado-en-el-significado.md",
+      "modulo": "bienestar",
+      "metodologia": "Afrontamiento Centrado en el Significado",
+      "origen": "Susan Folkman",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/afrontamiento-proactivo.md",
       "modulo": "bienestar",
       "metodologia": "Afrontamiento Proactivo",
@@ -134,6 +144,16 @@
       "origen": "Nathaniel Branden; Carl Rogers",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/autosabotaje.md",
+      "modulo": "bienestar",
+      "metodologia": "Autosabotaje (Self-Handicapping)",
+      "origen": "Edward Jones y Steven Berglas",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/boreout.md",
@@ -408,6 +428,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "bienestar/envidia-social-en-el-trabajo.md",
+      "modulo": "bienestar",
+      "metodologia": "Envidia Social en el Trabajo",
+      "origen": "Michelle Duffy",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/escala-de-carga-de-trabajo-percibida.md",
@@ -955,6 +985,16 @@
       "fecha_revision": "2026-07-05"
     },
     {
+      "file": "bienestar/presentismo-laboral.md",
+      "modulo": "bienestar",
+      "metodologia": "Presentismo Laboral",
+      "origen": "Gary Johns",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/procrastinacion.md",
       "modulo": "bienestar",
       "metodologia": "Procrastinación como regulación emocional",
@@ -1065,6 +1105,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-16"
+    },
+    {
+      "file": "bienestar/sesgo-de-negatividad.md",
+      "modulo": "bienestar",
+      "metodologia": "Sesgo de Negatividad",
+      "origen": "Roy Baumeister",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/sindrome-general-de-adaptacion.md",
@@ -1693,6 +1743,16 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
     },
     {
+      "file": "coaching/curva-de-adopcion-de-la-innovacion.md",
+      "modulo": "coaching",
+      "metodologia": "Curva de Adopción de la Innovación",
+      "origen": "Everett Rogers",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/curva-emocional-cambio.md",
       "modulo": "coaching",
       "metodologia": "La curva emocional del cambio",
@@ -1876,6 +1936,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "coaching/employer-branding-y-propuesta-de-valor.md",
+      "modulo": "coaching",
+      "metodologia": "Employer Branding y Propuesta de Valor al Empleado (EVP)",
+      "origen": "síntesis de práctica de gestión de RRHH",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/empowerment-spreitzer.md",
       "modulo": "coaching",
       "metodologia": "Empowerment psicológico y estructural",
@@ -1990,6 +2060,16 @@
       "origen": "Jeff Sutherland y Ken Schwaber; David J. Anderson",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/gestion-de-despidos-y-offboarding.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión de Despidos y Offboarding con Dignidad",
+      "origen": "Joel Brockner",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/gestion-del-cambio-kotter.md",
@@ -2254,6 +2334,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-16"
+    },
+    {
+      "file": "coaching/micromanagement.md",
+      "modulo": "coaching",
+      "metodologia": "Micromanagement — Patrones y Alternativas",
+      "origen": "síntesis de investigación de gestión, incluyendo Chris Argyris",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/mindset-crecimiento-dweck.md",
@@ -2576,6 +2666,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "coaching/quiet-quitting-y-el-contrato-psicologico.md",
+      "modulo": "coaching",
+      "metodologia": "Quiet Quitting y el Contrato Psicológico Renovado",
+      "origen": "basado en Denise Rousseau",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/radical-candor.md",
