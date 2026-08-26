@@ -1,6 +1,16 @@
 {
   "fragments": [
     {
+      "file": "bienestar/aburrimiento-como-recurso-creativo.md",
+      "modulo": "bienestar",
+      "metodologia": "Aburrimiento como Recurso Creativo",
+      "origen": "Sandi Mann",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/aceptacion-radical.md",
       "modulo": "bienestar",
       "metodologia": "Aceptación Radical",
@@ -90,6 +100,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-16"
+    },
+    {
+      "file": "bienestar/ansiedad-ante-la-automatizacion-y-la-ia.md",
+      "modulo": "bienestar",
+      "metodologia": "Ansiedad ante la Automatización y la IA en el Trabajo",
+      "origen": "síntesis de investigación sobre inseguridad laboral tecnológica",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/ansiedad-social.md",
@@ -192,6 +212,16 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "bienestar/cierre-y-transicion-tras-un-proyecto-intenso.md",
+      "modulo": "bienestar",
+      "metodologia": "Cierre y Transición Psicológica tras un Proyecto Intenso",
+      "origen": "basado en William Bridges",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/clarificacion-de-valores-componente-de-act.md",
       "modulo": "bienestar",
       "metodologia": "Clarificación de valores (componente de ACT)",
@@ -228,6 +258,16 @@
       "origen": "Melody Beattie",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/comparacion-social-en-redes-y-bienestar.md",
+      "modulo": "bienestar",
+      "metodologia": "Comparación Social en Redes y Bienestar",
+      "origen": "Erin Vogel",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/comparacion-social-festinger.md",
@@ -372,6 +412,16 @@
       "fecha_revision": "2026-08-16"
     },
     {
+      "file": "bienestar/duelo-por-la-salida-de-un-companero.md",
+      "modulo": "bienestar",
+      "metodologia": "Duelo por la Salida de un Compañero de Equipo",
+      "origen": "basado en el Modelo del Proceso Dual del Duelo (Stroebe y Schut)",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/duelo-y-perdida.md",
       "modulo": "bienestar",
       "metodologia": "Duelo y pérdida",
@@ -480,6 +530,16 @@
       "fecha_revision": "2026-08-26"
     },
     {
+      "file": "bienestar/ergonomia-y-bienestar-fisico-en-el-puesto.md",
+      "modulo": "bienestar",
+      "metodologia": "Ergonomía y Bienestar Físico en el Puesto de Trabajo",
+      "origen": "síntesis de investigación en ergonomía ocupacional",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/escala-de-carga-de-trabajo-percibida.md",
       "modulo": "bienestar",
       "metodologia": "Escala de carga de trabajo percibida",
@@ -578,6 +638,26 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "bienestar/experiencias-de-asombro-y-bienestar.md",
+      "modulo": "bienestar",
+      "metodologia": "Experiencias de Asombro (Awe) y Bienestar",
+      "origen": "Dacher Keltner",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "bienestar/exposicion-a-la-naturaleza-y-restauracion-atencional.md",
+      "modulo": "bienestar",
+      "metodologia": "Exposición a la Naturaleza y Restauración Atencional",
+      "origen": "Rachel y Stephen Kaplan",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/exposicion-gradual.md",
       "modulo": "bienestar",
       "metodologia": "Exposición Gradual",
@@ -656,12 +736,32 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
     },
     {
+      "file": "bienestar/grounding-5-4-3-2-1.md",
+      "modulo": "bienestar",
+      "metodologia": "Grounding / anclaje sensorial",
+      "origen": "Técnica común en terapias de trauma y ansiedad",
+      "tipo": "regulacion_en_crisis",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-07-05"
+    },
+    {
       "file": "bienestar/higiene-del-sueno.md",
       "modulo": "bienestar",
       "metodologia": "Higiene del sueño",
       "origen": "National Sleep Foundation",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
+    },
+    {
+      "file": "bienestar/humor-y-juego-en-el-trabajo.md",
+      "modulo": "bienestar",
+      "metodologia": "Humor y Juego como Recursos de Bienestar en el Trabajo",
+      "origen": "Barbara Fredrickson",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/ikigai.md",
@@ -714,6 +814,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "bienestar/legado-profesional-y-sentido-a-largo-plazo.md",
+      "modulo": "bienestar",
+      "metodologia": "Legado Profesional y Sentido a Largo Plazo",
+      "origen": "Erik Erikson",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/ley-de-yerkes-dodson.md",
       "modulo": "bienestar",
       "metodologia": "Ley de Yerkes-Dodson",
@@ -756,6 +866,16 @@
       "modulo": "bienestar",
       "metodologia": "Meseta de Carrera (Career Plateau)",
       "origen": "Judith Bardwick",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "bienestar/microdescansos-y-pausas-activas.md",
+      "modulo": "bienestar",
+      "metodologia": "Microdescansos y Pausas Activas",
+      "origen": "síntesis de investigación sobre recuperación durante la jornada laboral",
       "tipo": "general",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
@@ -1391,6 +1511,16 @@
       "fecha_revision": "2026-08-16"
     },
     {
+      "file": "bienestar/tecnoestres.md",
+      "modulo": "bienestar",
+      "metodologia": "Tecnoestrés (Technostress)",
+      "origen": "Michelle Weil y Larry Rosen",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/teoria-ampliar-y-construir-de-las-emociones-positivas.md",
       "modulo": "bienestar",
       "metodologia": "Teoría Ampliar-y-Construir de las emociones positivas",
@@ -1627,6 +1757,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-16"
+    },
+    {
+      "file": "bienestar/tiempo-libre-deliberado-y-recuperacion.md",
+      "modulo": "bienestar",
+      "metodologia": "Tiempo Libre Deliberado y Recuperación",
+      "origen": "Sabine Sonnentag",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/transiciones-vitales-bridges.md",
@@ -1895,6 +2035,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "coaching/cultura-de-desconexion-y-derecho-a-la-desconexion.md",
+      "modulo": "coaching",
+      "metodologia": "Cultura de Desconexión y Derecho a la Desconexión",
+      "origen": "síntesis de práctica de gestión, con base en investigación de William Becker",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/cultura-de-error-blameless-post-mortem.md",
       "modulo": "coaching",
       "metodologia": "Cultura del Error y Análisis Sin Culpa (Blameless Post-Mortem)",
@@ -1976,6 +2126,26 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "coaching/diseno-de-espacios-y-entornos-de-trabajo.md",
+      "modulo": "coaching",
+      "metodologia": "Diseño de Espacios y Entornos de Trabajo",
+      "origen": "síntesis de investigación en psicología ambiental aplicada al trabajo",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "coaching/diseno-de-jornadas-sostenibles-para-el-equipo.md",
+      "modulo": "coaching",
+      "metodologia": "Diseño de Jornadas Sostenibles para el Equipo",
+      "origen": "síntesis de práctica de gestión, incluyendo investigación de Sabine Sonnentag",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/diseno-de-rituales-de-equipo.md",
@@ -2234,6 +2404,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "coaching/fomento-de-la-curiosidad-y-el-asombro-en-equipos.md",
+      "modulo": "coaching",
+      "metodologia": "Fomento de la Curiosidad y el Asombro en Equipos",
+      "origen": "basado en Dacher Keltner y Todd Kashdan",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/gestion-agil-scrum-kanban.md",
       "modulo": "coaching",
       "metodologia": "Gestión ágil básica (Scrum/Kanban)",
@@ -2272,10 +2452,40 @@
       "fecha_revision": "2026-08-26"
     },
     {
+      "file": "coaching/gestion-de-equipos-remotos-y-ergonomia-a-distancia.md",
+      "modulo": "coaching",
+      "metodologia": "Bienestar Físico y Ergonómico en Equipos Remotos",
+      "origen": "síntesis de práctica de gestión de equipos remotos",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/gestion-de-la-atencion-y-trabajo-profundo-en-equipo.md",
       "modulo": "coaching",
       "metodologia": "Gestión de la Atención Compartida en Equipos",
       "origen": "Cal Newport",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "coaching/gestion-de-la-fatiga-de-reuniones.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión de la Fatiga de Reuniones (Meeting Fatigue)",
+      "origen": "síntesis de investigación sobre fatiga de videoconferencia",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "coaching/gestion-de-la-inseguridad-psicologica-del-equipo-ante-el-cambio.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión de la Inseguridad Laboral Percibida del Equipo",
+      "origen": "Hans De Witte",
       "tipo": "general",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
@@ -2300,6 +2510,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/gestion-del-cierre-de-proyectos-y-celebracion-de-equipo.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión del Cierre de Proyectos y Celebración de Equipo",
+      "origen": "síntesis de práctica de gestión de proyectos y equipos",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/gestion-del-regreso-de-un-empleado-tras-baja-larga.md",
@@ -2330,6 +2550,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/humor-como-herramienta-de-liderazgo.md",
+      "modulo": "coaching",
+      "metodologia": "Humor como Herramienta de Liderazgo",
+      "origen": "Jennifer Aaker y Naomi Bagdonas",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/indagacion-apreciativa-appreciative-inquiry.md",
@@ -2456,10 +2686,30 @@
       "fecha_revision": "2026-08-16"
     },
     {
+      "file": "coaching/liderazgo-en-la-era-de-la-ia.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo en la Adopción de IA en Equipos",
+      "origen": "síntesis de práctica de gestión del cambio tecnológico",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/liderazgo-en-momentos-de-crisis-aguda.md",
       "modulo": "coaching",
       "metodologia": "Liderazgo en Momentos de Crisis Aguda",
       "origen": "síntesis de investigación sobre liderazgo en crisis, incluyendo Amy Edmondson",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "coaching/liderazgo-generativo-y-desarrollo-de-sucesores.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo Generativo y Desarrollo de Sucesores",
+      "origen": "basado en Erik Erikson y práctica de planificación de sucesión",
       "tipo": "general",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
@@ -2954,6 +3204,16 @@
       "origen": "Kim Scott, exdirectiva de Google y Apple",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/reskilling-y-desarrollo-continuo-de-habilidades.md",
+      "modulo": "coaching",
+      "metodologia": "Reskilling y Desarrollo Continuo de Habilidades",
+      "origen": "síntesis de práctica de gestión de talento y aprendizaje organizacional",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/reuniones-1-1.md",
