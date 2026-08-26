@@ -268,6 +268,16 @@
       "fecha_revision": "2026-07-05"
     },
     {
+      "file": "bienestar/conciliacion-y-limites-trabajo-vida.md",
+      "modulo": "bienestar",
+      "metodologia": "Conciliación y Límites entre Trabajo y Vida Personal",
+      "origen": "Christina Maslach y Ellen Ernst Kossek",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/contagio-emocional.md",
       "modulo": "bienestar",
       "metodologia": "Contagio Emocional",
@@ -276,6 +286,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-25"
+    },
+    {
+      "file": "bienestar/creatividad-y-pensamiento-divergente.md",
+      "modulo": "bienestar",
+      "metodologia": "Creatividad y Pensamiento Divergente",
+      "origen": "Mihaly Csikszentmihalyi",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/crecimiento-postraumatico.md",
@@ -372,6 +392,16 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "bienestar/efecto-foco.md",
+      "modulo": "bienestar",
+      "metodologia": "Efecto Foco (Spotlight Effect)",
+      "origen": "Thomas Gilovich",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/efecto-ikea.md",
       "modulo": "bienestar",
       "metodologia": "Efecto IKEA",
@@ -434,6 +464,16 @@
       "modulo": "bienestar",
       "metodologia": "Envidia Social en el Trabajo",
       "origen": "Michelle Duffy",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "bienestar/equipos-multigeneracionales.md",
+      "modulo": "bienestar",
+      "metodologia": "Equipos Multigeneracionales",
+      "origen": "síntesis de investigación organizacional sobre diversidad generacional",
       "tipo": "general",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
@@ -712,6 +752,26 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "bienestar/mentalidad-de-aprendizaje-ante-el-error.md",
+      "modulo": "bienestar",
+      "metodologia": "Mentalidad de Aprendizaje ante el Error",
+      "origen": "Amy Edmondson",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "bienestar/meseta-de-carrera.md",
+      "modulo": "bienestar",
+      "metodologia": "Meseta de Carrera (Career Plateau)",
+      "origen": "Judith Bardwick",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/mindfulness-kabat-zinn.md",
       "modulo": "bienestar",
       "metodologia": "Mindfulness / Atención plena (MBSR)",
@@ -778,6 +838,16 @@
       "estado": "verificado",
       "revisado_por": null,
       "fecha_revision": null
+    },
+    {
+      "file": "bienestar/modelo-de-los-cinco-grandes-rasgos.md",
+      "modulo": "bienestar",
+      "metodologia": "Modelo de los Cinco Grandes Rasgos de Personalidad",
+      "origen": "Robert McCrae y Paul Costa",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/modelo-de-los-dos-procesos-de-regulacion-del-sueno.md",
@@ -1025,6 +1095,36 @@
       "fecha_revision": "2026-08-25"
     },
     {
+      "file": "bienestar/reconocimiento-y-salario-emocional.md",
+      "modulo": "bienestar",
+      "metodologia": "Reconocimiento y Salario Emocional",
+      "origen": "síntesis de investigación de compromiso laboral, incluyendo Gallup",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "bienestar/reconversion-profesional-y-cambio-de-carrera.md",
+      "modulo": "bienestar",
+      "metodologia": "Reconversión Profesional y Cambio de Carrera",
+      "origen": "Herminia Ibarra",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "bienestar/red-de-apoyo-social-en-el-trabajo.md",
+      "modulo": "bienestar",
+      "metodologia": "Red de Apoyo Social en el Trabajo",
+      "origen": "Sheldon Cohen",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/reevaluacion-cognitiva-cognitive-reappraisal.md",
       "modulo": "bienestar",
       "metodologia": "Reevaluación Cognitiva (Cognitive Reappraisal)",
@@ -1043,6 +1143,16 @@
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento"
     },
     {
+      "file": "bienestar/reincorporacion-tras-baja-parental.md",
+      "modulo": "bienestar",
+      "metodologia": "Reincorporación tras una Baja Parental o de Larga Duración",
+      "origen": "síntesis de investigación sobre transiciones laborales",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "bienestar/relajacion-muscular-progresiva.md",
       "modulo": "bienestar",
       "metodologia": "Relajación Muscular Progresiva",
@@ -1051,6 +1161,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "bienestar/residuo-atencional.md",
+      "modulo": "bienestar",
+      "metodologia": "Residuo Atencional (Attention Residue)",
+      "origen": "Sophie Leroy",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/resiliencia-factores-protectores.md",
@@ -1105,6 +1225,26 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-08-16"
+    },
+    {
+      "file": "bienestar/sentido-y-conexion-con-el-proposito-del-trabajo.md",
+      "modulo": "bienestar",
+      "metodologia": "Sentido y Conexión con el Propósito del Trabajo",
+      "origen": "Amy Wrzesniewski",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "bienestar/sesgo-de-afinidad.md",
+      "modulo": "bienestar",
+      "metodologia": "Sesgo de Afinidad (Affinity Bias)",
+      "origen": "síntesis de investigación sobre sesgos inconscientes",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/sesgo-de-negatividad.md",
@@ -1239,6 +1379,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "bienestar/tecnica-5-4-3-2-1-de-grounding.md",
+      "modulo": "bienestar",
+      "metodologia": "Técnica 5-4-3-2-1 de Grounding Sensorial",
+      "origen": "práctica clínica derivada de terapias basadas en mindfulness y TCC",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "bienestar/tecnica-silla-vacia.md",
@@ -1689,6 +1839,16 @@
       "fecha_revision": "2026-08-16"
     },
     {
+      "file": "coaching/comunicacion-de-vision-y-proposito-organizacional.md",
+      "modulo": "coaching",
+      "metodologia": "Comunicación de Visión y Propósito Organizacional",
+      "origen": "John Kotter",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/comunicacion-ejecutiva-minto.md",
       "modulo": "coaching",
       "metodologia": "Pirámide de Minto",
@@ -1725,6 +1885,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "coaching/conversaciones-de-reconversion-y-movilidad-interna.md",
+      "modulo": "coaching",
+      "metodologia": "Conversaciones de Reconversión y Movilidad Interna",
+      "origen": "síntesis de práctica de gestión de talento",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/conversaciones-dificiles-harvard-negotiation-project.md",
       "modulo": "coaching",
       "metodologia": "Conversaciones Difíciles (Harvard Negotiation Project)",
@@ -1733,6 +1903,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "coaching/cultura-de-error-blameless-post-mortem.md",
+      "modulo": "coaching",
+      "metodologia": "Cultura del Error y Análisis Sin Culpa (Blameless Post-Mortem)",
+      "origen": "John Allspaw",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/cultura-organizacional-schein.md",
@@ -1806,6 +1986,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "coaching/diseno-de-rituales-de-equipo.md",
+      "modulo": "coaching",
+      "metodologia": "Diseño de Rituales de Equipo",
+      "origen": "Daniel Coyle",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/disonancia-cognitiva.md",
@@ -2072,6 +2262,46 @@
       "fecha_revision": "2026-08-26"
     },
     {
+      "file": "coaching/gestion-de-equipos-con-personalidades-diversas.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión de Equipos con Personalidades Diversas",
+      "origen": "basado en Robert McCrae y Paul Costa",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "coaching/gestion-de-equipos-multigeneracionales-liderazgo.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo de Equipos Multigeneracionales",
+      "origen": "síntesis de práctica de gestión organizacional",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "coaching/gestion-de-la-atencion-y-trabajo-profundo-en-equipo.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión de la Atención Compartida en Equipos",
+      "origen": "Cal Newport",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
+      "file": "coaching/gestion-de-la-meseta-de-carrera-desde-el-liderazgo.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión de la Meseta de Carrera desde el Liderazgo",
+      "origen": "basado en Judith Bardwick",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/gestion-del-cambio-kotter.md",
       "modulo": "coaching",
       "metodologia": "Gestión del cambio (8 pasos)",
@@ -2080,6 +2310,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-05"
+    },
+    {
+      "file": "coaching/gestion-del-regreso-de-un-empleado-tras-baja-larga.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión del Regreso de un Empleado tras una Baja Larga",
+      "origen": "síntesis de práctica de gestión de personas",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/gracias-por-el-feedback.md",
@@ -2226,12 +2466,32 @@
       "fecha_revision": "2026-08-16"
     },
     {
+      "file": "coaching/liderazgo-en-momentos-de-crisis-aguda.md",
+      "modulo": "coaching",
+      "metodologia": "Liderazgo en Momentos de Crisis Aguda",
+      "origen": "síntesis de investigación sobre liderazgo en crisis, incluyendo Amy Edmondson",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/liderazgo-inclusivo-deloitte.md",
       "modulo": "coaching",
       "metodologia": "Liderazgo inclusivo — los seis rasgos",
       "origen": "Juliet Bourke y Andrea Espedido, Deloitte",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/liderazgo-inclusivo-y-sesgos-inconscientes.md",
+      "modulo": "coaching",
+      "metodologia": "Gestión Práctica de Sesgos Inconscientes en Liderazgo",
+      "origen": "Mahzarin Banaji y Anthony Greenwald",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/liderazgo-servicial-greenleaf.md",
@@ -2290,6 +2550,16 @@
       "fecha_revision": "2026-07-27"
     },
     {
+      "file": "coaching/marca-personal-profesional.md",
+      "modulo": "coaching",
+      "metodologia": "Marca Personal Profesional",
+      "origen": "síntesis de práctica de desarrollo de carrera, popularizada por Tom Peters",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/matriz-raci.md",
       "modulo": "coaching",
       "metodologia": "Matriz RACI",
@@ -2316,6 +2586,16 @@
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
       "fecha_revision": "2026-07-27"
+    },
+    {
+      "file": "coaching/mentoring-estrategico-de-carrera.md",
+      "modulo": "coaching",
+      "metodologia": "Mentoring Estratégico de Carrera",
+      "origen": "Kathy Kram",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/mentoring-vs-coaching.md",
@@ -2725,6 +3005,16 @@
       "fecha_revision": "2026-08-16"
     },
     {
+      "file": "coaching/sesgo-de-confirmacion-en-decisiones-de-equipo.md",
+      "modulo": "coaching",
+      "metodologia": "Sesgo de Confirmación en Decisiones de Equipo",
+      "origen": "Peter Wason",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
+    },
+    {
       "file": "coaching/sesgos-cognitivos-kahneman.md",
       "modulo": "coaching",
       "metodologia": "Sesgos cognitivos en la toma de decisiones",
@@ -2905,6 +3195,16 @@
       "origen": "Cal Newport",
       "estado": "verificado",
       "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación por profesional de RRHH/coaching"
+    },
+    {
+      "file": "coaching/transicion-de-companero-a-manager.md",
+      "modulo": "coaching",
+      "metodologia": "Transición de Compañero a Manager (First-Time Manager)",
+      "origen": "Linda Hill",
+      "tipo": "general",
+      "estado": "verificado",
+      "revisado_por": "Ferran — revisión interna para pruebas técnicas, pendiente validación clínica antes de lanzamiento",
+      "fecha_revision": "2026-08-26"
     },
     {
       "file": "coaching/ventana-de-johari.md",
